@@ -1,0 +1,17 @@
+.tabs {
+    border-radius: 40px;
+    background-color: var(--button-bg-color);
+    box-shadow: 2px 2px 3px 0px #2626262b;
+    display: flex;
+    position: relative;
+}
+
+.substrate {
+    transition: width 0.2s, left 0.2s;
+    border-radius: 40px;
+    z-index: 1;
+    position: absolute;
+    display: block;
+    height: 100%;
+    background-color: hsl(var(--primary-hue), 92%, 53%);
+}

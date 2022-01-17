@@ -1,0 +1,105 @@
+.button,
+.link {
+    color: #ffffff;
+    font-family: var(--body-font);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 1px;
+
+    &:active {
+        box-shadow: inset 0px 0px 4px 2px #4040409c;
+    }
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+.full {
+    width: 100%;
+}
+
+.small {
+    font-size: 0.85rem;
+    padding: 4px 15px;
+}
+.middle {
+    font-size: 1rem;
+    padding: 8px 25px;
+}
+.large {
+    font-size: 1.15rem;
+    padding: 12px 35px;
+}
+
+.none {
+    border-radius: 0;
+}
+.low {
+    border-radius: 8px;
+}
+.medium {
+    border-radius: 12px;
+}
+.high {
+    border-radius: 16px;
+}
+.round {
+    border-radius: 3em;
+}
+
+.primary {
+    background-color: hsl(var(--primary-hue), 92%, 53%);
+    &:hover {
+        background-color: hsl(var(--primary-hue), 92%, 45%);
+    }
+    &:disabled {
+        background-color: hsl(var(--primary-hue), 92%, 70%);
+    }
+}
+.danger {
+    background-color: rgba(237, 17, 17, 0.75);
+    &:hover {
+        background-color: rgb(237, 17, 17);
+    }
+    &:disabled {
+        background-color: rgb(204, 93, 93);
+    }
+}
+.ghost {
+    border: 1px solid rgba(17, 97, 237, 1);
+    background-color: var(--button-bg-color);
+    color: var(--button-color);
+    &:hover {
+        background-color: rgba(17, 97, 237, 1);
+    }
+    &:disabled {
+        border-color: rgb(122, 108, 206);
+        background-color: #eee;
+    }
+}
+.grayPrimary {
+    background-color: var(--button-bg-color);
+    color: var(--button-color);
+    &:hover {
+        background-color: hsl(var(--primary-hue), 92%, 53%);
+        color: #fff;
+    }
+    &:disabled {
+        background-color: rgb(150, 150, 150);
+    }
+}
+.grayDanger {
+    background-color: var(--button-bg-color);
+    color: rgb(237, 17, 17);
+    &:hover {
+        background-color: rgb(237, 17, 17);
+        color: #fff;
+    }
+    &:disabled {
+        background-color: rgb(150, 150, 150);
+    }
+}

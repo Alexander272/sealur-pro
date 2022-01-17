@@ -1,0 +1,16 @@
+.header {
+    border-bottom: 2px solid hsl(var(--primary-hue), 92%, 33%);
+    box-shadow: 0 0 6px 2px #00000036;
+    background-color: var(--theme-bg-color);
+}
+
+.content {
+    padding: 15px 10px;
+    max-width: 1580px;
+    margin: 0 auto;
+    height: 80px;
+}
+
+.logo {
+    height: 100%;
+}

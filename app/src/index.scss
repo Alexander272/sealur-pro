@@ -50,6 +50,9 @@ ol[class] {
 a:not([class]) {
     text-decoration-skip-ink: auto;
 }
+a {
+    text-decoration: none;
+}
 
 /* Упрощаем работу с изображениями */
 img {
@@ -71,7 +74,10 @@ select {
 }
 
 :root {
-    --body-bg-color: #e4e6f5;
+    --primary-hue: 213;
+    --body-bg-color: #fbfbfb;
+
+    // --body-bg-color: #e4e6f5;
     --border-color: #e5e4e9;
     --theme-bg-color: #fff;
     --body-color: #1b1f31;
@@ -80,9 +86,7 @@ select {
     --title-color: #979dc3;
     --body-font: "Jost", sans-serif;
     --button-bg-color: #eaeefc;
-    --button-color: #4d76fd;
-    --unselected-mail: #f1f2f7;
-    --calendar-border-color: #cbcfe0;
+    --button-color: #002dc2;
     --main-container-bg: #f0f0f7;
     --danger-color: rgb(207, 25, 25);
 }
