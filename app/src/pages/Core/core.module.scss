@@ -1,6 +1,6 @@
 .container {
     max-width: 1580px;
-    padding: 50px 10px;
+    margin: 50px 10px;
     align-self: center;
     flex-grow: 1;
     display: flex;
@@ -11,6 +11,7 @@
 
 .header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -47,12 +48,18 @@
 }
 
 .content {
-    width: 1580px;
+    max-width: 1580px;
     flex-grow: 1;
     margin: 20px 0;
-    padding: 20px 30px;
-    border-radius: 12px;
-    background-color: var(--theme-bg-color);
-    box-shadow: 0px 0px 4px 0px #2626262b;
+    // padding: 20px 30px;
+    // border-radius: 12px;
+    // background-color: var(--theme-bg-color);
+    // box-shadow: 0px 0px 4px 0px #2626262b;
     position: relative;
+    display: grid;
+
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    grid-template-columns: repeat(12, 1fr);
+    // grid-template-columns: 1.75fr 1.25fr;
 }

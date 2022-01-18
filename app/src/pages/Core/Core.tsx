@@ -5,18 +5,37 @@ import { Button } from "../../components/UI/Button/Button"
 import { Loader } from "../../components/UI/Loader/Loader"
 import classes from "./core.module.scss"
 
+const initTabs: any = {
+    def: {
+        width: 103,
+        position: 0,
+    },
+    putg: {
+        width: 105,
+        position: 103,
+    },
+    putgm: {
+        width: 114,
+        position: 208,
+    },
+}
+
 export default function Core() {
     const location = useLocation()
+    const pathname = location.pathname
 
     return (
         <div className={classes.container}>
             <div className={classes.header}>
-                <Tabs type='nav'>
+                <Tabs
+                    initWidth={initTabs[pathname.split("/")[1] || "def"].width}
+                    initPos={initTabs[pathname.split("/")[1] || "def"].position}
+                    type='nav'
+                >
                     <Link
-                        className={[
-                            classes.link,
-                            location.pathname === "/" ? classes.active : null,
-                        ].join(" ")}
+                        className={[classes.link, pathname === "/" ? classes.active : null].join(
+                            " "
+                        )}
                         to='/'
                     >
                         СНП
@@ -24,7 +43,7 @@ export default function Core() {
                     <Link
                         className={[
                             classes.link,
-                            location.pathname === "/putg" ? classes.active : null,
+                            pathname === "/putg" ? classes.active : null,
                         ].join(" ")}
                         to='/putg'
                     >
@@ -33,7 +52,7 @@ export default function Core() {
                     <Link
                         className={[
                             classes.link,
-                            location.pathname === "/putgm" ? classes.active : null,
+                            pathname === "/putgm" ? classes.active : null,
                         ].join(" ")}
                         to='/putgm'
                     >

@@ -4,11 +4,19 @@ import classes from "./tabs.module.scss"
 type Props = {
     type?: "nav" | "div"
     size?: "small" | "middle" | "large"
+    initWidth: number
+    initPos?: number
     onClick?: (event: React.MouseEvent) => void
 }
 
-export const Tabs: FC<PropsWithChildren<Props>> = ({ children, type, onClick }) => {
-    const [substrate, setSubstrate] = useState({ width: 102, position: 0 })
+export const Tabs: FC<PropsWithChildren<Props>> = ({
+    children,
+    initWidth,
+    initPos,
+    type,
+    onClick,
+}) => {
+    const [substrate, setSubstrate] = useState({ width: initWidth, position: initPos || 0 })
 
     const clickHandler = (event: React.MouseEvent<any>) => {
         setSubstrate({
