@@ -21,7 +21,8 @@
     display: block;
     position: relative;
     z-index: 5;
-    padding: 10px 34px;
+    // padding: 10px 34px;
+    padding: 8px 34px;
     color: var(--button-color);
     border-radius: 40px;
     transition: all 0.3s ease-in-out;
@@ -58,8 +59,8 @@
     position: relative;
     display: grid;
 
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
     grid-template-columns: repeat(12, 1fr);
     // grid-template-columns: 1.75fr 1.25fr;
 }

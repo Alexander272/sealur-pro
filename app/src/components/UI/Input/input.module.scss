@@ -1,6 +1,5 @@
 .field {
     display: flex;
-    margin: 10px 0;
     position: relative;
 
     &.vertical {
@@ -16,9 +15,9 @@
         }
 
         .label {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 0;
-            margin-right: 15px;
+            margin-right: 10px;
         }
     }
 }
@@ -29,7 +28,8 @@
 }
 
 .input {
-    padding: 0.5rem 1rem;
+    // padding: 7px 15px;
+    padding: 4px 12px;
     border: 2px solid rgba(3, 121, 255, 0.5);
     letter-spacing: 1px;
     transition: 0.3s all ease-in-out;
@@ -47,18 +47,15 @@
     &.rounded {
         border-radius: 12px;
     }
-
-    &.invalid {
-        border-color: var(--danger-color);
-    }
 }
 
-.error {
+.inputSuffix {
     position: absolute;
-    bottom: -23px;
-    color: var(--danger-color);
-    font-size: 0.85rem;
-    display: flex;
-    width: 100%;
-    justify-content: center;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    & + .input {
+        padding-right: 35px;
+    }
 }

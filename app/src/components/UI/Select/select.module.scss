@@ -1,6 +1,6 @@
 .select {
     position: relative;
-    width: 100%;
+    // width: 100%;
 
     &.close {
         .icon {
@@ -20,7 +20,8 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    padding: 7px 15px;
+    padding: 4px 12px;
+    // padding: 7px 15px;
     border: 2px solid rgba(3, 121, 255, 0.5);
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
@@ -28,6 +29,7 @@
     .icon {
         transition: all 0.3s ease-in-out;
         transform: rotate(180deg);
+        margin-left: 5px;
     }
 
     &:hover {
@@ -50,7 +52,8 @@
 
 .option {
     background-color: #fff;
-    padding: 7px 20px;
+    // padding: 7px 20px;
+    padding: 4px 15px;
     cursor: pointer;
     position: relative;
     transition: all 0.3s ease-in-out;

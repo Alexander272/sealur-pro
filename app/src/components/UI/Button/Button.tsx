@@ -6,7 +6,7 @@ type Props = {
     onClick?: () => void
     fullWidth?: boolean
     variant?: "primary" | "danger" | "ghost" | "grayPrimary" | "grayDanger"
-    size?: "small" | "middle" | "large"
+    size?: "small" | "smallMiddle" | "middle" | "large"
     rounded?: "none" | "low" | "medium" | "high" | "round"
 }
 

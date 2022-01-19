@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Tabs } from "../../components/Tabs/Tabs"
 import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
+import { Input } from "../../components/UI/Input/Input"
 import { Select } from "../../components/UI/Select/Select"
 import classes from "./putg.module.scss"
 
@@ -20,7 +22,7 @@ export default function Putg() {
     return (
         <>
             <div className={classes.container}>
-                <div className={classes.block}>
+                <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Конфигурация прокладки</p>
                         <Tabs initWidth={85} onClick={tabHandler}>
@@ -90,9 +92,11 @@ export default function Putg() {
                         </Select>
                     </div>
                 </div>
-                <div className={classes.blockImage}>
+                <div className={`${classes.block} ${classes.fb55}`}>
                     <p className={classes.titleGroup}>Чертеж типа фланца</p>
-                    <img className={classes.image} loading='lazy' src={imgUrl} alt='' />
+                    <div className={classes.blockImage}>
+                        <img className={classes.image} loading='lazy' src={imgUrl} alt='' />
+                    </div>
                 </div>
             </div>
 
@@ -135,50 +139,82 @@ export default function Putg() {
                 </div>
 
                 <p className={classes.title}>Конструктивные элементы</p>
-                <div className={classes.group}>
-                    <Checkbox id='bridge' name='bridge' label='Перемычка' />
+                <div className={`${classes.group} ${classes.inline}`}>
+                    <Checkbox
+                        id='bridge'
+                        name='bridge'
+                        label='Перемычка'
+                        checked={true}
+                        onChange={() => {}}
+                    />
+                    {true && (
+                        <div className={classes.box}>
+                            <Select value='A' onChange={() => {}}>
+                                <Option value='A'>A</Option>
+                                <Option value='B'>B</Option>
+                            </Select>
+                            <Input name='parts' type='number' placeholder='ширина' suffix='мм' />
+                        </div>
+                    )}
                 </div>
                 <div className={classes.group}>
                     <Checkbox id='holes' name='holes' label='Отверстия' />
                 </div>
-                <div className={classes.group}>
-                    <Checkbox id='detachable' name='detachable' label='Разъемная' />
-
-                    {/* кол-во частей */}
+                <div className={`${classes.group} ${classes.inline}`}>
+                    <Checkbox
+                        id='detachable'
+                        name='detachable'
+                        label='Разъемная'
+                        checked={true}
+                        onChange={() => {}}
+                    />
+                    {true && (
+                        <div className={classes.box}>
+                            <Input name='parts' type='number' placeholder='кол-во частей' min={1} />
+                        </div>
+                    )}
                 </div>
-                <div className={classes.group}>
+                <div className={`${classes.group} ${classes.inline}`}>
                     <Checkbox
                         id='fastening'
                         name='fastening'
                         label='Крепление на вертикальном фланце'
+                        checked={true}
+                        onChange={() => {}}
                     />
-
-                    {/* <p className={classes.titleGroup}></p> */}
+                    {true && (
+                        <div className={classes.box}>
+                            <Select value='Ф1-20' onChange={() => {}}>
+                                <Option value='Ф1-20'>Ф1-20</Option>
+                                <Option value='Ф1-24'>Ф1-24</Option>
+                            </Select>
+                        </div>
+                    )}
                 </div>
 
                 <p className={classes.title}>Материалы</p>
-                <div className={classes.group}>
+                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
+                    <p className={classes.titleGroup}>Армирующий элемент</p>
+                    <Select value='1' onChange={() => {}}>
+                        <Option value='1'>1 ANSI 304</Option>
+                        <Option value='2'>2 ANSI 304L</Option>
+                    </Select>
+                </div>
+                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
+                    <p className={classes.titleGroup}>Армирующий элемент</p>
+                    <Select value='2' onChange={() => {}}>
+                        <Option value='1'>1 ANSI 304</Option>
+                        <Option value='2'>2 ANSI 304L</Option>
+                    </Select>
+                </div>
+                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
                     <p className={classes.titleGroup}>Армирующий элемент</p>
                     <Select value='1' onChange={() => {}}>
                         <Option value='1'>ANSI 304</Option>
                         <Option value='2'>ANSI 304L</Option>
                     </Select>
                 </div>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Армирующий элемент</p>
-                    <Select value='1' onChange={() => {}}>
-                        <Option value='1'>ANSI 304</Option>
-                        <Option value='2'>ANSI 304L</Option>
-                    </Select>
-                </div>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Армирующий элемент</p>
-                    <Select value='1' onChange={() => {}}>
-                        <Option value='1'>ANSI 304</Option>
-                        <Option value='2'>ANSI 304L</Option>
-                    </Select>
-                </div>
-                <div className={classes.group}>
+                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
                     <p className={classes.titleGroup}>Армирующий элемент</p>
                     <Select value='1' onChange={() => {}}>
                         <Option value='1'>ANSI 304</Option>
@@ -188,7 +224,7 @@ export default function Putg() {
             </div>
 
             <div className={classes.container}>
-                <div className={classes.block}>
+                <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Проход, DN</p>
                         <Select value='10' onChange={() => {}}>
@@ -216,14 +252,22 @@ export default function Putg() {
                         </Select>
                     </div>
                 </div>
-                <div className={classes.blockImage}>
+                <div className={`${classes.block} ${classes.fb65}`}>
                     <p className={classes.titleGroup}>Чертеж прокладки</p>
-                    <img className={classes.image} loading='lazy' src={chUrl} alt='' />
+                    <div className={classes.blockImage}>
+                        <img className={classes.image} loading='lazy' src={chUrl} alt='' />
+                    </div>
                 </div>
             </div>
-            <div className={classes.resultContainer}>
-                <p></p>
-            </div>
+            <ResultBlock
+                className={classes.resultContainer}
+                description='Lorem ipsum dolor sit, amet
+                    consectetur adipisicing elit. Cumque non aperiam ea, earum accusamus harum,
+                    repellendus dolorem delectus veniam itaque temporibus doloribus quia soluta
+                    fugit sit eligendi mollitia consectetur. Impedit porro cum possimus quidem ut!'
+                designation='Lorem ipsum dolor sit
+                        amet.'
+            />
         </>
     )
 }

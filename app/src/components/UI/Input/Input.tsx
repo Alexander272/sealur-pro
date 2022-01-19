@@ -8,6 +8,7 @@ type Props = {
     orentation?: "horizontal" | "vertical"
     inputType?: "round" | "rounded"
     onChange?: any
+    suffix?: string
 }
 
 export const Input = ({
@@ -18,6 +19,7 @@ export const Input = ({
     orentation,
     inputType,
     onChange,
+    suffix,
     ...attr
 }: Props & React.InputHTMLAttributes<HTMLInputElement>) => {
     return (
@@ -28,6 +30,7 @@ export const Input = ({
                 </label>
             )}
 
+            {suffix && <p className={classes.inputSuffix}>{suffix}</p>}
             <input
                 className={`${classes.input} ${classes[inputType || "rounded"]}`}
                 id={id}
