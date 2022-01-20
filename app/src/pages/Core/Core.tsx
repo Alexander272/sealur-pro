@@ -71,7 +71,7 @@ export default function Core() {
             </div>
 
             <div className={classes.content}>
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader isFull={true} />}>
                     <Outlet />
                 </Suspense>
             </div>

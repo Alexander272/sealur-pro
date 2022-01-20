@@ -92,14 +92,19 @@ export default function Putg() {
                         </Select>
                     </div>
                 </div>
-                <div className={`${classes.block} ${classes.fb55}`}>
+                <div className={`${classes.block} ${classes.putgDrawing}`}>
                     <p className={classes.titleGroup}>Чертеж типа фланца</p>
                     <div className={classes.blockImage}>
-                        <img className={classes.image} loading='lazy' src={imgUrl} alt='' />
+                        <img
+                            className={classes.image}
+                            width={500}
+                            height={266}
+                            src={imgUrl}
+                            alt=''
+                        />
                     </div>
                 </div>
             </div>
-
             <div className={classes.sideContainer}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Степень чистоты графитовой составляющей</p>
@@ -222,7 +227,6 @@ export default function Putg() {
                     </Select>
                 </div>
             </div>
-
             <div className={classes.container}>
                 <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>
@@ -252,10 +256,16 @@ export default function Putg() {
                         </Select>
                     </div>
                 </div>
-                <div className={`${classes.block} ${classes.fb65}`}>
+                <div className={`${classes.block} ${classes.putgDrawFl}`}>
                     <p className={classes.titleGroup}>Чертеж прокладки</p>
                     <div className={classes.blockImage}>
-                        <img className={classes.image} loading='lazy' src={chUrl} alt='' />
+                        <img
+                            className={classes.image}
+                            width={800}
+                            height={180}
+                            src={chUrl}
+                            alt=''
+                        />
                     </div>
                 </div>
             </div>
@@ -265,8 +275,7 @@ export default function Putg() {
                     consectetur adipisicing elit. Cumque non aperiam ea, earum accusamus harum,
                     repellendus dolorem delectus veniam itaque temporibus doloribus quia soluta
                     fugit sit eligendi mollitia consectetur. Impedit porro cum possimus quidem ut!'
-                designation='Lorem ipsum dolor sit
-                        amet.'
+                designation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti vero'
             />
         </>
     )

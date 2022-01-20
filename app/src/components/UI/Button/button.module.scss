@@ -56,12 +56,15 @@
 }
 
 .primary {
-    background-color: hsl(var(--primary-hue), 92%, 53%);
+    // background-color: hsl(var(--primary-hue), 92%, 53%);
+    background-color: hsl(var(--secondary-hue) 100% 42%);
     &:hover {
-        background-color: hsl(var(--primary-hue), 92%, 45%);
+        // background-color: hsl(var(--primary-hue), 92%, 45%);
+        background-color: hsl(var(--secondary-hue) 100% 35%);
     }
     &:disabled {
-        background-color: hsl(var(--primary-hue), 92%, 70%);
+        // background-color: hsl(var(--primary-hue), 92%, 70%);
+        background-color: hsl(var(--secondary-hue) 100% 60%);
     }
 }
 .danger {
@@ -89,7 +92,8 @@
     background-color: var(--button-bg-color);
     color: var(--button-color);
     &:hover {
-        background-color: hsl(var(--primary-hue), 92%, 53%);
+        // background-color: hsl(var(--primary-hue), 92%, 53%);
+        background-color: hsl(var(--secondary-hue) 100% 42%);
         color: #fff;
     }
     &:disabled {

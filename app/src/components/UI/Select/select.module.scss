@@ -1,10 +1,11 @@
 .select {
     position: relative;
+    display: flex;
     // width: 100%;
 
     &.close {
         .icon {
-            transform: rotate(0deg);
+            transform: translateY(-50%) rotate(0deg);
         }
 
         .options {
@@ -17,10 +18,13 @@
 }
 
 .selected {
-    display: flex;
-    justify-content: space-between;
+    text-overflow: ellipsis; //образка длинных блоков с текстом
+    overflow: hidden; //прятать выходящий за пределы текст
+    width: 100%; //ширина блока с текстом
+    white-space: nowrap;
     cursor: pointer;
     padding: 4px 12px;
+    padding-right: 26px;
     // padding: 7px 15px;
     border: 2px solid rgba(3, 121, 255, 0.5);
     border-radius: 12px;
@@ -28,8 +32,10 @@
 
     .icon {
         transition: all 0.3s ease-in-out;
-        transform: rotate(180deg);
-        margin-left: 5px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(180deg);
     }
 
     &:hover {

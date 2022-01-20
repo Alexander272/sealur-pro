@@ -9,11 +9,24 @@
     right: 0;
     z-index: 20;
 
-    .none {
+    &.none {
         background-color: transparent;
     }
-    .fill {
+    &.fill {
         background-color: #36363647;
+    }
+
+    &.full {
+        width: 1580px;
+        position: relative;
+    }
+}
+
+@media (max-width: 1600px) {
+    .container.full {
+        grid-column-start: 1;
+        grid-column-end: 13;
+        width: 100%;
     }
 }
 
@@ -24,7 +37,8 @@
 
     position: relative;
     z-index: 25;
-    color: hsl(var(--primary-hue), 92%, 53%);
+    // color: hsl(var(--primary-hue), 92%, 53%);
+    color: hsl(var(--secondary-hue) 100% 42%);
     width: var(--size);
     height: var(--size);
 

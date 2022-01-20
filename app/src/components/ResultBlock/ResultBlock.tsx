@@ -25,11 +25,12 @@ export const ResultBlock: FC<Props> = ({
             <p className={classes.description}>
                 <span className={classes.bold}>Описание:</span> {description}
             </p>
+            <p className={classes.description}>
+                <span className={classes.bold}>Обозначение:</span> {designation}
+            </p>
             <div className={classes.result}>
-                <p>
-                    <span className={classes.bold}>Обозначение:</span> {designation}
-                </p>
                 <Input
+                    id='count'
                     name='count'
                     label='Количество:'
                     orentation='horizontal'
