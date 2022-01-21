@@ -36,7 +36,8 @@
     margin-right: 10px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    width: 50%;
+    // overflow-y: hidden;
 
     &:last-child {
         margin-right: 0;

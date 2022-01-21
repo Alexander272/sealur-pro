@@ -1,7 +1,7 @@
 .select {
     position: relative;
     display: flex;
-    // width: 100%;
+    width: 100%;
 
     &.close {
         .icon {
@@ -29,6 +29,7 @@
     border: 2px solid rgba(3, 121, 255, 0.5);
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
+    position: relative;
 
     .icon {
         transition: all 0.3s ease-in-out;

@@ -1,30 +1,32 @@
-import { lazy, Suspense } from "react"
+import { lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
 import { Main } from "./Layout/Main"
 import Core from "../pages/Core/Core"
+import Auth from "../pages/Auth/Auth"
 // import AuthPage from "../pages/Auth/Auth"
 // import ListsPage from "../pages/Lists/Lists"
 
 const Snp = lazy(() => import("../pages/Snp/Snp"))
 const Putg = lazy(() => import("../pages/Putg/Putg"))
 const Putgm = lazy(() => import("../pages/Putgm/Putgm"))
+
+const Survey = lazy(() => import("../pages/Survey/Survey"))
 // const NotFoundPage = lazy(() => import("../pages/NotFound/NotFound"))
 
 export const MyRoutes = () => {
     return (
-        <Suspense fallback='loading...'>
-            <Routes>
-                <Route path='/' element={<Main />}>
-                    <Route path='/' element={<Core />}>
-                        <Route index element={<Snp />} />
-                        <Route path='putg' element={<Putg />} />
-                        <Route path='putgm' element={<Putgm />} />
-                    </Route>
+        <Routes>
+            <Route path='/' element={<Main />}>
+                <Route path='/' element={<Core />}>
+                    <Route index element={<Snp />} />
+                    <Route path='putg' element={<Putg />} />
+                    <Route path='putgm' element={<Putgm />} />
                 </Route>
-                {/*<Route path='/auth/' element={<AuthPage />} />
-                <Route path='*' element={<NotFoundPage />} /> */}
-            </Routes>
-        </Suspense>
+                <Route path='survey' element={<Survey />} />
+            </Route>
+            <Route path='/auth/' element={<Auth />} />
+            {/*     <Route path='*' element={<NotFoundPage />} /> */}
+        </Routes>
     )
 }
