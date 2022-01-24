@@ -17,11 +17,11 @@
     background-color: var(--button-bg-color);
     border-radius: 60%/10%;
     padding-bottom: 70px;
-    transform: translateY(-220px);
+    transform: translateY(-280px);
     transition: all 0.5s ease-in-out;
 
     &.close {
-        transform: translateY(60px);
+        transform: translateY(5px);
     }
 
     button {
@@ -55,4 +55,18 @@
     letter-spacing: 1.2px;
     color: var(--button-color);
     transition: all 0.5s ease-in-out;
+}
+
+.link {
+    margin: 0 auto;
+    margin-top: 30px;
+    display: block;
+    color: var(--button-color);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        border-bottom-color: var(--button-color);
+    }
 }

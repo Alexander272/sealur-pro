@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
+import { Link } from "react-router-dom"
 import { Dispatch } from "../../store/store"
 import { ISignIn } from "../../types/user"
 import { Button } from "../UI/Button/Button"
@@ -53,6 +54,9 @@ export const SignInForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                     errorText='Поле пароль не может быть пустым'
                 />
                 <Button rounded='round'>Войти</Button>
+                <Link className={classes.link} to='/survey'>
+                    Заполнить опросный лист
+                </Link>
             </div>
         </form>
     )
