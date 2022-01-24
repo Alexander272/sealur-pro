@@ -42,10 +42,15 @@
 
     &.round {
         border-radius: 3em;
+        padding: 6px 20px;
     }
 
     &.rounded {
         border-radius: 12px;
+    }
+
+    &.invalid {
+        border-color: var(--danger-color);
     }
 }
 
@@ -58,4 +63,14 @@
     & + .input {
         padding-right: 35px;
     }
+}
+
+.error {
+    position: absolute;
+    bottom: -20px;
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }

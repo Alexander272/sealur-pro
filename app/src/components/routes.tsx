@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-dom"
 import { Main } from "./Layout/Main"
 import Core from "../pages/Core/Core"
 import Auth from "../pages/Auth/Auth"
-// import AuthPage from "../pages/Auth/Auth"
 // import ListsPage from "../pages/Lists/Lists"
 
 const Snp = lazy(() => import("../pages/Snp/Snp"))

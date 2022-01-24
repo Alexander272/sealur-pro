@@ -1,12 +1,14 @@
 import { BrowserRouter } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
-import { MyRoutes } from "./components/routes"
-
+import { Provider } from "react-redux"
 import "react-toastify/dist/ReactToastify.css"
+
+import { MyRoutes } from "./components/routes"
+import { store } from "./store/store"
 
 function App() {
     return (
-        <>
+        <Provider store={store}>
             <BrowserRouter>
                 <MyRoutes />
             </BrowserRouter>
@@ -21,7 +23,7 @@ function App() {
                 draggable
                 pauseOnHover
             />
-        </>
+        </Provider>
     )
 }
 

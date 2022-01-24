@@ -1,3 +1,4 @@
+import { UseFormRegister } from "react-hook-form"
 import classes from "./input.module.scss"
 
 type Props = {
@@ -6,9 +7,13 @@ type Props = {
     name: string
     value?: string
     orentation?: "horizontal" | "vertical"
-    inputType?: "round" | "rounded"
+    rounded?: "round" | "rounded"
     onChange?: any
     suffix?: string
+    register?: UseFormRegister<any>
+    rule?: Partial<any>
+    error?: any
+    errorText?: string
 }
 
 export const Input = ({
@@ -17,9 +22,13 @@ export const Input = ({
     name,
     value,
     orentation,
-    inputType,
+    rounded,
     onChange,
     suffix,
+    register,
+    rule,
+    error,
+    errorText,
     ...attr
 }: Props & React.InputHTMLAttributes<HTMLInputElement>) => {
     return (
@@ -31,14 +40,26 @@ export const Input = ({
             )}
 
             {suffix && <p className={classes.inputSuffix}>{suffix}</p>}
-            <input
-                className={`${classes.input} ${classes[inputType || "rounded"]}`}
-                id={id}
-                name={name}
-                value={value}
-                onChange={onChange}
-                {...attr}
-            />
+            {register ? (
+                <input
+                    className={`${classes.input} ${error ? classes.invalid : ""} ${
+                        classes[rounded || "rounded"]
+                    }`}
+                    id={id}
+                    {...attr}
+                    {...register(name, rule)}
+                />
+            ) : (
+                <input
+                    className={`${classes.input} ${classes[rounded || "rounded"]}`}
+                    id={id}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    {...attr}
+                />
+            )}
+            {error && <p className={classes.error}>{errorText}</p>}
         </div>
     )
 }

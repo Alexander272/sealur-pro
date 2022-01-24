@@ -33,7 +33,7 @@ export default function Survey() {
                     />
                 </div>
                 <div className={classes.field}>
-                    <Input label='Город' id='sity' name='sity' orentation='horizontal' />
+                    <Input label='Город' id='city' name='city' orentation='horizontal' />
                 </div>
                 <div className={classes.field}>
                     <Input
