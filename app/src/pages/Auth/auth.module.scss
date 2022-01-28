@@ -1,5 +1,5 @@
 .page {
-    height: 100vh;
+    min-height: 100vh;
     min-width: 410px;
     display: flex;
     flex-direction: column;
@@ -39,6 +39,7 @@
 .container {
     position: relative;
     z-index: 5;
+    margin: 20px 0;
     border-radius: 16px;
     background-color: var(--theme-bg-color);
     box-shadow: 2px 2px 8px 0px #3636362b;

@@ -1,6 +1,8 @@
 import { Tabs } from "../../components/Tabs/Tabs"
 import { Button } from "../../components/UI/Button/Button"
+import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../components/UI/Input/Input"
+import { Textarea } from "../../components/UI/Input/Textarea"
 import { Select } from "../../components/UI/Select/Select"
 import classes from "./survey.module.scss"
 
@@ -172,10 +174,253 @@ export default function Survey() {
             </div>
             <div className={`${classes.container} ${classes.block3}`}>
                 <p className={classes.title}>Условия эксплуатации</p>
-                Температура рабочая, &#8451; // Давление рабочее / испытаний //Среда,
-                состав/концентрация // Особенности среды // Прочие условия (вибрация, Мизг, и т.п.)
+                <div className={classes.inline}>
+                    <div className={classes.fb60}>
+                        <div className={`${classes.inline} ${classes.tem}`}>
+                            <p className={classes.nodeTitle}>Рабочая температура, &#8451;</p>
+                            <Input
+                                label='от'
+                                id='difffrom'
+                                name='difffrom'
+                                type='number'
+                                orentation='horizontal'
+                                placeholder='0'
+                            />
+                            <Input
+                                label='до'
+                                id='diffto'
+                                name='diffto'
+                                type='number'
+                                orentation='horizontal'
+                                placeholder='0'
+                            />
+                        </div>
+                        <div className={`${classes.inline} ${classes.tem}`}>
+                            <p className={classes.nodeTitle}>Давление рабочее/испытаний</p>
+                            <Input
+                                id='preswork'
+                                name='preswork'
+                                type='number'
+                                min={0}
+                                step={0.1}
+                                placeholder='0.0'
+                            />
+                            <p>/</p>
+                            <Input
+                                id='prestest'
+                                name='prestest'
+                                type='number'
+                                placeholder='0.0'
+                                min={0}
+                                step={0.1}
+                            />
+                            <Select value='mpa' onChange={() => {}}>
+                                <Option value='mpa'>Мпа</Option>
+                                <Option value='kgs'>
+                                    кгс/см<sup>2</sup>
+                                </Option>
+                                <Option value='class'>класс давления</Option>
+                            </Select>
+                        </div>
+                        <div className={`${classes.inline} `}>
+                            <p className={classes.nodeTitle}>Среда, состав/концентрация</p>
+                            <Input name='environ' />
+                        </div>
+                    </div>
+                    <div className={classes.fb40}>
+                        <p className={classes.title}>Для теплообменника</p>
+                        <div className={classes.inline}>
+                            <div className={classes.fb50}>
+                                <p className={classes.titleGroup}>трубное</p>
+                                <Input
+                                    id='difffrom'
+                                    name='difffrom'
+                                    type='number'
+                                    orentation='horizontal'
+                                    placeholder='0'
+                                />
+                                <Input
+                                    id='preswork'
+                                    name='preswork'
+                                    type='number'
+                                    min={0}
+                                    step={0.1}
+                                    placeholder='0.0'
+                                />
+                                <Input name='environ' />
+                            </div>
+                            <div className={classes.fb50}>
+                                <p className={classes.titleGroup}>межтрубное</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`${classes.inline} `}>
+                    <p className={classes.nodeTitle}>Особенности среды</p>
+                    <div className={classes.checkboxes}>
+                        <Checkbox
+                            id='abrasive'
+                            name='abrasive'
+                            label='абразивная'
+                            // checked={false}
+                            // onChange={() => {}}
+                        />
+                        <Checkbox
+                            id='crystallized'
+                            name='crystallized'
+                            label='кристализуемая'
+                            // checked={false}
+                            // onChange={() => {}}
+                        />
+                        <Checkbox
+                            id='penetrating'
+                            name='penetrating'
+                            label='с высокой проникающей способностью'
+                            // checked={false}
+                            // onChange={() => {}}
+                        />
+                    </div>
+                </div>
+                <div className={`${classes.inline}`}>
+                    <p className={classes.nodeTitle}>Прочие условия (вибрация, Мизг, и т.п.)</p>
+                    <Input name='other' />
+                </div>
+                <div className={`${classes.inline}`}>
+                    <p className={classes.nodeTitle}>Срок эксплуатации/межремонтный период</p>
+                    <Input name='period' />
+                </div>
             </div>
-            <div className={`${classes.container} ${classes.block4}`}></div>
+            <div className={`${classes.container} ${classes.block4}`}>
+                <p className={classes.title}>Дополнительные сведения</p>
+                <div className={classes.inline}>
+                    <div className={classes.fb50}>
+                        <div className={classes.inline}>
+                            <p>Материал фланца</p>
+                            <Select value='mpa' onChange={() => {}}>
+                                <Option value='mpa'>Мпа</Option>
+                                <Option value='kgs'>
+                                    кгс/см<sup>2</sup>
+                                </Option>
+                                <Option value='class'>класс давления</Option>
+                            </Select>
+                        </div>
+                        <div className={classes.inline}>
+                            <p>Материал болтов/шпилек</p>
+                            <Select value='mpa' onChange={() => {}}>
+                                <Option value='mpa'>Мпа</Option>
+                                <Option value='kgs'>
+                                    кгс/см<sup>2</sup>
+                                </Option>
+                                <Option value='class'>класс давления</Option>
+                            </Select>
+                        </div>
+                        <div className={classes.inline}>
+                            <p>&Oslash; болтов/шпилек</p>
+                            <Select value='mpa' disabled onChange={() => {}}>
+                                <Option value='mpa'>Мпа</Option>
+                                <Option value='kgs'>
+                                    кгс/см<sup>2</sup>
+                                </Option>
+                                <Option value='class'>класс давления</Option>
+                            </Select>
+                        </div>
+                        <div className={classes.inline}>
+                            <p>Количествово болтов/шпилек, шт</p>
+                            <Input
+                                name='diffto'
+                                type='number'
+                                orentation='horizontal'
+                                placeholder='0'
+                                disabled
+                            />
+                        </div>
+                        <div className={classes.inline}>
+                            <p>Наличие смазки на крепеже</p>
+                            <Tabs initWidth={53} onClick={() => {}}>
+                                <p
+                                    className={[classes.variants, classes.active].join(" ")}
+                                    data-type='no'
+                                >
+                                    Нет
+                                </p>
+                                <p className={[classes.variants].join(" ")} data-type='yes'>
+                                    Да
+                                </p>
+                            </Tabs>
+                        </div>
+                    </div>
+                    <div className={classes.fb50}>
+                        <p className={classes.title}>Глубина и характер деффектов</p>
+                        <div className={classes.inline}>
+                            <div className={classes.fb50}>
+                                <Input
+                                    label='вдоль'
+                                    id='prestest'
+                                    name='prestest'
+                                    type='number'
+                                    placeholder='0.00'
+                                    min={0}
+                                    step={0.01}
+                                />
+                            </div>
+                            <div className={classes.fb50}>
+                                <Input
+                                    label='поперек'
+                                    id='prestest'
+                                    name='prestest'
+                                    type='number'
+                                    placeholder='0.00'
+                                    min={0}
+                                    step={0.01}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.inline}>
+                            <Input
+                                label='Неплоскостность фланцев'
+                                id='prestest'
+                                name='prestest'
+                                type='number'
+                                placeholder='0.00'
+                                min={0}
+                                step={0.01}
+                                orentation='horizontal'
+                            />
+                        </div>
+                        <div className={classes.inline}>
+                            <p>Необходимость крепления на фланце</p>
+                            <Tabs initWidth={53} onClick={() => {}}>
+                                <p
+                                    className={[classes.variants, classes.active].join(" ")}
+                                    data-type='no'
+                                >
+                                    Нет
+                                </p>
+                                <p className={[classes.variants].join(" ")} data-type='yes'>
+                                    Да
+                                </p>
+                            </Tabs>
+                        </div>
+                        {/* <div className={classes.inline}> */}
+                        <Input
+                            label='&#8470; чертежа'
+                            id='prestest'
+                            name='prestest'
+                            orentation='horizontal'
+                        />
+                        {/* </div> */}
+                    </div>
+                </div>
+                <div className={classes.inline}>
+                    <p className={classes.fb50}>Дополнительная информация</p>
+                    <Button>Прикрепить чертеж</Button>
+                    {/*
+                        //TODO Удалить акк из силур про в понедельник
+                    */}
+                </div>
+                <Textarea name='info' rows={4} />
+            </div>
             <div className={classes.buttons}>
                 <Button.Link to='/' variant='grayPrimary' rounded='round'>
                     Отмена

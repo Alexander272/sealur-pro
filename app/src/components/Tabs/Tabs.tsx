@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, FC, PropsWithChildren, useState } from "react"
+import React, { Children, cloneElement, FC, PropsWithChildren, useEffect, useState } from "react"
 import classes from "./tabs.module.scss"
 
 type Props = {
@@ -17,6 +17,10 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
     onClick,
 }) => {
     const [substrate, setSubstrate] = useState({ width: initWidth, position: initPos || 0 })
+
+    useEffect(() => {
+        setSubstrate({ width: initWidth, position: initPos || 0 })
+    }, [initWidth, initPos])
 
     const clickHandler = (event: React.MouseEvent<any>) => {
         setSubstrate({

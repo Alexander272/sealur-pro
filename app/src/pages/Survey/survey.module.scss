@@ -105,8 +105,22 @@
     }
 }
 .stand {
-    div:last-child {
+    & > div:last-child {
         margin-left: 10px;
+    }
+}
+.tem {
+    justify-content: space-between;
+    & > div {
+        // flex-basis: 33%;
+        input {
+            max-width: 80px;
+            width: 100%;
+        }
+        &:last-child {
+            flex-basis: 30%;
+            margin-left: 10px;
+        }
     }
 }
 
@@ -143,4 +157,45 @@
 }
 .imageContainer {
     margin-left: 20px;
+}
+
+.checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.fb50 {
+    flex-basis: 50%;
+    &:first-child {
+        padding-right: 5px;
+    }
+    &:last-child {
+        padding-left: 5px;
+    }
+
+    p {
+        width: 100%;
+    }
+    input {
+        max-width: 175px;
+        width: 100%;
+    }
+    label {
+        margin-bottom: 0;
+    }
+}
+
+.fb60 {
+    flex-basis: 70%;
+    margin-right: 5px;
+    align-self: end;
+}
+.fb40 {
+    flex-basis: 30%;
+    input {
+        max-width: 100px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
