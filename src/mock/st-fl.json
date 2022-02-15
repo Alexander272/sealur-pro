@@ -1,0 +1,74 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "standId": "1",
+            "stand": "ОСТ 26.260.454",
+            "flangeId": "1",
+            "flange": "ГОСТ 12815 (трубопроводы)"
+        },
+        {
+            "id": "2",
+            "standId": "1",
+            "stand": "ОСТ 26.260.454",
+            "flangeId": "3",
+            "flange": "ГОСТ 28759 (сосуды и аппараты)"
+        },
+        {
+            "id": "3",
+            "standId": "2",
+            "stand": "ГОСТ Р 52376-2005",
+            "flangeId": "1",
+            "flange": "ГОСТ 12815 (трубопроводы)"
+        },
+        {
+            "id": "4",
+            "standId": "3",
+            "stand": "ASME B 16.20",
+            "flangeId": "4",
+            "flange": "ASME B 16.5"
+        },
+        {
+            "id": "5",
+            "standId": "3",
+            "stand": "ASME B 16.20",
+            "flangeId": "5",
+            "flange": "ASME B 16.47 A"
+        },
+        {
+            "id": "6",
+            "standId": "3",
+            "stand": "ASME B 16.20",
+            "flangeId": "6",
+            "flange": "ASME B 16.47 B"
+        },
+        {
+            "id": "7",
+            "standId": "4",
+            "stand": "EN 12560-2",
+            "flangeId": "4",
+            "flange": "ASME B 16.5"
+        },
+        {
+            "id": "8",
+            "standId": "4",
+            "stand": "EN 12560-2",
+            "flangeId": "5",
+            "flange": "ASME B 16.47 A"
+        },
+        {
+            "id": "9",
+            "standId": "4",
+            "stand": "EN 12560-2",
+            "flangeId": "6",
+            "flange": "ASME B 16.47 B"
+        },
+        {
+            "id": "10",
+            "standId": "5",
+            "stand": "EN 1514-2",
+            "flangeId": "7",
+            "flange": "DIN EN 1092"
+        }
+    ]
+}

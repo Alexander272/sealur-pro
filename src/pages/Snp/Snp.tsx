@@ -1,28 +1,13 @@
-import React, { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Tabs } from "../../components/Tabs/Tabs"
 import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../components/UI/Input/Input"
 import { Select } from "../../components/UI/Select/Select"
+import { Dispatch, RootState } from "../../store/store"
 import classes from "../Putg/putg.module.scss"
 
-const initStan = [
-    {
-        id: "1",
-        value: "gost12815",
-        title: "ОСТ 26.260.454 / ГОСТ 12815 (трубопроводы)",
-    },
-    {
-        id: "2",
-        value: "gost28759",
-        title: "ГОСТ 28759 (сосуды и аппараты)",
-    },
-    {
-        id: "3",
-        value: "gost",
-        title: "ГОСТ 12815 (трубопроводы)",
-    },
-]
 const initFl = [
     {
         id: "1",
@@ -80,7 +65,13 @@ const initType: any = {
 const { Option } = Select
 
 export default function Snp() {
-    const [stand, setStand] = useState("gost12815")
+    // const loading = useSelector((state: RootState) => state.flange.loading)
+    const stfl = useSelector((state: RootState) => state.flange.stfl)
+
+    const dispatch = useDispatch<Dispatch>()
+
+    const [st, setSet] = useState(stfl[0]?.id || "")
+
     const [flange, setFlange] = useState("A")
     const [type, setType] = useState("E")
     const [pass, setPass] = useState("10")
@@ -89,6 +80,14 @@ export default function Snp() {
     const [thickness, setThickness] = useState("2,0")
 
     const [bridge, setBridge] = useState(false)
+
+    useEffect(() => {
+        if (stfl.length === 0) dispatch.flange.getStFl()
+    }, [stfl.length, dispatch.flange])
+
+    useEffect(() => {
+        if (stfl.length > 0) setSet(stfl[0].id)
+    }, [stfl])
 
     const flangeHandler = (value: string) => {
         setFlange(value)
@@ -128,13 +127,15 @@ export default function Snp() {
                         <p className={classes.titleGroup}>
                             Стандарт на прокладку / стандарт на фланец
                         </p>
-                        <Select value={stand} onChange={() => {}}>
-                            {initStan.map(d => (
-                                <Option key={d.id} value={d.value}>
-                                    {d.title}
-                                </Option>
-                            ))}
-                        </Select>
+                        {stfl.length > 0 && (
+                            <Select value={st} onChange={() => {}}>
+                                {stfl.map(d => (
+                                    <Option key={d.id} value={d.id}>
+                                        {d.stand} / {d.flange}
+                                    </Option>
+                                ))}
+                            </Select>
+                        )}
                     </div>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип фланца</p>
