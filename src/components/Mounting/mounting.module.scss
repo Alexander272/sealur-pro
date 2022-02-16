@@ -1,0 +1,8 @@
+.box {
+    display: flex;
+    align-items: center;
+
+    & > div:not(:only-child):first-child {
+        margin-right: 5px;
+    }
+}

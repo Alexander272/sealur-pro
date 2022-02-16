@@ -1,79 +1,60 @@
-import React, { ChangeEvent, useEffect, useState } from "react"
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Tabs } from "../../components/Tabs/Tabs"
 import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../components/UI/Input/Input"
 import { Select } from "../../components/UI/Select/Select"
+import { Mounting } from "../../components/Mounting/Mounting"
 import { Dispatch, RootState } from "../../store/store"
+import SNPService from "../../service/snp"
+import { ISNPCopy, ISNPReq } from "../../types/snp"
 import classes from "../Putg/putg.module.scss"
+import { Materials } from "../../components/Materials/Materials"
 
-const initFl = [
+const types = [
     {
-        id: "1",
-        value: "A",
-        title: "А соединительный выступ (1-1/RF/B1/B2)",
+        value: "А",
+        width: 39,
     },
     {
-        id: "2",
-        value: "B",
-        title: "Б выступ-впадина (2-3/LMF/E-F)",
+        value: "Б",
+        width: 38,
     },
     {
-        id: "3",
-        value: "C",
-        title: "В шип-паз (4-5/LTG/C-D)",
+        value: "В",
+        width: 37,
+    },
+    {
+        value: "Г",
+        width: 36,
+    },
+    {
+        value: "Д",
+        width: 41,
     },
 ]
-
-const flangeDraw: any = {
-    A: "/image/snp/A.webp",
-    B: "/image/snp/B.webp",
-    C: "/image/snp/V.webp",
-}
-const typeDraw: any = {
-    A: "/image/snp/SNP-P-AB.webp",
-    B: "/image/snp/SNP-P-AB.webp",
-    C: "/image/snp/SNP-P-C.webp",
-    D: "/image/snp/SNP-P-D.webp",
-    E: "/image/snp/SNP-P-E.webp",
-}
-
-const initType: any = {
-    A: {
-        width: 39,
-        position: 0,
-    },
-    B: {
-        width: 38,
-        position: 39,
-    },
-    C: {
-        width: 37,
-        position: 77,
-    },
-    D: {
-        width: 36,
-        position: 114,
-    },
-    E: {
-        width: 41,
-        position: 150,
-    },
-}
 
 const { Option } = Select
 
 export default function Snp() {
     // const loading = useSelector((state: RootState) => state.flange.loading)
-    const stfl = useSelector((state: RootState) => state.flange.stfl)
+    const stfl = useSelector((state: RootState) => state.addit.stfl)
+    const typeFl = useSelector((state: RootState) => state.addit.typeFl)
+    const addit = useSelector((state: RootState) => state.addit.addit)
 
     const dispatch = useDispatch<Dispatch>()
 
     const [st, setSet] = useState(stfl[0]?.id || "")
+    const [snp, setSnp] = useState<ISNPCopy[]>([])
+    const [curSnp, setCurSnp] = useState<ISNPCopy | null>(null)
 
-    const [flange, setFlange] = useState("A")
-    const [type, setType] = useState("E")
+    const [type, setType] = useState({
+        value: "Д",
+        index: types.findIndex(t => t.value === "Д"),
+    })
+
+    const [flange, setFlange] = useState("1")
     const [pass, setPass] = useState("10")
     const [D2, setD2] = useState("10")
     const [pressure, setPressure] = useState("10")
@@ -81,9 +62,25 @@ export default function Snp() {
 
     const [bridge, setBridge] = useState(false)
 
+    const fetchSnp = useCallback(async (req: ISNPReq) => {
+        console.log("fetchSnp")
+
+        const res = await SNPService.get(req)
+        setSnp(res.data)
+
+        const tmp = res.data.filter(s => s.typeFlId.includes(flange))
+        let index = tmp.findIndex(s => s.typePr.includes(type.value))
+        if (index === -1) index = 0
+
+        setCurSnp(tmp[index])
+    }, [])
+
     useEffect(() => {
-        if (stfl.length === 0) dispatch.flange.getStFl()
-    }, [stfl.length, dispatch.flange])
+        if (stfl.length === 0) dispatch.addit.getStFl()
+        if (typeFl.length === 0) dispatch.addit.getTypeFl()
+        if (!addit) dispatch.addit.getAddit()
+        fetchSnp({ flangeId: "1", standId: "1" })
+    }, [stfl.length, typeFl.length, addit, dispatch.addit, fetchSnp])
 
     useEffect(() => {
         if (stfl.length > 0) setSet(stfl[0].id)
@@ -91,29 +88,20 @@ export default function Snp() {
 
     const flangeHandler = (value: string) => {
         setFlange(value)
-        switch (value) {
-            case "A":
-                setType("E")
-                break
-            case "B":
-                setType("C")
-                break
-            case "C":
-                setType("A")
-                break
-        }
+        const tmp = snp.filter(s => s.typeFlId.includes(value))
+        setCurSnp(tmp[0])
+        setType({ value: tmp[0].typePr, index: types.findIndex(t => t.value === tmp[0].typePr) })
     }
+
     const typeHandler = (event: React.MouseEvent<any>) => {
         const type = (event.target as HTMLParagraphElement).dataset.type
-        if (type) {
-            setType(type)
-            if (type === "E" || type === "D") {
-                setFlange("A")
-            } else if (type === "C" || type === "B") {
-                setFlange("B")
-            } else {
-                setFlange("C")
-            }
+        const idx = (event.target as HTMLParagraphElement).dataset.index
+        if (type && idx) {
+            setType({ value: type, index: +idx })
+
+            const tmp = snp.filter(s => s.typePr.includes(type))
+            setCurSnp(tmp[0])
+            setFlange(tmp[0].typeFlId)
         }
     }
 
@@ -139,62 +127,44 @@ export default function Snp() {
                     </div>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип фланца</p>
-                        <Select value={flange} onChange={flangeHandler}>
-                            {initFl.map(d => (
-                                <Option key={d.id} value={d.value}>
-                                    {d.title}
-                                </Option>
-                            ))}
-                        </Select>
+                        {typeFl.length > 0 && (
+                            <Select value={flange} onChange={flangeHandler}>
+                                {typeFl
+                                    .filter(fl => snp.some(s => s.typeFlId === fl.id))
+                                    .map(fl => (
+                                        <Option key={fl.id} value={fl.id}>
+                                            {fl.short} {fl.title} {fl.descr}
+                                        </Option>
+                                    ))}
+                            </Select>
+                        )}
                     </div>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип СНП</p>
-                        <Tabs
-                            initWidth={initType[type].width}
-                            initPos={initType[type].position}
-                            onClick={typeHandler}
-                        >
-                            <p
-                                className={[classes.variants, type === "A" && classes.active].join(
-                                    " "
-                                )}
-                                data-type='A'
+                        {types && type ? (
+                            <Tabs
+                                initWidth={types[type.index].width}
+                                initPos={types.reduce((ac, cur, index) => {
+                                    if (index >= type.index) return ac
+                                    return ac + cur.width
+                                }, 0)}
+                                onClick={typeHandler}
                             >
-                                А
-                            </p>
-                            <p
-                                className={[classes.variants, type === "B" && classes.active].join(
-                                    " "
-                                )}
-                                data-type='B'
-                            >
-                                Б
-                            </p>
-                            <p
-                                className={[classes.variants, type === "C" && classes.active].join(
-                                    " "
-                                )}
-                                data-type='C'
-                            >
-                                В
-                            </p>
-                            <p
-                                className={[classes.variants, type === "D" && classes.active].join(
-                                    " "
-                                )}
-                                data-type='D'
-                            >
-                                Г
-                            </p>
-                            <p
-                                className={[classes.variants, type === "E" && classes.active].join(
-                                    " "
-                                )}
-                                data-type='E'
-                            >
-                                Д
-                            </p>
-                        </Tabs>
+                                {types.map((t, idx) => (
+                                    <p
+                                        key={t.value}
+                                        className={[
+                                            classes.variants,
+                                            type.value === t.value ? classes.active : "",
+                                        ].join(" ")}
+                                        data-type={t.value}
+                                        data-index={idx}
+                                    >
+                                        {t.value}
+                                    </p>
+                                ))}
+                            </Tabs>
+                        ) : null}
                     </div>
                 </div>
                 <div className={`${classes.block} ${classes.snpDraw}`}>
@@ -204,7 +174,7 @@ export default function Snp() {
                             className={classes.image}
                             width={600}
                             height={319}
-                            src={flangeDraw[flange]}
+                            src={curSnp?.typeFlUrl}
                             alt=''
                         />
                     </div>
@@ -253,7 +223,7 @@ export default function Snp() {
                             className={classes.image}
                             width={800}
                             height={348}
-                            src={typeDraw[type]}
+                            src={curSnp?.typeUrl}
                             alt=''
                         />
                     </div>
@@ -266,6 +236,21 @@ export default function Snp() {
                         <Option value='3'>3 F.G - ТРГ (агрессивные среды)</Option>
                         <Option value='5'>5 PTFE - фторопласт (сильные окислители)</Option>
                     </Select>
+                </div>
+                <div className={classes.group}>
+                    <p className={classes.titleGroup}>Степень чистоты графитовой составляющей</p>
+                    {curSnp?.graphite && (
+                        <Select value='2' onChange={() => {}}>
+                            {curSnp.graphite.split(";").map(g => {
+                                const parts = g.split("@")
+                                return (
+                                    <Option key={parts[0]} value={parts[0]}>
+                                        {parts[0]} {parts[1]}
+                                    </Option>
+                                )
+                            })}
+                        </Select>
+                    )}
                 </div>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
@@ -312,26 +297,47 @@ export default function Snp() {
                 <div className={classes.group}>
                     <Checkbox id='holes' name='holes' label='Отверстия' />
                 </div>
-                <div className={`${classes.group} ${classes.inline}`}>
-                    <Checkbox
-                        id='fastening'
-                        name='fastening'
-                        label='Крепление на вертикальном фланце'
-                        checked={true}
-                        onChange={() => {}}
-                    />
-                    {true && (
-                        <div className={classes.box}>
-                            <Select value='Ф1-20' onChange={() => {}}>
-                                <Option value='Ф1-20'>Ф1-20</Option>
-                                <Option value='Ф1-24'>Ф1-24</Option>
-                            </Select>
-                        </div>
-                    )}
-                </div>
+                <Mounting
+                    className={`${classes.group} ${classes.inline}`}
+                    checked={true}
+                    onChange={() => {}}
+                    mounting={curSnp?.mounting || ""}
+                />
 
                 <p className={classes.title}>Материалы</p>
-                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
+                {curSnp?.materials.split("&").map(mater => (
+                    <Materials
+                        key={mater.split(";")[0]}
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                        classTitle={classes.titleGroup}
+                        value='1'
+                        onChange={() => {}}
+                        mater={mater}
+                    />
+                ))}
+                {/* {curSnp?.materials.split("&").map(mater => (
+                    <div
+                        key={mater.split(";")[0]}
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                    >
+                        <p className={classes.titleGroup}>{mater.split(";")[0]}</p>
+                        {
+                            <Select value='1' onChange={() => {}}>
+                                {mater.split(";").map((m, idx) => {
+                                    if (idx === 0)
+                                        return <React.Fragment key={-100}></React.Fragment>
+                                    const parts = m.split("@")
+                                    return (
+                                        <Option key={parts[0]} value={parts[0]}>
+                                            {parts[0]} {parts[1]}
+                                        </Option>
+                                    )
+                                })}
+                            </Select>
+                        }
+                    </div>
+                ))} */}
+                {/* <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
                     <p className={classes.titleGroup}>Армирующий элемент</p>
                     <Select value='1' onChange={() => {}}>
                         <Option value='1'>1 ANSI 304</Option>
@@ -351,7 +357,7 @@ export default function Snp() {
                         <Option value='1'>ANSI 304</Option>
                         <Option value='2'>ANSI 304L</Option>
                     </Select>
-                </div>
+                </div> */}
             </div>
             <ResultBlock className={classes.resultContainer} description='' designation='' />
         </>

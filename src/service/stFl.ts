@@ -3,7 +3,7 @@ import api from "./api"
 import * as stFl from "../mock/st-fl.json"
 
 export default class StFlService {
-    static async getStFl(): Promise<{ data: IStFl[] }> {
+    static async get(): Promise<{ data: IStFl[] }> {
         try {
             //TODO исправить запрос
             // const res = await api.get("/sealur-pro/st-fl/")

@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "typeFlId": "1",
+            "typeFlUrl": "/image/snp/A.webp",
+            "typePr": "Д",
+            "typeUrl": "/image/snp/SNP-P-E.webp",
+            "fillers": "0@0>0,1,2,3@1>4@2>5;1@0>0,1,2,3@1>4@2>5",
+            "materials": "Внутреннее кольцо;*&Каркас;0;1;2;3;4;5;6;8;9;10;11;12&Наружное кольцо;*",
+            "defMat": "1&1&5",
+            "mounting": "*",
+            "graphite": "*"
+        },
+        {
+            "id": "2",
+            "typeFlId": "1",
+            "typeFlUrl": "/image/snp/A.webp",
+            "typePr": "Г",
+            "typeUrl": "/image/snp/SNP-P-D.webp",
+            "fillers": "0@0>0,1,2,3@1>4@2>5;1@0>0,1,2,3@1>4@2>5",
+            "materials": "Каркас;0;1;2;3;4;5;6;8;9;10;11;12&Наружное кольцо;*",
+            "defMat": "1&5",
+            "mounting": "*",
+            "graphite": "*"
+        },
+        {
+            "id": "3",
+            "typeFlId": "2",
+            "typeFlUrl": "/image/snp/B.webp",
+            "typePr": "В",
+            "typeUrl": "/image/snp/SNP-P-C.webp",
+            "fillers": "0@0>0,1,2,3@1>4@2>5;1@0>0,1,2,3@1>4@2>5",
+            "materials": "Внутреннее кольцо;*&Каркас;0;1;2;3;4;5;6;8;9;10;11;12",
+            "defMat": "1&1",
+            "mounting": "*",
+            "graphite": "*"
+        },
+        {
+            "id": "4",
+            "typeFlId": "2",
+            "typeFlUrl": "/image/snp/B.webp",
+            "typePr": "Б",
+            "typeUrl": "/image/snp/SNP-P-AB.webp",
+            "fillers": "0@0>0,1,2,3@1>4@2>5;1@0>0,1,2,3@1>4@2>5",
+            "materials": "Каркас;0;1;2;3;4;5;6;8;9;10;11;12",
+            "defMat": "1",
+            "mounting": "*",
+            "graphite": "*"
+        },
+        {
+            "id": "5",
+            "typeFlId": "3",
+            "typeFlUrl": "/image/snp/V.webp",
+            "typePr": "А",
+            "typeUrl": "/image/snp/SNP-P-AB.webp",
+            "fillers": "0@0>0,1,2,3@1>4@2>5;1@0>0,1,2,3@1>4@2>5",
+            "materials": "Каркас;0;1;2;3;4;5;6;8;9;10;11;12",
+            "defMat": "1",
+            "mounting": "*",
+            "graphite": "*"
+        }
+    ]
+}

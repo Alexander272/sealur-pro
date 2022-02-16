@@ -415,9 +415,6 @@ export default function Survey() {
                 <div className={classes.inline}>
                     <p className={classes.fb50}>Дополнительная информация</p>
                     <Button>Прикрепить чертеж</Button>
-                    {/*
-                        //TODO Удалить акк из силур про в понедельник
-                    */}
                 </div>
                 <Textarea name='info' rows={4} />
             </div>
