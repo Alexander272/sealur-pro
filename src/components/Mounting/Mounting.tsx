@@ -8,13 +8,22 @@ import classes from "./mounting.module.scss"
 type Props = {
     className: string
     checked: boolean
-    onChange: any
+    checkedHandler: any
     mounting: string
+    value: string
+    valueHandler: (value: string) => void
 }
 
 const { Option } = Select
 
-export const Mounting: React.VFC<Props> = ({ className, checked, onChange, mounting }) => {
+export const Mounting: React.VFC<Props> = ({
+    className,
+    checked,
+    checkedHandler,
+    mounting,
+    value,
+    valueHandler,
+}) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const renderMoun = () => {
@@ -30,16 +39,16 @@ export const Mounting: React.VFC<Props> = ({ className, checked, onChange, mount
     return (
         <div className={className}>
             <Checkbox
-                id='fastening'
-                name='fastening'
+                id='mouun'
+                name='moun'
                 label='Крепление на вертикальном фланце'
                 checked={checked}
-                onChange={onChange}
+                onChange={checkedHandler}
             />
             {checked && (
                 <div className={classes.box}>
                     {mounting && (
-                        <Select value='Ф1-20' onChange={() => {}}>
+                        <Select value={value} onChange={valueHandler}>
                             {renderMoun()}
                         </Select>
                     )}

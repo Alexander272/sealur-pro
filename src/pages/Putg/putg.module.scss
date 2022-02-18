@@ -31,6 +31,10 @@
 //     grid-column-start: 1;
 //     grid-column-end: 13;
 // }
+.sideContainer {
+    display: flex;
+    flex-direction: column;
+}
 
 .block {
     margin-right: 10px;
@@ -145,6 +149,18 @@
 
 .typeDraw {
     position: relative;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+.warn {
+    font-size: 1.3rem;
+    color: var(--danger-color);
+    text-align: center;
 }
 
 @media (max-width: 1080px) {

@@ -1,9 +1,9 @@
 import { ISNPReq } from "../types/snp"
-import { ISNPCopy } from "../types/snp"
+import { ISNP } from "../types/snp"
 import * as snp from "../mock/snp copy.json"
 
 export default class SNPService {
-    static async get(req: ISNPReq): Promise<{ data: ISNPCopy[] }> {
+    static async get(req: ISNPReq): Promise<{ data: ISNP[] }> {
         try {
             //TODO исправить запрос
             // const res = await api.get(

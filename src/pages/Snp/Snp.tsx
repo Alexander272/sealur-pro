@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Tabs } from "../../components/Tabs/Tabs"
 import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
-import { Input } from "../../components/UI/Input/Input"
 import { Select } from "../../components/UI/Select/Select"
 import { Mounting } from "../../components/Mounting/Mounting"
 import { Dispatch, RootState } from "../../store/store"
 import SNPService from "../../service/snp"
-import { ISNPCopy, ISNPReq } from "../../types/snp"
+import { ISNP, ISNPReq } from "../../types/snp"
 import classes from "../Putg/putg.module.scss"
 import { Materials } from "../../components/Materials/Materials"
+import { Graphite } from "../../components/Graphite/Graphite"
+import { Jumper } from "../../components/Jumper/Jumper"
 
 const types = [
     {
@@ -46,21 +47,31 @@ export default function Snp() {
     const dispatch = useDispatch<Dispatch>()
 
     const [st, setSet] = useState(stfl[0]?.id || "")
-    const [snp, setSnp] = useState<ISNPCopy[]>([])
-    const [curSnp, setCurSnp] = useState<ISNPCopy | null>(null)
+    const [flange, setFlange] = useState("1")
+    const [snp, setSnp] = useState<ISNP[]>([])
+    const [curSnp, setCurSnp] = useState<ISNP | null>(null)
 
     const [type, setType] = useState({
         value: "Д",
         index: types.findIndex(t => t.value === "Д"),
     })
 
-    const [flange, setFlange] = useState("1")
+    const [mat, setMat] = useState<string[]>([])
+    const [isMoun, setIsMoun] = useState(false)
+    const [moun, setMoun] = useState("")
+    const [isJumper, setIsJumper] = useState(false)
+    const [jumper, setJumper] = useState("A")
+    const [holes, setHoles] = useState(false)
+
+    const [filler, setFiller] = useState("0")
+    const [tm, setTm] = useState("")
+    const [temp, setTemp] = useState("0")
+    const [mod, setMod] = useState("0")
+
     const [pass, setPass] = useState("10")
     const [D2, setD2] = useState("10")
     const [pressure, setPressure] = useState("10")
     const [thickness, setThickness] = useState("2,0")
-
-    const [bridge, setBridge] = useState(false)
 
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
@@ -72,6 +83,7 @@ export default function Snp() {
         let index = tmp.findIndex(s => s.typePr.includes(type.value))
         if (index === -1) index = 0
 
+        setTm(tmp[index].fillers.split(";")[0])
         setCurSnp(tmp[index])
     }, [])
 
@@ -85,6 +97,17 @@ export default function Snp() {
     useEffect(() => {
         if (stfl.length > 0) setSet(stfl[0].id)
     }, [stfl])
+
+    useEffect(() => {
+        if (addit?.mounting) setMoun(addit?.mounting.split(";")[0])
+    }, [addit?.mounting])
+
+    useEffect(() => {
+        setMat([])
+        curSnp?.defMat.split("&").forEach(m => {
+            setMat(prev => [...prev, m])
+        })
+    }, [curSnp?.defMat])
 
     const flangeHandler = (value: string) => {
         setFlange(value)
@@ -105,7 +128,30 @@ export default function Snp() {
         }
     }
 
-    const bridgeHandler = (event: ChangeEvent<HTMLInputElement>) => setBridge(event.target.checked)
+    const mounHandler = (value: string) => {
+        setMoun(value)
+    }
+    const jumperHandler = (value: string) => {
+        setJumper(value)
+    }
+
+    const matHandler = (idx: number) => (value: string) => {
+        setMat(prev => {
+            const arr = [...prev]
+            arr[idx] = value
+            return arr
+        })
+    }
+
+    const fillerHandler = (value: string) => {
+        setFiller(value)
+        setTm(curSnp?.fillers.split(";")[+value] || "")
+    }
+
+    const isJumperHandler = (event: ChangeEvent<HTMLInputElement>) =>
+        setIsJumper(event.target.checked)
+    const isMounHandler = (event: ChangeEvent<HTMLInputElement>) => setIsMoun(event.target.checked)
+    const holesHandler = (event: ChangeEvent<HTMLInputElement>) => setHoles(event.target.checked)
 
     return (
         <>
@@ -230,22 +276,22 @@ export default function Snp() {
                 </div>
             </div>
             <div className={classes.sideContainer}>
+                <Graphite
+                    className={classes.group}
+                    classTitle={classes.titleGroup}
+                    onChange={() => {}}
+                    value='2'
+                    grap={curSnp?.graphite || ""}
+                />
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Тип наполнителя</p>
-                    <Select value='3' onChange={() => {}}>
-                        <Option value='3'>3 F.G - ТРГ (агрессивные среды)</Option>
-                        <Option value='5'>5 PTFE - фторопласт (сильные окислители)</Option>
-                    </Select>
-                </div>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Степень чистоты графитовой составляющей</p>
-                    {curSnp?.graphite && (
-                        <Select value='2' onChange={() => {}}>
-                            {curSnp.graphite.split(";").map(g => {
-                                const parts = g.split("@")
+                    {addit?.fillers && (
+                        <Select value={filler} onChange={fillerHandler}>
+                            {addit?.fillers.split(";").map((fil, idx) => {
+                                const parts = fil.split("@")
                                 return (
-                                    <Option key={parts[0]} value={parts[0]}>
-                                        {parts[0]} {parts[1]}
+                                    <Option key={parts[0]} value={idx.toString()}>
+                                        {parts[1]}
                                     </Option>
                                 )
                             })}
@@ -254,112 +300,89 @@ export default function Snp() {
                 </div>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
-                    <Tabs initWidth={85} onClick={() => {}}>
-                        <p className={[classes.variants, classes.active].join(" ")} data-type='500'>
-                            До 500
-                        </p>
-                        <p className={[classes.variants].join(" ")} data-type='600'>
-                            До 600 И(Н-14)
-                        </p>
-                        <p className={[classes.variants].join(" ")} data-type='m600'>
-                            От 600 И(Н-18)
-                        </p>
-                    </Tabs>
+                    {addit?.temperature && (
+                        <Select value='0' onChange={() => {}}>
+                            {addit?.temperature.split(";").map(fil => {
+                                const parts = fil.split("@")
+                                return (
+                                    <Option key={parts[0]} value={parts[0]}>
+                                        {parts[1]}
+                                    </Option>
+                                )
+                            })}
+                        </Select>
+                    )}
                 </div>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Модифицирующий элемент</p>
                     <Select value='0' onChange={() => {}}>
                         <Option value='0'>0 нет</Option>
-                        <Option value='1'>1 слюда</Option>
-                        <Option value='2'>2 фольга</Option>
+                        {addit?.mod ? (
+                            addit?.mod.split(";").map(m => {
+                                const parts = m.split("@")
+                                return (
+                                    <Option key={parts[0]} value={parts[0]}>
+                                        {parts[1]}
+                                    </Option>
+                                )
+                            })
+                        ) : (
+                            <></>
+                        )}
                     </Select>
                 </div>
 
                 <p className={classes.title}>Конструктивные элементы</p>
-                <div className={`${classes.group} ${classes.inline}`}>
-                    <Checkbox
-                        id='bridge'
-                        name='bridge'
-                        label='Перемычка'
-                        checked={bridge}
-                        onChange={bridgeHandler}
-                    />
-                    {bridge && (
-                        <div className={classes.box}>
-                            <Select value='A' onChange={() => {}}>
-                                <Option value='A'>A</Option>
-                                <Option value='B'>B</Option>
-                            </Select>
-                            <Input name='parts' type='number' placeholder='ширина' suffix='мм' />
-                        </div>
-                    )}
-                </div>
+                <Jumper
+                    className={`${classes.group} ${classes.inline}`}
+                    checked={isJumper}
+                    checkedHandler={isJumperHandler}
+                    value={jumper}
+                    valueHandler={jumperHandler}
+                    width=''
+                    widthHandler={() => {}}
+                />
                 <div className={classes.group}>
-                    <Checkbox id='holes' name='holes' label='Отверстия' />
+                    <Checkbox
+                        id='holes'
+                        name='holes'
+                        label='Отверстия в наруж. ограничителе'
+                        checked={holes}
+                        onChange={holesHandler}
+                    />
                 </div>
                 <Mounting
                     className={`${classes.group} ${classes.inline}`}
-                    checked={true}
-                    onChange={() => {}}
+                    checked={isMoun}
+                    checkedHandler={isMounHandler}
                     mounting={curSnp?.mounting || ""}
+                    value={moun}
+                    valueHandler={mounHandler}
                 />
 
                 <p className={classes.title}>Материалы</p>
-                {curSnp?.materials.split("&").map(mater => (
+                {curSnp?.materials.split("&").map((mater, idx) => (
                     <Materials
                         key={mater.split(";")[0]}
                         className={`${classes.group} ${classes.inline} ${classes.mater}`}
                         classTitle={classes.titleGroup}
-                        value='1'
-                        onChange={() => {}}
+                        value={mat[idx]}
+                        onChange={matHandler(idx)}
                         mater={mater}
                     />
                 ))}
-                {/* {curSnp?.materials.split("&").map(mater => (
-                    <div
-                        key={mater.split(";")[0]}
-                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                    >
-                        <p className={classes.titleGroup}>{mater.split(";")[0]}</p>
-                        {
-                            <Select value='1' onChange={() => {}}>
-                                {mater.split(";").map((m, idx) => {
-                                    if (idx === 0)
-                                        return <React.Fragment key={-100}></React.Fragment>
-                                    const parts = m.split("@")
-                                    return (
-                                        <Option key={parts[0]} value={parts[0]}>
-                                            {parts[0]} {parts[1]}
-                                        </Option>
-                                    )
-                                })}
-                            </Select>
-                        }
-                    </div>
-                ))} */}
-                {/* <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
-                    <p className={classes.titleGroup}>Армирующий элемент</p>
-                    <Select value='1' onChange={() => {}}>
-                        <Option value='1'>1 ANSI 304</Option>
-                        <Option value='2'>2 ANSI 304L</Option>
-                    </Select>
+
+                <div className={classes.message}>
+                    {(isJumper && jumper !== "A" && jumper !== "M" && jumper !== "J") || holes ? (
+                        <p className={classes.warn}>К заявке приложите файл с чертежом.</p>
+                    ) : null}
                 </div>
-                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
-                    <p className={classes.titleGroup}>Армирующий элемент</p>
-                    <Select value='2' onChange={() => {}}>
-                        <Option value='1'>1 ANSI 304</Option>
-                        <Option value='2'>2 ANSI 304L</Option>
-                    </Select>
-                </div>
-                <div className={`${classes.group} ${classes.inline} ${classes.mater}`}>
-                    <p className={classes.titleGroup}>Армирующий элемент</p>
-                    <Select value='1' onChange={() => {}}>
-                        <Option value='1'>ANSI 304</Option>
-                        <Option value='2'>ANSI 304L</Option>
-                    </Select>
-                </div> */}
             </div>
-            <ResultBlock className={classes.resultContainer} description='' designation='' />
+            <ResultBlock
+                className={classes.resultContainer}
+                description='Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque non aperiam ea, earum accusamus harum, repellendus dolorem delectus veniam itaque temporibus doloribus quia soluta fugit sit eligendi mollitia consectetur. Impedit porro cum possimus quidem ut!'
+                designation=' Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti vero'
+            />
         </>
     )
 }
