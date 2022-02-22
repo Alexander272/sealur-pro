@@ -40,7 +40,8 @@
     margin-right: 10px;
     display: flex;
     flex-direction: column;
-    width: 50%;
+    // width: 50%;
+    width: 40%;
     // overflow-y: hidden;
 
     &:last-child {
@@ -143,12 +144,77 @@
     }
 }
 
+.thic {
+    display: flex;
+
+    & > div:only-child {
+        margin-right: 0;
+    }
+
+    & > div:first-child {
+        margin-right: 10px;
+    }
+}
+
 .image {
     margin: auto 0;
 }
 
-.typeDraw {
+.imageContainer {
     position: relative;
+    display: flex;
+    justify-content: center;
+}
+.sizes {
+    position: absolute;
+}
+.e {
+    font-size: 0.85rem;
+    &.h {
+        right: 17%;
+        top: -10%;
+    }
+    &.d1 {
+        top: 37%;
+    }
+    &.d2 {
+        top: 53%;
+    }
+    &.d3 {
+        top: 70%;
+    }
+    &.d4 {
+        top: 87%;
+    }
+}
+.v {
+    font-size: 0.85rem;
+    &.h {
+        left: 21%;
+        top: -10%;
+    }
+    &.d1 {
+        top: 46%;
+    }
+    &.d2 {
+        top: 66%;
+    }
+    &.d3 {
+        top: 85%;
+    }
+}
+.a {
+    font-size: 0.85rem;
+    &.h {
+        right: 13%;
+        top: -10%;
+    }
+    &.d2 {
+        top: 66%;
+    }
+    &.d3 {
+        top: 86%;
+    }
 }
 
 .message {
@@ -189,7 +255,7 @@
         max-height: 220px;
     }
 }
-@media (max-width: 600px) {
+@media (max-width: 680px) {
     .block {
         margin-right: 0;
     }

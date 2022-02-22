@@ -12,6 +12,10 @@ import classes from "../Putg/putg.module.scss"
 import { Materials } from "../../components/Materials/Materials"
 import { Graphite } from "../../components/Graphite/Graphite"
 import { Jumper } from "../../components/Jumper/Jumper"
+import { ISize, ISizeReq } from "../../types/size"
+import SizeService from "../../service/size"
+import ReadService from "../../service/read"
+import { Input } from "../../components/UI/Input/Input"
 
 const types = [
     {
@@ -46,7 +50,7 @@ export default function Snp() {
 
     const dispatch = useDispatch<Dispatch>()
 
-    const [st, setSet] = useState(stfl[0]?.id || "")
+    const [st, setSt] = useState(stfl[0]?.id || "")
     const [flange, setFlange] = useState("1")
     const [snp, setSnp] = useState<ISNP[]>([])
     const [curSnp, setCurSnp] = useState<ISNP | null>(null)
@@ -63,15 +67,24 @@ export default function Snp() {
     const [jumper, setJumper] = useState("A")
     const [holes, setHoles] = useState(false)
 
+    const [grap, setGrap] = useState("2")
     const [filler, setFiller] = useState("0")
     const [tm, setTm] = useState("")
     const [temp, setTemp] = useState("0")
-    const [mod, setMod] = useState("0")
+    const [mod, setMod] = useState("-1")
 
-    const [pass, setPass] = useState("10")
-    const [D2, setD2] = useState("10")
-    const [pressure, setPressure] = useState("10")
-    const [thickness, setThickness] = useState("2,0")
+    const [sizes, setSizes] = useState<{ data: ISize[]; dn: string[] } | null>(null)
+    const [curSize, setCurSize] = useState<ISize | null>(null)
+    const [d4, setD4] = useState("")
+    const [d3, setD3] = useState("")
+    const [d2, setD2] = useState("")
+    const [d1, setD1] = useState("")
+
+    const [pass, setPass] = useState("")
+    const [allD2, setAllD2] = useState<string[] | null>(null)
+    const [pressure, setPressure] = useState("")
+    const [thickness, setThickness] = useState("")
+    const [athic, setAThick] = useState("")
 
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
@@ -87,16 +100,74 @@ export default function Snp() {
         setCurSnp(tmp[index])
     }, [])
 
-    useEffect(() => {
-        if (stfl.length === 0) dispatch.addit.getStFl()
-        if (typeFl.length === 0) dispatch.addit.getTypeFl()
-        if (!addit) dispatch.addit.getAddit()
-        fetchSnp({ flangeId: "1", standId: "1" })
-    }, [stfl.length, typeFl.length, addit, dispatch.addit, fetchSnp])
+    const fetchSize = useCallback(
+        async (req: ISizeReq) => {
+            console.log("fetchSize")
+            const res = await SizeService.get(req)
+
+            const s = stfl.find(s => s.id === st)
+            if (s?.standId === "1") {
+                const d2 = new Set<string>()
+                for (let i = 0; i < res.data.length; i++) {
+                    d2.add(res.data[i].d2)
+                }
+                setAllD2(Array.from(d2))
+            } else {
+                setAllD2(null)
+            }
+
+            setCurSize(res.data[0])
+            setPass(res.data[0].dn)
+            setPressure(res.data[0].pn.split(";")[0])
+            setSizes(res)
+        },
+        [st, stfl]
+    )
+
+    const fetchDef = useCallback(async () => {
+        console.log("fetchDef")
+        const res = await ReadService.getDefault()
+
+        setSnp(res.data.snp)
+        const tmp = res.data.snp.filter(s => s.typeFlId.includes(flange))
+        let index = tmp.findIndex(s => s.typePr.includes(type.value))
+        if (index === -1) index = 0
+        setTm(tmp[index].fillers.split(";")[0])
+        setCurSnp(tmp[index])
+
+        setSizes(res.data.size)
+        setCurSize(res.data.size.data[0])
+        setPass(res.data.size.data[0].dn)
+        setPressure(res.data.size.data[0].pn.split(";")[0])
+
+        const d2 = new Set<string>()
+        for (let i = 0; i < res.data.size.data.length; i++) {
+            d2.add(res.data.size.data[i].d2)
+        }
+        setAllD2(Array.from(d2))
+
+        dispatch.addit.setTypeFl(res.data.typeFl)
+    }, [])
 
     useEffect(() => {
-        if (stfl.length > 0) setSet(stfl[0].id)
+        fetchDef()
+        dispatch.addit.getStFl()
+        dispatch.addit.getAddit()
+    }, [fetchDef, dispatch.addit])
+
+    useEffect(() => {
+        if (stfl.length > 0) setSt(stfl[0].id)
     }, [stfl])
+
+    useEffect(() => {
+        if (curSize) {
+            setThickness(curSize.h.split(";")[0])
+            setD4(curSize.d4 || "")
+            setD3(curSize.d3)
+            setD2(curSize.d2)
+            setD1(curSize.d1 || "")
+        }
+    }, [curSize])
 
     useEffect(() => {
         if (addit?.mounting) setMoun(addit?.mounting.split(";")[0])
@@ -125,7 +196,51 @@ export default function Snp() {
             const tmp = snp.filter(s => s.typePr.includes(type))
             setCurSnp(tmp[0])
             setFlange(tmp[0].typeFlId)
+
+            const s = stfl.find(s => s.id === st)
+            fetchSize({
+                typePr: `снп-${type}`,
+                flShort: s!.short,
+                typeFlId: tmp[0].typeFlId,
+                standId: s!.standId,
+            })
         }
+    }
+
+    const passHandler = (value: string) => {
+        setPass(value)
+        let size = sizes?.data.find(s => s.pn.includes(pressure) && s.dn === value)
+        if (size) {
+            setCurSize(size)
+        } else {
+            size = sizes?.data.find(s => s.dn === value)
+            if (size) {
+                setCurSize(size)
+                setPressure(size.pn.split(";")[0])
+            }
+        }
+    }
+    const pressHandler = (value: string) => {
+        setPressure(value)
+        const size = sizes?.data.find(s => s.pn.includes(value) && s.dn === pass)
+        if (size) setCurSize(size)
+    }
+    const allD2Handler = (value: string) => {
+        let size = sizes?.data.find(s => s.pn.includes(pressure) && s.d2 === value)
+        if (size) {
+            setPass(size.dn)
+            setCurSize(size)
+        } else {
+            size = sizes?.data.find(s => s.d2 === value)
+            if (size) {
+                setPass(size.dn)
+                setPressure(size.pn.split(";")[0])
+                setCurSize(size)
+            }
+        }
+    }
+    const ThicHandler = (value: string) => {
+        setThickness(value)
     }
 
     const mounHandler = (value: string) => {
@@ -133,6 +248,9 @@ export default function Snp() {
     }
     const jumperHandler = (value: string) => {
         setJumper(value)
+    }
+    const grapHandler = (value: string) => {
+        setGrap(value)
     }
 
     const matHandler = (idx: number) => (value: string) => {
@@ -152,6 +270,7 @@ export default function Snp() {
         setIsJumper(event.target.checked)
     const isMounHandler = (event: ChangeEvent<HTMLInputElement>) => setIsMoun(event.target.checked)
     const holesHandler = (event: ChangeEvent<HTMLInputElement>) => setHoles(event.target.checked)
+    const athicHandler = (event: ChangeEvent<HTMLInputElement>) => setAThick(event.target.value)
 
     return (
         <>
@@ -176,10 +295,10 @@ export default function Snp() {
                         {typeFl.length > 0 && (
                             <Select value={flange} onChange={flangeHandler}>
                                 {typeFl
-                                    .filter(fl => snp.some(s => s.typeFlId === fl.id))
-                                    .map(fl => (
-                                        <Option key={fl.id} value={fl.id}>
-                                            {fl.short} {fl.title} {fl.descr}
+                                    .filter(tfl => snp.some(s => s.typeFlId === tfl.id))
+                                    .map(tfl => (
+                                        <Option key={tfl.id} value={tfl.id}>
+                                            {tfl.short} {tfl.title} {tfl.descr}
                                         </Option>
                                     ))}
                             </Select>
@@ -221,7 +340,7 @@ export default function Snp() {
                             width={600}
                             height={319}
                             src={curSnp?.typeFlUrl}
-                            alt=''
+                            alt='flange type drawing'
                         />
                     </div>
                 </div>
@@ -230,48 +349,146 @@ export default function Snp() {
                 <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Условный проход, мм</p>
-                        <Select value={pass} onChange={() => {}}>
-                            <Option value='10'>10</Option>
-                            <Option value='15'>15</Option>
-                            <Option value='20'>20</Option>
-                        </Select>
+                        {sizes?.dn && (
+                            <Select
+                                value={sizes.dn.includes(pass) ? pass : sizes.dn[0]}
+                                onChange={passHandler}
+                            >
+                                {sizes?.dn.map(dn => (
+                                    <Option key={dn} value={dn}>
+                                        {dn}
+                                    </Option>
+                                ))}
+                            </Select>
+                        )}
                     </div>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>D2 (для всех давлений)</p>
-                        <Select value={D2} onChange={() => {}}>
-                            <Option value='10'>10</Option>
-                            <Option value='15'>15</Option>
-                            <Option value='20'>20</Option>
-                        </Select>
-                    </div>
+                    {allD2 && (
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>D2</p>
+                            <Select value={curSize?.d2 || ""} onChange={allD2Handler}>
+                                {allD2.map(d => (
+                                    <Option key={d} value={d}>
+                                        {d}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
+                    )}
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Давление Ру, МПа</p>
-                        <Select value={pressure} onChange={() => {}}>
-                            <Option value='10'>10</Option>
-                            <Option value='15'>15</Option>
-                            <Option value='20'>20</Option>
-                        </Select>
+                        {sizes?.data && (
+                            <Select value={pressure} onChange={pressHandler}>
+                                {sizes?.data
+                                    .filter(s => s.dn === pass)
+                                    .map(s => {
+                                        if (s.pn.includes(";")) {
+                                            return s.pn.split(";").map(pn => (
+                                                <Option key={pn} value={pn}>
+                                                    {pn}
+                                                </Option>
+                                            ))
+                                        }
+                                        return (
+                                            <Option key={s.pn} value={s.pn}>
+                                                {s.pn}
+                                            </Option>
+                                        )
+                                    })}
+                            </Select>
+                        )}
                     </div>
 
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Толщина прокладки</p>
-                        <Select value={thickness} onChange={() => {}}>
-                            <Option value='1,0'>1,0</Option>
-                            <Option value='2,0'>2,0</Option>
-                            <Option value='3,0'>3,0</Option>
-                        </Select>
+                        <div className={classes.thic}>
+                            {curSize?.h && (
+                                <Select value={thickness} onChange={ThicHandler}>
+                                    {curSize.h.split(";").map(h => (
+                                        <Option key={h} value={h}>
+                                            {h}
+                                        </Option>
+                                    ))}
+                                    <Option value='др.'>др.</Option>
+                                </Select>
+                            )}
+                            {thickness === "др." && (
+                                <Input
+                                    placeholder='толщина'
+                                    min={0.1}
+                                    step={0.1}
+                                    value={athic}
+                                    type='number'
+                                    name='thickness'
+                                    onChange={athicHandler}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className={`${classes.block} ${classes.snpDrawFl}`}>
-                    <p className={classes.titleGroup}>Чертеж типа фланца</p>
-                    <div className={`${classes.blockImage} ${classes.typeDraw}`}>
-                        <img
-                            className={classes.image}
-                            width={800}
-                            height={348}
-                            src={curSnp?.typeUrl}
-                            alt=''
-                        />
+                    <p className={classes.titleGroup}>Чертеж прокладки</p>
+                    <div className={`${classes.blockImage}`}>
+                        <div className={classes.imageContainer}>
+                            <img
+                                className={classes.image}
+                                width={800}
+                                height={348}
+                                src={curSnp?.typeUrl}
+                                alt='gasket drawing'
+                            />
+                            {type.value === "Д" || type.value === "Г" ? (
+                                <>
+                                    <p className={`${classes.sizes} ${classes.e} ${classes.h}`}>
+                                        {thickness !== "др." ? thickness : athic}
+                                    </p>
+                                    {type.value === "Д" && (
+                                        <p
+                                            className={`${classes.sizes} ${classes.e} ${classes.d1}`}
+                                        >
+                                            {d1}
+                                        </p>
+                                    )}
+                                    <p className={`${classes.sizes} ${classes.e} ${classes.d2}`}>
+                                        {d2}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.e} ${classes.d3}`}>
+                                        {d3}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.e} ${classes.d4}`}>
+                                        {d4}
+                                    </p>
+                                </>
+                            ) : null}
+                            {type.value === "В" ? (
+                                <>
+                                    <p className={`${classes.sizes} ${classes.v} ${classes.h}`}>
+                                        {thickness !== "др." ? thickness : athic}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.v} ${classes.d1}`}>
+                                        {d1}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.v} ${classes.d2}`}>
+                                        {d2}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.v} ${classes.d3}`}>
+                                        {d3}
+                                    </p>
+                                </>
+                            ) : null}
+                            {type.value === "Б" || type.value === "А" ? (
+                                <>
+                                    <p className={`${classes.sizes} ${classes.a} ${classes.h}`}>
+                                        {thickness !== "др." ? thickness : athic}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.a} ${classes.d2}`}>
+                                        {d2}
+                                    </p>
+                                    <p className={`${classes.sizes} ${classes.a} ${classes.d3}`}>
+                                        {d3}
+                                    </p>
+                                </>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,8 +496,8 @@ export default function Snp() {
                 <Graphite
                     className={classes.group}
                     classTitle={classes.titleGroup}
-                    onChange={() => {}}
-                    value='2'
+                    onChange={grapHandler}
+                    value={grap}
                     grap={curSnp?.graphite || ""}
                 />
                 <div className={classes.group}>
@@ -301,7 +518,7 @@ export default function Snp() {
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
                     {addit?.temperature && (
-                        <Select value='0' onChange={() => {}}>
+                        <Select value={temp} onChange={() => {}}>
                             {addit?.temperature.split(";").map(fil => {
                                 const parts = fil.split("@")
                                 return (
@@ -315,8 +532,8 @@ export default function Snp() {
                 </div>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                    <Select value='0' onChange={() => {}}>
-                        <Option value='0'>0 нет</Option>
+                    <Select value={mod} onChange={() => {}}>
+                        <Option value='-1'>0 нет</Option>
                         {addit?.mod ? (
                             addit?.mod.split(";").map(m => {
                                 const parts = m.split("@")

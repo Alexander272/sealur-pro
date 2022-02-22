@@ -4,4 +4,5 @@ export interface IStFl {
     stand: string
     flangeId: string
     flange: string
+    short: string
 }

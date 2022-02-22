@@ -16,6 +16,7 @@ const { Option } = Select
 
 export const Materials: React.VFC<Props> = ({ className, classTitle, value, onChange, mater }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
+    if (!addit) return <></>
 
     const renderMat = () => {
         const str = mater.substring(mater.indexOf(";") + 1)

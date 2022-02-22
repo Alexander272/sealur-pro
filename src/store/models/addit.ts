@@ -1,9 +1,7 @@
 import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { RootModel } from "."
-import AdditService from "../../service/addit"
-import StFlService from "../../service/stFl"
-import TypeFlService from "../../service/typeFl"
+import ReadService from "../../service/read"
 import { IAddit } from "../../types/addit"
 import { IStFl } from "../../types/stFl"
 import { ITypeFl } from "../../types/typeFl"
@@ -48,7 +46,7 @@ export const addit = createModel<RootModel>()({
             async getStFl() {
                 addit.setLoading(true)
                 try {
-                    const res = await StFlService.get()
+                    const res = await ReadService.getStFl()
                     addit.setStFl(res.data)
                 } catch (error: any) {
                     toast.error(error.message)
@@ -56,21 +54,21 @@ export const addit = createModel<RootModel>()({
                     addit.setLoading(false)
                 }
             },
-            async getTypeFl() {
-                addit.setLoading(true)
-                try {
-                    const res = await TypeFlService.get()
-                    addit.setTypeFl(res.data)
-                } catch (error: any) {
-                    toast.error(error.message)
-                } finally {
-                    addit.setLoading(false)
-                }
-            },
+            // async getTypeFl() {
+            //     addit.setLoading(true)
+            //     try {
+            //         const res = await ReadService.ge()
+            //         addit.setTypeFl(res.data)
+            //     } catch (error: any) {
+            //         toast.error(error.message)
+            //     } finally {
+            //         addit.setLoading(false)
+            //     }
+            // },
             async getAddit() {
                 addit.setLoading(true)
                 try {
-                    const res = await AdditService.get()
+                    const res = await ReadService.getAddit()
                     addit.setAddit(res.data)
                 } catch (error: any) {
                     toast.error(error.message)
