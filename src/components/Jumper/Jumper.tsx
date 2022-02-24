@@ -6,6 +6,7 @@ import { Select } from "../UI/Select/Select"
 type Props = {
     className: string
     checked: boolean
+    disabled?: boolean
     checkedHandler: any
     value: string
     valueHandler: (value: string) => void
@@ -20,6 +21,7 @@ const jumper = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X"
 export const Jumper: React.VFC<Props> = ({
     className,
     checked,
+    disabled,
     checkedHandler,
     value,
     valueHandler,
@@ -34,6 +36,7 @@ export const Jumper: React.VFC<Props> = ({
                 label='Перемычка'
                 checked={checked}
                 onChange={checkedHandler}
+                disabled={disabled}
             />
             {checked && (
                 <div className={classes.box}>

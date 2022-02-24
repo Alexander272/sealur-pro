@@ -72,6 +72,12 @@
             stroke-dashoffset: 0;
         }
     }
+
+    &:disabled {
+        & + .label {
+            opacity: 0.6;
+        }
+    }
 }
 
 .svg {

@@ -9,7 +9,14 @@ type Props = {
     onChange?: any
 }
 
-export const Checkbox: FC<Props> = ({ label, id, name, checked, onChange }) => {
+export const Checkbox: FC<Props & React.InputHTMLAttributes<HTMLInputElement>> = ({
+    label,
+    id,
+    name,
+    checked,
+    onChange,
+    ...attr
+}) => {
     return (
         <div className={`${classes.field}`}>
             <input
@@ -19,6 +26,7 @@ export const Checkbox: FC<Props> = ({ label, id, name, checked, onChange }) => {
                 checked={checked}
                 onChange={onChange}
                 type='checkbox'
+                {...attr}
             />
 
             <label className={classes.label} htmlFor={id}>

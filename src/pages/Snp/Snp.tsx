@@ -65,13 +65,14 @@ export default function Snp() {
     const [moun, setMoun] = useState("")
     const [isJumper, setIsJumper] = useState(false)
     const [jumper, setJumper] = useState("A")
+    const [jumpWidth, setJumpWidth] = useState("")
     const [holes, setHoles] = useState(false)
 
     const [grap, setGrap] = useState("2")
     const [filler, setFiller] = useState("0")
     const [tm, setTm] = useState("")
     const [temp, setTemp] = useState("0")
-    const [mod, setMod] = useState("-1")
+    const [mod, setMod] = useState("0")
 
     const [sizes, setSizes] = useState<{ data: ISize[]; dn: string[] } | null>(null)
     const [curSize, setCurSize] = useState<ISize | null>(null)
@@ -253,6 +254,23 @@ export default function Snp() {
         setGrap(value)
     }
 
+    const tempHandler = (value: string) => {
+        setTemp(value)
+        const curTm = tm.split("@")[+value]
+        if (!curTm.split(",").includes(mod)) {
+            setMod(curTm.split(",")[0])
+        }
+    }
+
+    const modHandler = (value: string) => {
+        setMod(value)
+        tm.split("@").forEach((curTm, idx) => {
+            if (curTm.includes(value)) {
+                if (temp !== idx.toString()) setTemp(idx.toString())
+            }
+        })
+    }
+
     const matHandler = (idx: number) => (value: string) => {
         setMat(prev => {
             const arr = [...prev]
@@ -271,6 +289,109 @@ export default function Snp() {
     const isMounHandler = (event: ChangeEvent<HTMLInputElement>) => setIsMoun(event.target.checked)
     const holesHandler = (event: ChangeEvent<HTMLInputElement>) => setHoles(event.target.checked)
     const athicHandler = (event: ChangeEvent<HTMLInputElement>) => setAThick(event.target.value)
+    const jumpWidthHandler = (event: ChangeEvent<HTMLInputElement>) =>
+        setJumpWidth(event.target.value)
+
+    const createDescr = (): string => {
+        const s = stfl.find(s => s.id === st)
+        let matname = ["", "", ""]
+        addit?.materials.split(";").forEach(m => {
+            mat.forEach((mat, idx) => {
+                if (m.split("@")[0] === mat) {
+                    matname[idx] = m.split("@")[1]
+                }
+            })
+        })
+
+        let rings
+        switch (type.value) {
+            case "Д":
+                rings = `(с наружным ${matname[2]} и внутренним ${matname[0]} ограничительными кольцами), с металлическим каркасом из ленты ${matname[1]}`
+                break
+            case "Г":
+                rings = `(с наружным ограничительным кольцом ${matname[1]}), с металлическим каркасом из ленты ${matname[0]}`
+                break
+            case "В":
+                rings = `(с внутренним ограничительным кольцом ${matname[0]}), с металлическим каркасом из ленты ${matname[1]}`
+                break
+            case "Б":
+                rings = `(без ограничительных колец), с металлическим каркасом из ленты ${matname[0]}`
+                break
+            case "А":
+                rings = `(без ограничительных колец), с металлическим каркасом из ленты ${matname[0]}`
+                break
+        }
+
+        const fil = addit?.fillers.split(";")[+filler].split("@")[2]
+        // const gr = curSnp?.graphite.split(";")
+
+        const tfl = typeFl.find(typefl => typefl.id === curSnp?.typeFlId)
+
+        let sizes = ""
+        if (d4 !== "" && curSnp?.typePr !== "Г") sizes += d4 + "*"
+        sizes += `${d3}*${d2}`
+        if (d1 !== "") sizes += "*" + d1
+
+        let thick = thickness
+        if (thickness === "др.") thick = athic
+
+        let modif = ""
+        if (mod !== "0") {
+            let m = addit?.mod.split(";")[+mod].split("@")
+            if (m) modif = `, с добавлением ${m[3]}`
+        }
+
+        let mount = ""
+        if (isMoun) mount = `, с фиксатором ${moun}`
+
+        let h = ""
+        if (holes) h = `, с отверстиями (по чертежу)`
+
+        let jum = ""
+        if (isJumper) {
+            let width = ""
+            if (jumpWidth !== "") width = ` шириной ${jumpWidth}мм`
+            jum = `, с перемычкой типа ${jumper}${width}`
+        }
+
+        let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${type.value} ${rings} и наполнителем из ${fil} для применения на фланце "${tfl?.title}" по ${s?.flange} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${h}${jum}`
+
+        return res
+    }
+
+    const createDesig = (): string => {
+        let res: string = ""
+        const s = stfl.find(s => s.id === st)
+
+        const fil = addit?.fillers.split(";")[+filler].split("@")[0]
+        const py = pressure.split(" ")[0]
+
+        let mater = "-" + mat.join("")
+        if (mater === "-" + curSnp?.defMat.replaceAll("&", "")) mater = ""
+
+        let modif = ""
+        let m = addit?.mod.split(";")[+mod].split("@")[2]
+        if (m) modif = `-${m}`
+
+        let mount = ""
+        if (isMoun) {
+            if (holes) mount = `(${moun}, черт.)`
+            else mount = `(${moun})`
+        }
+
+        let sizes = ""
+        if (d4 !== "" && curSnp?.typePr !== "Г") sizes += d4 + " x "
+        sizes += `${d3} x ${d2}`
+        if (d1 !== "") sizes += " x " + d1
+
+        switch (s?.standId) {
+            case "1":
+                res = `СНП-${type.value}-${fil}-${d2}-${py}-${thickness}${mater}${modif}${mount} ${s.stand} [${sizes}]`
+                break
+        }
+
+        return res
+    }
 
     return (
         <>
@@ -518,7 +639,7 @@ export default function Snp() {
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
                     {addit?.temperature && (
-                        <Select value={temp} onChange={() => {}}>
+                        <Select value={temp} onChange={tempHandler}>
                             {addit?.temperature.split(";").map(fil => {
                                 const parts = fil.split("@")
                                 return (
@@ -532,8 +653,7 @@ export default function Snp() {
                 </div>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                    <Select value={mod} onChange={() => {}}>
-                        <Option value='-1'>0 нет</Option>
+                    <Select value={mod} onChange={modHandler}>
                         {addit?.mod ? (
                             addit?.mod.split(";").map(m => {
                                 const parts = m.split("@")
@@ -556,8 +676,9 @@ export default function Snp() {
                     checkedHandler={isJumperHandler}
                     value={jumper}
                     valueHandler={jumperHandler}
-                    width=''
-                    widthHandler={() => {}}
+                    width={jumpWidth}
+                    widthHandler={jumpWidthHandler}
+                    disabled={st === "1" || st === "3"}
                 />
                 <div className={classes.group}>
                     <Checkbox
@@ -597,8 +718,8 @@ export default function Snp() {
             </div>
             <ResultBlock
                 className={classes.resultContainer}
-                description='Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque non aperiam ea, earum accusamus harum, repellendus dolorem delectus veniam itaque temporibus doloribus quia soluta fugit sit eligendi mollitia consectetur. Impedit porro cum possimus quidem ut!'
-                designation=' Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti vero'
+                description={createDescr()}
+                designation={createDesig()}
             />
         </>
     )
