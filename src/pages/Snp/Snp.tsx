@@ -323,8 +323,11 @@ export default function Snp() {
         }
 
         const fil = addit?.fillers.split(";")[+filler].split("@")[2]
-        // const gr = curSnp?.graphite.split(";")
 
+        let gr = ""
+        addit?.graphite.split(";").forEach(g => {
+            if (g.split("@")[0] === grap) gr = g.split("@")[2]
+        })
         const tfl = typeFl.find(typefl => typefl.id === curSnp?.typeFlId)
 
         let sizes = ""
@@ -354,7 +357,7 @@ export default function Snp() {
             jum = `, с перемычкой типа ${jumper}${width}`
         }
 
-        let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${type.value} ${rings} и наполнителем из ${fil} для применения на фланце "${tfl?.title}" по ${s?.flange} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${h}${jum}`
+        let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${type.value} ${rings} и наполнителем из ${fil} ${gr}, для применения на фланце "${tfl?.title}" по ${s?.flange} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${h}${jum}`
 
         return res
     }

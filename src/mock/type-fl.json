@@ -5,7 +5,6 @@
             "title": "соединительный выступ",
             "descr": "(1-1/RF/B1/B2)",
             "short": "А",
-            "url": "/image/snp/A.webp",
             "basis": true
         },
         {
@@ -13,7 +12,6 @@
             "title": "выступ-впадина",
             "descr": "(2-3/LMF/E-F)",
             "short": "Б",
-            "url": "/image/snp/B.webp",
             "basis": true
         },
         {
@@ -21,7 +19,6 @@
             "title": "шип-паз",
             "descr": "(4-5/LTG/C-D)",
             "short": "В",
-            "url": "/image/snp/V.webp",
             "basis": true
         },
         {
