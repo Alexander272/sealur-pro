@@ -47,7 +47,7 @@ export default class ReadService {
         }
     }
 
-    static async getSize(req: ISizeReq): Promise<{ data: ISize[] }> {
+    static async getSize(req: ISizeReq): Promise<{ data: ISize[]; dn: string[] }> {
         try {
             //TODO исправить запрос
             // const res = await api.get(
@@ -67,7 +67,7 @@ export default class ReadService {
                 dn.add(arr[i].dn)
             }
 
-            const size = { data: arr, dn }
+            const size = { data: arr, dn: Array.from(dn) }
 
             const res = { data: size }
             // const res = { data: s }

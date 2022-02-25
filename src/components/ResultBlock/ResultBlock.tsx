@@ -25,7 +25,7 @@ export const ResultBlock: FC<Props> = ({
             <p className={classes.description}>
                 <span className={classes.bold}>Описание:</span> {description}
             </p>
-            <p className={classes.description}>
+            <p className={classes.designation}>
                 <span className={classes.bold}>Обозначение:</span> {designation}
             </p>
             <div className={classes.result}>

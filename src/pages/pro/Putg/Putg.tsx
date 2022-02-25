@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
-import { Tabs } from "../../components/Tabs/Tabs"
-import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
-import { Input } from "../../components/UI/Input/Input"
-import { Select } from "../../components/UI/Select/Select"
+import { ResultBlock } from "../../../components/ResultBlock/ResultBlock"
+import { Tabs } from "../../../components/Tabs/Tabs"
+import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
+import { Input } from "../../../components/UI/Input/Input"
+import { Select } from "../../../components/UI/Select/Select"
 import classes from "./putg.module.scss"
 
 const { Option } = Select

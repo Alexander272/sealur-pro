@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { Link } from "react-router-dom"
 import classes from "./header.module.scss"
 
 export const Header: FC = () => {
@@ -15,6 +16,9 @@ export const Header: FC = () => {
                         alt='logo'
                     />
                 </a>
+                <div className={classes.admin}>
+                    <Link to='/admin'>Admin</Link>
+                </div>
             </div>
         </header>
     )

@@ -147,12 +147,11 @@
 .thic {
     display: flex;
 
-    & > div:only-child {
-        margin-right: 0;
-    }
-
     & > div:first-child {
         margin-right: 10px;
+    }
+    & > div:only-child {
+        margin-right: 0;
     }
 }
 
@@ -249,10 +248,14 @@
     .snpDraw,
     .putgDrawing {
         flex-basis: 100%;
-        max-height: 250px;
+        // max-height: 250px;
     }
-    .blockImage {
+    .blockImage,
+    .image {
         max-height: 220px;
+    }
+    .imageContainer {
+        margin-top: 10px;
     }
 }
 @media (max-width: 680px) {

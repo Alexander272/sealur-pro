@@ -1,21 +1,19 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
-import { Tabs } from "../../components/Tabs/Tabs"
-import { Checkbox } from "../../components/UI/Checkbox/Checkbox"
-import { Select } from "../../components/UI/Select/Select"
-import { Mounting } from "../../components/Mounting/Mounting"
-import { Dispatch, RootState } from "../../store/store"
-import SNPService from "../../service/snp"
-import { ISNP, ISNPReq } from "../../types/snp"
+import { ResultBlock } from "../../../components/ResultBlock/ResultBlock"
+import { Tabs } from "../../../components/Tabs/Tabs"
+import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
+import { Select } from "../../../components/UI/Select/Select"
+import { Mounting } from "../../../components/Mounting/Mounting"
+import { Materials } from "../../../components/Materials/Materials"
+import { Graphite } from "../../../components/Graphite/Graphite"
+import { Jumper } from "../../../components/Jumper/Jumper"
+import { Input } from "../../../components/UI/Input/Input"
+import { Dispatch, RootState } from "../../../store/store"
+import { ISNP, ISNPReq } from "../../../types/snp"
+import { ISize, ISizeReq } from "../../../types/size"
+import ReadService from "../../../service/read"
 import classes from "../Putg/putg.module.scss"
-import { Materials } from "../../components/Materials/Materials"
-import { Graphite } from "../../components/Graphite/Graphite"
-import { Jumper } from "../../components/Jumper/Jumper"
-import { ISize, ISizeReq } from "../../types/size"
-import SizeService from "../../service/size"
-import ReadService from "../../service/read"
-import { Input } from "../../components/UI/Input/Input"
 
 const types = [
     {
@@ -90,7 +88,7 @@ export default function Snp() {
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
 
-        const res = await SNPService.get(req)
+        const res = await ReadService.getSnp(req)
         setSnp(res.data)
 
         const tmp = res.data.filter(s => s.typeFlId.includes(flange))
@@ -104,7 +102,7 @@ export default function Snp() {
     const fetchSize = useCallback(
         async (req: ISizeReq) => {
             console.log("fetchSize")
-            const res = await SizeService.get(req)
+            const res = await ReadService.getSize(req)
 
             const s = stfl.find(s => s.id === st)
             if (s?.standId === "1") {
@@ -369,6 +367,9 @@ export default function Snp() {
         const fil = addit?.fillers.split(";")[+filler].split("@")[0]
         const py = pressure.split(" ")[0]
 
+        let thick = thickness
+        if (thickness === "др.") thick = athic
+
         let mater = "-" + mat.join("")
         if (mater === "-" + curSnp?.defMat.replaceAll("&", "")) mater = ""
 
@@ -377,10 +378,9 @@ export default function Snp() {
         if (m) modif = `-${m}`
 
         let mount = ""
-        if (isMoun) {
-            if (holes) mount = `(${moun}, черт.)`
-            else mount = `(${moun})`
-        }
+        if (isMoun) mount = `(${moun})`
+        if (holes) mount = `(черт.)`
+        if (isMoun && holes) mount = `(${moun}, черт.)`
 
         let sizes = ""
         if (d4 !== "" && curSnp?.typePr !== "Г") sizes += d4 + " x "
@@ -389,7 +389,7 @@ export default function Snp() {
 
         switch (s?.standId) {
             case "1":
-                res = `СНП-${type.value}-${fil}-${d2}-${py}-${thickness}${mater}${modif}${mount} ${s.stand} [${sizes}]`
+                res = `СНП-${type.value}-${fil}-${d2}-${py}-${thick}${mater}${modif}${mount} ${s.stand} [${sizes}]`
                 break
         }
 

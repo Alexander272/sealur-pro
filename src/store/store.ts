@@ -2,6 +2,7 @@ import { init, RematchDispatch, RematchRootState } from "@rematch/core"
 import immerPlugin from "@rematch/immer"
 import { models, RootModel } from "./models"
 
+// TODO убрать devtools
 export const store = init<RootModel>({
     models,
     plugins: [immerPlugin()],

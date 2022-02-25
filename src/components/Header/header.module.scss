@@ -9,9 +9,17 @@
     max-width: 1580px;
     margin: 0 auto;
     height: 80px;
+    display: flex;
 }
 
 .logo {
     width: auto;
     height: 50px;
+}
+
+.admin {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

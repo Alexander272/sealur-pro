@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
-import { Tabs } from "../../components/Tabs/Tabs"
-import { Button } from "../../components/UI/Button/Button"
-import { Loader } from "../../components/UI/Loader/Loader"
+import { Tabs } from "../../../components/Tabs/Tabs"
+import { Button } from "../../../components/UI/Button/Button"
+import { Loader } from "../../../components/UI/Loader/Loader"
 import classes from "./core.module.scss"
 
 const initTabs: any = {
