@@ -1,15 +1,17 @@
 import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { RootModel } from "."
-import ReadService from "../../service/read"
 import { IAddit } from "../../types/addit"
 import { IStFl } from "../../types/stFl"
 import { ITypeFl } from "../../types/typeFl"
+import { IFlange } from "../../types/flange"
+import ReadService from "../../service/read"
 
 interface IAdditState {
     loading: boolean
     stfl: IStFl[]
     typeFl: ITypeFl[]
+    fl: IFlange[]
     addit: IAddit | null
 }
 
@@ -18,6 +20,7 @@ export const addit = createModel<RootModel>()({
         loading: false,
         stfl: [],
         typeFl: [],
+        fl: [],
         addit: null,
     } as IAdditState,
 
@@ -34,6 +37,10 @@ export const addit = createModel<RootModel>()({
             state.typeFl = payload
             return state
         },
+        setFl(state, payload: IFlange[]) {
+            state.fl = payload
+            return state
+        },
         setAddit(state, payload: IAddit) {
             state.addit = payload
             return state
@@ -48,6 +55,17 @@ export const addit = createModel<RootModel>()({
                 try {
                     const res = await ReadService.getStFl()
                     addit.setStFl(res.data)
+                } catch (error: any) {
+                    toast.error(error.message)
+                } finally {
+                    addit.setLoading(false)
+                }
+            },
+            async getFl() {
+                addit.setLoading(true)
+                try {
+                    const res = await ReadService.getFlange()
+                    addit.setFl(res.data)
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {

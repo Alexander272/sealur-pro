@@ -3,11 +3,15 @@ import addit from "../mock/addit.json"
 import snp from "../mock/snp copy.json"
 import size_12815 from "../mock/size_12815.json"
 import typeFl from "../mock/type-fl.json"
+import flange from "../mock/flange.json"
+import stand from "../mock/stand.json"
 import { IStFl } from "../types/stFl"
 import { IAddit } from "../types/addit"
 import { ISNP, ISNPReq } from "../types/snp"
 import { ISize, ISizeReq } from "../types/size"
 import { ITypeFl } from "../types/typeFl"
+import { IFlange } from "../types/flange"
+import { IStand } from "../types/stand"
 
 export default class ReadService {
     static async getStFl(): Promise<{ data: IStFl[] }> {
@@ -21,7 +25,25 @@ export default class ReadService {
         }
     }
 
-    static async getFlange() {}
+    static async getFlange(): Promise<{ data: IFlange[] }> {
+        try {
+            //TODO исправить запрос
+            const res = { data: flange }
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async getStand(): Promise<{ data: IStand[] }> {
+        try {
+            //TODO исправить запрос
+            const res = { data: stand }
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
 
     static async getAddit(): Promise<{ data: IAddit }> {
         try {

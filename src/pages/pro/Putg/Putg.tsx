@@ -21,6 +21,9 @@ export default function Putg() {
 
     return (
         <>
+            <h3 className={classes.description}>
+                Прокладки уплотнительные из терморасширенного графита
+            </h3>
             <div className={classes.container}>
                 <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>

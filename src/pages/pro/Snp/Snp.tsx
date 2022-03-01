@@ -398,13 +398,14 @@ export default function Snp() {
 
     return (
         <>
+            <h3 className={classes.description}>Спирально-навитые прокладки</h3>
             <div className={classes.container}>
                 <div className={`${classes.block} ${classes.full}`}>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>
-                            Стандарт на прокладку / стандарт на фланец
-                        </p>
-                        {stfl.length > 0 && (
+                    {stfl.length > 0 && (
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>
+                                Стандарт на прокладку / стандарт на фланец
+                            </p>
                             <Select value={st} onChange={() => {}}>
                                 {stfl.map(d => (
                                     <Option key={d.id} value={d.id}>
@@ -412,11 +413,11 @@ export default function Snp() {
                                     </Option>
                                 ))}
                             </Select>
-                        )}
-                    </div>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Тип фланца</p>
-                        {typeFl.length > 0 && (
+                        </div>
+                    )}
+                    {typeFl.length > 0 && (
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>Тип фланца</p>
                             <Select value={flange} onChange={flangeHandler}>
                                 {typeFl
                                     .filter(tfl => snp.some(s => s.typeFlId === tfl.id))
@@ -426,11 +427,11 @@ export default function Snp() {
                                         </Option>
                                     ))}
                             </Select>
-                        )}
-                    </div>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Тип СНП</p>
-                        {types && type ? (
+                        </div>
+                    )}
+                    {types && type ? (
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>Тип СНП</p>
                             <Tabs
                                 initWidth={types[type.index].width}
                                 initPos={types.reduce((ac, cur, index) => {
@@ -453,8 +454,8 @@ export default function Snp() {
                                     </p>
                                 ))}
                             </Tabs>
-                        ) : null}
-                    </div>
+                        </div>
+                    ) : null}
                 </div>
                 <div className={`${classes.block} ${classes.snpDraw}`}>
                     <p className={classes.titleGroup}>Чертеж типа фланца</p>
@@ -471,9 +472,9 @@ export default function Snp() {
             </div>
             <div className={classes.container}>
                 <div className={`${classes.block} ${classes.full}`}>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Условный проход, мм</p>
-                        {sizes?.dn && (
+                    {sizes?.dn && (
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>Условный проход, мм</p>
                             <Select
                                 value={sizes.dn.includes(pass) ? pass : sizes.dn[0]}
                                 onChange={passHandler}
@@ -484,8 +485,8 @@ export default function Snp() {
                                     </Option>
                                 ))}
                             </Select>
-                        )}
-                    </div>
+                        </div>
+                    )}
                     {allD2 && (
                         <div className={classes.group}>
                             <p className={classes.titleGroup}>D2</p>
@@ -560,6 +561,7 @@ export default function Snp() {
                                 src={curSnp?.typeUrl}
                                 alt='gasket drawing'
                             />
+                            {/* <div className={classes.excretion}></div> */}
                             {type.value === "Д" || type.value === "Г" ? (
                                 <>
                                     <p className={`${classes.sizes} ${classes.e} ${classes.h}`}>
@@ -569,17 +571,24 @@ export default function Snp() {
                                         <p
                                             className={`${classes.sizes} ${classes.e} ${classes.d1}`}
                                         >
-                                            {d1}
+                                            {d1} <span className={classes.d}>(D1)</span>
                                         </p>
                                     )}
                                     <p className={`${classes.sizes} ${classes.e} ${classes.d2}`}>
-                                        {d2}
+                                        {d2}{" "}
+                                        <span
+                                            className={`${classes.d} ${
+                                                st === "1" || st === "2" ? classes.da : ""
+                                            }`}
+                                        >
+                                            (D2)
+                                        </span>
                                     </p>
                                     <p className={`${classes.sizes} ${classes.e} ${classes.d3}`}>
-                                        {d3}
+                                        {d3} <span className={classes.d}>(D3)</span>
                                     </p>
                                     <p className={`${classes.sizes} ${classes.e} ${classes.d4}`}>
-                                        {d4}
+                                        {d4} <span className={classes.d}>(D4)</span>
                                     </p>
                                 </>
                             ) : null}
@@ -589,13 +598,20 @@ export default function Snp() {
                                         {thickness !== "др." ? thickness : athic}
                                     </p>
                                     <p className={`${classes.sizes} ${classes.v} ${classes.d1}`}>
-                                        {d1}
+                                        {d1} <span className={classes.d}>(D1)</span>
                                     </p>
                                     <p className={`${classes.sizes} ${classes.v} ${classes.d2}`}>
-                                        {d2}
+                                        {d2}{" "}
+                                        <span
+                                            className={`${classes.d} ${
+                                                st === "1" || st === "2" ? classes.da : ""
+                                            }`}
+                                        >
+                                            (D2)
+                                        </span>
                                     </p>
                                     <p className={`${classes.sizes} ${classes.v} ${classes.d3}`}>
-                                        {d3}
+                                        {d3} <span className={classes.d}>(D3)</span>
                                     </p>
                                 </>
                             ) : null}
@@ -605,10 +621,17 @@ export default function Snp() {
                                         {thickness !== "др." ? thickness : athic}
                                     </p>
                                     <p className={`${classes.sizes} ${classes.a} ${classes.d2}`}>
-                                        {d2}
+                                        {d2}{" "}
+                                        <span
+                                            className={`${classes.d} ${
+                                                st === "1" || st === "2" ? classes.da : ""
+                                            }`}
+                                        >
+                                            (D2)
+                                        </span>
                                     </p>
                                     <p className={`${classes.sizes} ${classes.a} ${classes.d3}`}>
-                                        {d3}
+                                        {d3} <span className={classes.d}>(D3)</span>
                                     </p>
                                 </>
                             ) : null}
@@ -624,9 +647,10 @@ export default function Snp() {
                     value={grap}
                     grap={curSnp?.graphite || ""}
                 />
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Тип наполнителя</p>
-                    {addit?.fillers && (
+                {addit?.fillers && (
+                    <div className={classes.group}>
+                        <p className={classes.titleGroup}>Тип наполнителя</p>
+
                         <Select value={filler} onChange={fillerHandler}>
                             {addit?.fillers.split(";").map((fil, idx) => {
                                 const parts = fil.split("@")
@@ -637,11 +661,12 @@ export default function Snp() {
                                 )
                             })}
                         </Select>
-                    )}
-                </div>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Температура эксплуатации</p>
-                    {addit?.temperature && (
+                    </div>
+                )}
+                {addit?.temperature && (
+                    <div className={classes.group}>
+                        <p className={classes.titleGroup}>Температура эксплуатации</p>
+
                         <Select value={temp} onChange={tempHandler}>
                             {addit?.temperature.split(";").map(fil => {
                                 const parts = fil.split("@")
@@ -652,25 +677,27 @@ export default function Snp() {
                                 )
                             })}
                         </Select>
-                    )}
-                </div>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                    <Select value={mod} onChange={modHandler}>
-                        {addit?.mod ? (
-                            addit?.mod.split(";").map(m => {
-                                const parts = m.split("@")
-                                return (
-                                    <Option key={parts[0]} value={parts[0]}>
-                                        {parts[1]}
-                                    </Option>
-                                )
-                            })
-                        ) : (
-                            <></>
-                        )}
-                    </Select>
-                </div>
+                    </div>
+                )}
+                {addit?.mod && (
+                    <div className={classes.group}>
+                        <p className={classes.titleGroup}>Модифицирующий элемент</p>
+                        <Select value={mod} onChange={modHandler}>
+                            {addit?.mod ? (
+                                addit?.mod.split(";").map(m => {
+                                    const parts = m.split("@")
+                                    return (
+                                        <Option key={parts[0]} value={parts[0]}>
+                                            {parts[1]}
+                                        </Option>
+                                    )
+                                })
+                            ) : (
+                                <></>
+                            )}
+                        </Select>
+                    </div>
+                )}
 
                 <p className={classes.title}>Конструктивные элементы</p>
                 <Jumper
@@ -689,6 +716,7 @@ export default function Snp() {
                         name='holes'
                         label='Отверстия в наруж. ограничителе'
                         checked={holes}
+                        disabled={type.value === "В"}
                         onChange={holesHandler}
                     />
                 </div>
