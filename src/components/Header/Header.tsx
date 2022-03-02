@@ -22,7 +22,7 @@ export const Header: FC = () => {
                     />
                 </a>
                 <div className={classes.admin}>
-                    <Link to='/admin'>Admin</Link>
+                    {/* <Link to='/admin'>Admin</Link> */}
                     {/* &#128221; */}
                     {/* &#9998; */}
                 </div>

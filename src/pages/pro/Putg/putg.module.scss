@@ -167,16 +167,6 @@
     margin: auto 0;
 }
 
-.excretion {
-    position: absolute;
-    top: 11%;
-    left: 0;
-    width: 92px;
-    height: 49px;
-    background: var(--button-color);
-    mix-blend-mode: color;
-}
-
 .imageContainer {
     position: relative;
     display: flex;
@@ -209,6 +199,43 @@
     &.d4 {
         top: 87%;
     }
+
+    &.irLeft,
+    &.irRight,
+    &.orLeft,
+    &.orRight,
+    &.frLeft,
+    &.frRight {
+        position: absolute;
+        top: 14%;
+        background: var(--button-color);
+        mix-blend-mode: color;
+        height: 23px;
+    }
+    &.irLeft {
+        left: 113px;
+        width: 31px;
+    }
+    &.irRight {
+        right: 108px;
+        width: 31px;
+    }
+    &.orLeft {
+        left: 0;
+        width: 40px;
+    }
+    &.orRight {
+        right: 0;
+        width: 36px;
+    }
+    &.frLeft {
+        left: 36px;
+        width: 80px;
+    }
+    &.frRight {
+        right: 36px;
+        width: 80px;
+    }
 }
 .v {
     font-size: 0.85rem;
@@ -237,6 +264,33 @@
     }
     &.d3 {
         top: 86%;
+    }
+
+    &.irLeft,
+    &.irRight,
+    &.frLeft,
+    &.frRight {
+        position: absolute;
+        top: 18%;
+        background: var(--button-color);
+        mix-blend-mode: color;
+        height: 24px;
+    }
+    &.irLeft {
+        left: 86px;
+        width: 43px;
+    }
+    &.irRight {
+        right: 88px;
+        width: 43px;
+    }
+    &.frLeft {
+        left: 0;
+        width: 94px;
+    }
+    &.frRight {
+        right: 0;
+        width: 94px;
     }
 }
 

@@ -9,12 +9,20 @@ type Props = {
     classTitle: string
     value: string
     onChange: (value: string) => void
+    onOpen?: (isOpen: boolean) => void
     mater: string
 }
 
 const { Option } = Select
 
-export const Materials: React.VFC<Props> = ({ className, classTitle, value, onChange, mater }) => {
+export const Materials: React.VFC<Props> = ({
+    className,
+    classTitle,
+    value,
+    onChange,
+    mater,
+    onOpen,
+}) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
     if (!addit) return <></>
 
@@ -36,7 +44,7 @@ export const Materials: React.VFC<Props> = ({ className, classTitle, value, onCh
         <div key={mater.split(";")[0]} className={className}>
             <p className={classTitle}>{mater.split(";")[0]}</p>
             {
-                <Select value={value} onChange={onChange}>
+                <Select value={value} onChange={onChange} onOpen={onOpen}>
                     {renderMat()}
                 </Select>
             }

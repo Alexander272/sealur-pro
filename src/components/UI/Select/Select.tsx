@@ -5,10 +5,11 @@ import classes from "./select.module.scss"
 type Props = {
     value: string
     onChange: (value: string) => void
+    onOpen?: (isOpen: boolean) => void
     disabled?: boolean
 }
 
-const Select = ({ children, value, disabled, onChange }: PropsWithChildren<Props>) => {
+const Select = ({ children, value, disabled, onChange, onOpen }: PropsWithChildren<Props>) => {
     const [isOpen, setIsOpen] = useState(false)
     const [title, setTitle] = useState(value)
 
@@ -20,12 +21,14 @@ const Select = ({ children, value, disabled, onChange }: PropsWithChildren<Props
 
     const changeHandler = (curValue: string) => () => {
         setIsOpen(false)
+        onOpen && onOpen(false)
         if (value === curValue) return
         onChange(curValue)
     }
 
     const openHandler = () => {
         if (disabled) return
+        onOpen && onOpen(!isOpen)
         setIsOpen(prev => !prev)
     }
 

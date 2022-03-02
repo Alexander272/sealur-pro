@@ -34,7 +34,7 @@ export default function SNP() {
 
     return (
         <div className={classes.page}>
-            <div className={classes.line}>
+            {/* <div className={classes.line}>
                 <List title='Стандарт на прокладку'>
                     {stand.map(s => (
                         <Item key={s.id}>{s.title}</Item>
@@ -45,7 +45,7 @@ export default function SNP() {
                         <Item key={f.id}>{f.title}</Item>
                     ))}
                 </List>
-            </div>
+            </div>*/}
             <div className={classes.line}>
                 {stfl && (
                     <Select value='1' onChange={() => {}}>
@@ -56,7 +56,7 @@ export default function SNP() {
                         ))}
                     </Select>
                 )}
-                <Button>Добавить</Button>
+                {/* <Button>Добавить</Button> */}
             </div>
         </div>
     )

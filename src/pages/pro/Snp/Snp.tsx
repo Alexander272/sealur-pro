@@ -14,6 +14,7 @@ import { ISNP, ISNPReq } from "../../../types/snp"
 import { ISize, ISizeReq } from "../../../types/size"
 import ReadService from "../../../service/read"
 import classes from "../Putg/putg.module.scss"
+import { FileInput } from "../../../components/UI/FileInput/FileInput"
 
 const types = [
     {
@@ -84,6 +85,10 @@ export default function Snp() {
     const [pressure, setPressure] = useState("")
     const [thickness, setThickness] = useState("")
     const [athic, setAThick] = useState("")
+
+    const [isOpenIr, setIsOpenIr] = useState(false)
+    const [isOpenOr, setIsOpenOr] = useState(false)
+    const [isOpenFrame, setIsOpenFrame] = useState(false)
 
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
@@ -370,8 +375,14 @@ export default function Snp() {
         let thick = thickness
         if (thickness === "др.") thick = athic
 
-        let mater = "-" + mat.join("")
-        if (mater === "-" + curSnp?.defMat.replaceAll("&", "")) mater = ""
+        let mater = mat.join("")
+        if (mater === curSnp?.defMat.replaceAll("&", "")) mater = ""
+        if (mater !== "") {
+            if (type.value === "Г") mater = 0 + mater
+            if (type.value === "В") mater += 0
+            if (type.value === "Б" || type.value === "А") mater = 0 + mater + 0
+            mater = "-" + mater
+        }
 
         let modif = ""
         let m = addit?.mod.split(";")[+mod].split("@")[2]
@@ -394,6 +405,15 @@ export default function Snp() {
         }
 
         return res
+    }
+
+    const createExcretion = (t: string, pos: string) => {
+        let cl = t + pos
+        if (type.value === "Д" || type.value === "Г") {
+            return <div className={`${classes.e} ${classes[cl]}`}></div>
+        } else {
+            return <div className={`${classes.a} ${classes[cl]}`}></div>
+        }
     }
 
     return (
@@ -561,7 +581,25 @@ export default function Snp() {
                                 src={curSnp?.typeUrl}
                                 alt='gasket drawing'
                             />
-                            {/* <div className={classes.excretion}></div> */}
+                            {isOpenIr && (
+                                <>
+                                    {createExcretion("ir", "Left")}
+                                    {createExcretion("ir", "Right")}
+                                </>
+                            )}
+                            {isOpenOr && (
+                                <>
+                                    {createExcretion("or", "Left")}
+                                    {createExcretion("or", "Right")}
+                                </>
+                            )}
+                            {isOpenFrame && (
+                                <>
+                                    {createExcretion("fr", "Left")}
+                                    {createExcretion("fr", "Right")}
+                                </>
+                            )}
+
                             {type.value === "Д" || type.value === "Г" ? (
                                 <>
                                     <p className={`${classes.sizes} ${classes.e} ${classes.h}`}>
@@ -650,7 +688,6 @@ export default function Snp() {
                 {addit?.fillers && (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип наполнителя</p>
-
                         <Select value={filler} onChange={fillerHandler}>
                             {addit?.fillers.split(";").map((fil, idx) => {
                                 const parts = fil.split("@")
@@ -666,7 +703,6 @@ export default function Snp() {
                 {addit?.temperature && (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Температура эксплуатации</p>
-
                         <Select value={temp} onChange={tempHandler}>
                             {addit?.temperature.split(";").map(fil => {
                                 const parts = fil.split("@")
@@ -730,16 +766,26 @@ export default function Snp() {
                 />
 
                 <p className={classes.title}>Материалы</p>
-                {curSnp?.materials.split("&").map((mater, idx) => (
-                    <Materials
-                        key={mater.split(";")[0]}
-                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                        classTitle={classes.titleGroup}
-                        value={mat[idx]}
-                        onChange={matHandler(idx)}
-                        mater={mater}
-                    />
-                ))}
+                {curSnp?.materials.split("&").map((mater, idx) => {
+                    const name = mater.split(";")[0]
+                    let openHandler = setIsOpenFrame
+                    if (name === "Внутреннее кольцо") openHandler = setIsOpenIr
+                    if (name === "Наружное кольцо") openHandler = setIsOpenOr
+
+                    return (
+                        <Materials
+                            key={name}
+                            className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                            classTitle={classes.titleGroup}
+                            value={mat[idx]}
+                            onChange={matHandler(idx)}
+                            mater={mater}
+                            onOpen={openHandler}
+                        />
+                    )
+                })}
+                {/* <input type='file' placeholder='Прикрепите файл' /> */}
+                <FileInput name='drawing' id='file' label='Прикрепить чертеж' />
 
                 <div className={classes.message}>
                     {(isJumper && jumper !== "A" && jumper !== "M" && jumper !== "J") || holes ? (
