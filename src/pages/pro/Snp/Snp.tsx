@@ -15,6 +15,7 @@ import { ISize, ISizeReq } from "../../../types/size"
 import ReadService from "../../../service/read"
 import classes from "../Putg/putg.module.scss"
 import { FileInput } from "../../../components/UI/FileInput/FileInput"
+import { TempMod } from "../../../components/TempMod/TempMod"
 
 const types = [
     {
@@ -136,7 +137,11 @@ export default function Snp() {
         const tmp = res.data.snp.filter(s => s.typeFlId.includes(flange))
         let index = tmp.findIndex(s => s.typePr.includes(type.value))
         if (index === -1) index = 0
-        setTm(tmp[index].fillers.split(";")[0])
+        const fil = tmp[index].fillers.split(";")[0]
+        setTm(fil)
+        setTemp(fil.split(">")[0])
+        setMod(fil.split(">")[1].split(",")[0])
+
         setCurSnp(tmp[index])
 
         setSizes(res.data.size)
@@ -261,14 +266,14 @@ export default function Snp() {
         setTemp(value)
         const curTm = tm.split("@")[+value]
         if (!curTm.split(",").includes(mod)) {
-            setMod(curTm.split(",")[0])
+            setMod(curTm.split(">")[1].split(",")[0])
         }
     }
 
     const modHandler = (value: string) => {
         setMod(value)
         tm.split("@").forEach((curTm, idx) => {
-            if (curTm.includes(value)) {
+            if (curTm.split(">")[1].includes(value)) {
                 if (temp !== idx.toString()) setTemp(idx.toString())
             }
         })
@@ -284,14 +289,19 @@ export default function Snp() {
 
     const fillerHandler = (value: string) => {
         setFiller(value)
-        setTm(curSnp?.fillers.split(";")[+value] || "")
+        // setTm(curSnp?.fillers.split(";")[+value] || "")
+        const fil = curSnp?.fillers.split(";")[+value] || ""
+        setTm(fil)
+        setTemp(fil.split(">")[0])
+        setMod(fil.split(">")[1].split(",")[0])
     }
 
     const isJumperHandler = (event: ChangeEvent<HTMLInputElement>) =>
         setIsJumper(event.target.checked)
     const isMounHandler = (event: ChangeEvent<HTMLInputElement>) => setIsMoun(event.target.checked)
     const holesHandler = (event: ChangeEvent<HTMLInputElement>) => setHoles(event.target.checked)
-    const athicHandler = (event: ChangeEvent<HTMLInputElement>) => setAThick(event.target.value)
+    const athicHandler = (event: ChangeEvent<HTMLInputElement>) =>
+        setAThick(event.target.value.replaceAll(".", ","))
     const jumpWidthHandler = (event: ChangeEvent<HTMLInputElement>) =>
         setJumpWidth(event.target.value)
 
@@ -561,7 +571,7 @@ export default function Snp() {
                                     placeholder='толщина'
                                     min={0.1}
                                     step={0.1}
-                                    value={athic}
+                                    value={athic.replaceAll(",", ".")}
                                     type='number'
                                     name='thickness'
                                     onChange={athicHandler}
@@ -693,46 +703,24 @@ export default function Snp() {
                                 const parts = fil.split("@")
                                 return (
                                     <Option key={parts[0]} value={idx.toString()}>
-                                        {parts[1]}
+                                        {parts[0]} {parts[1]}
                                     </Option>
                                 )
                             })}
                         </Select>
                     </div>
                 )}
-                {addit?.temperature && (
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Температура эксплуатации</p>
-                        <Select value={temp} onChange={tempHandler}>
-                            {addit?.temperature.split(";").map(fil => {
-                                const parts = fil.split("@")
-                                return (
-                                    <Option key={parts[0]} value={parts[0]}>
-                                        {parts[1]}
-                                    </Option>
-                                )
-                            })}
-                        </Select>
-                    </div>
-                )}
-                {addit?.mod && (
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                        <Select value={mod} onChange={modHandler}>
-                            {addit?.mod ? (
-                                addit?.mod.split(";").map(m => {
-                                    const parts = m.split("@")
-                                    return (
-                                        <Option key={parts[0]} value={parts[0]}>
-                                            {parts[1]}
-                                        </Option>
-                                    )
-                                })
-                            ) : (
-                                <></>
-                            )}
-                        </Select>
-                    </div>
+                {addit && (
+                    <TempMod
+                        addit={addit}
+                        tm={tm}
+                        temp={temp}
+                        mod={mod}
+                        tempHandler={tempHandler}
+                        modHandler={modHandler}
+                        className={classes.group}
+                        classTitle={classes.titleGroup}
+                    />
                 )}
 
                 <p className={classes.title}>Конструктивные элементы</p>

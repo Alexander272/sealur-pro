@@ -6,7 +6,7 @@ type Props = {
     label?: string
     name: string
     rounded?: "round" | "rounded"
-    onChange?: any
+    onChange?: () => void
 }
 
 export const FileInput: FC<Props> = ({ name, id, label, rounded }) => {
@@ -16,7 +16,6 @@ export const FileInput: FC<Props> = ({ name, id, label, rounded }) => {
         <div className={classes.field}>
             <input type='file' name={name} id={id} className={classes.input} />
             <label htmlFor={id} className={`${classes.label} ${classes[rounded || "rounded"]}`}>
-                {/* <i className='icon fa fa-check'></i> */}
                 <span className={classes.icon}>
                     <svg
                         version='1.1'

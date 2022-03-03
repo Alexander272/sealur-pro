@@ -38,6 +38,7 @@ const Select = ({ children, value, disabled, onChange, onOpen }: PropsWithChildr
                 {title}
                 {!disabled && <span className={classes.icon}>&#9660;</span>}
             </p>
+            {isOpen && <div className={classes.dropdown} onClick={openHandler}></div>}
             <div className={`${classes.options} scroll`}>
                 {Children.map(children as React.ReactElement[], (child: React.ReactElement) =>
                     cloneElement(child, {
