@@ -73,15 +73,75 @@ export default function SNP() {
         setTemp(fil.split(">")[0])
     }
 
-    const addMod = (mod: string) => () => {
-        console.log(mod)
-        let tmp = ""
-        tm.split("@").forEach(t => {
-            if (t.split(">")[0] === temp) tmp = t
+    const addFillerHandler = (idx: number) => () => {
+        const tmp = curSnp?.fillers.split(";") || []
+        if (idx.toString() === filler) {
+            if (tmp[idx] === "") {
+                tmp[idx] = "0>"
+                setTm("0>")
+            } else {
+                tmp[idx] = ""
+                setTm("")
+            }
+        } else {
+            if (tmp[idx] === "") tmp[idx] = "0>"
+            else tmp[idx] = ""
+        }
+
+        let snp: ISNP = {} as ISNP
+        if (curSnp) snp = Object.assign(snp, curSnp, { fillers: tmp.join(";") })
+        setCurSnp(snp)
+    }
+
+    const addTempHandler = (temp: string) => () => {
+        if (tm === "") {
+            toast.error("Наполнитель не добавлен")
+            return
+        }
+        let tmp = tm.split("@")
+        let orig = ""
+        tmp.forEach(t => {
+            if (t.split(">")[0] === temp) orig = t
+            return ""
         })
 
-        //TODO при повторяющихся значениях в поле fillers значения в селекте тоже повторяются
-        console.log(tmp)
+        if (orig === "") {
+            tmp.push(`${temp}>`)
+            tmp.sort((a, b) => {
+                return +a.split(">")[0] - +b.split(">")[0]
+            })
+        } else {
+            tmp = tmp.filter(t => t.split(">")[0] !== temp)
+        }
+
+        setTm(tmp.join("@"))
+    }
+
+    const addModHandler = (mod: string) => () => {
+        if (tm === "") {
+            toast.error("Наполнитель не добавлен")
+            return
+        }
+        let orig = ""
+        tm.split("@").forEach(t => {
+            if (t.split(">")[0] === temp) orig = t
+            return ""
+        })
+
+        if (orig === "") {
+            toast.error("Температура не добавлена")
+            return
+        }
+
+        let tmp = orig.split(">")[1].split(",")
+        if (tmp.includes(mod)) {
+            tmp = tmp.filter(t => t !== mod)
+        } else {
+            tmp.push(mod)
+        }
+
+        const newTm = tm.replace(orig, `${temp}>${tmp.join(",")}`)
+        setTm(newTm)
     }
 
     const renderTypes = () => {
@@ -118,7 +178,12 @@ export default function SNP() {
 
             return (
                 <div key={parts[0]} className={classes.listItem}>
-                    <Checkbox name={parts[1]} id={parts[1]} checked={isAdded} onChange={() => {}} />
+                    <Checkbox
+                        name={parts[1]}
+                        id={parts[1]}
+                        checked={isAdded}
+                        onChange={addTempHandler(parts[0])}
+                    />
                     <p
                         className={`${classes.filItem} ${temp === parts[0] ? classes.active : ""}`}
                         onClick={tempHandler(parts[0])}
@@ -135,8 +200,10 @@ export default function SNP() {
             let isAdded = false
             const parts = m.split("@")
             tm.split("@").forEach(t => {
-                if (t.split(">")[0] === temp) {
-                    if (t.split(">")[1].includes(parts[0])) isAdded = true
+                if (t !== "") {
+                    if (t.split(">")[0] === temp) {
+                        if (t.split(">")[1].includes(parts[0])) isAdded = true
+                    }
                 }
             })
 
@@ -146,11 +213,12 @@ export default function SNP() {
                         name={parts[1]}
                         id={parts[1]}
                         checked={isAdded}
-                        onChange={addMod(parts[0])}
+                        onChange={addModHandler(parts[0])}
+                        label={parts[1]}
                     />
-                    <p className={classes.filItem} onClick={addMod(parts[0])}>
+                    {/* <p className={classes.filItem} onClick={addMod(parts[0])}>
                         {parts[1]}
-                    </p>
+                    </p> */}
                 </div>
             )
         })
@@ -194,13 +262,14 @@ export default function SNP() {
                     <div className={`${classes.list} scroll`}>
                         {addit?.fillers.split(";").map((fil, idx) => {
                             const parts = fil.split("@")
+                            const f = curSnp?.fillers.split(";")[idx] || ""
                             return (
                                 <div key={parts[0]} className={classes.listItem}>
                                     <Checkbox
                                         name={parts[1]}
                                         id={parts[1]}
-                                        checked={(curSnp?.fillers.split(";")[idx].length || "") > 0}
-                                        onChange={() => {}}
+                                        checked={f.length > 0}
+                                        onChange={addFillerHandler(idx)}
                                     />
                                     <p
                                         className={`${classes.filItem} ${
@@ -218,12 +287,14 @@ export default function SNP() {
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
                     {/* <p className={classes.add}>Добавить</p> */}
-                    {tm && <div className={`${classes.list} scroll`}>{renderTemp()}</div>}
+                    {addit?.temperature && (
+                        <div className={`${classes.list} scroll`}>{renderTemp()}</div>
+                    )}
                 </div>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Модифицирующий элемент</p>
                     {/* <p className={classes.add}>Добавить</p> */}
-                    {tm && <div className={`${classes.list} scroll`}>{renderMod()}</div>}
+                    {addit?.mod && <div className={`${classes.list} scroll`}>{renderMod()}</div>}
                 </div>
             </div>
         </div>

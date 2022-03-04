@@ -140,7 +140,9 @@ export default function Snp() {
         const fil = tmp[index].fillers.split(";")[0]
         setTm(fil)
         setTemp(fil.split(">")[0])
-        setMod(fil.split(">")[1].split(",")[0])
+        console.log(fil)
+
+        setMod(fil.split("@")[0].split(">")[1].split(",")[0])
 
         setCurSnp(tmp[index])
 
@@ -264,19 +266,31 @@ export default function Snp() {
 
     const tempHandler = (value: string) => {
         setTemp(value)
-        const curTm = tm.split("@")[+value]
-        if (!curTm.split(",").includes(mod)) {
-            setMod(curTm.split(">")[1].split(",")[0])
+        const curTm = tm.split("@").find((curTm, idx) => {
+            if (curTm.split(">")[0] === value) return curTm
+            return ""
+        })
+        if (!curTm?.split(",").includes(mod)) {
+            if (curTm) setMod(curTm.split(">")[1].split(",")[0])
         }
     }
 
     const modHandler = (value: string) => {
         setMod(value)
-        tm.split("@").forEach((curTm, idx) => {
-            if (curTm.split(">")[1].includes(value)) {
-                if (temp !== idx.toString()) setTemp(idx.toString())
-            }
+        const arr = tm.split("@")
+
+        const curTm = arr.find(curTm => {
+            if (curTm.split(">")[0] === temp) return curTm
+            return ""
         })
+        if (!curTm?.split(">")[1].includes(value)) {
+            for (let idx in arr) {
+                if (arr[idx].split(">")[1].includes(value)) {
+                    setTemp(arr[idx].split(">")[0])
+                    break
+                }
+            }
+        }
     }
 
     const matHandler = (idx: number) => (value: string) => {
@@ -293,7 +307,7 @@ export default function Snp() {
         const fil = curSnp?.fillers.split(";")[+value] || ""
         setTm(fil)
         setTemp(fil.split(">")[0])
-        setMod(fil.split(">")[1].split(",")[0])
+        setMod(fil.split("@")[0].split(">")[1].split(",")[0])
     }
 
     const isJumperHandler = (event: ChangeEvent<HTMLInputElement>) =>
@@ -353,6 +367,8 @@ export default function Snp() {
 
         let modif = ""
         if (mod !== "0") {
+            console.log(mod, addit?.mod.split(";"))
+
             let m = addit?.mod.split(";")[+mod].split("@")
             if (m) modif = `, с добавлением ${m[3]}`
         }
@@ -781,6 +797,7 @@ export default function Snp() {
                     ) : null}
                 </div>
             </div>
+
             <ResultBlock
                 className={classes.resultContainer}
                 description={createDescr()}

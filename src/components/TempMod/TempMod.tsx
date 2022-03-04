@@ -39,17 +39,22 @@ export const TempMod: FC<Props> = ({
     }
 
     const renderModOption = () => {
+        const mod = new Set<string>()
         const m = addit.mod.split(";")
-        return tm.split("@").map(t => {
+
+        tm.split("@").forEach(t => {
             const idxs = t.split(">")[1].split(",")
-            return idxs.map(idx => {
-                const parts = m[+idx].split("@")
-                return (
-                    <Option key={parts[0]} value={parts[0]}>
-                        {parts[1]}
-                    </Option>
-                )
+            return idxs.forEach(idx => {
+                mod.add(idx)
             })
+        })
+        return Array.from(mod).map(i => {
+            const parts = m[+i].split("@")
+            return (
+                <Option key={parts[0]} value={parts[0]}>
+                    {parts[1]}
+                </Option>
+            )
         })
     }
 
