@@ -42,6 +42,8 @@ export const TempMod: FC<Props> = ({
         const mod = new Set<string>()
         const m = addit.mod.split(";")
 
+        if (tm === "") return <></>
+
         tm.split("@").forEach(t => {
             const idxs = t.split(">")[1].split(",")
             return idxs.forEach(idx => {

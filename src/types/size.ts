@@ -9,6 +9,8 @@ export interface ISize {
     d2: string
     d1?: string
     h: string
+    s2?: string
+    s3?: string
 }
 
 export interface ISizeReq {
