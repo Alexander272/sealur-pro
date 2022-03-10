@@ -1,29 +1,30 @@
-import { ISize, ISizeReq } from "../types/size"
+import { ISize, ISizeCreate } from "../types/size"
 import s from "../mock/size_12815.json"
+import { IResponse } from "../types/response"
+import api from "./api"
 
 export default class SizeService {
-    // Promise<{ data: ISize[]; dn: Set<string> }>
-    static async get(req: ISizeReq): Promise<{ data: ISize[]; dn: string[] }> {
+    static async create(data: ISizeCreate): Promise<IResponse> {
         try {
-            //TODO исправить запрос
-            // const res = await api.get(
-            //     `/sealur-pro/size?`
-            // )
+            const res = await api.post("/sealur-pro/sizes", data)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
 
-            //TODO фильтрация по типу того что будет в базе
-            const arr = (s.data as ISize[]).filter(s =>
-                s.typePr.toLowerCase().includes(req.typePr.toLowerCase())
-            )
+    static async update(id: string, data: ISizeCreate): Promise<IResponse> {
+        try {
+            const res = await api.put(`/sealur-pro/sizes/${id}`, data)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
 
-            const dn = new Set<string>()
-            for (let i = 0; i < arr.length; i++) {
-                dn.add(arr[i].dn)
-            }
-
-            const size = { data: arr, dn: Array.from(dn) }
-
-            const res = { data: size }
-            // const res = { data: s }
+    static async delete(id: string, flange: string): Promise<IResponse> {
+        try {
+            const res = await api.delete(`/sealur-pro/sizes/${id}?flange=${flange}`)
             return res.data
         } catch (error: any) {
             throw error.response.data

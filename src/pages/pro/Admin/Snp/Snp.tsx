@@ -88,12 +88,8 @@ export default function SNP() {
     }, [stfl, fetchSnp])
 
     useEffect(() => {
-        console.log(!!curSnp && !!stfl.length)
-
         if (!!curSnp && !!stfl.length) {
             const sf = stfl.find(s => s.id === st)
-            console.log(sf, st)
-
             if (sf)
                 fetchSize({
                     typePr: curSnp.typePr,
@@ -125,7 +121,7 @@ export default function SNP() {
         })
 
         if (isTemp) setTemp(temp)
-        else toast.error("Перед выбором необходимо включить температуру")
+        else toast.error("Перед выбором необходимо добавить температуру")
     }
     const fillerHandler = (filler: string) => () => {
         setFiller(filler)
@@ -176,6 +172,12 @@ export default function SNP() {
         }
 
         setTm(tmp.join("@"))
+
+        let fillers = curSnp?.fillers || ""
+        let snp: ISNP = {} as ISNP
+        if (curSnp)
+            snp = Object.assign(snp, curSnp, { fillers: fillers.replace(tm, tmp.join("@")) })
+        setCurSnp(snp)
     }
 
     const addModHandler = (mod: string) => () => {
@@ -195,6 +197,8 @@ export default function SNP() {
         }
 
         let tmp = orig.split(">")[1].split(",")
+        if (tmp.length === 1 && tmp[0] === "") tmp = []
+
         if (tmp.includes(mod)) {
             tmp = tmp.filter(t => t !== mod)
         } else {
@@ -203,6 +207,11 @@ export default function SNP() {
 
         const newTm = tm.replace(orig, `${temp}>${tmp.join(",")}`)
         setTm(newTm)
+
+        let fillers = curSnp?.fillers || ""
+        let snp: ISNP = {} as ISNP
+        if (curSnp) snp = Object.assign(snp, curSnp, { fillers: fillers.replace(tm, newTm) })
+        setCurSnp(snp)
     }
 
     const mounHandler = (value: string) => {
@@ -424,7 +433,7 @@ export default function SNP() {
             </div>
 
             <div className={classes.line}>
-                <Button rounded='round' onClick={openHandler}>
+                <Button rounded='round' variant='grayPrimary' onClick={openHandler}>
                     Размеры
                 </Button>
                 <span className={classes.full} />

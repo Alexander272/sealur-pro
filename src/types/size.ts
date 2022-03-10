@@ -19,3 +19,19 @@ export interface ISizeReq {
     typeFlId: string
     standId: string
 }
+
+export interface ISizeCreate {
+    flShort: string
+    standId: string
+    dn: string
+    pn: string
+    typePr: string
+    typeFlId: string
+    d4?: string
+    d3: string
+    d2: string
+    d1?: string
+    h: string
+    s2?: string
+    s3?: string
+}

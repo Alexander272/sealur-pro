@@ -4,3 +4,9 @@ export interface ITypeFl {
     descr?: string
     short?: string
 }
+
+export interface ITypeFlCreate {
+    title: string
+    descr?: string
+    short?: string
+}

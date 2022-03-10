@@ -9,6 +9,10 @@ type Props = {
 const tableName = ["Dn", "Pn", "Тип прокладки", "D4", "D3", "D2", "D1", "h", "S2", "S3"]
 
 export const SizeTable: FC<Props> = ({ data }) => {
+    const clickHandler = (id: string) => () => {
+        console.log(id)
+    }
+
     return (
         <div className={classes.table}>
             <div className={classes.row}>
@@ -20,7 +24,11 @@ export const SizeTable: FC<Props> = ({ data }) => {
             </div>
             <div className={`${classes.body} scroll`}>
                 {data.map(d => (
-                    <div className={`${classes.row} ${classes.tr}`} key={d.id}>
+                    <div
+                        className={`${classes.row} ${classes.tr}`}
+                        key={d.id}
+                        onClick={clickHandler(d.id)}
+                    >
                         <p className={classes.td}>{d.dn}</p>
                         <p className={classes.td}>{d.pn}</p>
                         <p className={classes.td}>{d.typePr}</p>
