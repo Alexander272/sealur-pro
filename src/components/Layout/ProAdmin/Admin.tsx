@@ -1,7 +1,14 @@
-import { Suspense, useEffect } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Dispatch, RootState } from "../../../store/store"
+import { GrapForm } from "../../AdditForms/GrapForm"
+import { MatForm } from "../../AdditForms/MatForm"
+import { ModForm } from "../../AdditForms/ModForm"
+import { MounForm } from "../../AdditForms/MounForm"
+import { TempForm } from "../../AdditForms/TempForm"
+import { useModal } from "../../Modal/hooks/useModal"
+import { Modal } from "../../Modal/Modal"
 import { Tabs } from "../../Tabs/Tabs"
 import { List } from "../../UI/List/List"
 import { Loader } from "../../UI/Loader/Loader"
@@ -34,15 +41,93 @@ export default function AdminLayout() {
 
     const dispatch = useDispatch<Dispatch>()
 
+    const [formType, setFormType] = useState("mat")
+    const [data, setData] = useState<any | null>(null)
+
+    const { isOpen, toggle } = useModal()
+
     const location = useLocation()
     const pathname = location.pathname
 
+    const [sending, setSending] = useState(false)
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         if (!addit) dispatch.addit.getAddit()
+        if (addit) setLoading(false)
     }, [addit, dispatch.addit])
+
+    const openFormHandler = (formType: string) => () => {
+        setData(null)
+        setFormType(formType)
+        toggle()
+    }
+
+    const updateMatHandler = (value: string) => {
+        setFormType("mat")
+        const parts = value.split("@")
+        setData({ short: parts[0], title: parts[1] })
+        toggle()
+    }
+
+    const updateTempHandler = (value: string) => {
+        setFormType("temp")
+        const parts = value.split("@")
+        setData({ index: parts[0], title: parts[1] })
+        toggle()
+    }
+
+    const updateModHandler = (value: string) => {
+        setFormType("mod")
+        const parts = value.split("@")
+        setData({ index: parts[0], title: parts[1], short: parts[2], description: parts[3] })
+        toggle()
+    }
+
+    const updateMounHandler = (value: string) => {
+        setFormType("moun")
+        setData({ title: value })
+        toggle()
+    }
+
+    const updateGrapHandler = (value: string) => {
+        setFormType("grap")
+        const parts = value.split("@")
+        setData({ short: parts[0], title: parts[1], description: parts[2] })
+        toggle()
+    }
+
+    const sendHandler = () => setSending(prev => !prev)
+
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <div className={classes.wrapper}>
+            {sending && (
+                <div className={classes.loader}>
+                    <Loader background='fill' />
+                </div>
+            )}
+            <Modal isOpen={isOpen} toggle={toggle}>
+                <Modal.Header title='Добавить' onClose={toggle} />
+                {formType === "mat" && (
+                    <MatForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+                {formType === "temp" && (
+                    <TempForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+                {formType === "mod" && (
+                    <ModForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+                {formType === "moun" && (
+                    <MounForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+                {formType === "grap" && (
+                    <GrapForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+            </Modal>
             <div className={classes.main}>
                 <Tabs
                     initWidth={initTabs[pathname.split("/")[2] || "def"].width}
@@ -84,39 +169,72 @@ export default function AdminLayout() {
             </div>
 
             <div className={classes.side}>
-                <List title='Материалы' isOpen>
+                <List
+                    title='Материалы'
+                    isOpen
+                    addHandler={openFormHandler("mat")}
+                    updateHandler={updateMatHandler}
+                >
                     {materials?.split(";").map(mat => {
                         const parts = mat.split("@")
                         return (
-                            <Item key={parts[0]}>
+                            <Item key={parts[0]} value={mat}>
                                 {parts[0]} {parts[1]}
                             </Item>
                         )
                     })}
                 </List>
-                <List title='Температура эксплуатации'>
+                <List
+                    title='Температура эксплуатации'
+                    addHandler={openFormHandler("temp")}
+                    updateHandler={updateTempHandler}
+                >
                     {temp?.split(";").map(temp => {
                         const parts = temp.split("@")
-                        return <Item key={parts[0]}>{parts[1]}</Item>
+                        return (
+                            <Item key={parts[0]} value={temp}>
+                                {parts[1]}
+                            </Item>
+                        )
                     })}
                 </List>
-                <List title='Тип модифицирующего элемента'>
+                <List
+                    title='Тип модифицирующего элемента'
+                    addHandler={openFormHandler("mod")}
+                    updateHandler={updateModHandler}
+                >
                     {mod?.split(";").map(mod => {
                         const parts = mod.split("@")
-                        return <Item key={parts[0]}>{parts[1]}</Item>
+                        return (
+                            <Item key={parts[0]} value={mod}>
+                                {parts[1]}
+                            </Item>
+                        )
                     })}
                 </List>
-                <List title='Крепление на вертикальном фланце'>
+                <List
+                    title='Крепление на вертикальном фланце'
+                    addHandler={openFormHandler("moun")}
+                    updateHandler={updateMounHandler}
+                >
                     {moun?.split(";").map(m => {
-                        return <Item key={m}>{m}</Item>
+                        return (
+                            <Item key={m} value={m}>
+                                {m}
+                            </Item>
+                        )
                     })}
                 </List>
 
-                <List title='Степень чистоты графитовой составляющей'>
+                <List
+                    title='Степень чистоты графитовой составляющей'
+                    addHandler={openFormHandler("grap")}
+                    updateHandler={updateGrapHandler}
+                >
                     {grap?.split(";").map(g => {
                         const parts = g.split("@")
                         return (
-                            <Item key={parts[0]}>
+                            <Item key={parts[0]} value={g}>
                                 {parts[0]} {parts[1]}
                             </Item>
                         )

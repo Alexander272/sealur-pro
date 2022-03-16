@@ -15,7 +15,6 @@ export const AdminMat: FC<Props> = ({ className, classItem, mat, name, onChange 
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const matHandler = (value: string) => () => {
-        console.log(value)
         if (value === "all") {
             if (mat === "*") onChange("", name)
             else onChange("*", name)
@@ -30,6 +29,8 @@ export const AdminMat: FC<Props> = ({ className, classItem, mat, name, onChange 
             onChange(tmp.join(";"), name)
         } else {
             tmp = mat.split(";")
+            if (tmp[0] === "") tmp = []
+
             if (tmp.includes(value)) {
                 onChange(tmp.filter(t => t !== value).join(";"), name)
             } else {

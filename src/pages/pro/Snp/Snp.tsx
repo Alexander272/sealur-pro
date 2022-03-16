@@ -82,7 +82,7 @@ export default function Snp() {
     const [d1, setD1] = useState("")
 
     const [pass, setPass] = useState("")
-    const [allD2, setAllD2] = useState<string[] | null>(null)
+    const [allD2, setAllD2] = useState<number[] | null>(null)
     const [pressure, setPressure] = useState("")
     const [thickness, setThickness] = useState("")
     const [athic, setAThick] = useState("")
@@ -112,7 +112,7 @@ export default function Snp() {
 
             const s = stfl.find(s => s.id === st)
             if (s?.standId === "1") {
-                const d2 = new Set<string>()
+                const d2 = new Set<number>()
                 for (let i = 0; i < res.data.length; i++) {
                     d2.add(res.data[i].d2)
                 }
@@ -151,7 +151,7 @@ export default function Snp() {
         setPass(res.data.size.data[0].dn)
         setPressure(res.data.size.data[0].pn.split(";")[0])
 
-        const d2 = new Set<string>()
+        const d2 = new Set<number>()
         for (let i = 0; i < res.data.size.data.length; i++) {
             d2.add(res.data.size.data[i].d2)
         }
@@ -173,10 +173,10 @@ export default function Snp() {
     useEffect(() => {
         if (curSize) {
             setThickness(curSize.h.split(";")[0])
-            setD4(curSize.d4 || "")
-            setD3(curSize.d3)
-            setD2(curSize.d2)
-            setD1(curSize.d1 || "")
+            setD4(curSize.d4?.toString() || "")
+            setD3(curSize.d3.toString())
+            setD2(curSize.d2.toString())
+            setD1(curSize.d1?.toString() || "")
         }
     }, [curSize])
 
@@ -237,12 +237,12 @@ export default function Snp() {
         if (size) setCurSize(size)
     }
     const allD2Handler = (value: string) => {
-        let size = sizes?.data.find(s => s.pn.includes(pressure) && s.d2 === value)
+        let size = sizes?.data.find(s => s.pn.includes(pressure) && s.d2.toString() === value)
         if (size) {
             setPass(size.dn)
             setCurSize(size)
         } else {
-            size = sizes?.data.find(s => s.d2 === value)
+            size = sizes?.data.find(s => s.d2.toString() === value)
             if (size) {
                 setPass(size.dn)
                 setPressure(size.pn.split(";")[0])
@@ -536,9 +536,9 @@ export default function Snp() {
                     {allD2 && (
                         <div className={classes.group}>
                             <p className={classes.titleGroup}>D2</p>
-                            <Select value={curSize?.d2 || ""} onChange={allD2Handler}>
+                            <Select value={curSize?.d2.toString() || ""} onChange={allD2Handler}>
                                 {allD2.map(d => (
-                                    <Option key={d} value={d}>
+                                    <Option key={d} value={d.toString()}>
                                         {d}
                                     </Option>
                                 ))}
@@ -785,6 +785,7 @@ export default function Snp() {
                             onChange={matHandler(idx)}
                             mater={mater}
                             onOpen={openHandler}
+                            title=''
                         />
                     )
                 })}

@@ -87,7 +87,7 @@ export const addit = createModel<RootModel>()({
                 addit.setLoading(true)
                 try {
                     const res = await ReadService.getAddit()
-                    addit.setAddit(res.data)
+                    addit.setAddit(res.data[0])
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {

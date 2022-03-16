@@ -5,6 +5,9 @@ export interface ISNP {
     typePr: string
     typeUrl: string
     fillers: string
+    frame?: string
+    ir?: string
+    or?: string
     materials: string
     defMat: string
     mounting: string
@@ -25,12 +28,11 @@ export interface ISNPCreate {
     standId: string
     flangeId: string
     typeFlId: string
-    typeFlUrl: string
     typePr: string
-    typeUrl: string
     fillers: string
-    materials: string
-    defMat: string
+    frame?: string
+    ir?: string
+    or?: string
     mounting: string
     graphite: string
 }

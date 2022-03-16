@@ -82,6 +82,7 @@
     color: var(--button-color);
     &:hover {
         background-color: rgba(17, 97, 237, 1);
+        color: #fff;
     }
     &:disabled {
         border-color: rgb(122, 108, 206);

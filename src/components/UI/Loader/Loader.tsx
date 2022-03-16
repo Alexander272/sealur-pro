@@ -14,7 +14,7 @@ export const Loader: FC<Props> = ({ size, background, isFull }) => {
                 isFull ? classes.full : ""
             }`}
         >
-            <div className={`${classes.loader} ${classes[size || "middle"]}`}></div>
+            <div className={`${classes.loader} ${size ? classes[size] : ""}`}></div>
         </div>
     )
 }

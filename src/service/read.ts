@@ -12,13 +12,12 @@ import { ISize, ISizeReq } from "../types/size"
 import { ITypeFl } from "../types/typeFl"
 import { IFlange } from "../types/flange"
 import { IStand } from "../types/stand"
+import api from "./api"
 
 export default class ReadService {
     static async getStFl(): Promise<{ data: IStFl[] }> {
         try {
-            //TODO исправить запрос
-            // const res = await api.get("/sealur-pro/st-fl/")
-            const res = { data: stFl }
+            const res = await api.get("/sealur-pro/st-fl/")
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -28,7 +27,8 @@ export default class ReadService {
     static async getFlange(): Promise<{ data: IFlange[] }> {
         try {
             //TODO исправить запрос
-            const res = { data: flange }
+            // const res = { data: flange }
+            const res = await api.get("/sealur-pro/flanges/")
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -38,18 +38,17 @@ export default class ReadService {
     static async getStand(): Promise<{ data: IStand[] }> {
         try {
             //TODO исправить запрос
-            const res = { data: stand }
+            // const res = { data: stand }
+            const res = await api.get("sealur-pro/standards")
             return res.data
         } catch (error: any) {
             throw error.response.data
         }
     }
 
-    static async getAddit(): Promise<{ data: IAddit }> {
+    static async getAddit(): Promise<{ data: IAddit[] }> {
         try {
-            //TODO исправить запрос
-            // const res = await api.get("/sealur-pro/additionals")
-            const res = { data: addit }
+            const res = await api.get<{ data: IAddit[] }>("/sealur-pro/additionals/")
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -58,11 +57,9 @@ export default class ReadService {
 
     static async getSnp(req: ISNPReq): Promise<{ data: ISNP[] }> {
         try {
-            //TODO исправить запрос
-            // const res = await api.get(
-            //     `/sealur-pro/snp?standId=${req.standId}&flangeId=${req.flangeId}`
-            // )
-            const res = { data: snp }
+            const res = await api.get(
+                `/sealur-pro/snp/?standId=${req.standId}&flangeId=${req.flangeId}`
+            )
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -71,28 +68,9 @@ export default class ReadService {
 
     static async getSize(req: ISizeReq): Promise<{ data: ISize[]; dn: string[] }> {
         try {
-            //TODO исправить запрос
-            // const res = await api.get(
-            //     `/sealur-pro/size?`
-            // )
-
-            //TODO фильтрация по типу того что будет в базе
-            let arr: ISize[] = []
-            if (req.flShort === "12815") {
-                arr = (size_12815.data as ISize[]).filter(s =>
-                    s.typePr.toLowerCase().includes(req.typePr.toLowerCase())
-                )
-            }
-
-            const dn = new Set<string>()
-            for (let i = 0; i < arr.length; i++) {
-                dn.add(arr[i].dn)
-            }
-
-            const size = { data: arr, dn: Array.from(dn) }
-
-            const res = { data: size }
-            // const res = { data: s }
+            const res = await api.get(
+                `/sealur-pro/sizes/?flange=${req.flShort}&typeFlId=${req.typeFlId}&standId=${req.standId}&typePr=${req.typePr}`
+            )
             return res.data
         } catch (error: any) {
             throw error.response.data

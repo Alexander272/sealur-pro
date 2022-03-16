@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import { AdminGrap } from "../../../../components/AdminGrap/AdminGrap"
 import { AdminMat } from "../../../../components/AdminMat/AdminMat"
 import { AdminMoun } from "../../../../components/AdminMoun/AdminMoun"
+import { Materials } from "../../../../components/Materials/Materials"
 import { SizeTable } from "../../../../components/SizeTable/SizeTable"
 import { Button } from "../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
+import { Loader } from "../../../../components/UI/Loader/Loader"
 import { Select } from "../../../../components/UI/Select/Select"
 import ReadService from "../../../../service/read"
 import { Dispatch, RootState } from "../../../../store/store"
@@ -18,11 +21,11 @@ const { Option } = Select
 const types = ["А", "Б", "В", "Г", "Д"]
 
 export default function SNP() {
+    const loading = useSelector((state: RootState) => state.addit.loading)
     const stfl = useSelector((state: RootState) => state.addit.stfl)
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const [st, setSt] = useState(stfl[0]?.id || "")
-    const [flange, setFlange] = useState(stfl[0]?.flangeId || "")
     const [snp, setSnp] = useState<ISNP[]>([])
     const [curSnp, setCurSnp] = useState<ISNP | null>(null)
     const [type, setType] = useState("Д")
@@ -30,10 +33,6 @@ export default function SNP() {
     const [filler, setFiller] = useState("0")
     const [tm, setTm] = useState("")
     const [temp, setTemp] = useState("0")
-
-    const [frame, setFrame] = useState("")
-    const [ir, setIr] = useState("")
-    const [or, setOr] = useState("")
 
     const [isOpenTable, setIsOpenTable] = useState(false)
 
@@ -47,48 +46,55 @@ export default function SNP() {
 
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
-
-        const res = await ReadService.getSnp(req)
-        setSnp(res.data)
-
-        const tmp = res.data.filter(s => s.typeFlId.includes(flange))
-        let index = tmp.findIndex(s => s.typePr.includes(type))
-        if (index === -1) index = 0
-
-        const fil = tmp[index].fillers.split(";")[0]
-        setTm(fil)
-        setTemp(fil.split(">")[0])
-
-        setFrame(tmp[index]?.materials.split("&").find(mat => mat.split(";")[0] === "Каркас") || "")
-        setOr(
-            tmp[index]?.materials.split("&").find(mat => mat.split(";")[0] === "Наружное кольцо") ||
-                ""
-        )
-        setIr(
-            tmp[index]?.materials
-                .split("&")
-                .find(mat => mat.split(";")[0] === "Внутреннее кольцо") || ""
-        )
-
-        setCurSnp(tmp[index])
+        try {
+            const res = await ReadService.getSnp(req)
+            setSnp(res.data || [])
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        }
     }, [])
 
     const fetchSize = useCallback(async (req: ISizeReq) => {
         console.log("fetchSize")
-        const res = await ReadService.getSize(req)
-        setSizes(res.data)
+        try {
+            const res = await ReadService.getSize(req)
+            setSizes(res.data)
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        }
     }, [])
 
     useEffect(() => {
         if (stfl.length) {
             fetchSnp({ standId: stfl[0].standId, flangeId: stfl[0].flangeId })
             setSt(stfl[0].id)
-            setFlange(stfl[0].flangeId)
         }
     }, [stfl, fetchSnp])
 
     useEffect(() => {
-        if (!!curSnp && !!stfl.length) {
+        if (!snp.length) {
+            console.log("res.data = null")
+            setTm("")
+            setTemp("")
+            setCurSnp(null)
+            return
+        }
+
+        console.log("res.data != null")
+        const tmp = snp.filter(s => s.typeFlId.includes(curSnp?.typeFlId || ""))
+        let index = tmp.findIndex(s => s.typePr === type)
+        if (index === -1) index = 0
+
+        if (index === 0) setType(tmp[index].typePr)
+        const fil = tmp[index].fillers.split(";")[0]
+        setTm(fil)
+        setTemp(fil.split(">")[0])
+
+        setCurSnp(tmp[index])
+    }, [curSnp?.typeFlId, snp, type])
+
+    useEffect(() => {
+        if (!!curSnp?.typePr && !!stfl.length) {
             const sf = stfl.find(s => s.id === st)
             if (sf)
                 fetchSize({
@@ -98,20 +104,56 @@ export default function SNP() {
                     flShort: sf.short,
                 })
         }
-    }, [curSnp, stfl, st, fetchSize])
+    }, [curSnp?.typePr, curSnp?.typeFlId, stfl, st, fetchSize])
+
+    const stHandler = (value: string) => {
+        const sf = stfl.find(s => s.id === value)
+        if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
+        setSt(value)
+    }
+
+    const addTypeHandler = (type: string) => () => {
+        console.log(type)
+        const tmp = snp.find(s => s.typePr.includes(type))
+        if (!tmp) {
+            console.log("not found")
+            let typeFlId = "1"
+            if (type === "Б" || type === "В") typeFlId = "2"
+            if (type === "А") typeFlId = "3"
+            const newPr: ISNP = {
+                id: "",
+                typeFlUrl: "",
+                typeUrl: "",
+                typeFlId: typeFlId,
+                typePr: type,
+                fillers: "",
+                materials: "",
+                defMat: "",
+                mounting: "*",
+                graphite: "*",
+            }
+
+            setSnp(prev => [...prev, newPr])
+            setCurSnp(newPr)
+            setType(type)
+        } else {
+            console.log("found")
+            setSnp(prev => prev.filter(s => s.typePr !== type))
+            if (curSnp?.typePr === type) setCurSnp(null)
+        }
+    }
 
     const typeHanlder = (type: string) => () => {
         setType(type)
         const tmp = snp.filter(s => s.typePr.includes(type))
+        if (!tmp.length) {
+            setCurSnp(null)
+            setFiller("")
+            setTm("")
+            return
+        }
+
         setCurSnp(tmp[0])
-        setFrame(tmp[0]?.materials.split("&").find(mat => mat.split(";")[0] === "Каркас") || "")
-        setOr(
-            tmp[0]?.materials.split("&").find(mat => mat.split(";")[0] === "Наружное кольцо") || ""
-        )
-        setIr(
-            tmp[0]?.materials.split("&").find(mat => mat.split(";")[0] === "Внутреннее кольцо") ||
-                ""
-        )
     }
 
     const tempHandler = (temp: string) => () => {
@@ -220,13 +262,57 @@ export default function SNP() {
         setCurSnp(snp)
     }
 
-    const matHandler = (value: string, name: string) => {
-        if (name === "frame") setFrame(value)
-        if (name === "ir") setIr(value)
-        if (name === "or") setOr(value)
+    const grapHandler = (value: string) => {
+        console.log(value)
+
+        let snp: ISNP = {} as ISNP
+        if (curSnp) snp = Object.assign(snp, curSnp, { graphite: value })
+        setCurSnp(snp)
     }
 
-    const openHandler = () => setIsOpenTable(prev => !prev)
+    const defMatHandler = (name: string) => (value: string) => {
+        console.log(name, value)
+        let snp: ISNP = {} as ISNP
+        if (name === "frame") {
+            let newFrame = curSnp?.frame?.split("&")[0] + "&" + value
+            snp = Object.assign(snp, curSnp, { frame: newFrame })
+        }
+        if (name === "ir") {
+            let newIr = curSnp?.ir?.split("&")[0] + "&" + value
+            snp = Object.assign(snp, curSnp, { ir: newIr })
+        }
+        if (name === "or") {
+            let newOr = curSnp?.or?.split("&")[0] + "&" + value
+            snp = Object.assign(snp, curSnp, { or: newOr })
+        }
+        setCurSnp(snp)
+    }
+
+    const matHandler = (value: string, name: string) => {
+        let snp: ISNP = {} as ISNP
+        let defValue = ""
+        if (value === "*") defValue = addit?.materials.split(";")[0].split("@")[0] || ""
+        else defValue = addit?.materials.split(";")[+value.split(";")[0]].split("@")[0] || ""
+
+        if (name === "frame") {
+            let newFrame = ""
+            if (value !== "") newFrame = value + "&" + (curSnp?.frame?.split("&")[1] || defValue)
+            snp = Object.assign(snp, curSnp, { frame: newFrame })
+        }
+        if (name === "ir") {
+            let newIr = ""
+            if (value !== "") newIr = value + "&" + (curSnp?.ir?.split("&")[1] || defValue)
+            snp = Object.assign(snp, curSnp, { ir: newIr })
+        }
+        if (name === "or") {
+            let newOr = ""
+            if (value !== "") newOr = value + "&" + (curSnp?.or?.split("&")[1] || defValue)
+            snp = Object.assign(snp, curSnp, { or: newOr })
+        }
+        setCurSnp(snp)
+    }
+
+    const openTableHandler = () => setIsOpenTable(prev => !prev)
 
     const renderTypes = () => {
         return types.map(t => {
@@ -243,7 +329,7 @@ export default function SNP() {
                     <Checkbox
                         id={t}
                         name={t}
-                        onChange={() => {}}
+                        onChange={addTypeHandler(t)}
                         checked={!!s}
                         label={!s ? "Добавить" : "Удалить"}
                     />
@@ -308,6 +394,10 @@ export default function SNP() {
         })
     }
 
+    if (!addit || loading) {
+        return <Loader />
+    }
+
     return (
         <div className={classes.page}>
             {/* <div className={classes.line}>
@@ -324,7 +414,7 @@ export default function SNP() {
             </div>*/}
             <div className={classes.line}>
                 {stfl && (
-                    <Select value='1' onChange={() => {}}>
+                    <Select value={st} onChange={stHandler}>
                         {stfl.map(s => (
                             <Option key={s.id} value={s.id}>
                                 {s.stand} / {s.flange}
@@ -370,14 +460,12 @@ export default function SNP() {
                 </div>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Температура эксплуатации</p>
-                    {/* <p className={classes.add}>Добавить</p> */}
                     {addit?.temperature && (
                         <div className={`${classes.list} scroll`}>{renderTemp()}</div>
                     )}
                 </div>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                    {/* <p className={classes.add}>Добавить</p> */}
                     {addit?.mod && <div className={`${classes.list} scroll`}>{renderMod()}</div>}
                 </div>
             </div>
@@ -385,40 +473,72 @@ export default function SNP() {
             <div className={classes.line}>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Внутреннее кольцо</p>
+                    <Materials
+                        className={classes.def}
+                        classTitle={classes.defTitle}
+                        value={curSnp?.ir?.split("&")[1] || "Значение не выбрано"}
+                        mater={curSnp?.ir?.split("&")[0] || ""}
+                        onChange={defMatHandler("ir")}
+                        disabled={!curSnp?.ir}
+                        title='Значение по умолчанию'
+                    />
+                    <p className={classes.defTitle}>Доступные значения</p>
                     {addit?.materials && (
                         <AdminMat
                             className={classes.list}
                             classItem={classes.listItem}
                             name='ir'
-                            mat={ir.replace("Внутреннее кольцо;", "")}
+                            mat={curSnp?.ir?.split("&")[0] || ""}
                             onChange={matHandler}
                         />
                     )}
                 </div>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Каркас</p>
+                    <Materials
+                        className={classes.def}
+                        classTitle={classes.defTitle}
+                        value={curSnp?.frame?.split("&")[1] || "Значение не выбрано"}
+                        mater={curSnp?.frame?.split("&")[0] || ""}
+                        onChange={defMatHandler("frame")}
+                        disabled={!curSnp?.frame}
+                        title='Значение по умолчанию'
+                    />
+                    <p className={classes.defTitle}>Доступные значения</p>
                     {addit?.materials && (
                         <AdminMat
                             className={classes.list}
                             classItem={classes.listItem}
                             name='frame'
-                            mat={frame.replace("Каркас;", "")}
+                            mat={curSnp?.frame?.split("&")[0] || ""}
                             onChange={matHandler}
                         />
                     )}
                 </div>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Наружное кольцо</p>
+                    <Materials
+                        className={classes.def}
+                        classTitle={classes.defTitle}
+                        value={curSnp?.or?.split("&")[1] || "Значение не выбрано"}
+                        mater={curSnp?.or?.split("&")[0] || ""}
+                        onChange={defMatHandler("or")}
+                        disabled={!curSnp?.or}
+                        title='Значение по умолчанию'
+                    />
+                    <p className={classes.defTitle}>Доступные значения</p>
                     {addit?.materials && (
                         <AdminMat
                             className={classes.list}
                             classItem={classes.listItem}
                             name='or'
-                            mat={or.replace("Наружное кольцо;", "")}
+                            mat={curSnp?.or?.split("&")[0] || ""}
                             onChange={matHandler}
                         />
                     )}
                 </div>
+            </div>
+            <div className={classes.line}>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Крепление на вертикальном фланце</p>
                     {addit?.mounting && (
@@ -430,10 +550,21 @@ export default function SNP() {
                         />
                     )}
                 </div>
+                <div className={classes.fil}>
+                    <p className={classes.titleGroup}>Степень чистоты графитовой составляющей</p>
+                    {addit?.graphite && (
+                        <AdminGrap
+                            className={classes.list}
+                            classItem={classes.listItem}
+                            graphite={curSnp?.graphite || ""}
+                            onChange={grapHandler}
+                        />
+                    )}
+                </div>
             </div>
 
             <div className={classes.line}>
-                <Button rounded='round' variant='grayPrimary' onClick={openHandler}>
+                <Button rounded='round' variant='grayPrimary' onClick={openTableHandler}>
                     Размеры
                 </Button>
                 <span className={classes.full} />
@@ -444,7 +575,7 @@ export default function SNP() {
                 <div className={classes.table}>
                     <div className={classes.header}>
                         <h5>Размеры</h5>
-                        <p onClick={openHandler}>&times;</p>
+                        <p onClick={openTableHandler}>&times;</p>
                     </div>
                     <SizeTable data={sizes} />
                 </div>

@@ -11,6 +11,8 @@ type Props = {
     onChange: (value: string) => void
     onOpen?: (isOpen: boolean) => void
     mater: string
+    title: string
+    disabled?: boolean
 }
 
 const { Option } = Select
@@ -22,13 +24,15 @@ export const Materials: React.VFC<Props> = ({
     onChange,
     mater,
     onOpen,
+    title,
+    disabled,
 }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
     if (!addit) return <></>
 
     const renderMat = () => {
-        const str = mater.substring(mater.indexOf(";") + 1)
-        const mat = splitString(str, addit?.materials || "", ";")
+        // const str = mater.substring(mater.indexOf(";") + 1)
+        const mat = splitString(mater, addit?.materials || "", ";")
 
         return mat?.map(m => {
             const parts = m.split("@")
@@ -41,10 +45,10 @@ export const Materials: React.VFC<Props> = ({
     }
 
     return (
-        <div key={mater.split(";")[0]} className={className}>
-            <p className={classTitle}>{mater.split(";")[0]}</p>
+        <div className={className}>
+            <p className={classTitle}>{title}</p>
             {
-                <Select value={value} onChange={onChange} onOpen={onOpen}>
+                <Select value={value} onChange={onChange} onOpen={onOpen} disabled={disabled}>
                     {renderMat()}
                 </Select>
             }

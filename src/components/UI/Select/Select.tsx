@@ -14,9 +14,15 @@ const Select = ({ children, value, disabled, onChange, onOpen }: PropsWithChildr
     const [title, setTitle] = useState(value)
 
     useEffect(() => {
-        Children.forEach(children as React.ReactElement[], (child: React.ReactElement) => {
+        let index = 0
+        Children.forEach(children as React.ReactElement[], (child: React.ReactElement, idx) => {
             if (child.props.value === value) setTitle(child.props.children)
+            index = idx
         })
+
+        if (index === Children.count(children)) {
+            setTitle(value)
+        }
     }, [value, children])
 
     const changeHandler = (curValue: string) => () => {

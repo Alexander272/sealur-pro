@@ -90,6 +90,15 @@
     }
 }
 
+.def {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.defTitle {
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
 .add {
     text-align: center;
     color: var(--button-color);

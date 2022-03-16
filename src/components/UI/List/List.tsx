@@ -5,8 +5,8 @@ import classes from "./list.module.scss"
 type Props = {
     title: string
     isOpen?: boolean
-    addHandler?: () => {}
-    updateHandler?: () => {}
+    addHandler: () => void
+    updateHandler: (value: string) => void
 }
 
 const List = ({
@@ -22,6 +22,10 @@ const List = ({
         setIsOpen(prev => !prev)
     }
 
+    const changeHandler = (value: string) => () => {
+        updateHandler(value)
+    }
+
     return (
         <div className={`${classes.list} ${isOpen ? "" : classes.close}`}>
             <p className={classes.title} onClick={openHandler}>
@@ -34,7 +38,7 @@ const List = ({
                 </p>
                 {Children.map(children as React.ReactElement[], (child: React.ReactElement) =>
                     cloneElement(child, {
-                        onClick: updateHandler && updateHandler(),
+                        onClick: changeHandler(child.props.value),
                         // className: child.props.value === value ? classes.active : "",
                     })
                 )}

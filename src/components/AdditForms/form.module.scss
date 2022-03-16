@@ -1,0 +1,13 @@
+.form {
+    & > div {
+        margin-bottom: 10px;
+        & > label {
+            margin-bottom: 3px;
+            margin-left: 10px;
+        }
+    }
+}
+
+.offset {
+    width: 60px;
+}

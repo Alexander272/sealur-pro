@@ -6,35 +6,35 @@ import { Checkbox } from "../UI/Checkbox/Checkbox"
 type Props = {
     className: string
     classItem: string
-    moun: string
+    graphite: string
     onChange: (value: string) => void
 }
 
-export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) => {
+export const AdminGrap: FC<Props> = ({ className, classItem, graphite, onChange }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
-    const mounHandler = (value: string) => () => {
+    const grapHandler = (value: string) => () => {
         if (value === "all") {
-            if (moun === "*") onChange("")
+            if (graphite === "*") onChange("")
             else onChange("*")
             return
         }
 
         let tmp: string[] = []
-        if (moun === "*") {
-            addit?.mounting.split(";").forEach((_, idx) => {
+        if (graphite === "*") {
+            addit?.graphite.split(";").forEach((_, idx) => {
                 if (idx.toString() !== value) tmp.push(idx.toString())
             })
             onChange(tmp.join(";"))
         } else {
-            tmp = moun.split(";")
+            tmp = graphite.split(";")
             if (tmp[0] === "") tmp = []
 
             if (tmp.includes(value)) {
                 onChange(tmp.filter(t => t !== value).join(";"))
             } else {
                 tmp.push(value)
-                if (tmp.length === addit?.mounting.split(";").length) {
+                if (tmp.length === addit?.graphite.split(";").length) {
                     onChange("*")
                     return
                 }
@@ -44,20 +44,21 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
         }
     }
 
-    const renderMoun = () => {
-        return addit?.mounting.split(";").map((m, idx) => {
+    const renderGrap = () => {
+        return addit?.graphite.split(";").map((g, idx) => {
             let isAdded = false
-            if (moun === "*") isAdded = true
-            else if (moun.split(";").includes(idx.toString())) isAdded = true
+            if (graphite === "*") isAdded = true
+            else if (graphite.split(";").includes(idx.toString())) isAdded = true
 
+            const parts = g.split("@")
             return (
-                <div key={m} className={classItem}>
+                <div key={parts[0]} className={classItem}>
                     <Checkbox
-                        name={m}
-                        id={m}
+                        name={parts[0]}
+                        id={parts[0]}
                         checked={isAdded}
-                        onChange={mounHandler(idx.toString())}
-                        label={m}
+                        onChange={grapHandler(idx.toString())}
+                        label={parts[1]}
                     />
                 </div>
             )
@@ -68,14 +69,14 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
         <div className={`${className} scroll`}>
             <div className={classItem}>
                 <Checkbox
-                    name='all-moun'
-                    id='all-moun'
-                    checked={moun === "*"}
-                    onChange={mounHandler("all")}
-                    label={moun === "*" ? "Удалить все" : "Добавить все"}
+                    name='all-grap'
+                    id='all-grap'
+                    checked={graphite === "*"}
+                    onChange={grapHandler("all")}
+                    label={graphite === "*" ? "Удалить все" : "Добавить все"}
                 />
             </div>
-            {renderMoun()}
+            {renderGrap()}
         </div>
     )
 }
