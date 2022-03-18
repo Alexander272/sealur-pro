@@ -45,8 +45,9 @@ export const TempForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const submitHandler = async (form: Form) => {
         if (!addit) return
         let temps = addit.temperature.split(";") || []
+        let newIdx
         if (!data) {
-            const newIdx = +temps[temps.length - 1].split("@")[0] + 1
+            newIdx = +temps[temps.length - 1].split("@")[0] + 1
             temps?.push(`${newIdx}@${form.title}`)
         } else {
             temps = temps?.map(t => {
@@ -57,7 +58,12 @@ export const TempForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateTemp(addit.id, temps.join(";"))
+            await AdditService.updateTemp(
+                addit.id,
+                temps.join(";"),
+                data ? "update" : "add",
+                data ? "" : newIdx?.toString() || ""
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { temperature: temps.join(";") })
             dispatch.addit.setAddit(add)
@@ -81,7 +87,7 @@ export const TempForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateTemp(addit.id, temps.join(";"))
+            await AdditService.updateTemp(addit.id, temps.join(";"), "delete", data.id)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { temperature: temps.join(";") })
             dispatch.addit.setAddit(add)

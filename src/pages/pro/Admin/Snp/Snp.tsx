@@ -64,10 +64,13 @@ export default function SNP() {
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
         try {
+            setSending(true)
             const res = await ReadService.getSnp(req)
             setSnp(res.data || [])
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            setSending(false)
         }
     }, [])
 
@@ -96,15 +99,16 @@ export default function SNP() {
             return
         }
 
-        const tmp = snp.filter(s => s.typeFlId.includes(curSnp?.typeFlId || ""))
+        let tmp = snp.filter(s => s.typeFlId.includes(curSnp?.typeFlId || ""))
         let index = tmp.findIndex(s => s.typePr === type)
         if (index === -1) index = 0
+        if (!tmp.length) tmp = snp
 
         if (index === 0) setType(tmp[index].typePr)
-        const fil = tmp[index].fillers.split(";")[0]
+        const fil = tmp[index].fillers.split(";")[0] || ""
         setFiller(fil.split("&")[0])
         setTm(fil.split("&")[1])
-        setTemp(fil.split("&")[1].split(">")[0])
+        setTemp(fil.split("&")[1]?.split(">")[0])
 
         setCurSnp(tmp[index])
     }, [curSnp?.typeFlId, snp, type])
@@ -122,9 +126,14 @@ export default function SNP() {
         }
     }, [curSnp?.typePr, curSnp?.typeFlId, stfl, st, fetchSize])
 
-    const stHandler = (value: string) => {
-        const sf = stfl.find(s => s.id === value)
+    useEffect(() => {
+        const sf = stfl.find(s => s.id === st)
         if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
+    }, [addit, st, stfl, fetchSnp])
+
+    const stHandler = (value: string) => {
+        // const sf = stfl.find(s => s.id === value)
+        // if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
         setSt(value)
     }
 
@@ -381,7 +390,7 @@ export default function SNP() {
 
         try {
             setSending(true)
-            await AdditService.updateFillers(addit.id, fils.join(";"))
+            await AdditService.updateFillers(addit.id, fils.join(";"), "delete", data.short)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { fillers: fils.join(";") })
             dispatch.addit.setAddit(add)
@@ -410,7 +419,12 @@ export default function SNP() {
 
         try {
             setSending(true)
-            await AdditService.updateFillers(addit.id, fils.join(";"))
+            await AdditService.updateFillers(
+                addit.id,
+                fils.join(";"),
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { fillers: fils.join(";") })
             dispatch.addit.setAddit(add)

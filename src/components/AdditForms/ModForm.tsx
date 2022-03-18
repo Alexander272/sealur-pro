@@ -49,8 +49,9 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const submitHandler = async (form: Form) => {
         if (!addit) return
         let mods = addit.mod.split(";") || []
+        let newIdx
         if (!data) {
-            const newIdx = +mods[mods.length - 1].split("@")[0] + 1
+            newIdx = +mods[mods.length - 1].split("@")[0] + 1
             mods?.push(`${newIdx}@${form.title}@${form.short}@${form.description}`)
         } else {
             mods = mods?.map(m => {
@@ -62,7 +63,12 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateMod(addit.id, mods.join(";"))
+            await AdditService.updateMod(
+                addit.id,
+                mods.join(";"),
+                data ? "update" : "add",
+                data ? "" : newIdx?.toString() || ""
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { mod: mods.join(";") })
             dispatch.addit.setAddit(add)
@@ -82,7 +88,7 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateMod(addit.id, mods.join(";"))
+            await AdditService.updateMod(addit.id, mods.join(";"), "delete", data.id)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { mod: mods.join(";") })
             dispatch.addit.setAddit(add)

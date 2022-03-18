@@ -45,18 +45,25 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const submitHandler = async (form: Form) => {
         if (!addit) return
         let mouns = addit.mounting.split(";") || []
+        let newIdx
         if (!data) {
-            mouns?.push(form.title)
+            newIdx = +mouns[mouns.length - 1].split("@")[0] + 1
+            mouns?.push(`${newIdx}@${form.title}`)
         } else {
             mouns = mouns?.map(m => {
-                if (m === `${data.id}@${data.title}`) return form.title
+                if (m === `${data.id}@${data.title}`) return `${data.id}@${form.title}`
                 return m
             })
         }
 
         try {
             sendHandler()
-            await AdditService.updateMoun(addit.id, mouns.join(";"))
+            await AdditService.updateMoun(
+                addit.id,
+                mouns.join(";"),
+                data ? "update" : "add",
+                data ? "" : newIdx?.toString() || ""
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { mounting: mouns.join(";") })
             dispatch.addit.setAddit(add)
@@ -76,7 +83,7 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateMoun(addit.id, mouns.join(";"))
+            await AdditService.updateMoun(addit.id, mouns.join(";"), "delete", data.id)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { mounting: mouns.join(";") })
             dispatch.addit.setAddit(add)

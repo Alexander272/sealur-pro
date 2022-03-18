@@ -61,7 +61,12 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateGrap(addit.id, graps.join(";"))
+            await AdditService.updateGrap(
+                addit.id,
+                graps.join(";"),
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { graphite: graps.join(";") })
             dispatch.addit.setAddit(add)
@@ -81,7 +86,7 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateGrap(addit.id, graps.join(";"))
+            await AdditService.updateGrap(addit.id, graps.join(";"), "delete", data.short)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { graphite: graps.join(";") })
             dispatch.addit.setAddit(add)

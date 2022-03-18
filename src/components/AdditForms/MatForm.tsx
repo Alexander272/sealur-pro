@@ -58,7 +58,12 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateMat(addit.id, mats.join(";"))
+            await AdditService.updateMat(
+                addit.id,
+                mats.join(";"),
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { materials: mats.join(";") })
             dispatch.addit.setAddit(add)
@@ -75,11 +80,10 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         if (!addit || !data) return
         let mats = addit?.materials.split(";") || []
         mats = mats.filter(m => m !== `${data.short}@${data.title}`)
-        console.log(mats)
 
         try {
             sendHandler()
-            await AdditService.updateMat(addit.id, mats.join(";"))
+            await AdditService.updateMat(addit.id, mats.join(";"), "delete", data.short)
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { materials: mats.join(";") })
             dispatch.addit.setAddit(add)

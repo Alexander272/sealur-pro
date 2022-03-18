@@ -46,7 +46,7 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
     }
 
     const renderMoun = () => {
-        return addit?.mounting.split(";").map((m, idx) => {
+        return addit?.mounting.split(";").map(m => {
             let isAdded = false
             const parts = m.split("@")
             if (moun === "*") isAdded = true
@@ -58,7 +58,7 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
                         name={m}
                         id={m}
                         checked={isAdded}
-                        onChange={mounHandler(idx.toString())}
+                        onChange={mounHandler(parts[0])}
                         label={parts[1]}
                     />
                 </div>
