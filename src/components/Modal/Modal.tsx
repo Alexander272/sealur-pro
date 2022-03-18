@@ -8,16 +8,17 @@ import classes from "./modal.module.scss"
 
 type Props = {
     isOpen: boolean
+    size?: "small" | "middle" | "large"
     toggle: () => void
 }
 
-const Modal = ({ children, isOpen, toggle }: PropsWithChildren<Props>) => {
+const Modal = ({ children, isOpen, toggle, size }: PropsWithChildren<Props>) => {
     if (!isOpen) return null
 
     return createPortal(
         <>
             <Backdrop onClick={toggle} />
-            <div className={classes.modal}>{children}</div>
+            <div className={`${classes.modal} ${size ? classes[size] : ""}`}>{children}</div>
         </>,
         document.getElementById("root") as HTMLElement
     )

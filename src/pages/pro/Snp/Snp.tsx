@@ -789,7 +789,6 @@ export default function Snp() {
                         />
                     )
                 })}
-                {/* <input type='file' placeholder='Прикрепите файл' /> */}
                 <FileInput name='drawing' id='file' label='Прикрепить чертеж' />
 
                 <div className={classes.message}>

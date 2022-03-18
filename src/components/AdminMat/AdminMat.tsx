@@ -23,8 +23,9 @@ export const AdminMat: FC<Props> = ({ className, classItem, mat, name, onChange 
 
         let tmp: string[] = []
         if (mat === "*") {
-            addit?.materials.split(";").forEach((_, idx) => {
-                if (idx.toString() !== value) tmp.push(idx.toString())
+            addit?.materials.split(";").forEach(m => {
+                let id = m.split("@")[0]
+                if (id !== value) tmp.push(id)
             })
             onChange(tmp.join(";"), name)
         } else {
@@ -39,26 +40,25 @@ export const AdminMat: FC<Props> = ({ className, classItem, mat, name, onChange 
                     onChange("*", name)
                     return
                 }
-                tmp.sort((a, b) => +a - +b)
                 onChange(tmp.join(";"), name)
             }
         }
     }
 
     const renderMat = (curMat: string) => {
-        return addit?.materials.split(";").map((m, idx) => {
+        return addit?.materials.split(";").map(m => {
+            const parts = m.split("@")
             let isAdded = false
             if (curMat === "*") isAdded = true
-            else if (curMat.split(";").includes(idx.toString())) isAdded = true
+            else if (curMat.split(";").includes(parts[0])) isAdded = true
 
-            const parts = m.split("@")
             return (
                 <div key={parts[0]} className={classItem}>
                     <Checkbox
                         name={`${parts[0]}-${name}`}
                         id={`${parts[0]}-${name}`}
                         checked={isAdded}
-                        onChange={matHandler(idx.toString())}
+                        onChange={matHandler(parts[0])}
                         label={`${parts[0]} ${parts[1]}`}
                     />
                 </div>

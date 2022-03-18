@@ -15,22 +15,29 @@ export interface IMat {
 }
 
 export interface ITemp {
-    index: string
+    id: string
     title: string
 }
 
 export interface IMod {
-    index: string
+    id: string
     short: string
     title: string
     description: string
 }
 
 export interface IMoun {
+    id: string
     title: string
 }
 
 export interface IGrap {
+    short: string
+    title: string
+    description: string
+}
+
+export interface IFiller {
     short: string
     title: string
     description: string

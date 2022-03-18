@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import AdditService from "../../service/addit"
 import { Dispatch, RootState } from "../../store/store"
 import { IAddit, IMat } from "../../types/addit"
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
+import { useModal } from "../Modal/hooks/useModal"
 import { Modal } from "../Modal/Modal"
 import { Button } from "../UI/Button/Button"
 import { Input } from "../UI/Input/Input"
@@ -25,6 +27,8 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
 
     const {
         register,
@@ -71,6 +75,7 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         if (!addit || !data) return
         let mats = addit?.materials.split(";") || []
         mats = mats.filter(m => m !== `${data.short}@${data.title}`)
+        console.log(mats)
 
         try {
             sendHandler()
@@ -89,6 +94,13 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
     return (
         <>
+            <ConfirmModal
+                title='Удалить?'
+                isOpen={isOpen}
+                toggle={toggle}
+                cancelHandler={closeHandler}
+                confirmHandler={deleteHandler}
+            />
             <Modal.Content>
                 <form name='materials' className={classes.form}>
                     <Input
@@ -118,7 +130,7 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                 <p className={classes.offset} />
                 {data ? (
                     <>
-                        <Button variant='danger' fullWidth onClick={deleteHandler}>
+                        <Button variant='danger' fullWidth onClick={toggle}>
                             Удалить
                         </Button>
                         <p className={classes.offset} />

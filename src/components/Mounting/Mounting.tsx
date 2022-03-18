@@ -27,7 +27,7 @@ export const Mounting: React.VFC<Props> = ({
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const renderMoun = () => {
-        const moun = splitString(mounting, addit?.mounting || "", ";")
+        const moun = splitString(mounting, addit?.mounting || "")
 
         return moun?.map(m => (
             <Option key={m} value={m}>

@@ -22,8 +22,9 @@ export const AdminGrap: FC<Props> = ({ className, classItem, graphite, onChange 
 
         let tmp: string[] = []
         if (graphite === "*") {
-            addit?.graphite.split(";").forEach((_, idx) => {
-                if (idx.toString() !== value) tmp.push(idx.toString())
+            addit?.graphite.split(";").forEach(g => {
+                let id = g.split("@")[0]
+                if (id !== value) tmp.push(id)
             })
             onChange(tmp.join(";"))
         } else {
@@ -38,26 +39,26 @@ export const AdminGrap: FC<Props> = ({ className, classItem, graphite, onChange 
                     onChange("*")
                     return
                 }
-                tmp.sort((a, b) => +a - +b)
+                // tmp.sort((a, b) => +a - +b)
                 onChange(tmp.join(";"))
             }
         }
     }
 
     const renderGrap = () => {
-        return addit?.graphite.split(";").map((g, idx) => {
+        return addit?.graphite.split(";").map(g => {
             let isAdded = false
-            if (graphite === "*") isAdded = true
-            else if (graphite.split(";").includes(idx.toString())) isAdded = true
-
             const parts = g.split("@")
+            if (graphite === "*") isAdded = true
+            else if (graphite.split(";").includes(parts[0])) isAdded = true
+
             return (
                 <div key={parts[0]} className={classItem}>
                     <Checkbox
                         name={parts[0]}
                         id={parts[0]}
                         checked={isAdded}
-                        onChange={grapHandler(idx.toString())}
+                        onChange={grapHandler(parts[0])}
                         label={parts[1]}
                     />
                 </div>

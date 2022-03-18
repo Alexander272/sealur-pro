@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import AdditService from "../../service/addit"
 import { Dispatch, RootState } from "../../store/store"
 import { IAddit, IMoun } from "../../types/addit"
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
+import { useModal } from "../Modal/hooks/useModal"
 import { Modal } from "../Modal/Modal"
 import { Button } from "../UI/Button/Button"
 import { Input } from "../UI/Input/Input"
@@ -24,6 +26,8 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
 
     const {
         register,
@@ -45,7 +49,7 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
             mouns?.push(form.title)
         } else {
             mouns = mouns?.map(m => {
-                if (m === data.title) return form.title
+                if (m === `${data.id}@${data.title}`) return form.title
                 return m
             })
         }
@@ -68,7 +72,7 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const deleteHandler = async () => {
         if (!addit || !data) return
         let mouns = addit?.mounting.split(";") || []
-        mouns = mouns.filter(m => m !== data.title)
+        mouns = mouns.filter(m => m !== `${data.id}@${data.title}`)
 
         try {
             sendHandler()
@@ -87,6 +91,13 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
     return (
         <>
+            <ConfirmModal
+                title='Удалить?'
+                isOpen={isOpen}
+                toggle={toggle}
+                cancelHandler={closeHandler}
+                confirmHandler={deleteHandler}
+            />
             <Modal.Content>
                 <form name='mounting' className={classes.form}>
                     <Input
@@ -107,7 +118,7 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                 <p className={classes.offset} />
                 {data ? (
                     <>
-                        <Button variant='danger' fullWidth onClick={deleteHandler}>
+                        <Button variant='danger' fullWidth onClick={toggle}>
                             Удалить
                         </Button>
                         <p className={classes.offset} />

@@ -73,20 +73,21 @@ export default function AdminLayout() {
     const updateTempHandler = (value: string) => {
         setFormType("temp")
         const parts = value.split("@")
-        setData({ index: parts[0], title: parts[1] })
+        setData({ id: parts[0], title: parts[1] })
         toggle()
     }
 
     const updateModHandler = (value: string) => {
         setFormType("mod")
         const parts = value.split("@")
-        setData({ index: parts[0], title: parts[1], short: parts[2], description: parts[3] })
+        setData({ id: parts[0], title: parts[1], short: parts[2], description: parts[3] })
         toggle()
     }
 
     const updateMounHandler = (value: string) => {
         setFormType("moun")
-        setData({ title: value })
+        const parts = value.split("@")
+        setData({ id: parts[0], title: parts[1] })
         toggle()
     }
 
@@ -111,7 +112,7 @@ export default function AdminLayout() {
                 </div>
             )}
             <Modal isOpen={isOpen} toggle={toggle}>
-                <Modal.Header title='Добавить' onClose={toggle} />
+                <Modal.Header title={!data ? "Добавить" : "Редактировать"} onClose={toggle} />
                 {formType === "mat" && (
                     <MatForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
                 )}
@@ -218,9 +219,10 @@ export default function AdminLayout() {
                     updateHandler={updateMounHandler}
                 >
                     {moun?.split(";").map(m => {
+                        const parts = m.split("@")
                         return (
                             <Item key={m} value={m}>
-                                {m}
+                                {parts[1]}
                             </Item>
                         )
                     })}

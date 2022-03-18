@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import AdditService from "../../service/addit"
 import { Dispatch, RootState } from "../../store/store"
 import { IAddit, IGrap } from "../../types/addit"
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
+import { useModal } from "../Modal/hooks/useModal"
 import { Modal } from "../Modal/Modal"
 import { Button } from "../UI/Button/Button"
 import { Input } from "../UI/Input/Input"
@@ -26,6 +28,8 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
 
     const {
         register,
@@ -77,7 +81,7 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
         try {
             sendHandler()
-            await AdditService.updateMat(addit.id, graps.join(";"))
+            await AdditService.updateGrap(addit.id, graps.join(";"))
             let add: IAddit = {} as IAddit
             Object.assign(add, addit, { graphite: graps.join(";") })
             dispatch.addit.setAddit(add)
@@ -92,12 +96,19 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
     return (
         <>
+            <ConfirmModal
+                title='Удалить?'
+                isOpen={isOpen}
+                toggle={toggle}
+                cancelHandler={closeHandler}
+                confirmHandler={deleteHandler}
+            />
             <Modal.Content>
                 <form name='materials' className={classes.form}>
                     <Input
                         name='short'
                         label='Короткое обозначение'
-                        placeholder='3'
+                        placeholder='2'
                         register={register}
                         rule={{ required: true }}
                         error={errors.short}
@@ -106,7 +117,7 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                     <Input
                         name='title'
                         label='Название'
-                        placeholder='F.G - ТРГ (агрессивные среды)'
+                        placeholder='общепромышленное применение (0,5 % золы)'
                         register={register}
                         rule={{ required: true }}
                         error={errors.title}
@@ -115,7 +126,7 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                     <Input
                         name='description'
                         label='Для описания'
-                        placeholder='ТРГ (FG)'
+                        placeholder='с содержанием золы не более 0,5%'
                         register={register}
                         rule={{ required: true }}
                         error={errors.description}
@@ -130,7 +141,7 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                 <p className={classes.offset} />
                 {data ? (
                     <>
-                        <Button variant='danger' fullWidth onClick={deleteHandler}>
+                        <Button variant='danger' fullWidth onClick={toggle}>
                             Удалить
                         </Button>
                         <p className={classes.offset} />

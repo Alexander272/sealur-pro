@@ -22,8 +22,9 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
 
         let tmp: string[] = []
         if (moun === "*") {
-            addit?.mounting.split(";").forEach((_, idx) => {
-                if (idx.toString() !== value) tmp.push(idx.toString())
+            addit?.mounting.split(";").forEach(m => {
+                let id = m.split("@")[0]
+                if (id !== value) tmp.push(id)
             })
             onChange(tmp.join(";"))
         } else {
@@ -38,7 +39,7 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
                     onChange("*")
                     return
                 }
-                tmp.sort((a, b) => +a - +b)
+                // tmp.sort((a, b) => +a - +b)
                 onChange(tmp.join(";"))
             }
         }
@@ -47,8 +48,9 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
     const renderMoun = () => {
         return addit?.mounting.split(";").map((m, idx) => {
             let isAdded = false
+            const parts = m.split("@")
             if (moun === "*") isAdded = true
-            else if (moun.split(";").includes(idx.toString())) isAdded = true
+            else if (moun.split(";").includes(parts[0])) isAdded = true
 
             return (
                 <div key={m} className={classItem}>
@@ -57,7 +59,7 @@ export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) =
                         id={m}
                         checked={isAdded}
                         onChange={mounHandler(idx.toString())}
-                        label={m}
+                        label={parts[1]}
                     />
                 </div>
             )

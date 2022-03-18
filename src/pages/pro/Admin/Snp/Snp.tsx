@@ -1,17 +1,23 @@
 import { useCallback, useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { AdminGrap } from "../../../../components/AdminGrap/AdminGrap"
 import { AdminMat } from "../../../../components/AdminMat/AdminMat"
 import { AdminMoun } from "../../../../components/AdminMoun/AdminMoun"
 import { Materials } from "../../../../components/Materials/Materials"
+import { useModal } from "../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../components/Modal/Modal"
 import { SizeTable } from "../../../../components/SizeTable/SizeTable"
 import { Button } from "../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
+import { Input } from "../../../../components/UI/Input/Input"
 import { Loader } from "../../../../components/UI/Loader/Loader"
 import { Select } from "../../../../components/UI/Select/Select"
+import AdditService from "../../../../service/addit"
 import ReadService from "../../../../service/read"
 import { Dispatch, RootState } from "../../../../store/store"
+import { IAddit, IFiller } from "../../../../types/addit"
 import { ISize, ISizeReq } from "../../../../types/size"
 import { ISNP, ISNPReq } from "../../../../types/snp"
 import classes from "../pages.module.scss"
@@ -30,15 +36,26 @@ export default function SNP() {
     const [curSnp, setCurSnp] = useState<ISNP | null>(null)
     const [type, setType] = useState("Д")
 
-    const [filler, setFiller] = useState("0")
+    const [filler, setFiller] = useState("")
     const [tm, setTm] = useState("")
     const [temp, setTemp] = useState("0")
 
     const [isOpenTable, setIsOpenTable] = useState(false)
 
     const [sizes, setSizes] = useState<ISize[]>([])
+    const [data, setData] = useState<IFiller | null>(null)
+    const [sending, setSending] = useState(false)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        formState: { errors },
+    } = useForm<IFiller>()
 
     useEffect(() => {
         if (!stfl.length) dispatch.addit.getStFl()
@@ -73,22 +90,21 @@ export default function SNP() {
 
     useEffect(() => {
         if (!snp.length) {
-            console.log("res.data = null")
             setTm("")
             setTemp("")
             setCurSnp(null)
             return
         }
 
-        console.log("res.data != null")
         const tmp = snp.filter(s => s.typeFlId.includes(curSnp?.typeFlId || ""))
         let index = tmp.findIndex(s => s.typePr === type)
         if (index === -1) index = 0
 
         if (index === 0) setType(tmp[index].typePr)
         const fil = tmp[index].fillers.split(";")[0]
-        setTm(fil)
-        setTemp(fil.split(">")[0])
+        setFiller(fil.split("&")[0])
+        setTm(fil.split("&")[1])
+        setTemp(fil.split("&")[1].split(">")[0])
 
         setCurSnp(tmp[index])
     }, [curSnp?.typeFlId, snp, type])
@@ -166,25 +182,36 @@ export default function SNP() {
         else toast.error("Перед выбором необходимо добавить температуру")
     }
     const fillerHandler = (filler: string) => () => {
+        const fil = curSnp?.fillers.split(";").find(f => f.split("&")[0] === filler) || ""
+        if (!fil) {
+            toast.error("Наполнитель не добавлен")
+            return
+        }
+
         setFiller(filler)
-        const fil = curSnp?.fillers.split(";")[+filler] || ""
-        setTm(fil)
-        setTemp(fil.split(">")[0])
+        const tm = fil.split("&")[1]
+        setTm(tm)
+        setTemp(tm?.split(">")[0] || "")
     }
 
-    const addFillerHandler = (idx: number) => () => {
-        const tmp = curSnp?.fillers.split(";") || []
-        if (idx.toString() === filler) {
-            if (tmp[idx] === "") {
-                tmp[idx] = "0>"
-                setTm("0>")
+    const addFillerHandler = (id: string) => () => {
+        let tmp = curSnp?.fillers.split(";") || []
+        if (id === filler) {
+            const cur = tmp.find(f => f.split("&")[0] === id)
+            if (cur) {
+                tmp = tmp.filter(f => f.split("&")[0] !== id)
+                setTm("")
             } else {
-                tmp[idx] = ""
+                tmp.push(`${id}&`)
                 setTm("")
             }
         } else {
-            if (tmp[idx] === "") tmp[idx] = "0>"
-            else tmp[idx] = ""
+            const cur = tmp.find(f => f.split("&")[0] === id)
+            if (cur) {
+                tmp = tmp.filter(f => f.split("&")[0] !== id)
+            } else {
+                tmp.push(`${id}&`)
+            }
         }
 
         let snp: ISNP = {} as ISNP
@@ -193,11 +220,8 @@ export default function SNP() {
     }
 
     const addTempHandler = (temp: string) => () => {
-        if (tm === "") {
-            toast.error("Наполнитель не добавлен")
-            return
-        }
         let tmp = tm.split("@")
+        if (tmp[0] === "") tmp = []
         let orig = ""
         tmp.forEach(t => {
             if (t.split(">")[0] === temp) orig = t
@@ -217,8 +241,11 @@ export default function SNP() {
 
         let fillers = curSnp?.fillers || ""
         let snp: ISNP = {} as ISNP
+
         if (curSnp)
-            snp = Object.assign(snp, curSnp, { fillers: fillers.replace(tm, tmp.join("@")) })
+            snp = Object.assign(snp, curSnp, {
+                fillers: fillers.replace(`${filler}&${tm}`, `${filler}&${tmp.join("@")}`),
+            })
         setCurSnp(snp)
     }
 
@@ -252,7 +279,10 @@ export default function SNP() {
 
         let fillers = curSnp?.fillers || ""
         let snp: ISNP = {} as ISNP
-        if (curSnp) snp = Object.assign(snp, curSnp, { fillers: fillers.replace(tm, newTm) })
+        if (curSnp)
+            snp = Object.assign(snp, curSnp, {
+                fillers: fillers.replace(`${filler}&${tm}`, `${filler}&${newTm}`),
+            })
         setCurSnp(snp)
     }
 
@@ -263,15 +293,12 @@ export default function SNP() {
     }
 
     const grapHandler = (value: string) => {
-        console.log(value)
-
         let snp: ISNP = {} as ISNP
         if (curSnp) snp = Object.assign(snp, curSnp, { graphite: value })
         setCurSnp(snp)
     }
 
     const defMatHandler = (name: string) => (value: string) => {
-        console.log(name, value)
         let snp: ISNP = {} as ISNP
         if (name === "frame") {
             let newFrame = curSnp?.frame?.split("&")[0] + "&" + value
@@ -289,30 +316,112 @@ export default function SNP() {
     }
 
     const matHandler = (value: string, name: string) => {
+        if (!curSnp) return
+
         let snp: ISNP = {} as ISNP
         let defValue = ""
+
         if (value === "*") defValue = addit?.materials.split(";")[0].split("@")[0] || ""
-        else defValue = addit?.materials.split(";")[+value.split(";")[0]].split("@")[0] || ""
+        else {
+            let tmp =
+                addit?.materials.split(";").find(m => m.split("@")[0] === value.split(";")[0]) || ""
+            defValue = tmp.split("@")[0]
+            console.log(defValue)
+        }
 
         if (name === "frame") {
             let newFrame = ""
-            if (value !== "") newFrame = value + "&" + (curSnp?.frame?.split("&")[1] || defValue)
+            let isInc = value.split(";").includes(curSnp.frame!.split("&")[1])
+
+            if (value !== "")
+                newFrame = value + "&" + (isInc ? curSnp.frame!.split("&")[1] : defValue)
             snp = Object.assign(snp, curSnp, { frame: newFrame })
         }
         if (name === "ir") {
             let newIr = ""
-            if (value !== "") newIr = value + "&" + (curSnp?.ir?.split("&")[1] || defValue)
+            let isInc = value.split(";").includes(curSnp.ir!.split("&")[1])
+
+            if (value !== "") newIr = value + "&" + (isInc ? curSnp.ir!.split("&")[1] : defValue)
             snp = Object.assign(snp, curSnp, { ir: newIr })
         }
         if (name === "or") {
             let newOr = ""
-            if (value !== "") newOr = value + "&" + (curSnp?.or?.split("&")[1] || defValue)
+            let isInc = value.split(";").includes(curSnp.or!.split("&")[1])
+
+            if (value !== "") newOr = value + "&" + (isInc ? curSnp.or?.split("&")[1] : defValue)
             snp = Object.assign(snp, curSnp, { or: newOr })
         }
         setCurSnp(snp)
     }
 
+    const openFillerHandler = () => {
+        setData(null)
+        setValue("short", "")
+        setValue("title", "")
+        setValue("description", "")
+        toggle()
+    }
+
+    const updateFillerHandeler = (filler: string) => () => {
+        const parts = filler.split("@")
+        setData({ short: parts[0], title: parts[1], description: parts[2] })
+        setValue("short", parts[0])
+        setValue("title", parts[1])
+        setValue("description", parts[2])
+        toggle()
+    }
+
     const openTableHandler = () => setIsOpenTable(prev => !prev)
+
+    const deleteHandler = async () => {
+        if (!addit || !data) return
+        let fils = addit?.fillers.split(";") || []
+        fils = fils.filter(f => f !== `${data.short}@${data.title}@${data.description}`)
+        console.log(fils)
+
+        try {
+            setSending(true)
+            await AdditService.updateFillers(addit.id, fils.join(";"))
+            let add: IAddit = {} as IAddit
+            Object.assign(add, addit, { fillers: fils.join(";") })
+            dispatch.addit.setAddit(add)
+            toast.success("Успешно удалено")
+            toggle()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            setSending(false)
+        }
+    }
+
+    const submitHandler = async (form: any) => {
+        console.log(form)
+        if (!addit) return
+        let fils = addit.fillers.split(";") || []
+        if (!data) {
+            fils?.push(`${form.short}@${form.title}@${form.description}`)
+        } else {
+            fils = fils?.map(f => {
+                if (f === `${data.short}@${data.title}@${data.description}`)
+                    return `${form.short}@${form.title}@${form.description}`
+                return f
+            })
+        }
+
+        try {
+            setSending(true)
+            await AdditService.updateFillers(addit.id, fils.join(";"))
+            let add: IAddit = {} as IAddit
+            Object.assign(add, addit, { fillers: fils.join(";") })
+            dispatch.addit.setAddit(add)
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            toggle()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            setSending(false)
+        }
+    }
 
     const renderTypes = () => {
         return types.map(t => {
@@ -342,6 +451,7 @@ export default function SNP() {
         return addit?.temperature.split(";").map(t => {
             const parts = t.split("@")
             let isAdded = false
+
             tm.split("@").forEach(t => {
                 if (t.split(">")[0] === parts[0]) isAdded = true
             })
@@ -400,6 +510,11 @@ export default function SNP() {
 
     return (
         <div className={classes.page}>
+            {sending && (
+                <div className={classes.loader}>
+                    <Loader background='fill' />
+                </div>
+            )}
             {/* <div className={classes.line}>
                 <List title='Стандарт на прокладку'>
                     {stand.map(s => (
@@ -429,29 +544,90 @@ export default function SNP() {
                 <div className={classes.line}>{renderTypes()}</div>
             </div>
 
+            <Modal isOpen={isOpen} toggle={toggle}>
+                <Modal.Header title={!data ? "Добавить" : "Редактировать"} onClose={toggle} />
+                <Modal.Content>
+                    <form className={classes.form}>
+                        <Input
+                            name='short'
+                            label='Короткое обозначение'
+                            placeholder='3'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.short}
+                            errorText='Поле не заполнено'
+                        />
+                        <Input
+                            name='title'
+                            label='Название'
+                            placeholder='F.G - ТРГ (агрессивные среды)'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.title}
+                            errorText='Поле не заполнено'
+                        />
+                        <Input
+                            name='description'
+                            label='Для описания'
+                            placeholder='ТРГ (FG)'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.description}
+                            errorText='Поле не заполнено'
+                        />
+                    </form>
+                </Modal.Content>
+                <Modal.Footer>
+                    <Button variant='grayPrimary' fullWidth onClick={toggle}>
+                        Отмена
+                    </Button>
+                    <p className={classes.offset} />
+                    {data ? (
+                        <>
+                            <Button variant='danger' fullWidth onClick={deleteHandler}>
+                                Удалить
+                            </Button>
+                            <p className={classes.offset} />
+                        </>
+                    ) : null}
+                    <Button fullWidth onClick={handleSubmit(submitHandler)}>
+                        {data ? "Сохранить" : "Добавить"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             <div className={classes.line}>
                 <div className={classes.fil}>
                     <p className={classes.titleGroup}>Тип наполнителя</p>
-                    <p className={classes.add}>Добавить</p>
+                    <p className={classes.add} onClick={openFillerHandler}>
+                        Добавить
+                    </p>
                     <div className={`${classes.list} scroll`}>
-                        {addit?.fillers.split(";").map((fil, idx) => {
+                        {addit?.fillers.split(";").map(fil => {
                             const parts = fil.split("@")
-                            const f = curSnp?.fillers.split(";")[idx] || ""
+
+                            const f = curSnp?.fillers
+                                .split(";")
+                                .find(f => f.split("&")[0] === parts[0])
+
                             return (
                                 <div key={parts[0]} className={classes.listItem}>
                                     <Checkbox
                                         name={parts[1]}
                                         id={parts[1]}
-                                        checked={f.length > 0}
-                                        onChange={addFillerHandler(idx)}
+                                        checked={!!f}
+                                        onChange={addFillerHandler(parts[0])}
                                     />
                                     <p
                                         className={`${classes.filItem} ${
-                                            idx.toString() === filler ? classes.active : ""
+                                            parts[0] === filler ? classes.active : ""
                                         }`}
-                                        onClick={fillerHandler(idx.toString())}
+                                        onClick={fillerHandler(parts[0])}
                                     >
                                         {parts[0]} {parts[1]}
+                                    </p>
+                                    <p className={classes.icon} onClick={updateFillerHandeler(fil)}>
+                                        &#9998;
                                     </p>
                                 </div>
                             )

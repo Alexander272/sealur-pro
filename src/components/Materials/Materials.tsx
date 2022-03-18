@@ -32,7 +32,8 @@ export const Materials: React.VFC<Props> = ({
 
     const renderMat = () => {
         // const str = mater.substring(mater.indexOf(";") + 1)
-        const mat = splitString(mater, addit?.materials || "", ";")
+        const mat = splitString(mater, addit?.materials || "")
+        // console.log(mat)
 
         return mat?.map(m => {
             const parts = m.split("@")

@@ -18,7 +18,7 @@ export const Graphite: React.VFC<Props> = ({ className, classTitle, value, onCha
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const renderGrap = () => {
-        const graphite = splitString(grap, addit?.graphite || "", ";")
+        const graphite = splitString(grap, addit?.graphite || "")
 
         return graphite?.map(g => {
             const parts = g.split("@")

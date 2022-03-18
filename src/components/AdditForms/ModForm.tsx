@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import AdditService from "../../service/addit"
 import { Dispatch, RootState } from "../../store/store"
 import { IAddit, IMod } from "../../types/addit"
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
+import { useModal } from "../Modal/hooks/useModal"
 import { Modal } from "../Modal/Modal"
 import { Button } from "../UI/Button/Button"
 import { Input } from "../UI/Input/Input"
@@ -26,6 +28,8 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
 
     const {
         register,
@@ -50,8 +54,8 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
             mods?.push(`${newIdx}@${form.title}@${form.short}@${form.description}`)
         } else {
             mods = mods?.map(m => {
-                if (m.includes(`${data.index}@${data.title}`))
-                    return `${data.index}@${form.title}@${form.short}@${form.description}`
+                if (m.includes(`${data.id}@${data.title}`))
+                    return `${data.id}@${form.title}@${form.short}@${form.description}`
                 return m
             })
         }
@@ -74,7 +78,7 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
     const deleteHandler = async () => {
         if (!addit || !data) return
         let mods = addit?.mod.split(";") || []
-        mods = mods.filter(m => !m.includes(`${data.index}@${data.title}`))
+        mods = mods.filter(m => !m.includes(`${data.id}@${data.title}`))
 
         try {
             sendHandler()
@@ -93,6 +97,13 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
 
     return (
         <>
+            <ConfirmModal
+                title='Удалить?'
+                isOpen={isOpen}
+                toggle={toggle}
+                cancelHandler={closeHandler}
+                confirmHandler={deleteHandler}
+            />
             <Modal.Content>
                 <form name='temperature' className={classes.form}>
                     <Input
@@ -125,7 +136,7 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
                 <p className={classes.offset} />
                 {data ? (
                     <>
-                        <Button variant='danger' fullWidth onClick={deleteHandler}>
+                        <Button variant='danger' fullWidth onClick={toggle}>
                             Удалить
                         </Button>
                         <p className={classes.offset} />
