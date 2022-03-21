@@ -84,15 +84,18 @@ export default function SNP() {
         }
     }, [])
 
-    useEffect(() => {
-        if (stfl.length) {
-            fetchSnp({ standId: stfl[0].standId, flangeId: stfl[0].flangeId })
-            setSt(stfl[0].id)
-        }
-    }, [stfl, fetchSnp])
+    // useEffect(() => {
+    //     if (stfl.length) {
+    //         fetchSnp({ standId: stfl[0].standId, flangeId: stfl[0].flangeId })
+    //         setSt(stfl[0].id)
+    //     }
+    // }, [stfl, fetchSnp])
+
+    //TODO добавить изменение размеров и сохранение изменений снп + сохрание создания новой прокладки снп
 
     useEffect(() => {
         if (!snp.length) {
+            setFiller("")
             setTm("")
             setTemp("")
             setCurSnp(null)
@@ -106,9 +109,9 @@ export default function SNP() {
 
         if (index === 0) setType(tmp[index].typePr)
         const fil = tmp[index].fillers.split(";")[0] || ""
-        setFiller(fil.split("&")[0])
-        setTm(fil.split("&")[1])
-        setTemp(fil.split("&")[1]?.split(">")[0])
+        setFiller(fil.split("&")[0] || "")
+        setTm(fil.split("&")[1] || "")
+        setTemp(fil.split("&")[1]?.split(">")[0] || "")
 
         setCurSnp(tmp[index])
     }, [curSnp?.typeFlId, snp, type])
@@ -129,6 +132,10 @@ export default function SNP() {
     useEffect(() => {
         const sf = stfl.find(s => s.id === st)
         if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
+        else if (stfl.length) {
+            fetchSnp({ standId: stfl[0].standId, flangeId: stfl[0].flangeId })
+            setSt(stfl[0].id)
+        }
     }, [addit, st, stfl, fetchSnp])
 
     const stHandler = (value: string) => {
@@ -434,6 +441,17 @@ export default function SNP() {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
             setSending(false)
+        }
+    }
+
+    const saveHandler = () => {
+        if (!curSnp?.fillers) {
+            toast.error("Наполнитель не выбран")
+            return
+        }
+        if (!curSnp?.frame || !curSnp.ir || !curSnp.or) {
+            toast.error("Метериалы не выбраны")
+            return
         }
     }
 
@@ -758,7 +776,9 @@ export default function SNP() {
                     Размеры
                 </Button>
                 <span className={classes.full} />
-                <Button rounded='round'>Сохранить</Button>
+                <Button rounded='round' onClick={saveHandler}>
+                    Сохранить
+                </Button>
             </div>
 
             {isOpenTable && (

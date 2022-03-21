@@ -23,24 +23,25 @@ export const SizeTable: FC<Props> = ({ data }) => {
                 ))}
             </div>
             <div className={`${classes.body} scroll`}>
-                {data.map(d => (
-                    <div
-                        className={`${classes.row} ${classes.tr}`}
-                        key={d.id}
-                        onClick={clickHandler(d.id)}
-                    >
-                        <p className={classes.td}>{d.dn}</p>
-                        <p className={classes.td}>{d.pn}</p>
-                        <p className={classes.td}>{d.typePr}</p>
-                        <p className={classes.td}>{d.d4}</p>
-                        <p className={classes.td}>{d.d3}</p>
-                        <p className={classes.td}>{d.d2}</p>
-                        <p className={classes.td}>{d.d1}</p>
-                        <p className={classes.td}>{d.h}</p>
-                        <p className={classes.td}>{d.s2}</p>
-                        <p className={classes.td}>{d.s3}</p>
-                    </div>
-                ))}
+                {data &&
+                    data.map(d => (
+                        <div
+                            className={`${classes.row} ${classes.tr}`}
+                            key={d.id}
+                            onClick={clickHandler(d.id)}
+                        >
+                            <p className={classes.td}>{d.dn}</p>
+                            <p className={classes.td}>{d.pn}</p>
+                            <p className={classes.td}>{d.typePr}</p>
+                            <p className={classes.td}>{d.d4}</p>
+                            <p className={classes.td}>{d.d3}</p>
+                            <p className={classes.td}>{d.d2}</p>
+                            <p className={classes.td}>{d.d1}</p>
+                            <p className={classes.td}>{d.h}</p>
+                            <p className={classes.td}>{d.s2}</p>
+                            <p className={classes.td}>{d.s3}</p>
+                        </div>
+                    ))}
             </div>
         </div>
     )

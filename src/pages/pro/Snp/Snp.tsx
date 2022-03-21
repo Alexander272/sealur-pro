@@ -13,9 +13,9 @@ import { Dispatch, RootState } from "../../../store/store"
 import { ISNP, ISNPReq } from "../../../types/snp"
 import { ISize, ISizeReq } from "../../../types/size"
 import ReadService from "../../../service/read"
-import classes from "../Putg/putg.module.scss"
 import { FileInput } from "../../../components/UI/FileInput/FileInput"
 import { TempMod } from "../../../components/TempMod/TempMod"
+import classes from "../style/pages.module.scss"
 
 const types = [
     {
@@ -607,6 +607,7 @@ export default function Snp() {
                                 src={curSnp?.typeUrl}
                                 alt='gasket drawing'
                             />
+                            {/* Элементы отвечающие за подкраску участков прокладки */}
                             {isOpenIr && (
                                 <>
                                     {createExcretion("ir", "Left")}
@@ -626,6 +627,7 @@ export default function Snp() {
                                 </>
                             )}
 
+                            {/* Вывод размеров */}
                             {type.value === "Д" || type.value === "Г" ? (
                                 <>
                                     <p className={`${classes.sizes} ${classes.e} ${classes.h}`}>

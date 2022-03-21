@@ -80,10 +80,6 @@ export const TempForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         if (!addit || !data) return
         let temps = addit?.temperature.split(";") || []
         temps = temps.filter(t => t !== `${data.id}@${data.title}`)
-        // temps = temps.map((t, idx) => {
-        //     let parts = t.split("@")
-        //     return `${idx}@${parts[1]}`
-        // })
 
         try {
             sendHandler()

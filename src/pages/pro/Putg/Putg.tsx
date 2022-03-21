@@ -4,7 +4,7 @@ import { Tabs } from "../../../components/Tabs/Tabs"
 import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../../components/UI/Input/Input"
 import { Select } from "../../../components/UI/Select/Select"
-import classes from "./putg.module.scss"
+import classes from "../style/pages.module.scss"
 
 const { Option } = Select
 
