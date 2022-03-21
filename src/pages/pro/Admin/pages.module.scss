@@ -157,32 +157,3 @@
         cursor: pointer;
     }
 }
-
-.form {
-    & > div {
-        margin-bottom: 10px;
-        & > label {
-            margin-bottom: 3px;
-            margin-left: 10px;
-        }
-    }
-}
-
-.offset {
-    width: 60px;
-}
-
-.icon {
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    padding: 5px;
-    line-height: 20px;
-    border-radius: 8px;
-    color: var(--button-color);
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-        background: rgba(0, 119, 255, 0.06);
-    }
-}

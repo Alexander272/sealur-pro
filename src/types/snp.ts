@@ -19,20 +19,15 @@ export interface ISNPReq {
     flangeId: string
 }
 
-export interface ISNPUpdate extends ISNP {
-    standId: string
-    flangeId: string
-}
-
-export interface ISNPCreate {
+export interface ISNPDTO {
     standId: string
     flangeId: string
     typeFlId: string
     typePr: string
     fillers: string
-    frame?: string
-    ir?: string
-    or?: string
+    frame: string
+    ir: string
+    or: string
     mounting: string
     graphite: string
 }
