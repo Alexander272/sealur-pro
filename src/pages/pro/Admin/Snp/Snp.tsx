@@ -4,12 +4,13 @@ import { toast } from "react-toastify"
 import { AdminFiller } from "../../../../components/AdminFiller/AdminFiller"
 import { AdminGrap } from "../../../../components/AdminGrap/AdminGrap"
 import { AdminMat } from "../../../../components/AdminMat/AdminMat"
+import { AdminMod } from "../../../../components/AdminMod/AdminMod"
 import { AdminMoun } from "../../../../components/AdminMoun/AdminMoun"
 import { AdminTemp } from "../../../../components/AdminTemp/AdminTemp"
+import { AdminType } from "../../../../components/AdminType/AdminType"
 import { Materials } from "../../../../components/Materials/Materials"
 import { SizeTable } from "../../../../components/SizeTable/SizeTable"
 import { Button } from "../../../../components/UI/Button/Button"
-import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
 import { Loader } from "../../../../components/UI/Loader/Loader"
 import { Select } from "../../../../components/UI/Select/Select"
 import ReadService from "../../../../service/read"
@@ -20,8 +21,6 @@ import { ISNP, ISNPDTO, ISNPReq } from "../../../../types/snp"
 import classes from "../pages.module.scss"
 
 const { Option } = Select
-
-const types = ["А", "Б", "В", "Г", "Д"]
 
 export default function SNP() {
     const loading = useSelector((state: RootState) => state.addit.loading)
@@ -128,54 +127,28 @@ export default function SNP() {
     const sendHandler = () => setSending(prev => !prev)
 
     const stHandler = (value: string) => {
-        // const sf = stfl.find(s => s.id === value)
-        // if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
         setSt(value)
     }
 
-    const addTypeHandler = (type: string) => async () => {
-        console.log(type)
-        const tmp = snp.find(s => s.typePr.includes(type))
-        if (!tmp) {
-            console.log("not found")
-            let typeFlId = "1"
-            if (type === "Б" || type === "В") typeFlId = "2"
-            if (type === "А") typeFlId = "3"
-            const newPr: ISNP = {
-                id: "new",
-                typeFlUrl: "",
-                typeUrl: "",
-                typeFlId: typeFlId,
-                typePr: type,
-                fillers: "",
-                materials: "",
-                defMat: "",
-                mounting: "*",
-                graphite: "*",
-            }
-
-            setSnp(prev => [...prev, newPr])
-            setCurSnp(newPr)
+    const changeTypeHandler = (type: string, snp: ISNP, isNew: boolean) => {
+        if (isNew) {
+            setSnp(prev => [...prev, snp])
+            setCurSnp(snp)
             setType(type)
         } else {
-            console.log("found")
-
-            // setSnp(prev => prev.filter(s => s.typePr !== type))
-            // if (curSnp?.typePr === type) setCurSnp(null)
+            setSnp(prev => prev.filter(s => s.typePr !== type))
+            if (curSnp?.typePr === type) setCurSnp(null)
         }
     }
+    const typeHandler = (type: string, snp: ISNP, isNew: boolean | undefined) => {
+        console.log(type, snp, isNew)
 
-    const typeHandler = (type: string) => () => {
+        if (isNew) setSnp(prev => [...prev, snp])
         setType(type)
-        const tmp = snp.filter(s => s.typePr.includes(type))
-        if (!tmp.length) {
-            setCurSnp(null)
-            setFiller("")
-            setTm("")
-            return
-        }
-
-        setCurSnp(tmp[0])
+        setCurSnp(snp)
+    }
+    const denyTypeHandler = () => {
+        setSnp(prev => prev.filter(s => s.id !== "new"))
     }
 
     const fillerHandler = (filler: string, fillers: string) => {
@@ -198,82 +171,37 @@ export default function SNP() {
         }
     }
 
-    const tempHandler = (temp: string) => () => {
-        let isTemp = false
-        tm.split("@").forEach(t => {
-            if (t.split(">")[0] === temp) isTemp = true
-        })
-
-        if (isTemp) setTemp(temp)
-        //TODO можно выбирать температуры при ее добавлении
-        else toast.error("Перед выбором необходимо добавить температуру")
-    }
-    const addTempHandler = (temp: string) => () => {
-        let tmp = tm.split("@")
-        if (tmp[0] === "") tmp = []
-        let orig = ""
-        tmp.forEach(t => {
-            if (t.split(">")[0] === temp) orig = t
-            return ""
-        })
-
-        if (orig === "") {
-            tmp.push(`${temp}>`)
-            tmp.sort((a, b) => {
-                return +a.split(">")[0] - +b.split(">")[0]
+    const tempHandler = (temp: string, temps: string) => {
+        setTemp(temp)
+        if (temps && curSnp) {
+            setTm(temps)
+            setCurSnp({
+                ...curSnp,
+                fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${temps}`),
             })
-        } else {
-            tmp = tmp.filter(t => t.split(">")[0] !== temp)
         }
-
-        setTm(tmp.join("@"))
-
-        let fillers = curSnp?.fillers || ""
-        let snp: ISNP = {} as ISNP
-
-        if (curSnp)
-            snp = Object.assign(snp, curSnp, {
-                fillers: fillers.replace(`${filler}&${tm}`, `${filler}&${tmp.join("@")}`),
+    }
+    const changeTempHandler = (temps: string, selected: boolean) => {
+        if (selected) {
+            setTemp("")
+        }
+        if (curSnp) {
+            setTm(temps)
+            setCurSnp({
+                ...curSnp,
+                fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${temps}`),
             })
-        setCurSnp(snp)
+        }
     }
 
-    const addModHandler = (mod: string) => () => {
-        if (tm === "") {
-            toast.error("Наполнитель не добавлен")
-            return
-        }
-        let orig = ""
-        tm.split("@").forEach(t => {
-            if (t.split(">")[0] === temp) orig = t
-            return ""
-        })
-
-        if (orig === "") {
-            //TODO можно выбирать (добавлять) температуру при ее добавлении
-            toast.error("Температура не добавлена")
-            return
-        }
-
-        let tmp = orig.split(">")[1].split(",")
-        if (tmp.length === 1 && tmp[0] === "") tmp = []
-
-        if (tmp.includes(mod)) {
-            tmp = tmp.filter(t => t !== mod)
-        } else {
-            tmp.push(mod)
-        }
-
-        const newTm = tm.replace(orig, `${temp}>${tmp.join(",")}`)
-        setTm(newTm)
-
-        let fillers = curSnp?.fillers || ""
-        let snp: ISNP = {} as ISNP
-        if (curSnp)
-            snp = Object.assign(snp, curSnp, {
-                fillers: fillers.replace(`${filler}&${tm}`, `${filler}&${newTm}`),
+    const changeModHandler = (newTm: string) => {
+        if (curSnp) {
+            setTm(newTm)
+            setCurSnp({
+                ...curSnp,
+                fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${newTm}`),
             })
-        setCurSnp(snp)
+        }
     }
 
     const mounHandler = (value: string) => {
@@ -321,6 +249,19 @@ export default function SNP() {
 
     const openTableHandler = () => setIsOpenTable(prev => !prev)
 
+    const savedSnpHandler = (id: string, type: string, newSnp: ISNP | null) => {
+        if (curSnp?.id === "new") {
+            let tmp = [...snp]
+            if (newSnp) tmp = [...snp, newSnp]
+            const idx = tmp.findIndex(s => s.id === "new")
+            tmp[idx] = { ...curSnp, id }
+            setSnp(tmp)
+        }
+
+        setType(type)
+        setCurSnp(newSnp)
+    }
+
     const saveHandler = async () => {
         if (!curSnp) {
             toast.error("Тип снп не добавлен")
@@ -351,13 +292,13 @@ export default function SNP() {
                 mounting: curSnp.mounting,
                 graphite: curSnp.graphite,
             }
+
             if (curSnp.id === "new") {
-                const res = await SNPService.create(data)
+                // const res = await SNPService.create(data)
                 const newSnp = [...snp]
                 const idx = newSnp.findIndex(s => s.id === "new")
-                newSnp[idx] = { ...curSnp, id: res.id || "" }
+                newSnp[idx] = { ...curSnp, id: Date.now().toString() || "" }
                 setSnp(newSnp)
-
                 toast.success("Успешно создано")
             } else {
                 await SNPService.update(data, curSnp.id)
@@ -368,87 +309,6 @@ export default function SNP() {
         } finally {
             setSending(false)
         }
-    }
-
-    const renderTypes = () => {
-        return types.map(t => {
-            let s = snp.find(s => s.typePr === t)
-
-            return (
-                <div key={t} className={classes.types}>
-                    <p
-                        onClick={typeHandler(t)}
-                        className={`${classes.type} ${type === t ? classes.active : ""}`}
-                    >
-                        {t}
-                    </p>
-                    <Checkbox
-                        id={t}
-                        name={t}
-                        onChange={addTypeHandler(t)}
-                        checked={!!s}
-                        label={!s ? "Добавить" : "Удалить"}
-                    />
-                </div>
-            )
-        })
-    }
-
-    const renderTemp = () => {
-        return addit?.temperature.split(";").map(t => {
-            const parts = t.split("@")
-            let isAdded = false
-
-            tm.split("@").forEach(t => {
-                if (t.split(">")[0] === parts[0]) isAdded = true
-            })
-
-            return (
-                <div key={parts[0]} className={classes.listItem}>
-                    <Checkbox
-                        name={parts[1]}
-                        id={parts[1]}
-                        checked={isAdded}
-                        onChange={addTempHandler(parts[0])}
-                    />
-                    <p
-                        className={`${classes.filItem} ${temp === parts[0] ? classes.active : ""}`}
-                        onClick={tempHandler(parts[0])}
-                    >
-                        {parts[1]}
-                    </p>
-                </div>
-            )
-        })
-    }
-
-    const renderMod = () => {
-        return addit?.mod.split(";").map(m => {
-            let isAdded = false
-            const parts = m.split("@")
-            tm.split("@").forEach(t => {
-                if (t !== "") {
-                    if (t.split(">")[0] === temp) {
-                        if (t.split(">")[1].includes(parts[0])) isAdded = true
-                    }
-                }
-            })
-
-            return (
-                <div key={parts[0]} className={classes.listItem}>
-                    <Checkbox
-                        name={parts[1]}
-                        id={parts[1]}
-                        checked={isAdded}
-                        onChange={addModHandler(parts[0])}
-                        label={parts[1]}
-                    />
-                    {/* <p className={classes.filItem} onClick={addMod(parts[0])}>
-                        {parts[1]}
-                    </p> */}
-                </div>
-            )
-        })
     }
 
     if (!addit || loading) {
@@ -488,7 +348,19 @@ export default function SNP() {
             </div>
             <div className={classes.group}>
                 <p>Тип СНП</p>
-                <div className={classes.line}>{renderTypes()}</div>
+                <div className={classes.line}>
+                    <AdminType
+                        type={type}
+                        snp={snp}
+                        st={st}
+                        curSnp={curSnp}
+                        clickHandler={typeHandler}
+                        changeHandler={changeTypeHandler}
+                        denyHandler={denyTypeHandler}
+                        saveHandler={savedSnpHandler}
+                        sendHandler={sendHandler}
+                    />
+                </div>
             </div>
 
             {curSnp ? (
@@ -506,16 +378,17 @@ export default function SNP() {
                         </div>
                         <div className={classes.fil}>
                             <p className={classes.titleGroup}>Температура эксплуатации</p>
-                            {/* {addit?.temperature && (
-                                <div className={`${classes.list} scroll`}>{renderTemp()}</div>
-                            )} */}
-                            <AdminTemp tm={tm} temp={temp} />
+                            <AdminTemp
+                                tm={tm}
+                                temp={temp}
+                                filler={filler}
+                                clickHandler={tempHandler}
+                                changeHandler={changeTempHandler}
+                            />
                         </div>
                         <div className={classes.fil}>
                             <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                            {addit?.mod && (
-                                <div className={`${classes.list} scroll`}>{renderMod()}</div>
-                            )}
+                            <AdminMod tm={tm} temp={temp} clickHandler={changeModHandler} />
                         </div>
                     </div>
 

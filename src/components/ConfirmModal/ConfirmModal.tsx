@@ -6,16 +6,20 @@ import classes from "./modal.module.scss"
 type Props = {
     title: string
     isOpen: boolean
+    isNo?: boolean
     toggle: () => void
     cancelHandler: () => void
+    denyHandler?: () => void
     confirmHandler: () => void
 }
 
 export const ConfirmModal: FC<Props> = ({
     title,
     isOpen,
+    isNo,
     toggle,
     cancelHandler,
+    denyHandler,
     confirmHandler,
 }) => {
     return (
@@ -25,9 +29,17 @@ export const ConfirmModal: FC<Props> = ({
                 <Button variant='grayPrimary' fullWidth onClick={cancelHandler}>
                     Отмена
                 </Button>
+                {isNo && (
+                    <>
+                        <p className={classes.offset} />
+                        <Button fullWidth onClick={denyHandler}>
+                            Нет
+                        </Button>
+                    </>
+                )}
                 <p className={classes.offset} />
                 <Button fullWidth onClick={confirmHandler}>
-                    Ок
+                    {isNo ? "Да" : "Ок"}
                 </Button>
             </Modal.Footer>
         </Modal>
