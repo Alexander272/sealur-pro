@@ -11,7 +11,7 @@ const { Option } = Select
 export default function Putg() {
     const [procType, setProcType] = useState<string>("Round")
 
-    const tabHandler = (event: React.MouseEvent<any>) => {
+    const tabHandler = (_: any, __: any, event: React.MouseEvent<any>) => {
         const type = (event.target as HTMLParagraphElement).dataset.type
         if (type) setProcType(type)
     }

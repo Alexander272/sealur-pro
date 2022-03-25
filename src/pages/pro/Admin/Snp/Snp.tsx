@@ -25,6 +25,7 @@ const { Option } = Select
 export default function SNP() {
     const loading = useSelector((state: RootState) => state.addit.loading)
     const stfl = useSelector((state: RootState) => state.addit.stfl)
+    const typeFl = useSelector((state: RootState) => state.addit.typeFl)
     const addit = useSelector((state: RootState) => state.addit.addit)
 
     const [st, setSt] = useState(stfl[0]?.id || "")
@@ -43,9 +44,11 @@ export default function SNP() {
 
     const dispatch = useDispatch<Dispatch>()
 
+    // запрос стандартов и типов фланцев
     useEffect(() => {
         if (!stfl.length) dispatch.addit.getStFl()
-    }, [stfl.length, dispatch.addit])
+        if (!typeFl.length) dispatch.addit.getTypeFl()
+    }, [stfl.length, typeFl.length, dispatch.addit])
 
     const fetchSnp = useCallback(async (req: ISNPReq) => {
         console.log("fetchSnp")
@@ -64,21 +67,13 @@ export default function SNP() {
         console.log("fetchSize")
         try {
             const res = await ReadService.getSize(req)
-            setSizes(res.data)
+            setSizes(res.data.sizes)
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         }
     }, [])
 
-    // useEffect(() => {
-    //     if (stfl.length) {
-    //         fetchSnp({ standId: stfl[0].standId, flangeId: stfl[0].flangeId })
-    //         setSt(stfl[0].id)
-    //     }
-    // }, [stfl, fetchSnp])
-
-    //TODO добавить изменение размеров и сохранение изменений снп + сохрание создания новой прокладки снп
-
+    // Заполнение значений наполнителя, температуры и прокладки при изменении списка прокладок или типа фланца
     useEffect(() => {
         if (!snp.length) {
             setFiller("")
@@ -102,6 +97,7 @@ export default function SNP() {
         setCurSnp(tmp[index])
     }, [curSnp?.typeFlId, snp, type])
 
+    // Запрос на получение размеров при изменении типа прокладки или фланца или стандарта
     useEffect(() => {
         if (!!curSnp?.typePr && !!stfl.length) {
             const sf = stfl.find(s => s.id === st)
@@ -115,6 +111,7 @@ export default function SNP() {
         }
     }, [curSnp?.typePr, curSnp?.typeFlId, stfl, st, fetchSize])
 
+    // Запрос прокладок при изменении стандарта и при загрузке страницы
     useEffect(() => {
         const sf = stfl.find(s => s.id === st)
         if (sf) fetchSnp({ standId: sf.standId, flangeId: sf.flangeId })
@@ -130,6 +127,7 @@ export default function SNP() {
         setSt(value)
     }
 
+    // изменение типа прокадки и связанных значений
     const changeTypeHandler = (type: string, snp: ISNP, isNew: boolean) => {
         if (isNew) {
             setSnp(prev => [...prev, snp])
@@ -151,6 +149,7 @@ export default function SNP() {
         setSnp(prev => prev.filter(s => s.id !== "new"))
     }
 
+    // измение наполнителя и связанных значений
     const fillerHandler = (filler: string, fillers: string) => {
         setFiller(filler.split("&")[0])
         const tm = filler.split("&")[1]
@@ -171,6 +170,7 @@ export default function SNP() {
         }
     }
 
+    // измение температуры
     const tempHandler = (temp: string, temps: string) => {
         setTemp(temp)
         if (temps && curSnp) {
@@ -194,6 +194,7 @@ export default function SNP() {
         }
     }
 
+    // измениние модифицирующего элемента
     const changeModHandler = (newTm: string) => {
         if (curSnp) {
             setTm(newTm)
@@ -204,18 +205,21 @@ export default function SNP() {
         }
     }
 
+    // измение крепления
     const mounHandler = (value: string) => {
         let snp: ISNP = {} as ISNP
         if (curSnp) snp = Object.assign(snp, curSnp, { mounting: value })
         setCurSnp(snp)
     }
 
+    // изменение графита
     const grapHandler = (value: string) => {
         let snp: ISNP = {} as ISNP
         if (curSnp) snp = Object.assign(snp, curSnp, { graphite: value })
         setCurSnp(snp)
     }
 
+    // измение материалов по умолчанию
     const defMatHandler = (name: string) => (value: string) => {
         if (!curSnp) return
         let snp: ISNP = {} as ISNP
@@ -224,6 +228,7 @@ export default function SNP() {
         setCurSnp(snp)
     }
 
+    // измение материалов
     const matHandler = (value: string, name: string) => {
         if (!curSnp) return
 
@@ -247,8 +252,10 @@ export default function SNP() {
         setCurSnp(snp)
     }
 
+    // открытие таблицы с размерами
     const openTableHandler = () => setIsOpenTable(prev => !prev)
 
+    // добавление сохраненной проклаки
     const savedSnpHandler = (id: string, type: string, newSnp: ISNP | null) => {
         if (curSnp?.id === "new") {
             let tmp = [...snp]
@@ -262,6 +269,25 @@ export default function SNP() {
         setCurSnp(newSnp)
     }
 
+    // добавление сохраненных размеров
+    const savedSizeHandler = (size: ISize, isNew: boolean) => {
+        if (isNew) setSizes(prev => [...prev, size])
+        else {
+            setSizes(prev =>
+                prev.map(s => {
+                    if (s.id === size.id) return size
+                    return s
+                })
+            )
+        }
+    }
+
+    const deleteSizeHandler = (id: string, isAll: boolean) => {
+        if (isAll) setSizes([])
+        else setSizes(prev => prev.filter(s => s.id !== id))
+    }
+
+    // сохрание прокладки
     const saveHandler = async () => {
         if (!curSnp) {
             toast.error("Тип снп не добавлен")
@@ -271,10 +297,7 @@ export default function SNP() {
             toast.error("Наполнитель не выбран")
             return
         }
-        if (!curSnp.frame || !curSnp.ir || !curSnp.or) {
-            toast.error("Метериалы не выбраны")
-            return
-        }
+
         const sf = stfl.find(s => s.id === st)
         if (!sf) return
 
@@ -286,18 +309,18 @@ export default function SNP() {
                 typeFlId: curSnp.typeFlId,
                 typePr: curSnp.typePr,
                 fillers: curSnp.fillers,
-                frame: curSnp.frame,
-                ir: curSnp.ir,
-                or: curSnp.or,
+                frame: curSnp.frame || "",
+                ir: curSnp.ir || "",
+                or: curSnp.or || "",
                 mounting: curSnp.mounting,
                 graphite: curSnp.graphite,
             }
 
             if (curSnp.id === "new") {
-                // const res = await SNPService.create(data)
+                const res = await SNPService.create(data)
                 const newSnp = [...snp]
                 const idx = newSnp.findIndex(s => s.id === "new")
-                newSnp[idx] = { ...curSnp, id: Date.now().toString() || "" }
+                newSnp[idx] = { ...curSnp, id: res.id || "" }
                 setSnp(newSnp)
                 toast.success("Успешно создано")
             } else {
@@ -505,7 +528,13 @@ export default function SNP() {
                         <h5>Размеры</h5>
                         <p onClick={openTableHandler}>&times;</p>
                     </div>
-                    <SizeTable data={sizes} />
+                    <SizeTable
+                        data={sizes}
+                        typePr={type}
+                        stand={stfl.find(s => s.id === st) || null}
+                        saveHandler={savedSizeHandler}
+                        deleteHandler={deleteSizeHandler}
+                    />
                 </div>
             )}
         </div>

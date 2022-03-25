@@ -6,7 +6,7 @@ type Props = {
     size?: "small" | "middle" | "large"
     initWidth: number
     initPos?: number
-    onClick?: (event: React.MouseEvent) => void
+    onClick?: (type: string, idx: number, event: React.MouseEvent) => void
 }
 
 export const Tabs: FC<PropsWithChildren<Props>> = ({
@@ -22,13 +22,13 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
         setSubstrate({ width: initWidth, position: initPos || 0 })
     }, [initWidth, initPos])
 
-    const clickHandler = (event: React.MouseEvent<any>) => {
+    const clickHandler = (idx: number, type: string) => (event: React.MouseEvent<any>) => {
         setSubstrate({
             width: (event.target as HTMLAnchorElement).offsetWidth,
             position: (event.target as HTMLAnchorElement).offsetLeft,
         })
 
-        onClick && onClick(event)
+        onClick && onClick(type, idx, event)
     }
 
     const child = (
@@ -38,7 +38,9 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
                 style={{ width: substrate.width, left: substrate.position }}
             ></div>
             {Children.map(children as React.ReactElement[], (child: React.ReactElement) =>
-                cloneElement(child, { onClick: clickHandler })
+                cloneElement(child, {
+                    onClick: clickHandler(child.props["data-index"], child.props["data-type"]),
+                })
             )}
         </>
     )

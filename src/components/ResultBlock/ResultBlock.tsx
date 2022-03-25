@@ -1,4 +1,5 @@
 import React, { FC } from "react"
+import { UseFormRegister } from "react-hook-form"
 import { Button } from "../UI/Button/Button"
 import { Input } from "../UI/Input/Input"
 import classes from "./result.module.scss"
@@ -9,6 +10,7 @@ type Props = {
     className?: string
     value?: string
     changeCount?: (event: React.ChangeEvent<HTMLInputElement>) => void
+    register?: UseFormRegister<any>
     addDesignation?: () => void
 }
 
@@ -19,6 +21,7 @@ export const ResultBlock: FC<Props> = ({
     value,
     changeCount,
     addDesignation,
+    register,
 }) => {
     return (
         <div className={className}>
@@ -39,6 +42,7 @@ export const ResultBlock: FC<Props> = ({
                     min={1}
                     value={value}
                     onChange={changeCount}
+                    register={register}
                 />
 
                 <Button size='smallMiddle' onClick={addDesignation}>

@@ -13,6 +13,7 @@ import { Main } from "./Layout/ProMain/Main"
 import Core from "../pages/pro/Core/Core"
 // import ListsPage from "../pages/Lists/Lists"
 const Snp = lazy(() => import("../pages/pro/Snp/Snp"))
+const NewSnp = lazy(() => import("../pages/pro/Snp/NewSnp"))
 const Putg = lazy(() => import("../pages/pro/Putg/Putg"))
 const Putgm = lazy(() => import("../pages/pro/Putgm/Putgm"))
 const Survey = lazy(() => import("../pages/pro/Survey/Survey"))
@@ -33,6 +34,7 @@ export const MyRoutes = () => {
                 <Route path='/' element={<Main />}>
                     <Route path='/' element={<Core />}>
                         <Route index element={<Snp />} />
+                        <Route path='test' element={<NewSnp />} />
                         <Route path='putg' element={<Putg />} />
                         <Route path='putgm' element={<Putgm />} />
                     </Route>

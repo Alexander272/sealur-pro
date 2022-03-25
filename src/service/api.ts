@@ -9,8 +9,10 @@ const api = axios.create({
 })
 
 api.interceptors.request.use(config => {
-    if (config.headers)
+    if (config.headers) {
         config.headers.Authorization = `Bearer ${store.getState().user.token.accessToken}`
+        config.headers["Access-Control-Allow-Origin"] = "*"
+    }
     return config
 })
 

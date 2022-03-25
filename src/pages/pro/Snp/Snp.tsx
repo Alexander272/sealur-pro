@@ -91,80 +91,80 @@ export default function Snp() {
     const [isOpenOr, setIsOpenOr] = useState(false)
     const [isOpenFrame, setIsOpenFrame] = useState(false)
 
-    const fetchSnp = useCallback(async (req: ISNPReq) => {
-        console.log("fetchSnp")
+    // const fetchSnp = useCallback(async (req: ISNPReq) => {
+    //     console.log("fetchSnp")
 
-        const res = await ReadService.getSnp(req)
-        setSnp(res.data)
+    //     const res = await ReadService.getSnp(req)
+    //     setSnp(res.data)
 
-        const tmp = res.data.filter(s => s.typeFlId.includes(flange))
-        let index = tmp.findIndex(s => s.typePr.includes(type.value))
-        if (index === -1) index = 0
+    //     const tmp = res.data.filter(s => s.typeFlId.includes(flange))
+    //     let index = tmp.findIndex(s => s.typePr.includes(type.value))
+    //     if (index === -1) index = 0
 
-        setTm(tmp[index].fillers.split(";")[0])
-        setCurSnp(tmp[index])
-    }, [])
+    //     setTm(tmp[index].fillers.split(";")[0])
+    //     setCurSnp(tmp[index])
+    // }, [])
 
-    const fetchSize = useCallback(
-        async (req: ISizeReq) => {
-            console.log("fetchSize")
-            const res = await ReadService.getSize(req)
+    // const fetchSize = useCallback(
+    //     async (req: ISizeReq) => {
+    //         console.log("fetchSize")
+    //         const res = await ReadService.getSize(req)
 
-            const s = stfl.find(s => s.id === st)
-            if (s?.standId === "1") {
-                const d2 = new Set<number>()
-                for (let i = 0; i < res.data.length; i++) {
-                    d2.add(res.data[i].d2)
-                }
-                setAllD2(Array.from(d2))
-            } else {
-                setAllD2(null)
-            }
+    //         const s = stfl.find(s => s.id === st)
+    //         if (s?.standId === "1") {
+    //             const d2 = new Set<number>()
+    //             for (let i = 0; i < res.data.length; i++) {
+    //                 d2.add(res.data[i].d2)
+    //             }
+    //             setAllD2(Array.from(d2))
+    //         } else {
+    //             setAllD2(null)
+    //         }
 
-            setCurSize(res.data[0])
-            setPass(res.data[0].dn)
-            setPressure(res.data[0].pn.split(";")[0])
-            setSizes(res)
-        },
-        [st, stfl]
-    )
+    //         setCurSize(res.data[0])
+    //         setPass(res.data[0].dn)
+    //         setPressure(res.data[0].pn.split(";")[0])
+    //         setSizes(res)
+    //     },
+    //     [st, stfl]
+    // )
 
-    const fetchDef = useCallback(async () => {
-        console.log("fetchDef")
-        const res = await ReadService.getDefault()
+    // const fetchDef = useCallback(async () => {
+    //     console.log("fetchDef")
+    //     const res = await ReadService.getDefault()
 
-        setSnp(res.data.snp)
-        const tmp = res.data.snp.filter(s => s.typeFlId.includes(flange))
-        let index = tmp.findIndex(s => s.typePr.includes(type.value))
-        if (index === -1) index = 0
-        const fil = tmp[index].fillers.split(";")[0]
-        setTm(fil)
-        setTemp(fil.split(">")[0])
-        console.log(fil)
+    //     setSnp(res.data.snp)
+    //     const tmp = res.data.snp.filter(s => s.typeFlId.includes(flange))
+    //     let index = tmp.findIndex(s => s.typePr.includes(type.value))
+    //     if (index === -1) index = 0
+    //     const fil = tmp[index].fillers.split(";")[0]
+    //     setTm(fil)
+    //     setTemp(fil.split(">")[0])
+    //     console.log(fil)
 
-        setMod(fil.split("@")[0].split(">")[1].split(",")[0])
+    //     setMod(fil.split("@")[0].split(">")[1].split(",")[0])
 
-        setCurSnp(tmp[index])
+    //     setCurSnp(tmp[index])
 
-        setSizes(res.data.size)
-        setCurSize(res.data.size.data[0])
-        setPass(res.data.size.data[0].dn)
-        setPressure(res.data.size.data[0].pn.split(";")[0])
+    //     setSizes(res.data.size)
+    //     setCurSize(res.data.size.data[0])
+    //     setPass(res.data.size.data[0].dn)
+    //     setPressure(res.data.size.data[0].pn.split(";")[0])
 
-        const d2 = new Set<number>()
-        for (let i = 0; i < res.data.size.data.length; i++) {
-            d2.add(res.data.size.data[i].d2)
-        }
-        setAllD2(Array.from(d2))
+    //     const d2 = new Set<number>()
+    //     for (let i = 0; i < res.data.size.data.length; i++) {
+    //         d2.add(res.data.size.data[i].d2)
+    //     }
+    //     setAllD2(Array.from(d2))
 
-        dispatch.addit.setTypeFl(res.data.typeFl)
-    }, [])
+    //     dispatch.addit.setTypeFl(res.data.typeFl)
+    // }, [])
 
     useEffect(() => {
-        fetchDef()
+        // fetchDef()
         dispatch.addit.getStFl()
         dispatch.addit.getAddit()
-    }, [fetchDef, dispatch.addit])
+    }, [dispatch.addit])
 
     useEffect(() => {
         if (stfl.length > 0) setSt(stfl[0].id)
@@ -186,7 +186,7 @@ export default function Snp() {
 
     useEffect(() => {
         setMat([])
-        curSnp?.defMat.split("&").forEach(m => {
+        curSnp?.defMat?.split("&").forEach(m => {
             setMat(prev => [...prev, m])
         })
     }, [curSnp?.defMat])
@@ -198,24 +198,24 @@ export default function Snp() {
         setType({ value: tmp[0].typePr, index: types.findIndex(t => t.value === tmp[0].typePr) })
     }
 
-    const typeHandler = (event: React.MouseEvent<any>) => {
-        const type = (event.target as HTMLParagraphElement).dataset.type
-        const idx = (event.target as HTMLParagraphElement).dataset.index
-        if (type && idx) {
-            setType({ value: type, index: +idx })
+    const typeHandler = (type: string, idx: number, event: React.MouseEvent<any>) => {
+        // const type = (event.target as HTMLParagraphElement).dataset.type
+        // const idx = (event.target as HTMLParagraphElement).dataset.index
+        // if (type && idx) {
+        setType({ value: type, index: idx })
 
-            const tmp = snp.filter(s => s.typePr.includes(type))
-            setCurSnp(tmp[0])
-            setFlange(tmp[0].typeFlId)
+        const tmp = snp.filter(s => s.typePr.includes(type))
+        setCurSnp(tmp[0])
+        setFlange(tmp[0].typeFlId)
 
-            const s = stfl.find(s => s.id === st)
-            fetchSize({
-                typePr: `снп-${type}`,
-                flShort: s!.short,
-                typeFlId: tmp[0].typeFlId,
-                standId: s!.standId,
-            })
-        }
+        // const s = stfl.find(s => s.id === st)
+        // fetchSize({
+        //     typePr: `снп-${type}`,
+        //     flShort: s!.short,
+        //     typeFlId: tmp[0].typeFlId,
+        //     standId: s!.standId,
+        // })
+        // }
     }
 
     const passHandler = (value: string) => {
@@ -402,7 +402,7 @@ export default function Snp() {
         if (thickness === "др.") thick = athic
 
         let mater = mat.join("")
-        if (mater === curSnp?.defMat.replaceAll("&", "")) mater = ""
+        if (mater === curSnp?.defMat?.replaceAll("&", "")) mater = ""
         if (mater !== "") {
             if (type.value === "Г") mater = 0 + mater
             if (type.value === "В") mater += 0
@@ -772,7 +772,7 @@ export default function Snp() {
                 />
 
                 <p className={classes.title}>Материалы</p>
-                {curSnp?.materials.split("&").map((mater, idx) => {
+                {curSnp?.materials?.split("&").map((mater, idx) => {
                     const name = mater.split(";")[0]
                     let openHandler = setIsOpenFrame
                     if (name === "Внутреннее кольцо") openHandler = setIsOpenIr

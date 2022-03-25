@@ -72,17 +72,17 @@ export const addit = createModel<RootModel>()({
                     addit.setLoading(false)
                 }
             },
-            // async getTypeFl() {
-            //     addit.setLoading(true)
-            //     try {
-            //         const res = await ReadService.ge()
-            //         addit.setTypeFl(res.data)
-            //     } catch (error: any) {
-            //         toast.error(error.message)
-            //     } finally {
-            //         addit.setLoading(false)
-            //     }
-            // },
+            async getTypeFl() {
+                addit.setLoading(true)
+                try {
+                    const res = await ReadService.getTypeFl()
+                    addit.setTypeFl(res.data)
+                } catch (error: any) {
+                    toast.error(error.message)
+                } finally {
+                    addit.setLoading(false)
+                }
+            },
             async getAddit() {
                 addit.setLoading(true)
                 try {

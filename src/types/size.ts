@@ -13,6 +13,10 @@ export interface ISize {
     s3?: string
 }
 
+export interface IDn {
+    dn: string
+}
+
 export interface ISizeReq {
     flShort: string
     typePr: string
@@ -20,8 +24,8 @@ export interface ISizeReq {
     standId: string
 }
 
-export interface ISizeCreate {
-    flShort: string
+export interface ISizeDTO {
+    flange: string
     standId: string
     dn: string
     pn: string

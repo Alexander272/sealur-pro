@@ -56,6 +56,7 @@ export const AdminType: FC<Props> = ({
     }
 
     const checkSnp = (type: string) => {
+        if (!snp.length) return false
         console.log(type, curSnp?.typePr, type === curSnp?.typePr)
 
         if (type === curSnp?.typePr) {
@@ -101,8 +102,9 @@ export const AdminType: FC<Props> = ({
             typeFlId: typeFlId,
             typePr: curType,
             fillers: "",
-            materials: "",
-            defMat: "",
+            frame: "",
+            ir: "",
+            or: "",
             mounting: "*",
             graphite: "*",
         }
@@ -141,11 +143,6 @@ export const AdminType: FC<Props> = ({
             toggle()
             return
         }
-        if (!curSnp.frame || !curSnp.ir || !curSnp.or) {
-            toast.error("Метериалы не выбраны")
-            toggle()
-            return
-        }
 
         let id = ""
         const sf = stfl.find(s => s.id === st)
@@ -159,16 +156,16 @@ export const AdminType: FC<Props> = ({
                 typeFlId: curSnp.typeFlId,
                 typePr: curSnp.typePr,
                 fillers: curSnp.fillers,
-                frame: curSnp.frame,
-                ir: curSnp.ir,
-                or: curSnp.or,
+                frame: curSnp.frame || "",
+                ir: curSnp.ir || "",
+                or: curSnp.or || "",
                 mounting: curSnp.mounting,
                 graphite: curSnp.graphite,
             }
 
             if (curSnp.id === "new") {
-                // const res = await SNPService.create(data)
-                id = Date.now().toString() || ""
+                const res = await SNPService.create(data)
+                id = res.id || ""
                 toast.success("Успешно создано")
             } else {
                 await SNPService.update(data, curSnp.id)
@@ -197,11 +194,17 @@ export const AdminType: FC<Props> = ({
     const deleteHandler = async () => {
         isModified.current = false
         const tmp = snp.find(s => s.typePr.includes(t.current))
-        // if (tmp!.id !== "new") {
-        //     sendHandler()
-        //     await SNPService.delete(tmp!.id)
-        //     sendHandler()
-        // }
+        if (tmp!.id !== "new") {
+            try {
+                sendHandler()
+                await SNPService.delete(tmp!.id)
+                toast.success("Успешно удалено")
+            } catch (error) {
+                toast.error("Не удалось выполнить запрос на сервер")
+            } finally {
+                sendHandler()
+            }
+        }
         changeHandler(t.current, tmp!, false)
         toggle()
     }
