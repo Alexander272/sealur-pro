@@ -1,6 +1,6 @@
+import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
-import { Provider } from "react-redux"
 import "react-toastify/dist/ReactToastify.css"
 
 import { MyRoutes } from "./components/routes"

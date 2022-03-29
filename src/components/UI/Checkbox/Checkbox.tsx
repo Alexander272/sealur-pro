@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { ChangeEvent, FC } from "react"
 import classes from "./checkbox.module.scss"
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
     label?: string
     name: string
     checked?: boolean
-    onChange?: any
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const Checkbox: FC<Props & React.InputHTMLAttributes<HTMLInputElement>> = ({

@@ -1,10 +1,10 @@
 import { init, RematchDispatch, RematchRootState } from "@rematch/core"
 import immerPlugin from "@rematch/immer"
-import { models, RootModel } from "./models"
+import { models, ProModel } from "./models"
 
 // TODO убрать devtools
-export const store = init<RootModel>({
-    name: "root",
+export const store = init<ProModel>({
+    name: "pro",
     models,
     plugins: [immerPlugin()],
     redux: {
@@ -16,5 +16,5 @@ export const store = init<RootModel>({
 })
 
 export type Store = typeof store
-export type Dispatch = RematchDispatch<RootModel>
-export type RootState = RematchRootState<RootModel>
+export type Dispatch = RematchDispatch<ProModel>
+export type ProState = RematchRootState<ProModel>
