@@ -4,6 +4,12 @@ import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
 import { ProState } from "../../../../store/store"
 import classes from "../../../style/pages.module.scss"
 
+const typesFl = {
+    1: "1-1",
+    2: "2-3",
+    3: "4-5",
+}
+
 type Props = {}
 
 export const ResultSnp: FC<Props> = () => {
@@ -23,6 +29,7 @@ export const ResultSnp: FC<Props> = () => {
     const mod = useSelector((state: ProState) => state.snp.mod)
 
     const pn = useSelector((state: ProState) => state.snp.pn)
+    const dn = useSelector((state: ProState) => state.snp.dn)
 
     const h = useSelector((state: ProState) => state.snp.h)
     const oh = useSelector((state: ProState) => state.snp.oh)
@@ -37,8 +44,6 @@ export const ResultSnp: FC<Props> = () => {
     const jumper = useSelector((state: ProState) => state.snp.jumper)
     const jumWidth = useSelector((state: ProState) => state.snp.jumWidth)
     const isHole = useSelector((state: ProState) => state.snp.isHole)
-
-    const changeCountHandler = (event: React.ChangeEvent<HTMLInputElement>) => {}
 
     const createDescr = (): string => {
         const s = stfl.find(s => s.id === st)
@@ -77,7 +82,7 @@ export const ResultSnp: FC<Props> = () => {
         const tfl = typeFl.find(t => t.id === snp?.typeFlId)
 
         let sizes = ""
-        if (size?.d4 && snp?.typePr !== "Г") sizes += size.d4 + "*"
+        if (size?.d4) sizes += size.d4 + "*"
         sizes += `${size!.d3}*${size!.d2}`
         if (size?.d1) sizes += "*" + size.d1
 
@@ -125,7 +130,6 @@ export const ResultSnp: FC<Props> = () => {
         if (fr) {
             if (fr !== snp?.frame.default) isDef = false
         }
-
         if (!isDef) {
             mater = ` ${ir || "0"}${fr}${or || "0"}`
         }
@@ -136,19 +140,46 @@ export const ResultSnp: FC<Props> = () => {
             if (m) modif = `-${m}`
         }
 
-        let mount = ""
-        if (isMoun) mount = ` (${moun})`
-        if (isHole) mount = ` (черт.)`
-        if (isMoun && isHole) mount = ` (${moun}, черт.)`
+        let elem = ""
+        let elems = []
+        if (isJumper) {
+            if (jumWidth) elems.push(`${jumper}/${jumWidth}`)
+            else elems.push(jumper)
+        }
+        if (isMoun) elems.push(moun)
+        if (isHole) elems.push("черт.")
+        if (elems.length) elem = ` (${elems.join(", ")})`
 
         let sizes = ""
-        if (size?.d4 && snp?.typePr !== "Г") sizes += size.d4 + "x"
+        if (size?.d4) sizes += size.d4 + "x"
         sizes += `${size?.d3}x${size?.d2}`
         if (size?.d1) sizes += "x" + size.d1
 
         switch (s?.standId) {
             case "1":
-                res = `СНП-${snp?.typePr}-${filler}-${size?.d2}-${py}-${thick}${mater}${modif}${mount} ${s.stand} [${sizes}]`
+                res = `СНП-${snp?.typePr}-${filler}-${size?.d2}-${py}-${thick}${mater}${modif}${elem} ${s.stand} [${sizes}]`
+                break
+            case "2":
+                res = `СНП-${snp?.typePr}-${
+                    typesFl[snp?.typeFlId as "1"]
+                }-${dn}-${py}${mater}${modif}${elem} ${s.stand} [${sizes}]`
+                break
+            case "3":
+                thick = ""
+                if (h === "др.") thick = `-${oh}`
+                let stand = s.stand
+                if (s.flangeId === "4" || s.flangeId === "5") stand = s.flange
+                res = `СНП-${snp?.typePr}-${dn}"-${py}#-F.G${thick}${mater}${modif}${elem} ${stand} [${sizes}]`
+                break
+            case "4":
+                thick = ""
+                if (h === "др.") thick = `-${oh}`
+                res = `СНП-${snp?.typePr}-${dn}"-${py}#-F.G${thick}${mater}${modif}${elem} ${s.stand} [${sizes}]`
+                break
+            case "5":
+                thick = ""
+                if (h === "др.") thick = `-${oh}`
+                res = `СНП-${snp?.typePr}-${dn}-${py}-F.G${thick}${mater}${modif}${elem} ${s.stand} [${sizes}]`
                 break
         }
         return res
@@ -157,8 +188,6 @@ export const ResultSnp: FC<Props> = () => {
     return (
         <ResultBlock
             className={classes.resultContainer}
-            value={"10"}
-            changeCount={changeCountHandler}
             description={createDescr()}
             designation={createDesig()}
         />

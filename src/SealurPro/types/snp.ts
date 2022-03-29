@@ -6,9 +6,6 @@ export interface ISNP {
     frame: IMaterial
     ir: IMaterial
     or: IMaterial
-    //TODO удалить
-    materials?: string
-    defMat?: string
     mounting: string[]
     graphite: string[]
 }

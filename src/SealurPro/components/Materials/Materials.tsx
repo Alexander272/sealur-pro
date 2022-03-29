@@ -1,6 +1,6 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { replaceArray, splitString } from "../../utils/utils"
+import { replaceArray } from "../../utils/utils"
 import { ProState } from "../../store/store"
 import { Select } from "../../../components/UI/Select/Select"
 import { IMat } from "../../types/addit"
@@ -30,7 +30,6 @@ export const Materials: React.VFC<Props> = ({
 }) => {
     const addit = useSelector((state: ProState) => state.addit.addit)
     if (!addit) return <></>
-    // TODO исправить
 
     const renderMat = () => {
         const mat: IMat[] = replaceArray(mater, addit?.materials || [], "short")

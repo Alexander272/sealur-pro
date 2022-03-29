@@ -1,5 +1,4 @@
-import React, { FC } from "react"
-import { UseFormRegister } from "react-hook-form"
+import { ChangeEvent, FC, useState } from "react"
 import { Button } from "../../../components/UI/Button/Button"
 import { Input } from "../../../components/UI/Input/Input"
 import classes from "./result.module.scss"
@@ -8,19 +7,27 @@ type Props = {
     description: string
     designation: string
     className?: string
-    value?: string
-    changeCount?: (event: React.ChangeEvent<HTMLInputElement>) => void
-    addDesignation?: () => void
+    defaultValue?: string
+    addDesignation?: (count: string, designation: string, description: string) => void
 }
 
 export const ResultBlock: FC<Props> = ({
     className,
     description,
     designation,
-    value,
-    changeCount,
+    defaultValue,
     addDesignation,
 }) => {
+    const [count, setCount] = useState(defaultValue || "1")
+
+    const changeCountHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setCount(event.target.value)
+    }
+
+    const addDesignationHandler = () => {
+        addDesignation && addDesignation(count, designation, description)
+    }
+
     return (
         <div className={className}>
             <p className={classes.description}>
@@ -37,11 +44,11 @@ export const ResultBlock: FC<Props> = ({
                     orentation='horizontal'
                     type='number'
                     min={1}
-                    value={value}
-                    onChange={changeCount}
+                    value={count}
+                    onChange={changeCountHandler}
                 />
 
-                <Button size='smallMiddle' onClick={addDesignation}>
+                <Button size='smallMiddle' onClick={addDesignationHandler}>
                     Добавить в список
                 </Button>
             </div>

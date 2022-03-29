@@ -352,6 +352,32 @@ export const snp = createModel<ProModel>()({
             },
             async getSnp({ st, req }: { st: string; req: ISNPReq }) {
                 console.log(st, req)
+                snp.setLoading(true)
+                try {
+                    const res = await ReadService.getSnp(req)
+                    snp.setSt(st)
+                    snp.setSnp(res.data[0])
+                    snp.setSnps(res.data)
+
+                    if (res.data[0].graphite[0] !== "*") {
+                        snp.setGrap(res.data[0].graphite[0])
+                    }
+
+                    const fil = res.data[0].fillers[0].id
+                    const temp = res.data[0].fillers[0].temps[0].id
+                    const mod = res.data[0].fillers[0].temps[0].mods[0]
+                    snp.setFil(fil)
+                    snp.setTemp(temp)
+                    snp.setMod(mod)
+
+                    snp.setIr(res.data[0].ir.default || "")
+                    snp.setOr(res.data[0].or.default || "")
+                    snp.setFr(res.data[0].frame.default || "")
+                } catch (error) {
+                    toast.error("Не удалось загрузить данные", { autoClose: false })
+                } finally {
+                    snp.setLoading(false)
+                }
             },
         }
     },

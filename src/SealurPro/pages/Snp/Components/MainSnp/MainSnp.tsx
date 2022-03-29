@@ -44,8 +44,7 @@ export const MainSnp: FC<Props> = () => {
     const typesFl = useSelector((state: ProState) => state.addit.typeFl)
 
     const snps = useSelector((state: ProState) => state.snp.snps)
-    const typePr = useSelector((state: ProState) => state.snp.snp?.typePr) || ""
-    const typeFl = useSelector((state: ProState) => state.snp.snp?.typeFlId) || ""
+    const snp = useSelector((state: ProState) => state.snp.snp)
     const st = useSelector((state: ProState) => state.snp.st)
 
     const dispatch = useDispatch<Dispatch>()
@@ -56,15 +55,15 @@ export const MainSnp: FC<Props> = () => {
             dispatch.snp.getSizes({
                 flShort: sf.short,
                 standId: sf.standId,
-                typePr: typePr,
-                typeFlId: typeFl,
+                typePr: snp?.typePr || "",
+                typeFlId: snp?.typeFlId || "",
             })
         }
-    }, [dispatch, st, stfl, typePr, typeFl])
+    }, [dispatch, st, stfl, snp])
 
     const renderTypes = () => {
         const usedTypes = types.filter(t => snps.some(s => s.typePr === t.value))
-        const idx = types.findIndex(t => t.value === typePr)
+        const idx = usedTypes.findIndex(t => t.value === snp?.typePr)
 
         return (
             <Tabs
@@ -80,7 +79,7 @@ export const MainSnp: FC<Props> = () => {
                         key={t.value}
                         className={[
                             classes.variants,
-                            typePr === t.value ? classes.active : "",
+                            snp?.typePr === t.value ? classes.active : "",
                         ].join(" ")}
                         data-type={t.value}
                         data-index={idx}
@@ -93,7 +92,7 @@ export const MainSnp: FC<Props> = () => {
     }
 
     const changeStHandler = (value: string) => {
-        const sf = stfl.find(s => s.id === st)
+        const sf = stfl.find(s => s.id === value)
         if (sf) {
             dispatch.snp.getSnp({ st: value, req: { standId: sf.standId, flangeId: sf.flangeId } })
         }
@@ -131,7 +130,7 @@ export const MainSnp: FC<Props> = () => {
                 {typesFl.length > 0 && (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип фланца</p>
-                        <Select value={typeFl} onChange={changeTypeFlHandler}>
+                        <Select value={snp?.typeFlId || ""} onChange={changeTypeFlHandler}>
                             {typesFl
                                 .filter(tfl => snps.some(s => s.typeFlId === tfl.id))
                                 .map(tfl => (
@@ -142,7 +141,7 @@ export const MainSnp: FC<Props> = () => {
                         </Select>
                     </div>
                 )}
-                {typePr && (
+                {snp?.typePr && (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Тип СНП</p>
                         {renderTypes()}
@@ -156,7 +155,7 @@ export const MainSnp: FC<Props> = () => {
                         className={classes.image}
                         width={600}
                         height={319}
-                        src={imgUrls[typeFl as "1"]}
+                        src={imgUrls[snp?.typeFlId as "1"]}
                         alt='flange type drawing'
                     />
                 </div>

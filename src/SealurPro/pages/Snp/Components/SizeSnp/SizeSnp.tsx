@@ -51,6 +51,8 @@ export const SizeSnp: FC<Props> = () => {
                 d2.add(sizes[i].d2)
             }
             setD2(Array.from(d2))
+        } else {
+            setD2([])
         }
     }, [st, sizes])
 
@@ -97,7 +99,11 @@ export const SizeSnp: FC<Props> = () => {
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>
                 <div className={classes.group}>
-                    <p className={classes.titleGroup}>Условный проход, мм</p>
+                    <p className={classes.titleGroup}>
+                        {["4", "5", "6", "7", "8", "9"].includes(st)
+                            ? 'Номинальный проход, "'
+                            : "Условный проход, мм"}
+                    </p>
                     <Select value={dn} onChange={changeDnHandler}>
                         {dns.map(dn => (
                             <Option key={dn.dn} value={dn.dn}>
@@ -106,7 +112,7 @@ export const SizeSnp: FC<Props> = () => {
                         ))}
                     </Select>
                 </div>
-                {d2 && (
+                {d2.length ? (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>D2</p>
                         <Select value={size?.d2.toString() || ""} onChange={changeD2Handler}>
@@ -117,9 +123,15 @@ export const SizeSnp: FC<Props> = () => {
                             ))}
                         </Select>
                     </div>
-                )}
+                ) : null}
                 <div className={classes.group}>
-                    <p className={classes.titleGroup}>Давление Ру, МПа</p>
+                    {["4", "5", "6", "7", "8", "9"].includes(st) ? (
+                        <p className={classes.titleGroup}>Класс давления</p>
+                    ) : (
+                        <p className={classes.titleGroup}>
+                            Давление Ру, МПа (кгс/см<sup>2</sup>)
+                        </p>
+                    )}
                     <Select value={pn} onChange={changePnHandler}>
                         {sizes
                             .filter(s => s.dn === dn)
