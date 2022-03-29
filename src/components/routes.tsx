@@ -15,7 +15,6 @@ const Main = lazy(() => import("../SealurPro/components/Layout/ProMain/Main"))
 const Core = lazy(() => import("../SealurPro/pages/Core/Core"))
 // import ListsPage from "../pages/Lists/Lists"
 const Snp = lazy(() => import("../SealurPro/pages/Snp/Snp"))
-const NewSnp = lazy(() => import("../SealurPro/pages/Snp/NewSnp"))
 const Putg = lazy(() => import("../SealurPro/pages/Putg/Putg"))
 const Putgm = lazy(() => import("../SealurPro/pages/Putgm/Putgm"))
 const Survey = lazy(() => import("../SealurPro/pages/Survey/Survey"))
@@ -37,7 +36,6 @@ export const MyRoutes = () => {
                     <Route path='/' element={<Main />}>
                         <Route path='/' element={<Core />}>
                             <Route index element={<Snp />} />
-                            <Route path='test' element={<NewSnp />} />
                             <Route path='putg' element={<Putg />} />
                             <Route path='putgm' element={<Putgm />} />
                         </Route>
