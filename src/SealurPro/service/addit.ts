@@ -1,10 +1,11 @@
 import api from "./api"
 import { IResponse } from "../types/response"
+import { IFiller, IGrap, IMat, IMod, IMoun, ITemp } from "../types/addit"
 
 export default class AdditService {
     static async updateMat(
         id: string,
-        mat: string,
+        mat: IMat[],
         type: string,
         change: string
     ): Promise<IResponse> {
@@ -22,7 +23,7 @@ export default class AdditService {
 
     static async updateMod(
         id: string,
-        mod: string,
+        mod: IMod[],
         type: string,
         change: string
     ): Promise<IResponse> {
@@ -40,7 +41,7 @@ export default class AdditService {
 
     static async updateTemp(
         id: string,
-        temp: string,
+        temp: ITemp[],
         type: string,
         change: string
     ): Promise<IResponse> {
@@ -58,7 +59,7 @@ export default class AdditService {
 
     static async updateMoun(
         id: string,
-        moun: string,
+        moun: IMoun[],
         type: string,
         change: string
     ): Promise<IResponse> {
@@ -76,7 +77,7 @@ export default class AdditService {
 
     static async updateGrap(
         id: string,
-        grap: string,
+        grap: IGrap[],
         type: string,
         change: string
     ): Promise<IResponse> {
@@ -94,7 +95,7 @@ export default class AdditService {
 
     static async updateFillers(
         id: string,
-        fil: string,
+        fil: IFiller[],
         type: string,
         change: string
     ): Promise<IResponse> {

@@ -2,14 +2,14 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, IMat } from "../../types/addit"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, IMat } from "../../../../types/addit"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./form.module.scss"
 
 type Props = {
@@ -44,56 +44,59 @@ export const MatForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         }
     }, [data, setValue])
 
-    // TODO исправить
     const submitHandler = async (form: Form) => {
         if (!addit) return
-        // let mats = addit.materials.split(";") || []
-        // if (!data) {
-        //     mats?.push(`${form.short}@${form.title}`)
-        // } else {
-        //     mats = mats?.map(m => {
-        //         if (m === `${data.short}@${data.title}`) return `${form.short}@${form.title}`
-        //         return m
-        //     })
-        // }
+        let mats = [...addit.materials]
+        if (!data) {
+            mats.push({ short: form.short, title: form.title })
+        } else {
+            mats = mats?.map(m => {
+                if (m.short === data.short) return form
+                return m
+            })
+        }
 
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMat(
-        //         addit.id,
-        //         mats.join(";"),
-        //         data ? "update" : "add",
-        //         data ? "" : form.short
-        //     )
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { materials: mats.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success(data ? "Успешно обновлено" : "Успешно создано")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        try {
+            sendHandler()
+            await AdditService.updateMat(
+                addit.id,
+                mats,
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.materials = mats
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     const deleteHandler = async () => {
-        // if (!addit || !data) return
-        // let mats = addit?.materials.split(";") || []
-        // mats = mats.filter(m => m !== `${data.short}@${data.title}`)
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMat(addit.id, mats.join(";"), "delete", data.short)
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { materials: mats.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success("Успешно удалено")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        if (!addit || !data) return
+        let mats = addit?.materials || []
+        mats = mats.filter(m => m.short !== data.short)
+        try {
+            sendHandler()
+            await AdditService.updateMat(addit.id, mats, "delete", data.short)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.materials = mats
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     return (

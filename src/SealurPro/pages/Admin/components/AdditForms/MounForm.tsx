@@ -2,14 +2,14 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, IMoun } from "../../types/addit"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, IMoun } from "../../../../types/addit"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./form.module.scss"
 
 type Props = {
@@ -42,58 +42,61 @@ export const MounForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         }
     }, [data, setValue])
 
-    // TODO исправить
     const submitHandler = async (form: Form) => {
         if (!addit) return
-        // let mouns = addit.mounting.split(";") || []
-        // let newIdx
-        // if (!data) {
-        //     newIdx = +mouns[mouns.length - 1].split("@")[0] + 1
-        //     mouns?.push(`${newIdx}@${form.title}`)
-        // } else {
-        //     mouns = mouns?.map(m => {
-        //         if (m === `${data.id}@${data.title}`) return `${data.id}@${form.title}`
-        //         return m
-        //     })
-        // }
+        let mouns = [...addit.mounting]
+        let newId = ""
+        if (!data) {
+            newId = (+mouns[mouns.length - 1].id + 1).toString()
+            mouns.push({ id: newId, title: form.title })
+        } else {
+            mouns = mouns?.map(m => {
+                if (m.id === data.id) return { ...form, id: data.id }
+                return m
+            })
+        }
 
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMoun(
-        //         addit.id,
-        //         mouns.join(";"),
-        //         data ? "update" : "add",
-        //         data ? "" : newIdx?.toString() || ""
-        //     )
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { mounting: mouns.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success(data ? "Успешно обновлено" : "Успешно создано")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        try {
+            sendHandler()
+            await AdditService.updateMoun(
+                addit.id,
+                mouns,
+                data ? "update" : "add",
+                data ? "" : newId
+            )
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.mounting = mouns
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     const deleteHandler = async () => {
-        // if (!addit || !data) return
-        // let mouns = addit?.mounting.split(";") || []
-        // mouns = mouns.filter(m => m !== `${data.id}@${data.title}`)
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMoun(addit.id, mouns.join(";"), "delete", data.id)
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { mounting: mouns.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success("Успешно удалено")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        if (!addit || !data) return
+        let mouns = addit?.mounting || []
+        mouns = mouns.filter(m => m.id !== data.id)
+        try {
+            sendHandler()
+            await AdditService.updateMoun(addit.id, mouns, "delete", data.id)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.mounting = mouns
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     return (

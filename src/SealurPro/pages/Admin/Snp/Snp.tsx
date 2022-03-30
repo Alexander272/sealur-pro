@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import { AdminFiller } from "../../../components/AdminFiller/AdminFiller"
-import { AdminGrap } from "../../../components/AdminGrap/AdminGrap"
-import { AdminMat } from "../../../components/AdminMat/AdminMat"
-import { AdminMod } from "../../../components/AdminMod/AdminMod"
-import { AdminMoun } from "../../../components/AdminMoun/AdminMoun"
-import { AdminTemp } from "../../../components/AdminTemp/AdminTemp"
-import { AdminType } from "../../../components/AdminType/AdminType"
+import { AdminFiller } from "../components/AdminFiller/AdminFiller"
+import { AdminGrap } from "../components/AdminGrap/AdminGrap"
+import { AdminMat } from "../components/AdminMat/AdminMat"
+import { AdminMod } from "../components/AdminMod/AdminMod"
+import { AdminMoun } from "../components/AdminMoun/AdminMoun"
+import { AdminTemp } from "../components/AdminTemp/AdminTemp"
+import { AdminType } from "./components/Main/components/AdminType/AdminType"
 import { Materials } from "../../../components/Materials/Materials"
 import { SizeTable } from "../../../components/SizeTable/SizeTable"
 import { Button } from "../../../../components/UI/Button/Button"
@@ -19,15 +19,21 @@ import { Dispatch, ProState } from "../../../store/store"
 import { ISize, ISizeReq } from "../../../types/size"
 import { ISNP, ISNPDTO, ISNPReq } from "../../../types/snp"
 import classes from "../pages.module.scss"
+import { MainSnp } from "./components/Main/MainSnp"
+import { Filler } from "./components/Filler/Filler"
 
 const { Option } = Select
 
 export default function SNP() {
     // TODO исправить
-    return <></>
-    // const loading = useSelector((state: ProState) => state.addit.loading)
-    // const stfl = useSelector((state: ProState) => state.addit.stfl)
-    // const typeFl = useSelector((state: ProState) => state.addit.typeFl)
+    const loading = useSelector((state: ProState) => state.addit.loading)
+    const addit = useSelector((state: ProState) => state.addit.addit)
+    const stfl = useSelector((state: ProState) => state.addit.stfl)
+    const typeFl = useSelector((state: ProState) => state.addit.typeFl)
+
+    const sending = useSelector((state: ProState) => state.snp.loading)
+    const snp = useSelector((state: ProState) => state.snp.snp)
+
     // const addit = useSelector((state: ProState) => state.addit.addit)
     // const [st, setSt] = useState(stfl[0]?.id || "")
     // const [snp, setSnp] = useState<ISNP[]>([])
@@ -39,12 +45,14 @@ export default function SNP() {
     // const [isOpenTable, setIsOpenTable] = useState(false)
     // const [sizes, setSizes] = useState<ISize[]>([])
     // const [sending, setSending] = useState(false)
-    // const dispatch = useDispatch<Dispatch>()
-    // // запрос стандартов и типов фланцев
-    // useEffect(() => {
-    //     if (!stfl.length) dispatch.addit.getStFl()
-    //     if (!typeFl.length) dispatch.addit.getTypeFl()
-    // }, [stfl.length, typeFl.length, dispatch.addit])
+    const dispatch = useDispatch<Dispatch>()
+
+    // запрос стандартов и типов фланцев
+    useEffect(() => {
+        if (!stfl.length) dispatch.addit.getStFl()
+        if (!typeFl.length) dispatch.addit.getTypeFl()
+    }, [stfl.length, typeFl.length, dispatch.addit])
+
     // const fetchSnp = useCallback(async (req: ISNPReq) => {
     //     console.log("fetchSnp")
     //     try {
@@ -57,6 +65,7 @@ export default function SNP() {
     //         setSending(false)
     //     }
     // }, [])
+
     // const fetchSize = useCallback(async (req: ISizeReq) => {
     //     console.log("fetchSize")
     //     try {
@@ -296,9 +305,27 @@ export default function SNP() {
     //         setSending(false)
     //     }
     // }
-    // if (!addit || loading) {
-    //     return <Loader />
-    // }
+    if (!addit || loading) {
+        return <Loader />
+    }
+
+    return (
+        <div className={classes.page}>
+            {sending && (
+                <div className={classes.loader}>
+                    <Loader background='fill' />
+                </div>
+            )}
+
+            <MainSnp />
+            {snp && (
+                <>
+                    <Filler />
+                </>
+            )}
+        </div>
+    )
+
     // return (
     //     <div className={classes.page}>
     //         {sending && (

@@ -136,7 +136,7 @@ export const ResultSnp: FC<Props> = () => {
 
         let modif = ""
         if (mod !== "0") {
-            let m = mods.find(m => m.id === mod)?.title
+            let m = mods.find(m => m.id === mod)?.short
             if (m) modif = `-${m}`
         }
 

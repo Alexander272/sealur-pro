@@ -1,6 +1,6 @@
 import { FC } from "react"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
+import { Modal } from "../Modal/Modal"
+import { Button } from "../UI/Button/Button"
 import classes from "./modal.module.scss"
 
 type Props = {

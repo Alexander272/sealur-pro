@@ -3,7 +3,7 @@ import classes from "./list.module.scss"
 
 type Props = {
     onClick?: () => {}
-    value?: string
+    value?: any
 }
 
 export const Item: FC<Props> = ({ children, onClick }) => {

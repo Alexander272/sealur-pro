@@ -2,22 +2,23 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, IFiller } from "../../types/addit"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, IFiller } from "../../../../types/addit"
+import { IFiller as IFillerSnp } from "../../../../types/snp"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./filler.module.scss"
 
 type Props = {
     filler: string
-    fillers: string
-    sendHandler: () => void
-    clickHandler: (filler: string, fillers: string) => void
-    changeHandler: (fillers: string, selected: boolean) => void
+    fillers: IFillerSnp[]
+    sendHandler: (isSend: boolean) => void
+    clickHandler: (filler: IFillerSnp, fillers: IFillerSnp[]) => void
+    changeHandler: (fillers: IFillerSnp[], selected: boolean) => void
 }
 
 export const AdminFiller: FC<Props> = ({
@@ -40,58 +41,62 @@ export const AdminFiller: FC<Props> = ({
         formState: { errors },
     } = useForm<IFiller>()
 
-    // TODO исправить
     const deleteHandler = async () => {
         if (!addit || !data) return
-        // let fils = addit?.fillers.split(";") || []
-        // fils = fils.filter(f => f !== `${data.short}@${data.title}@${data.description}`)
-        // console.log(fils)
+        let fils = addit?.fillers || []
+        fils = fils.filter(f => f.short !== data.short)
 
         try {
-            // sendHandler()
-            // await AdditService.updateFillers(addit.id, fils.join(";"), "delete", data.short)
-            // let add: IAddit = {} as IAddit
-            // Object.assign(add, addit, { fillers: fils.join(";") })
-            // dispatch.addit.setAddit(add)
-            // toast.success("Успешно удалено")
-            // toggle()
+            sendHandler(true)
+            await AdditService.updateFillers(addit.id, fils, "delete", data.short)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.fillers = fils
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            sendHandler()
+            sendHandler(false)
         }
     }
 
-    const submitHandler = async (form: any) => {
+    const submitHandler = async (form: IFiller) => {
         if (!addit) return
-        // let fils = addit.fillers.split(";") || []
-        // if (!data) {
-        //     fils?.push(`${form.short}@${form.title}@${form.description}`)
-        // } else {
-        //     fils = fils?.map(f => {
-        //         if (f === `${data.short}@${data.title}@${data.description}`)
-        //             return `${form.short}@${form.title}@${form.description}`
-        //         return f
-        //     })
-        // }
-
+        let fils = [...addit.fillers] || []
+        if (!data) {
+            fils.push({
+                short: form.short,
+                title: form.title,
+                description: form.description,
+            })
+        } else {
+            fils = fils?.map(f => {
+                if (f.short === data.short) return form
+                return f
+            })
+        }
         try {
-            sendHandler()
+            sendHandler(true)
             // await AdditService.updateFillers(
             //     addit.id,
-            //     fils.join(";"),
+            //     fils,
             //     data ? "update" : "add",
             //     data ? "" : form.short
             // )
-            // let add: IAddit = {} as IAddit
-            // Object.assign(add, addit, { fillers: fils.join(";") })
-            // dispatch.addit.setAddit(add)
-            // toast.success(data ? "Успешно обновлено" : "Успешно создано")
-            // toggle()
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.fillers = fils
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            sendHandler()
+            sendHandler(false)
         }
     }
 
@@ -102,42 +107,37 @@ export const AdminFiller: FC<Props> = ({
         setValue("description", "")
         toggle()
     }
-    const updateFillerHandler = (filler: string) => () => {
-        const parts = filler.split("@")
-        setData({ short: parts[0], title: parts[1], description: parts[2] })
-        setValue("short", parts[0])
-        setValue("title", parts[1])
-        setValue("description", parts[2])
+    const updateFillerHandler = (filler: IFiller) => () => {
+        setData({ short: filler.short, title: filler.title, description: filler.description })
+        setValue("short", filler.short)
+        setValue("title", filler.title)
+        setValue("description", filler.description)
         toggle()
     }
 
     const changeFiller = (id: string) => {
-        let tmp = fillers.split(";") || []
-        if (tmp[0] === "") tmp = []
-        const cur = tmp.find(f => f.split("&")[0] === id)
+        const cur = fillers.find(f => f.id === id)
         if (cur) {
-            tmp = tmp.filter(f => f.split("&")[0] !== id)
+            fillers = fillers.filter(f => f.id !== id)
         } else {
-            tmp.push(`${id}&`)
+            fillers.push({ id: id, temps: [] })
         }
-
-        return { fillers: tmp.join(";"), selected: id === filler }
+        return fillers
     }
 
-    const changeFillerHandler = (filler: string) => () => {
-        const newFil = changeFiller(filler)
-        changeHandler(newFil.fillers, newFil.selected)
+    const changeFillerHandler = (fil: string) => () => {
+        const newFil = changeFiller(fil)
+        changeHandler(newFil, fil === filler)
     }
 
     const fillerHandler = (filler: string) => () => {
-        let fil = fillers.split(";").find(f => f.split("&")[0] === filler) || ""
-        let newFillers = ""
-        if (!fil) {
-            newFillers = changeFiller(filler).fillers
-            const tmp = newFillers.split(";")
-            fil = tmp[tmp.length - 1]
-        }
+        let fil = fillers.find(f => f.id === filler)
+        let newFillers: IFillerSnp[] = []
 
+        if (!fil) {
+            newFillers = changeFiller(filler)
+            fil = newFillers[newFillers.length - 1]
+        }
         clickHandler(fil, newFillers)
     }
 
@@ -198,33 +198,31 @@ export const AdminFiller: FC<Props> = ({
                 Добавить
             </p>
             <div className={`${classes.list} scroll`}>
-                {/* {addit?.fillers.split(";").map(fil => {
-                    const parts = fil.split("@")
-
-                    const f = fillers.split(";").find(f => f.split("&")[0] === parts[0])
+                {addit?.fillers.map(fil => {
+                    const f = fillers.find(f => f.id === fil.short)
 
                     return (
-                        <div key={parts[0]} className={classes.listItem}>
+                        <div key={fil.short} className={classes.listItem}>
                             <Checkbox
-                                name={parts[1]}
-                                id={parts[1]}
+                                name={fil.title}
+                                id={fil.title}
                                 checked={!!f}
-                                onChange={changeFillerHandler(parts[0])}
+                                onChange={changeFillerHandler(fil.short)}
                             />
                             <p
                                 className={`${classes.filItem} ${
-                                    parts[0] === filler ? classes.active : ""
+                                    fil.short === filler ? classes.active : ""
                                 }`}
-                                onClick={fillerHandler(parts[0])}
+                                onClick={fillerHandler(fil.short)}
                             >
-                                {parts[0]} {parts[1]}
+                                {fil.short} {fil.title}
                             </p>
                             <p className={classes.icon} onClick={updateFillerHandler(fil)}>
                                 &#9998;
                             </p>
                         </div>
                     )
-                })} */}
+                })}
             </div>
         </>
     )

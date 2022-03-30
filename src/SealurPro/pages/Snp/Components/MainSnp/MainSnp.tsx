@@ -61,6 +61,23 @@ export const MainSnp: FC<Props> = () => {
         }
     }, [dispatch, st, stfl, snp])
 
+    const changeStHandler = (value: string) => {
+        const sf = stfl.find(s => s.id === value)
+        if (sf) {
+            dispatch.snp.getSnp({ st: value, req: { standId: sf.standId, flangeId: sf.flangeId } })
+        }
+    }
+
+    const changeTypeFlHandler = (value: string) => {
+        const tmp = snps.filter(s => s.typeFlId.includes(value))
+        dispatch.snp.changeSnp(tmp[0])
+    }
+
+    const changeTypePrHandler = (value: string) => {
+        const tmp = snps.filter(s => s.typePr.includes(value))
+        dispatch.snp.changeSnp(tmp[0])
+    }
+
     const renderTypes = () => {
         const usedTypes = types.filter(t => snps.some(s => s.typePr === t.value))
         const idx = usedTypes.findIndex(t => t.value === snp?.typePr)
@@ -89,23 +106,6 @@ export const MainSnp: FC<Props> = () => {
                 ))}
             </Tabs>
         )
-    }
-
-    const changeStHandler = (value: string) => {
-        const sf = stfl.find(s => s.id === value)
-        if (sf) {
-            dispatch.snp.getSnp({ st: value, req: { standId: sf.standId, flangeId: sf.flangeId } })
-        }
-    }
-
-    const changeTypeFlHandler = (value: string) => {
-        const tmp = snps.filter(s => s.typeFlId.includes(value))
-        dispatch.snp.changeSnp(tmp[0])
-    }
-
-    const changeTypePrHandler = (value: string) => {
-        const tmp = snps.filter(s => s.typePr.includes(value))
-        dispatch.snp.changeSnp(tmp[0])
     }
 
     if (loading) return null

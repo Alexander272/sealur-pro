@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { useSelector } from "react-redux"
-import { ProState } from "../../store/store"
-import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
+import { ProState } from "../../../../store/store"
+import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 
 type Props = {
     className: string

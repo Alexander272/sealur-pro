@@ -2,14 +2,14 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, IGrap } from "../../types/addit"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, IGrap } from "../../../../types/addit"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./form.module.scss"
 
 type Props = {
@@ -46,56 +46,62 @@ export const GrapForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         }
     }, [data, setValue])
 
-    // TODO исправить
     const submitHandler = async (form: Form) => {
-        // if (!addit) return
-        // let graps = addit.graphite.split(";") || []
-        // if (!data) {
-        //     graps?.push(`${form.short}@${form.title}@${form.description}`)
-        // } else {
-        //     graps = graps?.map(g => {
-        //         if (g === `${data.short}@${data.title}@${data.description}`)
-        //             return `${form.short}@${form.title}@${form.description}`
-        //         return g
-        //     })
-        // }
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateGrap(
-        //         addit.id,
-        //         graps.join(";"),
-        //         data ? "update" : "add",
-        //         data ? "" : form.short
-        //     )
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { graphite: graps.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success(data ? "Успешно обновлено" : "Успешно создано")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        if (!addit) return
+        let graps = [...addit.graphite]
+        if (!data) {
+            graps.push({
+                short: form.short,
+                title: form.title,
+                description: form.description,
+            })
+        } else {
+            graps = graps?.map(g => {
+                if (g.short === data.short) return form
+                return g
+            })
+        }
+        try {
+            sendHandler()
+            await AdditService.updateGrap(
+                addit.id,
+                graps,
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.graphite = graps
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     const deleteHandler = async () => {
-        // if (!addit || !data) return
-        // let graps = addit?.graphite.split(";") || []
-        // graps = graps.filter(g => g !== `${data.short}@${data.title}@${data.description}`)
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateGrap(addit.id, graps.join(";"), "delete", data.short)
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { graphite: graps.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success("Успешно удалено")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        if (!addit || !data) return
+        let graps = addit?.graphite || []
+        graps = graps.filter(g => g.short !== data.short)
+        try {
+            sendHandler()
+            await AdditService.updateGrap(addit.id, graps, "delete", data.short)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.graphite = graps
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     return (

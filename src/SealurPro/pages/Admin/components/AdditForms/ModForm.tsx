@@ -2,14 +2,14 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, IMod } from "../../types/addit"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, IMod } from "../../../../types/addit"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./form.module.scss"
 
 type Props = {
@@ -46,60 +46,62 @@ export const ModForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         }
     }, [data, setValue])
 
-    // TODO исправить
     const submitHandler = async (form: Form) => {
         if (!addit) return
-        // let mods = addit.mod.split(";") || []
-        // let newIdx
-        // if (!data) {
-        //     newIdx = +mods[mods.length - 1].split("@")[0] + 1
-        //     mods?.push(`${newIdx}@${form.title}@${form.short}@${form.description}`)
-        // } else {
-        //     mods = mods?.map(m => {
-        //         if (m.includes(`${data.id}@${data.title}`))
-        //             return `${data.id}@${form.title}@${form.short}@${form.description}`
-        //         return m
-        //     })
-        // }
+        let mods = [...addit.mod]
+        let newId = ""
+        if (!data) {
+            newId = (+mods[mods.length - 1].id + 1).toString()
+            mods.push({
+                id: newId,
+                title: form.title,
+                short: form.short,
+                description: form.description,
+            })
+        } else {
+            mods = mods?.map(m => {
+                if (m.id === data.id) return { id: data.id, ...form }
+                return m
+            })
+        }
 
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMod(
-        //         addit.id,
-        //         mods.join(";"),
-        //         data ? "update" : "add",
-        //         data ? "" : newIdx?.toString() || ""
-        //     )
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { mod: mods.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success(data ? "Успешно обновлено" : "Успешно создано")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        try {
+            sendHandler()
+            await AdditService.updateMod(addit.id, mods, data ? "update" : "add", data ? "" : newId)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.mod = mods
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     const deleteHandler = async () => {
         if (!addit || !data) return
-        // let mods = addit?.mod.split(";") || []
-        // mods = mods.filter(m => !m.includes(`${data.id}@${data.title}`))
+        let mods = addit?.mod || []
+        mods = mods.filter(m => m.id !== data.id)
 
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateMod(addit.id, mods.join(";"), "delete", data.id)
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { mod: mods.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success("Успешно удалено")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        try {
+            sendHandler()
+            await AdditService.updateMod(addit.id, mods, "delete", data.id)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.mod = mods
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     return (

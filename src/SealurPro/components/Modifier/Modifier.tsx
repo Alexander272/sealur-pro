@@ -24,7 +24,7 @@ export const Modifier: FC<Props> = ({ modifier, modHandler, temps, className, cl
             if (!modifiers.some(m => m === mod.id)) return <Fragment key={mod.id}></Fragment>
             return (
                 <Option key={mod.id} value={mod.id}>
-                    {mod.short}
+                    {mod.title}
                 </Option>
             )
         })

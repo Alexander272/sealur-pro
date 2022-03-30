@@ -2,14 +2,14 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import AdditService from "../../service/addit"
-import { Dispatch, ProState } from "../../store/store"
-import { IAddit, ITemp } from "../../types/addit"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { Input } from "../../../components/UI/Input/Input"
+import AdditService from "../../../../service/addit"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IAddit, ITemp } from "../../../../types/addit"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Input } from "../../../../../components/UI/Input/Input"
 import classes from "./form.module.scss"
 
 type Props = {
@@ -42,54 +42,57 @@ export const TempForm: FC<Props> = ({ data, closeHandler, sendHandler }) => {
         }
     }, [data, setValue])
 
-    // TODO исправить
     const submitHandler = async (form: Form) => {
         if (!addit) return
-        // let temps = addit.temperature.split(";") || []
-        // let newIdx
-        // if (!data) {
-        //     newIdx = +temps[temps.length - 1].split("@")[0] + 1
-        //     temps?.push(`${newIdx}@${form.title}`)
-        // } else {
-        //     temps = temps?.map(t => {
-        //         if (t === `${data.id}@${data.title}`) return `${data.id}@${form.title}`
-        //         return t
-        //     })
-        // }
+        let temps = [...addit.temperature]
+        let newId = ""
+        if (!data) {
+            newId = (+temps[temps.length - 1].id + 1).toString()
+            temps.push({ id: newId, title: form.title })
+        } else {
+            temps = temps.map(t => {
+                if (t.id === data.id) return { ...form, id: data.id }
+                return t
+            })
+        }
 
-        // try {
-        //     sendHandler()
-        //     await AdditService.updateTemp(
-        //         addit.id,
-        //         temps.join(";"),
-        //         data ? "update" : "add",
-        //         data ? "" : newIdx?.toString() || ""
-        //     )
-        //     let add: IAddit = {} as IAddit
-        //     Object.assign(add, addit, { temperature: temps.join(";") })
-        //     dispatch.addit.setAddit(add)
-        //     toast.success(data ? "Успешно обновлено" : "Успешно создано")
-        //     closeHandler()
-        // } catch (error: any) {
-        //     toast.error(`Возникла ошибка: ${error.message}`)
-        // } finally {
-        //     sendHandler()
-        // }
+        try {
+            sendHandler()
+            await AdditService.updateTemp(
+                addit.id,
+                temps,
+                data ? "update" : "add",
+                data ? "" : newId
+            )
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.temperature = temps
+            dispatch.addit.setAddit(add)
+
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            closeHandler()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            sendHandler()
+        }
     }
 
     const deleteHandler = async () => {
         if (!addit || !data) return
-        // let temps = addit?.temperature.split(";") || []
-        // temps = temps.filter(t => t !== `${data.id}@${data.title}`)
+        let temps = addit?.temperature || []
+        temps = temps.filter(t => t.id !== data.id)
 
         try {
-            // sendHandler()
-            // await AdditService.updateTemp(addit.id, temps.join(";"), "delete", data.id)
-            // let add: IAddit = {} as IAddit
-            // Object.assign(add, addit, { temperature: temps.join(";") })
-            // dispatch.addit.setAddit(add)
-            // toast.success("Успешно удалено")
-            // closeHandler()
+            sendHandler()
+            await AdditService.updateTemp(addit.id, temps, "delete", data.id)
+
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.temperature = temps
+            dispatch.addit.setAddit(add)
+
+            toast.success("Успешно удалено")
+            closeHandler()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {

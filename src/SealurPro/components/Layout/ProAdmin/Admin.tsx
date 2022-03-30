@@ -2,16 +2,17 @@ import { Suspense, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Dispatch, ProState } from "../../../store/store"
-import { GrapForm } from "../../AdditForms/GrapForm"
-import { MatForm } from "../../AdditForms/MatForm"
-import { ModForm } from "../../AdditForms/ModForm"
-import { MounForm } from "../../AdditForms/MounForm"
-import { TempForm } from "../../AdditForms/TempForm"
+import { GrapForm } from "../../../pages/Admin/components/AdditForms/GrapForm"
+import { MatForm } from "../../../pages/Admin/components/AdditForms/MatForm"
+import { ModForm } from "../../../pages/Admin/components/AdditForms/ModForm"
+import { MounForm } from "../../../pages/Admin/components/AdditForms/MounForm"
+import { TempForm } from "../../../pages/Admin/components/AdditForms/TempForm"
 import { useModal } from "../../../../components/Modal/hooks/useModal"
 import { Modal } from "../../../../components/Modal/Modal"
 import { Tabs } from "../../../../components/Tabs/Tabs"
 import { List } from "../../../../components/UI/List/List"
 import { Loader } from "../../../../components/UI/Loader/Loader"
+import { IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
 import classes from "./admin.module.scss"
 
 const initTabs: any = {
@@ -33,11 +34,6 @@ const { Item } = List
 
 export default function AdminLayout() {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    const materials = useSelector((state: ProState) => state.addit.addit?.materials)
-    const mod = useSelector((state: ProState) => state.addit.addit?.mod)
-    const temp = useSelector((state: ProState) => state.addit.addit?.temperature)
-    const moun = useSelector((state: ProState) => state.addit.addit?.mounting)
-    const grap = useSelector((state: ProState) => state.addit.addit?.graphite)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -63,38 +59,33 @@ export default function AdminLayout() {
         toggle()
     }
 
-    const updateMatHandler = (value: string) => {
+    const updateMatHandler = (mat: IMat) => {
         setFormType("mat")
-        const parts = value.split("@")
-        setData({ short: parts[0], title: parts[1] })
+        setData({ short: mat.short, title: mat.title })
         toggle()
     }
 
-    const updateTempHandler = (value: string) => {
+    const updateTempHandler = (temp: ITemp) => {
         setFormType("temp")
-        const parts = value.split("@")
-        setData({ id: parts[0], title: parts[1] })
+        setData({ id: temp.id, title: temp.title })
         toggle()
     }
 
-    const updateModHandler = (value: string) => {
+    const updateModHandler = (mod: IMod) => {
         setFormType("mod")
-        const parts = value.split("@")
-        setData({ id: parts[0], title: parts[1], short: parts[2], description: parts[3] })
+        setData({ id: mod.id, title: mod.title, short: mod.short, description: mod.description })
         toggle()
     }
 
-    const updateMounHandler = (value: string) => {
+    const updateMounHandler = (moun: IMoun) => {
         setFormType("moun")
-        const parts = value.split("@")
-        setData({ id: parts[0], title: parts[1] })
+        setData({ id: moun.id, title: moun.title })
         toggle()
     }
 
-    const updateGrapHandler = (value: string) => {
+    const updateGrapHandler = (grap: IGrap) => {
         setFormType("grap")
-        const parts = value.split("@")
-        setData({ short: parts[0], title: parts[1], description: parts[2] })
+        setData({ short: grap.short, title: grap.title, description: grap.description })
         toggle()
     }
 
@@ -168,19 +159,17 @@ export default function AdminLayout() {
                     <Outlet />
                 </Suspense>
             </div>
-            // TODO исправить
             <div className={classes.side}>
-                {/* <List
+                <List
                     title='Материалы'
                     isOpen
                     addHandler={openFormHandler("mat")}
                     updateHandler={updateMatHandler}
                 >
-                    {materials?.split(";").map(mat => {
-                        const parts = mat.split("@")
+                    {addit?.materials.map(mat => {
                         return (
-                            <Item key={parts[0]} value={mat}>
-                                {parts[0]} {parts[1]}
+                            <Item key={mat.short} value={mat}>
+                                {mat.short} {mat.title}
                             </Item>
                         )
                     })}
@@ -190,11 +179,10 @@ export default function AdminLayout() {
                     addHandler={openFormHandler("temp")}
                     updateHandler={updateTempHandler}
                 >
-                    {temp?.split(";").map(temp => {
-                        const parts = temp.split("@")
+                    {addit?.temperature.map(temp => {
                         return (
-                            <Item key={parts[0]} value={temp}>
-                                {parts[1]}
+                            <Item key={temp.id} value={temp}>
+                                {temp.title}
                             </Item>
                         )
                     })}
@@ -204,11 +192,10 @@ export default function AdminLayout() {
                     addHandler={openFormHandler("mod")}
                     updateHandler={updateModHandler}
                 >
-                    {mod?.split(";").map(mod => {
-                        const parts = mod.split("@")
+                    {addit?.mod.map(mod => {
                         return (
-                            <Item key={parts[0]} value={mod}>
-                                {parts[1]}
+                            <Item key={mod.id} value={mod}>
+                                {mod.title}
                             </Item>
                         )
                     })}
@@ -218,11 +205,10 @@ export default function AdminLayout() {
                     addHandler={openFormHandler("moun")}
                     updateHandler={updateMounHandler}
                 >
-                    {moun?.split(";").map(m => {
-                        const parts = m.split("@")
+                    {addit?.mounting.map(m => {
                         return (
-                            <Item key={m} value={m}>
-                                {parts[1]}
+                            <Item key={m.id} value={m}>
+                                {m.title}
                             </Item>
                         )
                     })}
@@ -233,15 +219,14 @@ export default function AdminLayout() {
                     addHandler={openFormHandler("grap")}
                     updateHandler={updateGrapHandler}
                 >
-                    {grap?.split(";").map(g => {
-                        const parts = g.split("@")
+                    {addit?.graphite.map(g => {
                         return (
-                            <Item key={parts[0]} value={g}>
-                                {parts[0]} {parts[1]}
+                            <Item key={g.short} value={g}>
+                                {g.short} {g.title}
                             </Item>
                         )
                     })}
-                </List> */}
+                </List>
             </div>
         </div>
     )

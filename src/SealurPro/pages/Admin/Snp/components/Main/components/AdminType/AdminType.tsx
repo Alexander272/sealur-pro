@@ -1,33 +1,33 @@
 import { FC, useRef } from "react"
-import { ISNP, ISNPDTO } from "../../types/snp"
-import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal"
-import SNPService from "../../service/snp"
-import { useModal } from "../../../components/Modal/hooks/useModal"
+import { ISNP, ISNPDTO } from "../../../../../../../types/snp"
+import { Checkbox } from "../../../../../../../../components/UI/Checkbox/Checkbox"
+import { ConfirmModal } from "../../../../../../../../components/ConfirmModal/ConfirmModal"
+import SNPService from "../../../../../../../service/snp"
+import { useModal } from "../../../../../../../../components/Modal/hooks/useModal"
 import { toast } from "react-toastify"
 import { useSelector } from "react-redux"
-import { ProState } from "../../store/store"
+import { ProState } from "../../../../../../../store/store"
 import classes from "./type.module.scss"
 
 type Props = {
-    snp: ISNP[]
+    snps: ISNP[]
     type: string
     st: string
-    curSnp: ISNP | null
+    snp: ISNP | null
     clickHandler: (type: string, snp: ISNP, isNew?: boolean) => void
     changeHandler: (type: string, newSnp: ISNP, isNew: boolean) => void
     denyHandler: () => void
     saveHandler: (id: string, type: string, newSnp: ISNP | null) => void
-    sendHandler: () => void
+    sendHandler: (isSend: boolean) => void
 }
 
 const types = ["А", "Б", "В", "Г", "Д"]
 
 export const AdminType: FC<Props> = ({
-    snp,
+    snps,
     type,
     st,
-    curSnp,
+    snp,
     clickHandler,
     changeHandler,
     denyHandler,
@@ -45,7 +45,7 @@ export const AdminType: FC<Props> = ({
         if (isMod) return
         t.current = type
 
-        const tmp = snp.filter(s => s.typePr.includes(type))
+        const tmp = snps.filter(s => s.typePr.includes(type))
         if (!tmp.length) {
             const newSNP = createNewSnp(type)
             // clickHandler(type, newSNP, true)
@@ -56,18 +56,18 @@ export const AdminType: FC<Props> = ({
     }
 
     const checkSnp = (type: string) => {
-        if (!snp.length) return false
-        console.log(type, curSnp?.typePr, type === curSnp?.typePr)
+        if (!snps.length) return false
+        console.log(type, snp?.typePr, type === snp?.typePr)
 
-        if (type === curSnp?.typePr) {
+        if (type === snp?.typePr) {
             isCurSnp.current = true
             return false
         }
         isCurSnp.current = false
 
-        const s = snp.find(s => JSON.stringify(s) === JSON.stringify(curSnp))
+        const s = snps.find(s => JSON.stringify(s) === JSON.stringify(snp))
 
-        if (curSnp?.id === "new" || !s) {
+        if (snp?.id === "new" || !s) {
             isModified.current = true
             t.current = type
             toggle()
@@ -83,7 +83,7 @@ export const AdminType: FC<Props> = ({
         if (isMod) return
         t.current = curType
 
-        const tmp = snp.find(s => s.typePr.includes(curType))
+        const tmp = snps.find(s => s.typePr.includes(curType))
         // if (!tmp) {
         //     const newSNP = createNewSnp(curType)
         //     changeHandler(curType, newSNP, true)
@@ -120,7 +120,7 @@ export const AdminType: FC<Props> = ({
 
     const deny = () => {
         denyHandler()
-        const tmp = snp.filter(s => s.typePr.includes(t.current))
+        const tmp = snps.filter(s => s.typePr.includes(t.current))
         toggle()
 
         if (!tmp.length) {
@@ -134,12 +134,12 @@ export const AdminType: FC<Props> = ({
     }
 
     const save = async () => {
-        if (!curSnp) {
+        if (!snp) {
             toast.error("Тип снп не добавлен")
             toggle()
             return
         }
-        if (!curSnp.fillers) {
+        if (!snp.fillers) {
             toast.error("Наполнитель не выбран")
             toggle()
             return
@@ -150,7 +150,7 @@ export const AdminType: FC<Props> = ({
         if (!sf) return
 
         try {
-            sendHandler()
+            sendHandler(true)
             // const data: ISNPDTO = {
             //     standId: sf.standId,
             //     flangeId: sf.flangeId,
@@ -176,10 +176,10 @@ export const AdminType: FC<Props> = ({
         } catch (error: any) {
             toast.error("Не удалось выполнить запрос на сервер")
         } finally {
-            sendHandler()
+            sendHandler(false)
         }
 
-        const tmp = snp.filter(s => s.typePr.includes(t.current))
+        const tmp = snps.filter(s => s.typePr.includes(t.current))
         toggle()
 
         if (!tmp.length) {
@@ -194,16 +194,16 @@ export const AdminType: FC<Props> = ({
 
     const deleteHandler = async () => {
         isModified.current = false
-        const tmp = snp.find(s => s.typePr.includes(t.current))
+        const tmp = snps.find(s => s.typePr.includes(t.current))
         if (tmp!.id !== "new") {
             try {
-                sendHandler()
+                sendHandler(true)
                 await SNPService.delete(tmp!.id)
                 toast.success("Успешно удалено")
             } catch (error) {
                 toast.error("Не удалось выполнить запрос на сервер")
             } finally {
-                sendHandler()
+                sendHandler(false)
             }
         }
         changeHandler(t.current, tmp!, false)
@@ -212,7 +212,7 @@ export const AdminType: FC<Props> = ({
 
     const renderTypes = () => {
         return types.map(t => {
-            let s = snp.find(s => s.typePr === t)
+            let s = snps.find(s => s.typePr === t)
 
             return (
                 <div key={t} className={classes.types}>

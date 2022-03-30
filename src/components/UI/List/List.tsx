@@ -6,7 +6,7 @@ type Props = {
     title: string
     isOpen?: boolean
     addHandler: () => void
-    updateHandler: (value: string) => void
+    updateHandler: (value: any) => void
 }
 
 const List = ({

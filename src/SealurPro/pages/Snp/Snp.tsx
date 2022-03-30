@@ -16,6 +16,7 @@ export default function NewSnp() {
     const { snp } = useDispatch<Dispatch>()
 
     useEffect(() => {
+        // получение начальных значений (прокладки, размеры первой из них, типы фланцев)
         snp.getDefault()
     }, [snp])
 
