@@ -6,79 +6,76 @@ import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 type Props = {
     className: string
     classItem: string
-    moun: string
-    onChange: (value: string) => void
+    moun: string[]
+    onChange: (values: string[]) => void
 }
 
 export const AdminMoun: FC<Props> = ({ className, classItem, moun, onChange }) => {
     const addit = useSelector((state: ProState) => state.addit.addit)
 
-    // const mounHandler = (value: string) => () => {
-    //     if (value === "all") {
-    //         if (moun === "*") onChange("")
-    //         else onChange("*")
-    //         return
-    //     }
+    const mounHandler = (value: string) => () => {
+        if (value === "all") {
+            if (moun[0] === "*") onChange([])
+            else onChange(["*"])
+            return
+        }
+        let tmp: string[] = []
+        if (moun[0] === "*") {
+            addit?.mounting.forEach(m => {
+                if (m.id !== value) tmp.push(m.id)
+            })
+            onChange(tmp)
+        } else {
+            tmp = [...moun]
+            if (tmp.includes(value)) {
+                onChange(tmp.filter(t => t !== value))
+            } else {
+                tmp.push(value)
+                if (tmp.length === addit?.mounting.length) {
+                    onChange(["*"])
+                    return
+                }
+                onChange(tmp)
+            }
+        }
+    }
 
-    //     let tmp: string[] = []
-    //     if (moun === "*") {
-    //         addit?.mounting.split(";").forEach(m => {
-    //             let id = m.split("@")[0]
-    //             if (id !== value) tmp.push(id)
-    //         })
-    //         onChange(tmp.join(";"))
-    //     } else {
-    //         tmp = moun.split(";")
-    //         if (tmp[0] === "") tmp = []
+    const renderMoun = () => {
+        return addit?.mounting.map(m => {
+            let isAdded = false
+            if (moun[0] === "*") isAdded = true
+            else if (moun.includes(m.id)) isAdded = true
 
-    //         if (tmp.includes(value)) {
-    //             onChange(tmp.filter(t => t !== value).join(";"))
-    //         } else {
-    //             tmp.push(value)
-    //             if (tmp.length === addit?.mounting.split(";").length) {
-    //                 onChange("*")
-    //                 return
-    //             }
-    //             // tmp.sort((a, b) => +a - +b)
-    //             onChange(tmp.join(";"))
-    //         }
-    //     }
-    // }
-    // TODO исправить
-
-    // const renderMoun = () => {
-    //     return addit?.mounting.split(";").map(m => {
-    //         let isAdded = false
-    //         const parts = m.split("@")
-    //         if (moun === "*") isAdded = true
-    //         else if (moun.split(";").includes(parts[0])) isAdded = true
-
-    //         return (
-    //             <div key={m} className={classItem}>
-    //                 <Checkbox
-    //                     name={m}
-    //                     id={m}
-    //                     checked={isAdded}
-    //                     onChange={mounHandler(parts[0])}
-    //                     label={parts[1]}
-    //                 />
-    //             </div>
-    //         )
-    //     })
-    // }
+            return (
+                <div key={m.id} className={classItem}>
+                    <Checkbox
+                        id={`moun-${m.id}`}
+                        name={m.id}
+                        checked={isAdded}
+                        onChange={mounHandler(m.id)}
+                        label={m.title}
+                    />
+                </div>
+            )
+        })
+    }
 
     return (
         <div className={`${className} scroll`}>
-            {/* <div className={classItem}>
+            <div className={classItem}>
                 <Checkbox
                     name='all-moun'
                     id='all-moun'
-                    checked={moun === "*"}
+                    checked={moun[0] === "*"}
                     onChange={mounHandler("all")}
-                    label={moun === "*" ? "Удалить все" : "Добавить все"}
+                    label={
+                        moun[0] === "*" || moun.length === addit?.mounting.length
+                            ? "Удалить все"
+                            : "Добавить все"
+                    }
                 />
-            </div> */}
-            {/* {renderMoun()} */}
+            </div>
+            {renderMoun()}
         </div>
     )
 }

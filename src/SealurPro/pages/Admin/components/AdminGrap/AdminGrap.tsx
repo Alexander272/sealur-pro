@@ -6,79 +6,76 @@ import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 type Props = {
     className: string
     classItem: string
-    graphite: string
-    onChange: (value: string) => void
+    graphite: string[]
+    onChange: (values: string[]) => void
 }
 
 export const AdminGrap: FC<Props> = ({ className, classItem, graphite, onChange }) => {
     const addit = useSelector((state: ProState) => state.addit.addit)
 
-    // TODO исправить
-    // const grapHandler = (value: string) => () => {
-    //     if (value === "all") {
-    //         if (graphite === "*") onChange("")
-    //         else onChange("*")
-    //         return
-    //     }
+    const grapHandler = (value: string) => () => {
+        if (value === "all") {
+            if (graphite[0] === "*") onChange([])
+            else onChange(["*"])
+            return
+        }
+        let tmp: string[] = []
+        if (graphite[0] === "*") {
+            addit?.graphite.forEach(g => {
+                if (g.short !== value) tmp.push(g.short)
+            })
+        } else {
+            tmp = [...graphite]
+            if (tmp[0] === "") tmp = []
+            if (tmp.includes(value)) {
+                tmp = tmp.filter(t => t !== value)
+            } else {
+                tmp.push(value)
+                if (tmp.length === addit?.graphite.length) {
+                    onChange(["*"])
+                    return
+                }
+            }
+        }
+        onChange(tmp)
+    }
 
-    //     let tmp: string[] = []
-    //     if (graphite === "*") {
-    //         addit?.graphite.split(";").forEach(g => {
-    //             let id = g.split("@")[0]
-    //             if (id !== value) tmp.push(id)
-    //         })
-    //         onChange(tmp.join(";"))
-    //     } else {
-    //         tmp = graphite.split(";")
-    //         if (tmp[0] === "") tmp = []
+    const renderGrap = () => {
+        return addit?.graphite.map(g => {
+            let isAdded = false
+            if (graphite[0] === "*") isAdded = true
+            else if (graphite.includes(g.short)) isAdded = true
 
-    //         if (tmp.includes(value)) {
-    //             onChange(tmp.filter(t => t !== value).join(";"))
-    //         } else {
-    //             tmp.push(value)
-    //             if (tmp.length === addit?.graphite.split(";").length) {
-    //                 onChange("*")
-    //                 return
-    //             }
-    //             // tmp.sort((a, b) => +a - +b)
-    //             onChange(tmp.join(";"))
-    //         }
-    //     }
-    // }
-
-    // const renderGrap = () => {
-    //     return addit?.graphite.split(";").map(g => {
-    //         let isAdded = false
-    //         const parts = g.split("@")
-    //         if (graphite === "*") isAdded = true
-    //         else if (graphite.split(";").includes(parts[0])) isAdded = true
-
-    //         return (
-    //             <div key={parts[0]} className={classItem}>
-    //                 <Checkbox
-    //                     name={parts[0]}
-    //                     id={parts[0]}
-    //                     checked={isAdded}
-    //                     onChange={grapHandler(parts[0])}
-    //                     label={parts[1]}
-    //                 />
-    //             </div>
-    //         )
-    //     })
-    // }
+            return (
+                <div key={g.short} className={classItem}>
+                    <Checkbox
+                        id={`grap-${g.short}`}
+                        name={g.short}
+                        checked={isAdded}
+                        onChange={grapHandler(g.short)}
+                        label={g.title}
+                    />
+                </div>
+            )
+        })
+    }
 
     return (
         <div className={`${className} scroll`}>
-            {/* <div className={classItem}>
+            <div className={classItem}>
                 <Checkbox
                     name='all-grap'
                     id='all-grap'
-                    checked={graphite === "*"}
+                    checked={graphite[0] === "*"}
                     onChange={grapHandler("all")}
-                    label={graphite === "*" ? "Удалить все" : "Добавить все"}
+                    label={
+                        graphite[0] === "*" || graphite.length === addit?.graphite.length
+                            ? "Удалить все"
+                            : "Добавить все"
+                    }
                 />
             </div>
-            {renderGrap()} */}
+            {renderGrap()}
         </div>
     )
 }

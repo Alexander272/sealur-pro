@@ -22,6 +22,7 @@ import classes from "../pages.module.scss"
 import { MainSnp } from "./components/Main/MainSnp"
 import { Filler } from "./components/Filler/Filler"
 import { Material } from "./components/Materials/Materials"
+import { Addit } from "./components/Addit/Addit"
 
 const { Option } = Select
 
@@ -323,6 +324,7 @@ export default function SNP() {
                 <>
                     <Filler />
                     <Material />
+                    <Addit />
                 </>
             )}
         </div>
