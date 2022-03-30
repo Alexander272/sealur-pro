@@ -21,6 +21,7 @@ import { ISNP, ISNPDTO, ISNPReq } from "../../../types/snp"
 import classes from "../pages.module.scss"
 import { MainSnp } from "./components/Main/MainSnp"
 import { Filler } from "./components/Filler/Filler"
+import { Material } from "./components/Materials/Materials"
 
 const { Option } = Select
 
@@ -321,6 +322,7 @@ export default function SNP() {
             {snp && (
                 <>
                     <Filler />
+                    <Material />
                 </>
             )}
         </div>

@@ -6,78 +6,80 @@ import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 type Props = {
     className: string
     classItem: string
-    mat: string
+    mat: string[]
     name: string
-    onChange: (value: string, name: string) => void
+    onChange: (value: string[], name: string) => void
 }
 
 export const AdminMat: FC<Props> = ({ className, classItem, mat, name, onChange }) => {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    // TODO исправить
-    // const matHandler = (value: string) => () => {
-    //     if (value === "all") {
-    //         if (mat === "*") onChange("", name)
-    //         else onChange("*", name)
-    //         return
-    //     }
 
-    //     let tmp: string[] = []
-    //     if (mat === "*") {
-    //         addit?.materials.split(";").forEach(m => {
-    //             let id = m.split("@")[0]
-    //             if (id !== value) tmp.push(id)
-    //         })
-    //         onChange(tmp.join(";"), name)
-    //     } else {
-    //         tmp = mat.split(";")
-    //         if (tmp[0] === "") tmp = []
+    const matHandler = (value: string) => () => {
+        if (value === "all") {
+            if (mat[0] === "*") onChange([], name)
+            else onChange(["*"], name)
+            return
+        }
+        let tmp: string[] = []
+        if (mat[0] === "*") {
+            addit?.materials.forEach(m => {
+                if (m.short !== value) tmp.push(m.short)
+            })
+            onChange(tmp, name)
+        } else {
+            tmp = [...mat]
+            if (tmp.includes(value)) {
+                onChange(
+                    tmp.filter(t => t !== value),
+                    name
+                )
+            } else {
+                tmp.push(value)
+                if (tmp.length === addit?.materials.length) {
+                    onChange(["*"], name)
+                    return
+                }
+                onChange(tmp, name)
+            }
+        }
+    }
 
-    //         if (tmp.includes(value)) {
-    //             onChange(tmp.filter(t => t !== value).join(";"), name)
-    //         } else {
-    //             tmp.push(value)
-    //             if (tmp.length === addit?.materials.split(";").length) {
-    //                 onChange("*", name)
-    //                 return
-    //             }
-    //             onChange(tmp.join(";"), name)
-    //         }
-    //     }
-    // }
+    const renderMat = (curMat: string[]) => {
+        return addit?.materials.map(m => {
+            let isAdded = false
+            if (curMat[0] === "*") isAdded = true
+            else if (curMat.includes(m.short)) isAdded = true
 
-    // const renderMat = (curMat: string) => {
-    //     return addit?.materials.split(";").map(m => {
-    //         const parts = m.split("@")
-    //         let isAdded = false
-    //         if (curMat === "*") isAdded = true
-    //         else if (curMat.split(";").includes(parts[0])) isAdded = true
-
-    //         return (
-    //             <div key={parts[0]} className={classItem}>
-    //                 <Checkbox
-    //                     name={`${parts[0]}-${name}`}
-    //                     id={`${parts[0]}-${name}`}
-    //                     checked={isAdded}
-    //                     onChange={matHandler(parts[0])}
-    //                     label={`${parts[0]} ${parts[1]}`}
-    //                 />
-    //             </div>
-    //         )
-    //     })
-    // }
+            return (
+                <div key={m.short} className={classItem}>
+                    <Checkbox
+                        name={`${m.short}-${name}`}
+                        id={`${m.short}-${name}`}
+                        checked={isAdded}
+                        onChange={matHandler(m.short)}
+                        label={`${m.short} ${m.title}`}
+                    />
+                </div>
+            )
+        })
+    }
 
     return (
         <div className={`${className} scroll`}>
-            {/* <div className={classItem}>
+            <div className={classItem}>
                 <Checkbox
                     name={`all-${name}`}
                     id={`all-${name}`}
-                    checked={mat === "*"}
+                    checked={mat[0] === "*"}
                     onChange={matHandler("all")}
-                    label={mat === "*" ? "Удалить все" : "Добавить все"}
+                    label={
+                        mat[0] === "*" || mat.length === addit?.materials.length
+                            ? "Удалить все"
+                            : "Добавить все"
+                    }
                 />
             </div>
-            {renderMat(mat)} */}
+            {renderMat(mat)}
         </div>
     )
 }
