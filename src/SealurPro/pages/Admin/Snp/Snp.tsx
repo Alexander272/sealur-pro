@@ -23,6 +23,7 @@ import { MainSnp } from "./components/Main/MainSnp"
 import { Filler } from "./components/Filler/Filler"
 import { Material } from "./components/Materials/Materials"
 import { Addit } from "./components/Addit/Addit"
+import { Size } from "./components/Size/Size"
 
 const { Option } = Select
 
@@ -143,97 +144,7 @@ export default function SNP() {
     // const denyTypeHandler = () => {
     //     setSnp(prev => prev.filter(s => s.id !== "new"))
     // }
-    // // измение наполнителя и связанных значений
-    // const fillerHandler = (filler: string, fillers: string) => {
-    //     setFiller(filler.split("&")[0])
-    //     const tm = filler.split("&")[1]
-    //     setTm(tm)
-    //     setTemp(tm?.split(">")[0] || "")
-    //     if (fillers !== "" && curSnp) {
-    //         setCurSnp({ ...curSnp, fillers: fillers })
-    //     }
-    // }
-    // const changeFillerHandler = (fillers: string, selected: boolean) => {
-    //     if (selected) {
-    //         setFiller("")
-    //         setTm("")
-    //         setTemp("")
-    //     }
-    //     if (curSnp) {
-    //         setCurSnp({ ...curSnp, fillers: fillers })
-    //     }
-    // }
-    // // измение температуры
-    // const tempHandler = (temp: string, temps: string) => {
-    //     setTemp(temp)
-    //     if (temps && curSnp) {
-    //         setTm(temps)
-    //         setCurSnp({
-    //             ...curSnp,
-    //             fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${temps}`),
-    //         })
-    //     }
-    // }
-    // const changeTempHandler = (temps: string, selected: boolean) => {
-    //     if (selected) {
-    //         setTemp("")
-    //     }
-    //     if (curSnp) {
-    //         setTm(temps)
-    //         setCurSnp({
-    //             ...curSnp,
-    //             fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${temps}`),
-    //         })
-    //     }
-    // }
-    // // измениние модифицирующего элемента
-    // const changeModHandler = (newTm: string) => {
-    //     if (curSnp) {
-    //         setTm(newTm)
-    //         setCurSnp({
-    //             ...curSnp,
-    //             fillers: curSnp.fillers.replace(`${filler}&${tm}`, `${filler}&${newTm}`),
-    //         })
-    //     }
-    // }
-    // // измение крепления
-    // const mounHandler = (value: string) => {
-    //     let snp: ISNP = {} as ISNP
-    //     if (curSnp) snp = Object.assign(snp, curSnp, { mounting: value })
-    //     setCurSnp(snp)
-    // }
-    // // изменение графита
-    // const grapHandler = (value: string) => {
-    //     let snp: ISNP = {} as ISNP
-    //     if (curSnp) snp = Object.assign(snp, curSnp, { graphite: value })
-    //     setCurSnp(snp)
-    // }
-    // // измение материалов по умолчанию
-    // const defMatHandler = (name: string) => (value: string) => {
-    //     if (!curSnp) return
-    //     let snp: ISNP = {} as ISNP
-    //     let newValue = curSnp[name as "frame"]?.split("&")[0] + "&" + value
-    //     snp = Object.assign(snp, curSnp, { [name]: newValue })
-    //     setCurSnp(snp)
-    // }
-    // // измение материалов
-    // const matHandler = (value: string, name: string) => {
-    //     if (!curSnp) return
-    //     let snp: ISNP = {} as ISNP
-    //     let defValue = ""
-    //     let newValue = ""
-    //     if (value === "*") defValue = addit?.materials.split(";")[0].split("@")[0] || ""
-    //     else {
-    //         let tmp =
-    //             addit?.materials.split(";").find(m => m.split("@")[0] === value.split(";")[0]) || ""
-    //         defValue = tmp.split("@")[0]
-    //     }
-    //     let isInc = value.split(";").includes(curSnp[name as "frame"]?.split("&")[1] || "")
-    //     if (value !== "")
-    //         newValue = value + "&" + (isInc ? curSnp[name as "frame"]?.split("&")[1] : defValue)
-    //     snp = Object.assign(snp, curSnp, { [name]: newValue })
-    //     setCurSnp(snp)
-    // }
+
     // // открытие таблицы с размерами
     // const openTableHandler = () => setIsOpenTable(prev => !prev)
     // // добавление сохраненной проклаки
@@ -307,6 +218,9 @@ export default function SNP() {
     //         setSending(false)
     //     }
     // }
+
+    const saveHandler = async () => {}
+
     if (!addit || loading) {
         return <Loader />
     }
@@ -325,6 +239,13 @@ export default function SNP() {
                     <Filler />
                     <Material />
                     <Addit />
+                    <div className={classes.line}>
+                        <Size />
+                        <span className={classes.full} />
+                        <Button rounded='round' onClick={saveHandler}>
+                            Сохранить
+                        </Button>
+                    </div>
                 </>
             )}
         </div>
@@ -379,126 +300,6 @@ export default function SNP() {
     //         </div>
     //         {curSnp ? (
     //             <>
-    //                 <div className={classes.line}>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Тип наполнителя</p>
-    //                         <AdminFiller
-    //                             fillers={curSnp.fillers}
-    //                             filler={filler}
-    //                             sendHandler={sendHandler}
-    //                             clickHandler={fillerHandler}
-    //                             changeHandler={changeFillerHandler}
-    //                         />
-    //                     </div>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Температура эксплуатации</p>
-    //                         <AdminTemp
-    //                             tm={tm}
-    //                             temp={temp}
-    //                             filler={filler}
-    //                             clickHandler={tempHandler}
-    //                             changeHandler={changeTempHandler}
-    //                         />
-    //                     </div>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Модифицирующий элемент</p>
-    //                         <AdminMod tm={tm} temp={temp} clickHandler={changeModHandler} />
-    //                     </div>
-    //                 </div>
-    //                 <div className={classes.line}>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Внутреннее кольцо</p>
-    //                         <Materials
-    //                             className={classes.def}
-    //                             classTitle={classes.defTitle}
-    //                             value={curSnp?.ir?.split("&")[1] || "Значение не выбрано"}
-    //                             mater={curSnp?.ir?.split("&")[0] || ""}
-    //                             onChange={defMatHandler("ir")}
-    //                             disabled={!curSnp?.ir}
-    //                             title='Значение по умолчанию'
-    //                         />
-    //                         <p className={classes.defTitle}>Доступные значения</p>
-    //                         {addit?.materials && (
-    //                             <AdminMat
-    //                                 className={classes.list}
-    //                                 classItem={classes.listItem}
-    //                                 name='ir'
-    //                                 mat={curSnp?.ir?.split("&")[0] || ""}
-    //                                 onChange={matHandler}
-    //                             />
-    //                         )}
-    //                     </div>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Каркас</p>
-    //                         <Materials
-    //                             className={classes.def}
-    //                             classTitle={classes.defTitle}
-    //                             value={curSnp?.frame?.split("&")[1] || "Значение не выбрано"}
-    //                             mater={curSnp?.frame?.split("&")[0] || ""}
-    //                             onChange={defMatHandler("frame")}
-    //                             disabled={!curSnp?.frame}
-    //                             title='Значение по умолчанию'
-    //                         />
-    //                         <p className={classes.defTitle}>Доступные значения</p>
-    //                         {addit?.materials && (
-    //                             <AdminMat
-    //                                 className={classes.list}
-    //                                 classItem={classes.listItem}
-    //                                 name='frame'
-    //                                 mat={curSnp?.frame?.split("&")[0] || ""}
-    //                                 onChange={matHandler}
-    //                             />
-    //                         )}
-    //                     </div>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Наружное кольцо</p>
-    //                         <Materials
-    //                             className={classes.def}
-    //                             classTitle={classes.defTitle}
-    //                             value={curSnp?.or?.split("&")[1] || "Значение не выбрано"}
-    //                             mater={curSnp?.or?.split("&")[0] || ""}
-    //                             onChange={defMatHandler("or")}
-    //                             disabled={!curSnp?.or}
-    //                             title='Значение по умолчанию'
-    //                         />
-    //                         <p className={classes.defTitle}>Доступные значения</p>
-    //                         {addit?.materials && (
-    //                             <AdminMat
-    //                                 className={classes.list}
-    //                                 classItem={classes.listItem}
-    //                                 name='or'
-    //                                 mat={curSnp?.or?.split("&")[0] || ""}
-    //                                 onChange={matHandler}
-    //                             />
-    //                         )}
-    //                     </div>
-    //                 </div>
-    //                 <div className={classes.line}>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>Крепление на вертикальном фланце</p>
-    //                         {addit?.mounting && (
-    //                             <AdminMoun
-    //                                 className={classes.list}
-    //                                 classItem={classes.listItem}
-    //                                 moun={curSnp?.mounting || ""}
-    //                                 onChange={mounHandler}
-    //                             />
-    //                         )}
-    //                     </div>
-    //                     <div className={classes.fil}>
-    //                         <p className={classes.titleGroup}>
-    //                             Степень чистоты графитовой составляющей
-    //                         </p>
-    //                         {addit?.graphite && (
-    //                             <AdminGrap
-    //                                 className={classes.list}
-    //                                 classItem={classes.listItem}
-    //                                 graphite={curSnp?.graphite || ""}
-    //                                 onChange={grapHandler}
-    //                             />
-    //                         )}
-    //                     </div>
-    //                 </div>
     //                 <div className={classes.line}>
     //                     <Button rounded='round' variant='grayPrimary' onClick={openTableHandler}>
     //                         Размеры

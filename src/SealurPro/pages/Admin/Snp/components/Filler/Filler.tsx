@@ -4,8 +4,8 @@ import { AdminFiller } from "../../../components/AdminFiller/AdminFiller"
 import { AdminMod } from "../../../components/AdminMod/AdminMod"
 import { AdminTemp } from "../../../components/AdminTemp/AdminTemp"
 import { Dispatch, ProState } from "../../../../../store/store"
-import classes from "../../../pages.module.scss"
 import { IFiller, ITemperature } from "../../../../../types/snp"
+import classes from "../../../pages.module.scss"
 
 type Props = {}
 

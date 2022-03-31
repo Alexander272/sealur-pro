@@ -10,7 +10,7 @@ export interface ISNP {
     graphite: string[]
 }
 
-interface IMaterial {
+export interface IMaterial {
     values: string[]
     default: string
 }
@@ -35,12 +35,12 @@ export interface ISNPDTO {
     flangeId: string
     typeFlId: string
     typePr: string
-    fillers: string
-    frame: string
-    ir: string
-    or: string
-    mounting: string
-    graphite: string
+    fillers: IFiller[]
+    frame: IMaterial
+    ir: IMaterial
+    or: IMaterial
+    mounting: string[]
+    graphite: string[]
 }
 
 export interface ISnpForm {

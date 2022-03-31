@@ -41,8 +41,8 @@ export const AdminMod: FC<Props> = ({ mods, temp, filler, clickHandler }) => {
             return (
                 <div key={m.id} className={classes.listItem}>
                     <Checkbox
-                        name={m.short}
-                        id={m.short}
+                        name={m.id}
+                        id={m.id}
                         checked={isAdded}
                         onChange={addModHandler(m.id)}
                         label={m.title}

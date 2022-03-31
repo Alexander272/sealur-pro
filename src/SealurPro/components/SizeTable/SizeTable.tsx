@@ -23,6 +23,7 @@ type Props = {
     saveHandler: (size: ISize, isNew: boolean) => void
     deleteHandler: (id: string, isAll: boolean) => void
 }
+
 //TODO добавить загрузку файла с размерами
 
 const tableName = ["Dn", "Pn", "Тип прокладки", "D4", "D3", "D2", "D1", "h", "S2", "S3"]
@@ -214,6 +215,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                             label='D4'
                             type='number'
                             min={0}
+                            step={0.1}
                             orentation='horizontal'
                             register={register}
                         />
@@ -222,6 +224,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                             label='D3'
                             type='number'
                             min={0}
+                            step={0.1}
                             orentation='horizontal'
                             register={register}
                             rule={{ required: true }}
@@ -233,6 +236,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                             label='D2'
                             type='number'
                             min={0}
+                            step={0.1}
                             orentation='horizontal'
                             register={register}
                             rule={{ required: true }}
@@ -243,6 +247,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                             name='d1'
                             type='number'
                             min={0}
+                            step={0.1}
                             orentation='horizontal'
                             label='D1'
                             register={register}
