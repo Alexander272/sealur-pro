@@ -8,6 +8,7 @@ import { ISNP, ISNPReq } from "../../types/snp"
 interface ISnpState {
     loading: boolean
     fetching: boolean
+    error: boolean
 
     snps: ISNP[]
     sizes: ISize[]
@@ -48,6 +49,7 @@ export const snp = createModel<ProModel>()({
     state: {
         loading: true,
         fetching: false,
+        error: false,
 
         snps: [],
         sizes: [],
@@ -91,6 +93,10 @@ export const snp = createModel<ProModel>()({
         },
         setFetching(state, payload: boolean) {
             state.fetching = payload
+            return state
+        },
+        setError(state, payload: boolean) {
+            state.error = payload
             return state
         },
 
@@ -291,29 +297,29 @@ export const snp = createModel<ProModel>()({
                 console.log("getDefault")
 
                 try {
-                    const res = await ReadService.getDefault("snp")
-                    addit.setStFl(res!.stfl)
-                    addit.setAddit(res!.addit)
-                    addit.setTypeFl(res!.typeFl)
-                    snp.setSnps(res!.snp)
-                    snp.setSizes(res!.sizes.sizes)
-                    snp.setDns(res!.sizes.dn)
+                    const res = await ReadService.getDefaultSnp()
+                    addit.setStFl(res.stfl)
+                    addit.setAddit(res.addit)
+                    addit.setTypeFl(res.typeFl)
+                    snp.setSnps(res.snp)
+                    snp.setSizes(res.sizes.sizes)
+                    snp.setDns(res.sizes.dn)
 
-                    snp.setSnp(res!.snp[0])
-                    snp.setSize(res!.sizes.sizes[0])
-                    snp.setDn(res!.sizes.sizes[0].dn)
-                    snp.setPn(res!.sizes.sizes[0].pn.split(";")[0])
-                    snp.setH(res!.sizes.sizes[0].h.split(";")[0])
-                    snp.setS2(res!.sizes.sizes[0].s2?.split(";")[0] || "")
-                    snp.setS3(res!.sizes.sizes[0].s3?.split(";")[0] || "")
+                    snp.setSnp(res.snp[0])
+                    snp.setSize(res.sizes.sizes[0])
+                    snp.setDn(res.sizes.sizes[0].dn)
+                    snp.setPn(res.sizes.sizes[0].pn.split(";")[0])
+                    snp.setH(res.sizes.sizes[0].h.split(";")[0])
+                    snp.setS2(res.sizes.sizes[0].s2?.split(";")[0] || "")
+                    snp.setS3(res.sizes.sizes[0].s3?.split(";")[0] || "")
 
                     const grap =
                         res!.snp[0].graphite[0] === "*"
-                            ? res!.addit?.graphite[0].short
-                            : res!.snp[0].graphite[0]
-                    const fil = res!.snp[0].fillers[0].id
-                    const temp = res!.snp[0].fillers[0].temps[0].id
-                    const mod = res!.snp[0].fillers[0].temps[0].mods[0]
+                            ? res.addit?.graphite[0].short
+                            : res.snp[0].graphite[0]
+                    const fil = res.snp[0].fillers[0].id
+                    const temp = res.snp[0].fillers[0].temps[0].id
+                    const mod = res.snp[0].fillers[0].temps[0].mods[0]
                     snp.setGrap(grap || "")
                     snp.setFil(fil)
                     snp.setTemp(temp)
@@ -321,12 +327,13 @@ export const snp = createModel<ProModel>()({
 
                     snp.setMoun(res!.addit.mounting[0].title)
 
-                    snp.setIr(res!.snp[0].ir.default)
-                    snp.setOr(res!.snp[0].or?.default)
-                    snp.setFr(res!.snp[0].frame?.default)
+                    snp.setIr(res.snp[0].ir.default)
+                    snp.setOr(res.snp[0].or?.default)
+                    snp.setFr(res.snp[0].frame?.default)
 
-                    snp.setSt(res!.stfl[0].id)
+                    snp.setSt(res.stfl[0].id)
                 } catch (error) {
+                    snp.setError(true)
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {
                     snp.setLoading(false)

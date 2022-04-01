@@ -6,7 +6,7 @@ import Auth from "../Auth/pages/Auth/Auth"
 import RequireAuth from "./RequireAuth/RequireAuth"
 
 import { Loader } from "./UI/Loader/Loader"
-// const NotFoundPage = lazy(() => import("../pages/NotFound/NotFound"))
+const PageNotFound = lazy(() => import("../Error/PageNotFound"))
 
 //* Pro service
 const ProApp = lazy(() => import("../SealurPro/App"))
@@ -30,7 +30,7 @@ export const MyRoutes = () => {
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route path='/auth/' element={<Auth />} />
-                {/*     <Route path='*' element={<NotFoundPage />} /> */}
+                <Route path='*' element={<PageNotFound />} />
 
                 <Route path='/' element={<ProApp />}>
                     <Route path='/' element={<Main />}>

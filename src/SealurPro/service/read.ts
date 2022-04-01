@@ -1,6 +1,3 @@
-import snp from "../mock/snp copy.json"
-import size_12815 from "../mock/size_12815.json"
-import typeFl from "../mock/type-fl.json"
 import { IStFl } from "../types/stFl"
 import { IAddit } from "../types/addit"
 import { ISNP, ISNPReq } from "../types/snp"
@@ -27,6 +24,14 @@ type DefResponseSnp = {
     typeFl: ITypeFl[]
     snp: ISNP[]
     sizes: { sizes: ISize[]; dn: IDn[] }
+}
+
+type DefResponsePutg = {
+    fl: IFlange[]
+    addit: IAddit
+    typeFl: ITypeFl[]
+    // putg: IPUTG[]
+    // sizes: { sizes: ISize[]; dn: IDn[] }
 }
 
 export default class ReadService {
@@ -97,44 +102,35 @@ export default class ReadService {
         }
     }
 
-    static async getDefault(type: string): Promise<DefResponseSnp | undefined> {
-        if (type === "snp") {
-            const [stfl, addit, def] = await Promise.all([
-                this.getStFl(),
-                this.getAddit(),
-                this.getSnpDefault(),
-            ])
+    static async getDefaultSnp(): Promise<DefResponseSnp> {
+        const [stfl, addit, def] = await Promise.all([
+            this.getStFl(),
+            this.getAddit(),
+            this.getSnpDefault(),
+        ])
 
-            return {
-                stfl: stfl.data,
-                addit: addit.data[0],
-                typeFl: def.data.typeFl,
-                snp: def.data.snp,
-                sizes: def.data.sizes,
-            }
+        return {
+            stfl: stfl.data,
+            addit: addit.data[0],
+            typeFl: def.data.typeFl,
+            snp: def.data.snp,
+            sizes: def.data.sizes,
         }
+    }
 
-        return
+    static async getDefaultPutg(): Promise<DefResponsePutg> {
+        // TODO дописать запрос на путг
+        const [fl, addit, typeFl] = await Promise.all([
+            this.getFlange(),
+            this.getAddit(),
+            this.getTypeFl(),
+        ])
 
-        // try {
-        //     const arr = size_12815.data.filter(s => s.typePr.toLowerCase().includes(`снп-д`))
-        //     const dn = new Set<string>()
-        //     for (let i = 0; i < arr.length; i++) {
-        //         dn.add(arr[i].dn)
-        //     }
-        //     const size = { data: arr, dn: Array.from(dn) }
-
-        //     const res = {
-        //         data: {
-        //             typeFl: typeFl.data,
-        //             snp: snp.data,
-        //             size: size,
-        //         },
-        //     }
-        //     return res
-        // } catch (error: any) {
-        //     throw error.response.data
-        // }
+        return {
+            fl: fl.data,
+            addit: addit.data[0],
+            typeFl: typeFl.data,
+        }
     }
 
     static async getSnpDefault(): Promise<DefSnpResponse> {

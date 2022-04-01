@@ -1,14 +1,26 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Dispatch, ProState } from "../../store/store"
+import ServerError from "../../../Error/ServerError"
 import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Tabs } from "../../../components/Tabs/Tabs"
 import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../../components/UI/Input/Input"
 import { Select } from "../../../components/UI/Select/Select"
+import { Loader } from "../../../components/UI/Loader/Loader"
+import { Main } from "./components/Main/Main"
+import { Addit } from "./components/Addit/Addit"
 import classes from "../style/pages.module.scss"
+import { Size } from "./components/Size/Size"
 
 const { Option } = Select
 
 export default function Putg() {
+    const loading = useSelector((state: ProState) => state.addit.loading)
+    const loadingPutg = useSelector((state: ProState) => state.putg.loading)
+    const fetching = useSelector((state: ProState) => state.putg.fetching)
+    const error = useSelector((state: ProState) => state.putg.error)
+
     const [procType, setProcType] = useState<string>("Round")
 
     const tabHandler = (_: any, __: any, event: React.MouseEvent<any>) => {
@@ -16,15 +28,30 @@ export default function Putg() {
         if (type) setProcType(type)
     }
 
+    const { putg } = useDispatch<Dispatch>()
+
+    useEffect(() => {
+        // получение начальных значений (прокладки, размеры первой из них, типы фланцев)
+        putg.getDefault()
+    }, [putg])
+
+    if (loading || loadingPutg) return <Loader />
+
+    if (error) return <ServerError />
+
     const imgUrl = "/image/putg/PUTG-A.webp"
     const chUrl = "/image/putg/constraction/100-01.webp"
 
     return (
         <>
+            {fetching && <Loader background='fill' />}
             <h3 className={classes.description}>
                 Прокладки уплотнительные из терморасширенного графита
             </h3>
-            <div className={classes.container}>
+            <Main />
+            <Addit />
+            <Size />
+            {/* <div className={classes.container}>
                 <div className={`${classes.block} ${classes.full}`}>
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>Конфигурация прокладки</p>
@@ -107,8 +134,8 @@ export default function Putg() {
                         />
                     </div>
                 </div>
-            </div>
-            <div className={classes.sideContainer}>
+            </div> */}
+            {/* <div className={classes.sideContainer}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Степень чистоты графитовой составляющей</p>
                     <Select value='2' onChange={() => {}}>
@@ -229,49 +256,7 @@ export default function Putg() {
                         <Option value='2'>ANSI 304L</Option>
                     </Select>
                 </div>
-            </div>
-            <div className={classes.container}>
-                <div className={`${classes.block} ${classes.full}`}>
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Проход, DN</p>
-                        <Select value='10' onChange={() => {}}>
-                            <Option value='10'>10</Option>
-                            <Option value='15'>15</Option>
-                            <Option value='20'>20</Option>
-                        </Select>
-                    </div>
-
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Давление, PN</p>
-                        <Select value='10' onChange={() => {}}>
-                            <Option value='10'>10</Option>
-                            <Option value='15'>15</Option>
-                            <Option value='20'>20</Option>
-                        </Select>
-                    </div>
-
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Толщина прокладки</p>
-                        <Select value='2,0' onChange={() => {}}>
-                            <Option value='1,0'>1,0</Option>
-                            <Option value='2,0'>2,0</Option>
-                            <Option value='3,0'>3,0</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div className={`${classes.block} ${classes.putgDrawFl}`}>
-                    <p className={classes.titleGroup}>Чертеж прокладки</p>
-                    <div className={classes.blockImage}>
-                        <img
-                            className={classes.image}
-                            width={800}
-                            height={180}
-                            src={chUrl}
-                            alt=''
-                        />
-                    </div>
-                </div>
-            </div>
+            </div> */}
             <ResultBlock
                 className={classes.resultContainer}
                 description='Lorem ipsum dolor sit, amet

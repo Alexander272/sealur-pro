@@ -7,11 +7,13 @@ import { SizeSnp } from "./Components/SizeSnp/SizeSnp"
 import classes from "../style/pages.module.scss"
 import { AdditSnp } from "./Components/AdditSnp/AdditSnp"
 import { ResultSnp } from "./Components/ResultSnp/ResultSnp"
+import ServerError from "../../../Error/ServerError"
 
 export default function NewSnp() {
     const loading = useSelector((state: ProState) => state.addit.loading)
     const loadingSnp = useSelector((state: ProState) => state.snp.loading)
     const fetching = useSelector((state: ProState) => state.snp.fetching)
+    const error = useSelector((state: ProState) => state.snp.error)
 
     const { snp } = useDispatch<Dispatch>()
 
@@ -21,6 +23,8 @@ export default function NewSnp() {
     }, [snp])
 
     if (loading || loadingSnp) return <Loader />
+
+    if (error) return <ServerError />
 
     return (
         <>

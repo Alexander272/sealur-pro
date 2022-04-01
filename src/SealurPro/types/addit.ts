@@ -42,3 +42,18 @@ export interface IFiller {
     title: string
     description: string
 }
+
+export interface IConstruction {}
+
+export interface IObturator {}
+
+export interface ICoating {
+    id: string
+    short: string
+    title: string
+    description: string
+}
+
+export interface IBasis {}
+
+export interface ISealant {}
