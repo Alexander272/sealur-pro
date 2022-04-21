@@ -1,0 +1,82 @@
+import { FC, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Button } from "../../../../../../components/UI/Button/Button"
+import { SizeTable } from "../../../../../components/SizeTable/SizeTable"
+import { Dispatch, ProState } from "../../../../../store/store"
+import { ISize } from "../../../../../types/size"
+import classes from "../../../pages.module.scss"
+
+type Props = {}
+
+export const Size: FC<Props> = () => {
+    const [isOpenTable, setIsOpenTable] = useState(false)
+
+    const flanges = useSelector((state: ProState) => state.addit.fl)
+
+    const sizes = useSelector((state: ProState) => state.snp.sizes)
+    const putg = useSelector((state: ProState) => state.putg.putg)
+    const flange = useSelector((state: ProState) => state.putg.flange)
+
+    const dispatch = useDispatch<Dispatch>()
+
+    useEffect(() => {
+        const fl = flanges.find(f => f.id === flange)
+        if (fl && putg?.typePr && putg?.typeFlId)
+            dispatch.putg.getSizes({
+                flShort: fl.short,
+                standId: "0",
+                typePr: putg.typePr,
+                typeFlId: putg.typeFlId,
+            })
+    }, [putg?.typePr, putg?.typeFlId, flanges, flange, dispatch.putg])
+
+    const openTableHandler = () => setIsOpenTable(prev => !prev)
+
+    // добавление сохраненных размеров
+    const savedSizeHandler = (size: ISize, isNew: boolean) => {
+        if (isNew) dispatch.snp.setSizes([...sizes, size])
+        else {
+            dispatch.snp.setSizes(
+                sizes.map(s => {
+                    if (s.id === size.id) return size
+                    return s
+                })
+            )
+        }
+    }
+
+    // удаление размеров
+    const deleteSizeHandler = (id: string, isAll: boolean) => {
+        if (isAll) dispatch.snp.setSizes([])
+        else dispatch.snp.setSizes(sizes.filter(s => s.id !== id))
+    }
+
+    return (
+        <>
+            <Button rounded='round' variant='grayPrimary' onClick={openTableHandler}>
+                Размеры
+            </Button>
+
+            {isOpenTable ? (
+                <div className={classes.table}>
+                    <div className={classes.header}>
+                        <h5>Размеры</h5>
+                        <p onClick={openTableHandler}>&times;</p>
+                    </div>
+                    <SizeTable
+                        data={sizes}
+                        typePr={sizes[0].typePr}
+                        stand={
+                            {
+                                short: flanges.find(f => f.id === flange)?.short || "",
+                                standId: "0",
+                            } || null
+                        }
+                        saveHandler={savedSizeHandler}
+                        deleteHandler={deleteSizeHandler}
+                    />
+                </div>
+            ) : null}
+        </>
+    )
+}

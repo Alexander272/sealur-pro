@@ -55,7 +55,7 @@ interface IPutgState {
 const testPutg: IPUTG = {
     id: "1",
     typeFlId: "1",
-    typePr: "Round",
+    typePr: "ПУТГ-А",
     construction: [],
     temperatures: [
         { id: "1", mods: ["0", "1", "2", "3"] },
@@ -89,6 +89,8 @@ export const putg = createModel<ProModel>()({
 
         putg: testPutg,
         size: null,
+
+        typePr: "Round",
 
         constration: "100",
         obturation: "01",
@@ -381,7 +383,7 @@ export const putg = createModel<ProModel>()({
                     //     snp.setFil(fil)
                     //     snp.setTemp(temp)
                     //     snp.setMod(mod)
-                    //     snp.setMoun(res!.addit.mounting[0].title)
+                    putg.setMoun(res.addit.mounting[0].title)
                     //     snp.setIr(res!.snp[0].ir.default)
                     //     snp.setOr(res!.snp[0].or?.default)
                     //     snp.setFr(res!.snp[0].frame?.default)
@@ -415,35 +417,35 @@ export const putg = createModel<ProModel>()({
                     putg.setFetching(false)
                 }
             },
-            // async getSnp({ st, req }: { st: string; req: ISNPReq }) {
-            //     console.log(st, req)
-            //     snp.setLoading(true)
-            //     try {
-            //         const res = await ReadService.getSnp(req)
-            //         snp.setSt(st)
-            //         snp.setSnp(res.data[0])
-            //         snp.setSnps(res.data)
+            async getPutg({ flange, req }: { flange: string; req: any }) {
+                putg.setLoading(true)
+                try {
+                    //         const res = await ReadService.getSnp(req)
+                    putg.setFlange(flange)
+                    //         snp.setSt(st)
+                    //         snp.setSnp(res.data[0])
+                    //         snp.setSnps(res.data)
 
-            //         if (res.data[0].graphite[0] !== "*") {
-            //             snp.setGrap(res.data[0].graphite[0])
-            //         }
+                    //         if (res.data[0].graphite[0] !== "*") {
+                    //             snp.setGrap(res.data[0].graphite[0])
+                    //         }
 
-            //         const fil = res.data[0].fillers[0].id
-            //         const temp = res.data[0].fillers[0].temps[0].id
-            //         const mod = res.data[0].fillers[0].temps[0].mods[0]
-            //         snp.setFil(fil)
-            //         snp.setTemp(temp)
-            //         snp.setMod(mod)
+                    //         const fil = res.data[0].fillers[0].id
+                    //         const temp = res.data[0].fillers[0].temps[0].id
+                    //         const mod = res.data[0].fillers[0].temps[0].mods[0]
+                    //         snp.setFil(fil)
+                    //         snp.setTemp(temp)
+                    //         snp.setMod(mod)
 
-            //         snp.setIr(res.data[0].ir.default || "")
-            //         snp.setOr(res.data[0].or.default || "")
-            //         snp.setFr(res.data[0].frame.default || "")
-            //     } catch (error) {
-            //         toast.error("Не удалось загрузить данные", { autoClose: false })
-            //     } finally {
-            //         snp.setLoading(false)
-            //     }
-            // },
+                    //         snp.setIr(res.data[0].ir.default || "")
+                    //         snp.setOr(res.data[0].or.default || "")
+                    //         snp.setFr(res.data[0].frame.default || "")
+                } catch (error) {
+                    //         toast.error("Не удалось загрузить данные", { autoClose: false })
+                } finally {
+                    putg.setLoading(false)
+                }
+            },
         }
     },
 })

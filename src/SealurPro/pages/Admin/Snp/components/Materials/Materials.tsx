@@ -25,13 +25,10 @@ export const Material: FC<Props> = () => {
 
     // измение материалов
     const matHandler = (values: string[], name: string) => {
-        console.log(values, name)
-
         if (!snp) return
 
         let newSnp: ISNP = JSON.parse(JSON.stringify(snp))
         newSnp[name as "frame"].values = values
-        console.log(!values.length, !newSnp[name as "frame"].default, addit?.materials[0].short)
 
         if (!values.length) newSnp[name as "frame"].default = ""
         else {

@@ -131,7 +131,7 @@ export const ResultSnp: FC<Props> = () => {
             if (fr !== snp?.frame.default) isDef = false
         }
         if (!isDef) {
-            mater = ` ${ir || "0"}${fr}${or || "0"}`
+            mater = `-${ir || "0"}${fr}${or || "0"}`
         }
 
         let modif = ""

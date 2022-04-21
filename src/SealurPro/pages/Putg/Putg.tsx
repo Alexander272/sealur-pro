@@ -10,8 +10,8 @@ import { Select } from "../../../components/UI/Select/Select"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import { Main } from "./components/Main/Main"
 import { Addit } from "./components/Addit/Addit"
-import classes from "../style/pages.module.scss"
 import { Size } from "./components/Size/Size"
+import classes from "../style/pages.module.scss"
 
 const { Option } = Select
 

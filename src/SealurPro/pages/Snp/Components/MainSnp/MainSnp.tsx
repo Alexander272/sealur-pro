@@ -108,7 +108,7 @@ export const MainSnp: FC<Props> = () => {
         )
     }
 
-    if (loading) return null
+    if (loading) return <div className={classes.container}></div>
 
     return (
         <div className={classes.container}>

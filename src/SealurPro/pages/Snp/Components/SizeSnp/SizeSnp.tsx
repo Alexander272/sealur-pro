@@ -83,6 +83,10 @@ export const SizeSnp: FC<Props> = () => {
     }
 
     const changePnHandler = (value: string) => {
+        if (!size?.pn.includes(value)) {
+            const tmpSize = sizes.find(s => s.dn.toString() === dn && s.pn.includes(value))
+            if (tmpSize) snp.changeSize(tmpSize)
+        }
         snp.changePn(value)
     }
 

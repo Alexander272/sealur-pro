@@ -6,7 +6,6 @@ import { Select } from "../../../components/UI/Select/Select"
 import SizeService from "../../service/size"
 import { ProState } from "../../store/store"
 import { ISize, ISizeDTO } from "../../types/size"
-import { IStFl } from "../../types/stFl"
 import { ConfirmModal } from "../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../components/Modal/hooks/useModal"
 import { Modal } from "../../../components/Modal/Modal"
@@ -16,10 +15,15 @@ import { Input } from "../../../components/UI/Input/Input"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import classes from "./table.module.scss"
 
+type Stand = {
+    short: string
+    standId: string
+}
+
 type Props = {
     data: ISize[]
     typePr: string
-    stand: IStFl | null
+    stand: Stand | null
     saveHandler: (size: ISize, isNew: boolean) => void
     deleteHandler: (id: string, isAll: boolean) => void
 }

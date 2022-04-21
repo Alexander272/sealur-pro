@@ -33,6 +33,8 @@ export const Size: FC<Props> = () => {
     const s2 = useSelector((state: ProState) => state.putg.s2)
     const s3 = useSelector((state: ProState) => state.putg.s3)
 
+    if (!sizes.length) return <div className={classes.container}></div>
+
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>

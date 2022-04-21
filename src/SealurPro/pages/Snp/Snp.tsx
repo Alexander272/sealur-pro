@@ -9,7 +9,7 @@ import { AdditSnp } from "./Components/AdditSnp/AdditSnp"
 import { ResultSnp } from "./Components/ResultSnp/ResultSnp"
 import ServerError from "../../../Error/ServerError"
 
-export default function NewSnp() {
+export default function Snp() {
     const loading = useSelector((state: ProState) => state.addit.loading)
     const loadingSnp = useSelector((state: ProState) => state.snp.loading)
     const fetching = useSelector((state: ProState) => state.snp.fetching)
