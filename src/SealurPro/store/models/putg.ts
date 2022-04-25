@@ -23,6 +23,8 @@ interface IPutgState {
     putg: IPUTG | null
     size: ISize | null
 
+    typePr: string
+
     constration: string
     obturation: string
 
@@ -56,7 +58,26 @@ const testPutg: IPUTG = {
     id: "1",
     typeFlId: "1",
     typePr: "ПУТГ-А",
-    construction: [],
+    construction: [
+        {
+            grap: "2",
+            temperatures: [
+                {
+                    temp: "1",
+                    constructions: [
+                        {
+                            short: "200",
+                            obturators: [
+                                {
+                                    short: "01",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
     temperatures: [
         { id: "1", mods: ["0", "1", "2", "3"] },
         { id: "2", mods: ["4"] },
@@ -68,7 +89,18 @@ const testPutg: IPUTG = {
     oLimiter: { values: ["*"], default: "1" },
     coating: ["*"],
     mounting: ["*"],
-    graphite: ["*"],
+    graphite: ["2", "1"],
+}
+
+const testSize: ISize = {
+    id: "1",
+    dn: "10",
+    pn: "0,1 (1,0);0,25 (2,5);0,6 (6,0)",
+    typePr: "ПУТГ-А",
+    typeFlId: "1",
+    d3: "38",
+    d2: "14",
+    h: "2,0",
 }
 
 export const putg = createModel<ProModel>()({
@@ -77,8 +109,8 @@ export const putg = createModel<ProModel>()({
         fetching: false,
         error: false,
 
-        putgs: [],
-        sizes: [],
+        putgs: [testPutg],
+        sizes: [testSize],
         dns: [],
         dn: "",
         pn: "",
@@ -88,7 +120,7 @@ export const putg = createModel<ProModel>()({
         s3: "",
 
         putg: testPutg,
-        size: null,
+        size: testSize,
 
         typePr: "Round",
 

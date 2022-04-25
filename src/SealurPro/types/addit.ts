@@ -7,6 +7,12 @@ export interface IAddit {
     graphite: IGrap[]
 
     fillers: IFiller[]
+
+    coating: ICoating[]
+    construction: IConstruction[]
+    obturator: IObturator[]
+    basis: IBasis[]
+    sealant: ISealant[]
 }
 
 export interface IMat {
@@ -43,9 +49,18 @@ export interface IFiller {
     description: string
 }
 
-export interface IConstruction {}
+export interface IConstruction {
+    short: string
+    title: string
+    description: string
+    forDescr: string
+}
 
-export interface IObturator {}
+export interface IObturator {
+    short: string
+    title: string
+    description: string
+}
 
 export interface ICoating {
     id: string

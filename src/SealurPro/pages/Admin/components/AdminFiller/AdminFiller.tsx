@@ -199,14 +199,14 @@ export const AdminFiller: FC<Props> = ({
             </p>
             <div className={`${classes.list} scroll`}>
                 {addit?.fillers.map(fil => {
-                    const f = fillers.find(f => f.id === fil.short)
+                    const idx = fillers.findIndex(f => f.id === fil.short)
 
                     return (
                         <div key={fil.short} className={classes.listItem}>
                             <Checkbox
                                 name={fil.title}
                                 id={fil.title}
-                                checked={!!f}
+                                checked={idx > -1}
                                 onChange={changeFillerHandler(fil.short)}
                             />
                             <p
@@ -216,7 +216,11 @@ export const AdminFiller: FC<Props> = ({
                                 onClick={fillerHandler(fil.short)}
                             >
                                 {fil.short} {fil.title}
+                                {idx > -1 ? (
+                                    <span className={classes.count}>({idx + 1})</span>
+                                ) : null}
                             </p>
+
                             <p className={classes.icon} onClick={updateFillerHandler(fil)}>
                                 &#9998;
                             </p>

@@ -9,10 +9,10 @@ type Props = {
     s3: string
     st: string
 
-    d1: number
-    d2: number
-    d3: number
-    d4: number
+    d1: string
+    d2: string
+    d3: string
+    d4: string
 }
 
 const type = {
@@ -32,7 +32,7 @@ export const Sizes: FC<Props> = ({ typePr, h, oh, s2, s3, st, d1, d2, d3, d4 }) 
             <p className={`${classes.sizes} ${classes[type[typePr as "Д"]]} ${classes.s2}`}>{s2}</p>
             <p className={`${classes.sizes} ${classes[type[typePr as "Д"]]} ${classes.s3}`}>{s3}</p>
             <p className={`${classes.sizes} ${classes[type[typePr as "Д"]]} ${classes.d1}`}>
-                {d1 === 0 ? "-" : d1} <span className={classes.d}>(D1)</span>
+                {d1 === "0" ? "-" : d1} <span className={classes.d}>(D1)</span>
             </p>
             <p className={`${classes.sizes} ${classes[type[typePr as "Д"]]} ${classes.d2}`}>
                 {d2}{" "}
@@ -44,7 +44,7 @@ export const Sizes: FC<Props> = ({ typePr, h, oh, s2, s3, st, d1, d2, d3, d4 }) 
                 {d3} <span className={classes.d}>(D3)</span>
             </p>
             <p className={`${classes.sizes} ${classes[type[typePr as "Д"]]} ${classes.d4}`}>
-                {d4 === 0 ? "-" : d4} <span className={classes.d}>(D4)</span>
+                {d4 === "0" ? "-" : d4} <span className={classes.d}>(D4)</span>
             </p>
         </>
     )

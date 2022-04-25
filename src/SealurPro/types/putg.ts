@@ -4,7 +4,7 @@ export interface IPUTG {
     id: string
     typeFlId: string
     typePr: string
-    construction: IConstruction[]
+    construction: IConstr[]
     temperatures: ITemperature[]
     reinforce: IMaterial
     obturator: IMaterial
@@ -15,13 +15,21 @@ export interface IPUTG {
     graphite: string[]
 }
 
+export interface IConstr {
+    grap: string
+    temperatures: ITemp[]
+}
+
+export interface ITemp {
+    temp: string
+    constructions: IConstruction[]
+}
+
 export interface IConstruction {
     short: string
-    title: string
     obturators: IObturator[]
 }
 
 export interface IObturator {
     short: string
-    title: string
 }

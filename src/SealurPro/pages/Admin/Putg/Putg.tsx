@@ -7,6 +7,7 @@ import { Size } from "./components/Size/Size"
 import { Main } from "./components/Main/Main"
 import classes from "../pages.module.scss"
 import { Material } from "./components/Materials/Materials"
+import { Construction } from "./components/Construction/Construction"
 
 export default function Putg() {
     const loading = useSelector((state: ProState) => state.addit.loading)
@@ -41,6 +42,7 @@ export default function Putg() {
             <Main />
             {putg && (
                 <>
+                    <Construction />
                     <Material />
                     <div className={classes.line}>
                         <Size />

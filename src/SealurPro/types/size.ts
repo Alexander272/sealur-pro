@@ -4,10 +4,10 @@ export interface ISize {
     pn: string
     typePr: string
     typeFlId: string
-    d4?: number
-    d3: number
-    d2: number
-    d1?: number
+    d4?: string
+    d3: string
+    d2: string
+    d1?: string
     h: string
     s2?: string
     s3?: string
@@ -31,10 +31,10 @@ export interface ISizeDTO {
     pn: string
     typePr: string
     typeFlId: string
-    d4?: number
-    d3: number
-    d2: number
-    d1?: number
+    d4?: string
+    d3: string
+    d2: string
+    d1?: string
     h: string
     s2?: string
     s3?: string

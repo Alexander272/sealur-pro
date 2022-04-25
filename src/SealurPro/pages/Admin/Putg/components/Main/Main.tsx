@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Select } from "../../../../../../components/UI/Select/Select"
 import { Dispatch, ProState } from "../../../../../store/store"
 import classes from "../../../pages.module.scss"
+import { Type } from "./components/Type"
 
 const { Option } = Select
 
@@ -35,6 +36,12 @@ export const Main: FC<Props> = () => {
                     </Select>
                 )}
                 {/* <Button>Добавить</Button> */}
+            </div>
+            <div className={classes.group}>
+                <p>Тип фланца</p>
+                <div className={classes.line}>
+                    <Type />
+                </div>
             </div>
         </>
     )

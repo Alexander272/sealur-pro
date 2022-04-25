@@ -1,0 +1,25 @@
+.types {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.type {
+    padding: 0 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+        background: rgba(0, 119, 255, 0.06);
+    }
+}
+.active {
+    border-bottom-color: var(--button-color);
+}

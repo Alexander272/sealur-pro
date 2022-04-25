@@ -75,8 +75,8 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
         setValue("typePr", "")
         setValue("typeFlId", "1")
         setValue("d4", undefined)
-        setValue("d3", 0)
-        setValue("d2", 0)
+        setValue("d3", "0")
+        setValue("d2", "0")
         setValue("d1", undefined)
         setValue("h", "")
         setValue("s2", "")
@@ -99,10 +99,10 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                 pn: form.pn,
                 typePr: form.typePr,
                 typeFlId: form.typeFlId,
-                d4: form.d4 ? +form.d4 : 0,
-                d3: +form.d3,
-                d2: +form.d2,
-                d1: form.d1 ? +form.d1 : 0,
+                d4: form.d4 ? form.d4 : "0",
+                d3: form.d3,
+                d2: form.d2,
+                d1: form.d1 ? form.d1 : "0",
                 h: form.h,
                 s2: form.s2,
                 s3: form.s3,

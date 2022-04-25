@@ -55,14 +55,14 @@ export const AdminTemp: FC<Props> = ({ temp, temps, filler, clickHandler, change
 
     const renderTemp = () => {
         return addit?.temperature.map(t => {
-            let isAdded = temps.some(temp => temp.id === t.id)
+            let idx = temps.findIndex(temp => temp.id === t.id)
 
             return (
                 <div key={t.id} className={classes.listItem}>
                     <Checkbox
                         name={t.title}
                         id={t.title}
-                        checked={isAdded}
+                        checked={idx > -1}
                         onChange={changeTempHandler(t.id)}
                     />
                     <p
@@ -70,6 +70,7 @@ export const AdminTemp: FC<Props> = ({ temp, temps, filler, clickHandler, change
                         onClick={tempHandler(t.id)}
                     >
                         {t.title}
+                        {idx > -1 ? <span className={classes.count}>({idx + 1})</span> : null}
                     </p>
                 </div>
             )

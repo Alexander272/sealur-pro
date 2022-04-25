@@ -41,12 +41,12 @@ export const SizeSnp: FC<Props> = () => {
 
     const { snp } = useDispatch<Dispatch>()
 
-    const [d2, setD2] = useState<number[]>([])
+    const [d2, setD2] = useState<string[]>([])
 
     // заполнение D2 для стандартов где он используется
     useEffect(() => {
         if (st === "1" || st === "2") {
-            const d2 = new Set<number>()
+            const d2 = new Set<string>()
             for (let i = 0; i < sizes.length; i++) {
                 d2.add(sizes[i].d2)
             }
@@ -119,9 +119,9 @@ export const SizeSnp: FC<Props> = () => {
                 {d2.length ? (
                     <div className={classes.group}>
                         <p className={classes.titleGroup}>D2</p>
-                        <Select value={size?.d2.toString() || ""} onChange={changeD2Handler}>
+                        <Select value={size?.d2 || ""} onChange={changeD2Handler}>
                             {d2.map(d => (
-                                <Option key={d} value={d.toString()}>
+                                <Option key={d} value={d}>
                                     {d}
                                 </Option>
                             ))}
@@ -208,10 +208,10 @@ export const SizeSnp: FC<Props> = () => {
                             s2={s2}
                             s3={s3}
                             st={st}
-                            d1={size?.d1 || 0}
-                            d2={size?.d2 || 0}
-                            d3={size?.d3 || 0}
-                            d4={size?.d4 || 0}
+                            d1={size?.d1 || "0"}
+                            d2={size?.d2 || "0"}
+                            d3={size?.d3 || "0"}
+                            d4={size?.d4 || "0"}
                         />
                     </div>
                 </div>

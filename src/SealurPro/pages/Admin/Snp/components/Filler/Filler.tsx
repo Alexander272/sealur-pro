@@ -89,38 +89,36 @@ export const Filler: FC<Props> = () => {
     }
 
     return (
-        <>
-            <div className={classes.line}>
-                <div className={classes.fil}>
-                    <p className={classes.titleGroup}>Тип наполнителя</p>
-                    <AdminFiller
-                        fillers={[...(snp?.fillers || [])]}
-                        filler={filler}
-                        sendHandler={sendHandler}
-                        clickHandler={chosefillerHandler}
-                        changeHandler={changeFillerHandler}
-                    />
-                </div>
-                <div className={classes.fil}>
-                    <p className={classes.titleGroup}>Температура эксплуатации</p>
-                    <AdminTemp
-                        temps={[...temps]}
-                        temp={temp}
-                        filler={filler}
-                        clickHandler={choseTempHandler}
-                        changeHandler={changeTempHandler}
-                    />
-                </div>
-                <div className={classes.fil}>
-                    <p className={classes.titleGroup}>Модифицирующий элемент</p>
-                    <AdminMod
-                        mods={[...mods]}
-                        temp={temp}
-                        filler={filler}
-                        clickHandler={changeModHandler}
-                    />
-                </div>
+        <div className={classes.line}>
+            <div className={classes.fil}>
+                <p className={classes.titleGroup}>Тип наполнителя</p>
+                <AdminFiller
+                    fillers={[...(snp?.fillers || [])]}
+                    filler={filler}
+                    sendHandler={sendHandler}
+                    clickHandler={chosefillerHandler}
+                    changeHandler={changeFillerHandler}
+                />
             </div>
-        </>
+            <div className={classes.fil}>
+                <p className={classes.titleGroup}>Температура эксплуатации</p>
+                <AdminTemp
+                    temps={[...temps]}
+                    temp={temp}
+                    filler={filler}
+                    clickHandler={choseTempHandler}
+                    changeHandler={changeTempHandler}
+                />
+            </div>
+            <div className={classes.fil}>
+                <p className={classes.titleGroup}>Модифицирующий элемент</p>
+                <AdminMod
+                    mods={[...mods]}
+                    temp={temp}
+                    filler={filler}
+                    clickHandler={changeModHandler}
+                />
+            </div>
+        </div>
     )
 }

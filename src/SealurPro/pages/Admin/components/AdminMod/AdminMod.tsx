@@ -36,17 +36,18 @@ export const AdminMod: FC<Props> = ({ mods, temp, filler, clickHandler }) => {
 
     const renderMod = () => {
         return addit?.mod.map(m => {
-            let isAdded = mods.includes(m.id)
+            let idx = mods.findIndex(mod => mod === m.id)
 
             return (
                 <div key={m.id} className={classes.listItem}>
                     <Checkbox
                         name={m.id}
                         id={m.id}
-                        checked={isAdded}
+                        checked={idx > -1}
                         onChange={addModHandler(m.id)}
                         label={m.title}
                     />
+                    {idx > -1 ? <p className={classes.count}>({idx + 1})</p> : null}
                 </div>
             )
         })
