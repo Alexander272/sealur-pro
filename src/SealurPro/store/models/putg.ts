@@ -2,7 +2,7 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
-import { IPUTG } from "../../types/putg"
+import { IConstruction, IPUTG } from "../../types/putg"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
 interface IPutgState {
@@ -17,15 +17,15 @@ interface IPutgState {
     pn: string
     h: string
     oh: string
-    s2: string
-    s3: string
 
     putg: IPUTG | null
     size: ISize | null
 
     typePr: string
 
-    constration: string
+    constructions: IConstruction[]
+
+    construction: string
     obturation: string
 
     flange: string
@@ -116,15 +116,24 @@ export const putg = createModel<ProModel>()({
         pn: "",
         h: "",
         oh: "",
-        s2: "",
-        s3: "",
 
         putg: testPutg,
         size: testSize,
 
         typePr: "Round",
 
-        constration: "100",
+        constructions: [
+            {
+                short: "200",
+                obturators: [
+                    {
+                        short: "01",
+                    },
+                ],
+            },
+        ],
+
+        construction: "200",
         obturation: "01",
 
         // test value
@@ -202,14 +211,6 @@ export const putg = createModel<ProModel>()({
             state.oh = payload
             return state
         },
-        setS2(state, payload: string) {
-            state.s2 = payload
-            return state
-        },
-        setS3(state, payload: string) {
-            state.s3 = payload
-            return state
-        },
 
         setPutg(state, payload: IPUTG | null) {
             state.putg = payload
@@ -220,8 +221,12 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
+        setConstructions(state, payload: IConstruction[]) {
+            state.constructions = payload
+            return state
+        },
         setConstruction(state, payload: string) {
-            state.constration = payload
+            state.construction = payload
             return state
         },
         setObturation(state, payload: string) {
@@ -441,8 +446,6 @@ export const putg = createModel<ProModel>()({
                     putg.setDn(res.data.sizes[0].dn)
                     putg.setPn(res.data.sizes[0].pn.split(";")[0])
                     putg.setH(res.data.sizes[0].h.split(";")[0])
-                    putg.setS2(res.data.sizes[0].s2?.split(";")[0] || "")
-                    putg.setS3(res.data.sizes[0].s3?.split(";")[0] || "")
                 } catch (error) {
                     toast.error("Не удалось загрузить размеры", { autoClose: false })
                 } finally {

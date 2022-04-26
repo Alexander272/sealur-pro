@@ -25,7 +25,7 @@ export const Size: FC<Props> = () => {
             dispatch.snp.getSizes({
                 flShort: sf.short,
                 standId: sf.standId,
-                typePr: snp.typePr,
+                typePr: `СНП-${snp.typePr}`,
                 typeFlId: snp.typeFlId,
             })
     }, [snp?.typePr, snp?.typeFlId, stfl, st, dispatch.snp])

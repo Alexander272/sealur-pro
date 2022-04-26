@@ -20,7 +20,7 @@ const imgUrls = {
 type Props = {}
 
 export const Size: FC<Props> = () => {
-    const construction = useSelector((state: ProState) => state.putg.constration)
+    const construction = useSelector((state: ProState) => state.putg.construction)
     const obturation = useSelector((state: ProState) => state.putg.obturation)
 
     const dns = useSelector((state: ProState) => state.putg.dns)
@@ -30,8 +30,6 @@ export const Size: FC<Props> = () => {
     const pn = useSelector((state: ProState) => state.putg.pn)
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
-    const s2 = useSelector((state: ProState) => state.putg.s2)
-    const s3 = useSelector((state: ProState) => state.putg.s3)
 
     if (!sizes.length) return <div className={classes.container}></div>
 

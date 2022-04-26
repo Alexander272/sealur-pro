@@ -97,3 +97,10 @@
         padding: 25px 7px;
     }
 }
+@media (max-width: 480px) {
+    .buttons {
+        a {
+            flex-basis: 100%;
+        }
+    }
+}

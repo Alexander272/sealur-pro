@@ -51,10 +51,20 @@ export const Graphite: FC<Props> = () => {
         if (!tmp) {
             const { graps, construction } = changeGrap(grap)
             if (putg) dispatch.putg.setPutg({ ...putg, graphite: graps, construction })
+            dispatch.putg.setGrap(grap)
+            const constr = construction.find(c => c.grap === grap)
+            dispatch.putg.setTemp(constr?.temperatures[0].temp || "")
+            const constrs = constr?.temperatures[0].constructions || []
+            dispatch.putg.setConstructions(constrs)
+            dispatch.putg.setConstruction(constrs[0]?.short || "")
+            return
         }
         dispatch.putg.setGrap(grap)
         const constr = putg?.construction.find(c => c.grap === grap)
         dispatch.putg.setTemp(constr?.temperatures[0].temp || "")
+        const constrs = constr?.temperatures[0].constructions || []
+        dispatch.putg.setConstructions(constrs)
+        dispatch.putg.setConstruction(constrs[0]?.short || "")
     }
 
     const renderGrap = () => {
