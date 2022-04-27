@@ -80,12 +80,12 @@ export const AdminFiller: FC<Props> = ({
         }
         try {
             sendHandler(true)
-            // await AdditService.updateFillers(
-            //     addit.id,
-            //     fils,
-            //     data ? "update" : "add",
-            //     data ? "" : form.short
-            // )
+            await AdditService.updateFillers(
+                addit.id,
+                fils,
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
 
             let add: IAddit = JSON.parse(JSON.stringify(addit))
             add.fillers = fils

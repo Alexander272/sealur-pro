@@ -271,12 +271,14 @@ export const snp = createModel<ProModel>()({
             const fil = state.snp?.fillers.find(f => f.id === payload)
             state.temp = fil?.temps[0].id || ""
             state.mod = fil?.temps[0].mods[0] || ""
+            return state
         },
         changeTemp(state, payload: string) {
             state.temp = payload
             const fil = state.snp?.fillers.find(f => f.id === state.filler)
             const temp = fil?.temps.find(t => t.id === payload)
             if (!temp?.mods.includes(state.mod)) state.mod = temp?.mods[0] || ""
+            return state
         },
         changeMod(state, payload: string) {
             state.mod = payload
@@ -286,6 +288,7 @@ export const snp = createModel<ProModel>()({
                     if (t.id !== state.temp) state.temp = t.id
                 }
             })
+            return state
         },
     },
 

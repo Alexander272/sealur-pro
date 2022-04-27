@@ -1,17 +1,34 @@
 import { FC, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Tabs } from "../../../../../../components/Tabs/Tabs"
 import { Select } from "../../../../../../components/UI/Select/Select"
 import { Dispatch, ProState } from "../../../../../store/store"
-import classes from "../../../pages.module.scss"
 import { Type } from "./components/Type"
+import classes from "../../../pages.module.scss"
 
 const { Option } = Select
+
+const types = [
+    {
+        type: "Round",
+        title: "Круглая",
+    },
+    {
+        type: "Oval",
+        title: "Овальная",
+    },
+    {
+        type: "Rectangular",
+        title: "Прямоугольная",
+    },
+]
 
 type Props = {}
 
 export const Main: FC<Props> = () => {
     const flanges = useSelector((state: ProState) => state.addit.fl)
     const flange = useSelector((state: ProState) => state.putg.flange)
+    const putg = useSelector((state: ProState) => state.putg.putg)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -23,20 +40,43 @@ export const Main: FC<Props> = () => {
         dispatch.putg.getPutg({ flange: value, req: { standId: "0", flangeId: value } })
     }
 
+    const formHandler = (type: string) => {
+        //TODO добавить создание прокладки (или выбор существующей)
+        if (putg) dispatch.putg.setPutg({ ...putg, form: type as "Round" })
+    }
+
     return (
         <>
             <div className={classes.line}>
-                {flanges && (
-                    <Select value={flange} onChange={flHandler}>
-                        {flanges.map(f => (
-                            <Option key={f.id} value={f.id}>
-                                {f.title}
-                            </Option>
-                        ))}
-                    </Select>
-                )}
-                {/* <Button>Добавить</Button> */}
+                <Tabs initWidth={85} onClick={formHandler}>
+                    {types.map(t => (
+                        <p
+                            key={t.type}
+                            className={[
+                                classes.variants,
+                                putg?.form === t.type ? classes.active : null,
+                            ].join(" ")}
+                            data-type={t.type}
+                        >
+                            {t.title}
+                        </p>
+                    ))}
+                </Tabs>
             </div>
+            {putg?.form === "Round" && (
+                <div className={classes.line}>
+                    {flanges && (
+                        <Select value={flange} onChange={flHandler}>
+                            {flanges.map(f => (
+                                <Option key={f.id} value={f.id}>
+                                    {f.title}
+                                </Option>
+                            ))}
+                        </Select>
+                    )}
+                    {/* <Button>Добавить</Button> */}
+                </div>
+            )}
             <div className={classes.group}>
                 <p>Тип фланца</p>
                 <div className={classes.line}>

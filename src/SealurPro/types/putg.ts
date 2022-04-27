@@ -4,8 +4,9 @@ export interface IPUTG {
     id: string
     typeFlId: string
     typePr: string
+    form: "Round" | "Oval" | "Rectangular"
     construction: IConstr[]
-    temperatures: ITemperature[]
+    temperatures: IGrap[]
     reinforce: IMaterial
     obturator: IMaterial
     iLimiter: IMaterial
@@ -32,4 +33,10 @@ export interface IConstruction {
 
 export interface IObturator {
     short: string
+    imageUrl: string
+}
+
+export interface IGrap {
+    grap: string
+    temps: ITemperature[]
 }

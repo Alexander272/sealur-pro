@@ -1,6 +1,16 @@
 import api from "./api"
 import { IResponse } from "../types/response"
-import { IFiller, IGrap, IMat, IMod, IMoun, ITemp } from "../types/addit"
+import {
+    ICoating,
+    IConstruction,
+    IFiller,
+    IGrap,
+    IMat,
+    IMod,
+    IMoun,
+    IObturator,
+    ITemp,
+} from "../types/addit"
 
 export default class AdditService {
     static async updateMat(
@@ -102,6 +112,60 @@ export default class AdditService {
         try {
             const res = await api.patch(`/sealur-pro/additionals/${id}/fil`, {
                 fillers: fil,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updateCoating(
+        id: string,
+        coat: ICoating[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/coat`, {
+                coating: coat,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updateConstruction(
+        id: string,
+        constr: IConstruction[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/constr`, {
+                constr: constr,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updateObturators(
+        id: string,
+        obts: IObturator[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/obt`, {
+                obturator: obts,
                 type,
                 change,
             })

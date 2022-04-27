@@ -1,8 +1,16 @@
-import { FC } from "react"
+import { FC, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { useModal } from "../../../../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../../../../components/Modal/Modal"
+import { Button } from "../../../../../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../../../../../components/UI/Checkbox/Checkbox"
+import { Input } from "../../../../../../../../components/UI/Input/Input"
+import { Textarea } from "../../../../../../../../components/UI/Input/Textarea"
+import AdditService from "../../../../../../../service/addit"
 import { Dispatch, ProState } from "../../../../../../../store/store"
-import { IObturator } from "../../../../../../../types/addit"
+import { IAddit, IObturator } from "../../../../../../../types/addit"
 import { IConstr, IConstruction } from "../../../../../../../types/putg"
 import classes from "../graphite.module.scss"
 
@@ -18,15 +26,30 @@ export const Obturator: FC<Props> = () => {
 
     const dispatch = useDispatch<Dispatch>()
 
+    const [data, setData] = useState<IObturator | null>(null)
+
+    const { isOpen, toggle } = useModal()
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        formState: { errors },
+    } = useForm<IObturator>()
+
     const changeObturatorHandler = (short: string) => () => {
         const c: IConstruction[] = JSON.parse(JSON.stringify(constructions))
         let idx = c.findIndex(c => c.short === construction)
+
+        if (idx === -1) {
+            toast.error("Тип прокладки не выбран")
+            return
+        }
 
         const cur = c[idx]?.obturators.find(o => o.short === short)
         if (cur) {
             c[idx].obturators = c[idx].obturators.filter(o => o.short !== short)
         } else {
-            c[idx].obturators.push({ short })
+            c[idx].obturators.push({ short, imageUrl: "" })
         }
         dispatch.putg.setConstructions(c)
 
@@ -38,12 +61,121 @@ export const Obturator: FC<Props> = () => {
         if (putg) dispatch.putg.setPutg({ ...putg, construction: constr })
     }
 
-    const updateObturatorHandler = (ob: IObturator) => () => {}
+    const deleteHandler = async () => {
+        if (!addit || !data) return
+        let obts = addit?.obturator || []
+        obts = obts.filter(o => o.short !== data.short)
+        try {
+            dispatch.putg.setLoading(true)
+            await AdditService.updateObturators(addit.id, obts, "delete", data.short)
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.obturator = obts
+            dispatch.addit.setAddit(add)
+            toast.success("Успешно удалено")
+            toggle()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            dispatch.putg.setLoading(false)
+        }
+    }
 
-    const openObturatorHandler = () => {}
+    const submitHandler = async (form: IObturator) => {
+        if (!addit) return
+        let obts = [...addit.obturator] || []
+        if (!data) {
+            obts.push({
+                short: form.short,
+                title: form.title,
+                description: form.description,
+            })
+        } else {
+            obts = obts?.map(o => {
+                if (o.short === data.short) return form
+                return o
+            })
+        }
+        try {
+            dispatch.putg.setLoading(true)
+            await AdditService.updateObturators(
+                addit.id,
+                obts,
+                data ? "update" : "add",
+                data ? "" : form.short
+            )
+            let add: IAddit = JSON.parse(JSON.stringify(addit))
+            add.obturator = obts
+            dispatch.addit.setAddit(add)
+            toast.success(data ? "Успешно обновлено" : "Успешно создано")
+            toggle()
+        } catch (error: any) {
+            toast.error(`Возникла ошибка: ${error.message}`)
+        } finally {
+            dispatch.putg.setLoading(false)
+        }
+    }
+
+    const updateObturatorHandler = (ob: IObturator) => () => {
+        setData({ short: ob.short, title: ob.title, description: ob.description })
+        setValue("short", ob.short)
+        setValue("title", ob.title)
+        setValue("description", ob.description)
+        toggle()
+    }
+
+    const openObturatorHandler = () => {
+        setData(null)
+        setValue("short", "")
+        setValue("title", "")
+        setValue("description", "")
+        toggle()
+    }
 
     return (
         <>
+            <Modal isOpen={isOpen} toggle={toggle}>
+                <Modal.Header title={!data ? "Добавить" : "Редактировать"} onClose={toggle} />
+                <Modal.Content>
+                    <form className={classes.form}>
+                        <Input
+                            name='short'
+                            label='Короткое обозначение'
+                            placeholder='01'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.short}
+                            errorText='Поле не заполнено'
+                        />
+                        <Textarea
+                            name='title'
+                            label='Название'
+                            placeholder='без обтюраторов'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.title}
+                            errorText='Поле не заполнено'
+                        />
+                        <Textarea name='description' label='Пояснение' register={register} />
+                    </form>
+                </Modal.Content>
+                <Modal.Footer>
+                    <Button variant='grayPrimary' fullWidth onClick={toggle}>
+                        Отмена
+                    </Button>
+                    <p className={classes.offset} />
+                    {data ? (
+                        <>
+                            <Button variant='danger' fullWidth onClick={deleteHandler}>
+                                Удалить
+                            </Button>
+                            <p className={classes.offset} />
+                        </>
+                    ) : null}
+                    <Button fullWidth onClick={handleSubmit(submitHandler)}>
+                        {data ? "Сохранить" : "Добавить"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <p className={classes.add} onClick={openObturatorHandler}>
                 Добавить
             </p>

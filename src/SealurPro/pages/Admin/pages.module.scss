@@ -157,3 +157,24 @@
         cursor: pointer;
     }
 }
+
+.variants {
+    position: relative;
+    z-index: 5;
+    padding: 5px 14px;
+    color: var(--button-color);
+    border-radius: 40px;
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover:not(.active) {
+        background-color: #ffffff;
+    }
+
+    &.active {
+        pointer-events: none;
+        color: #fff;
+    }
+}

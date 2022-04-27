@@ -31,22 +31,16 @@ export const Graphite: FC<Props> = () => {
 
     const changeGrapHandler = (gr: string) => () => {
         const { graps, construction } = changeGrap(gr)
-        if (gr === grap) dispatch.putg.setGrap("")
+        if (gr === grap) {
+            dispatch.putg.setGrap("")
+            dispatch.putg.setTemp("")
+            dispatch.putg.setConstruction("")
+            dispatch.putg.setConstructions([])
+        }
         if (putg) dispatch.putg.setPutg({ ...putg, graphite: graps, construction })
     }
 
     const chooseGrapHandler = (grap: string) => () => {
-        // if (!filler) {
-        //     toast.error("Наполнитель не выбран")
-        //     return
-        // }
-        // let tmp = temps.find(t => t.id === temp)
-        // let newTemps: ITemperature[] = []
-        // if (!tmp) {
-        //     newTemps = changeTemp(temp)
-        //     tmp = newTemps[newTemps.length - 1]
-        // }
-        // clickHandler(tmp, newTemps)
         let tmp = putg?.graphite.find(g => g === grap)
         if (!tmp) {
             const { graps, construction } = changeGrap(grap)
@@ -61,8 +55,8 @@ export const Graphite: FC<Props> = () => {
         }
         dispatch.putg.setGrap(grap)
         const constr = putg?.construction.find(c => c.grap === grap)
-        dispatch.putg.setTemp(constr?.temperatures[0].temp || "")
-        const constrs = constr?.temperatures[0].constructions || []
+        dispatch.putg.setTemp(constr?.temperatures[0]?.temp || "")
+        const constrs = constr?.temperatures[0]?.constructions || []
         dispatch.putg.setConstructions(constrs)
         dispatch.putg.setConstruction(constrs[0]?.short || "")
     }
@@ -75,8 +69,8 @@ export const Graphite: FC<Props> = () => {
             return (
                 <div key={g.short} className={classes.listItem}>
                     <Checkbox
-                        name={g.title}
-                        id={g.title}
+                        name={`grap-${g.short}`}
+                        id={`grap-${g.short}`}
                         checked={idx > -1}
                         onChange={changeGrapHandler(g.short)}
                     />

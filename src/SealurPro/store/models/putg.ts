@@ -21,8 +21,6 @@ interface IPutgState {
     putg: IPUTG | null
     size: ISize | null
 
-    typePr: string
-
     constructions: IConstruction[]
 
     construction: string
@@ -58,6 +56,7 @@ const testPutg: IPUTG = {
     id: "1",
     typeFlId: "1",
     typePr: "ПУТГ-А",
+    form: "Round",
     construction: [
         {
             grap: "2",
@@ -70,6 +69,7 @@ const testPutg: IPUTG = {
                             obturators: [
                                 {
                                     short: "01",
+                                    imageUrl: "/image/putg/construction/100-01.webp",
                                 },
                             ],
                         },
@@ -77,16 +77,19 @@ const testPutg: IPUTG = {
                 },
             ],
         },
+        {
+            grap: "1",
+            temperatures: [],
+        },
     ],
     temperatures: [
-        { id: "1", mods: ["0", "1", "2", "3"] },
-        { id: "2", mods: ["4"] },
-        { id: "3", mods: ["5"] },
+        { grap: "2", temps: [{ id: "1", mods: ["0", "1", "2", "3"] }] },
+        { grap: "1", temps: [] },
     ],
     reinforce: { values: ["*"], default: "1" },
-    obturator: { values: ["*"], default: "1" },
-    iLimiter: { values: ["*"], default: "1" },
-    oLimiter: { values: ["*"], default: "1" },
+    obturator: { values: ["*"], default: "2" },
+    iLimiter: { values: ["*"], default: "2" },
+    oLimiter: { values: ["*"], default: "2" },
     coating: ["*"],
     mounting: ["*"],
     graphite: ["2", "1"],
@@ -120,14 +123,13 @@ export const putg = createModel<ProModel>()({
         putg: testPutg,
         size: testSize,
 
-        typePr: "Round",
-
         constructions: [
             {
                 short: "200",
                 obturators: [
                     {
                         short: "01",
+                        imageUrl: "/image/putg/construction/100-01.webp",
                     },
                 ],
             },
@@ -373,16 +375,20 @@ export const putg = createModel<ProModel>()({
         // },
         changeTemp(state, payload: string) {
             state.temp = payload
-            const temp = state.putg?.temperatures.find(t => t.id === payload)
+            const temps = state.putg?.temperatures.find(t => t.grap === state.grap)
+            const temp = temps?.temps.find(t => t.id === payload)
             if (!temp?.mods.includes(state.mod)) state.mod = temp?.mods[0] || ""
+            return state
         },
         changeMod(state, payload: string) {
             state.mod = payload
-            state.putg?.temperatures.forEach(t => {
+            const temp = state.putg?.temperatures.find(t => t.grap === state.grap)
+            temp?.temps.forEach(t => {
                 if (t.mods.includes(payload)) {
                     if (t.id !== state.temp) state.temp = t.id
                 }
             })
+            return state
         },
     },
 

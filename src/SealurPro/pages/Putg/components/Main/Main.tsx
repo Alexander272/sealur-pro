@@ -35,7 +35,6 @@ export const Main: FC<Props> = () => {
     const flangesType = useSelector((state: ProState) => state.addit.typeFl)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const flange = useSelector((state: ProState) => state.putg.flange)
-    const typePr = useSelector((state: ProState) => state.putg.typePr)
 
     return (
         <div className={classes.container}>
@@ -48,7 +47,7 @@ export const Main: FC<Props> = () => {
                                 key={t.type}
                                 className={[
                                     classes.variants,
-                                    typePr === t.type ? classes.active : null,
+                                    putg?.form === t.type ? classes.active : null,
                                 ].join(" ")}
                                 data-type={t.type}
                             >

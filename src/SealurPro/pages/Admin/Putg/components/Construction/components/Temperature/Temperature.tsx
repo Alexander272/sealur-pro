@@ -1,9 +1,9 @@
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import { Checkbox } from "../../../../../../../../components/UI/Checkbox/Checkbox"
 import { Dispatch, ProState } from "../../../../../../../store/store"
-import { IConstr } from "../../../../../../../types/putg"
-import { ITemperature } from "../../../../../../../types/snp"
+import { IConstr, IGrap } from "../../../../../../../types/putg"
 import classes from "../graphite.module.scss"
 
 type Props = {}
@@ -19,76 +19,63 @@ export const Temperature: FC<Props> = () => {
     const changeTemp = (temp: string) => {
         let constructions: IConstr[] = JSON.parse(JSON.stringify(putg?.construction)) || []
         let idx = constructions.findIndex(c => c.grap === grap)
-        let temps: ITemperature[] = JSON.parse(JSON.stringify(putg?.temperatures)) || []
+        let temps: IGrap[] = JSON.parse(JSON.stringify(putg?.temperatures)) || []
         let tmp = constructions[idx].temperatures.find(t => t.temp === temp)
         if (tmp) {
             const t = constructions[idx].temperatures.filter(t => t.temp !== temp)
             constructions[idx].temperatures = t || []
-            temps = temps?.filter(t => t.id !== temp)
+            const tIdx = temps.findIndex(t => t.grap === grap)
+            temps[tIdx].temps = temps[tIdx].temps?.filter(t => t.id !== temp)
         } else {
             constructions[idx].temperatures.push({ temp, constructions: [] })
-            temps?.push({ id: temp, mods: [] })
+            const tIdx = temps.findIndex(t => t.grap === grap)
+            temps[tIdx].temps.push({ id: temp, mods: [] })
         }
-        // let tmp = temps.find(t => t.id === temp)
-        // if (tmp) {
-        //     temps = temps.filter(t => t.id !== temp)
-        // } else {
-        //     temps.push({ id: temp, mods: [] })
-        // }
-        // return temps
+
         return { temps, constructions }
     }
 
     const changeTempHandler = (t: string) => () => {
-        // if (!filler) {
-        //     toast.error("Наполнитель не выбран")
-        //     return
-        // }
-        // const temps = changeTemp(t)
-        // changeHandler(temps, t === temp)
+        if (!grap) {
+            toast.error("Степень чистоты графита не выбрана")
+            return
+        }
+
         const { temps, constructions } = changeTemp(t)
-        if (t === temp) dispatch.putg.setTemp("")
+        if (t === temp) {
+            dispatch.putg.setTemp("")
+            dispatch.putg.setConstruction("")
+            dispatch.putg.setConstructions([])
+        }
+
         if (putg)
             dispatch.putg.setPutg({ ...putg, temperatures: temps, construction: constructions })
     }
 
-    //TODO temp не работает при смене графита
     const chooseTempHandler = (temp: string) => () => {
-        // if (!filler) {
-        //     toast.error("Наполнитель не выбран")
-        //     return
-        // }
-        // let tmp = temps.find(t => t.id === temp)
-        // let newTemps: ITemperature[] = []
-        // if (!tmp) {
-        //     newTemps = changeTemp(temp)
-        //     tmp = newTemps[newTemps.length - 1]
-        // }
-        // clickHandler(tmp, newTemps)
-        let tmp = putg?.temperatures.find(t => t.id === temp)
+        const t = putg?.temperatures.find(t => t.grap === grap)
+        let tmp = t?.temps.find(t => t.id === temp)
         if (!tmp) {
             const { temps, constructions } = changeTemp(temp)
             if (putg)
                 dispatch.putg.setPutg({ ...putg, temperatures: temps, construction: constructions })
 
             dispatch.putg.setTemp(temp)
-
             let constrs: IConstr[] = JSON.parse(JSON.stringify(constructions)) || []
             let idx = constrs.findIndex(c => c.grap === grap)
             let tmp = constrs[idx].temperatures.find(t => t.temp === temp)
 
             dispatch.putg.setConstructions(tmp?.constructions || [])
             dispatch.putg.setConstruction(tmp?.constructions[0]?.short || "")
-
             return
         }
+
         dispatch.putg.setTemp(temp)
 
         let constructions: IConstr[] = JSON.parse(JSON.stringify(putg?.construction)) || []
         let idx = constructions.findIndex(c => c.grap === grap)
         let temps = constructions[idx].temperatures.find(t => t.temp === temp)
 
-        //  const constrs = constr?.temperatures[0].constructions || []
         dispatch.putg.setConstructions(temps?.constructions || [])
         dispatch.putg.setConstruction(temps?.constructions[0]?.short || "")
     }
@@ -102,8 +89,8 @@ export const Temperature: FC<Props> = () => {
             return (
                 <div key={t.id} className={classes.listItem}>
                     <Checkbox
-                        name={t.title}
-                        id={t.title}
+                        name={`temp-${t.id}`}
+                        id={`temp-${t.id}`}
                         checked={idx > -1}
                         onChange={changeTempHandler(t.id)}
                     />

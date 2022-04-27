@@ -44,7 +44,7 @@ export const Cofiguration: FC<Props> = () => {
                 grap={putg?.graphite || []}
             />
 
-            <Temperature
+            {/* <Temperature
                 temp={temp}
                 temps={putg?.temperatures || []}
                 tempHandler={changeTempHandler}
@@ -57,7 +57,7 @@ export const Cofiguration: FC<Props> = () => {
                 temps={putg?.temperatures || []}
                 className={classes.group}
                 classTitle={classes.titleGroup}
-            />
+            /> */}
 
             <Coating
                 className={classes.group}
