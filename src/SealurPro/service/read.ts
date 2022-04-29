@@ -1,3 +1,4 @@
+import api from "./api"
 import { IStFl } from "../types/stFl"
 import { IAddit } from "../types/addit"
 import { ISNP, ISNPReq } from "../types/snp"
@@ -5,14 +6,16 @@ import { IDn, ISize, ISizeReq } from "../types/size"
 import { ITypeFl } from "../types/typeFl"
 import { IFlange } from "../types/flange"
 import { IStand } from "../types/stand"
-import api from "./api"
+import { IPUTG, IPutgImage, IPutgReq } from "../types/putg"
 
 type StFlResponse = { data: IStFl[] }
 type FlangeResponse = { data: IFlange[] }
 type TypeFlResponse = { data: ITypeFl[] }
 type StandResponse = { data: IStand[] }
+type PutgImageResponse = { data: IPutgImage[] }
 type AdditResponse = { data: IAddit[] }
 type SnpResponse = { data: ISNP[] }
+type PutgResponse = { data: IPUTG[] }
 type SizesResponse = { data: { sizes: ISize[]; dn: IDn[] } }
 type DefSnpResponse = {
     data: { typeFl: ITypeFl[]; snp: ISNP[]; sizes: { sizes: ISize[]; dn: IDn[] } }
@@ -30,8 +33,8 @@ type DefResponsePutg = {
     fl: IFlange[]
     addit: IAddit
     typeFl: ITypeFl[]
-    // putg: IPUTG[]
-    // sizes: { sizes: ISize[]; dn: IDn[] }
+    putg: IPUTG[]
+    sizes: { sizes: ISize[]; dn: IDn[] }
 }
 
 export default class ReadService {
@@ -71,6 +74,15 @@ export default class ReadService {
         }
     }
 
+    static async getPutgImage(form: string): Promise<PutgImageResponse> {
+        try {
+            const res = await api.get(`sealur-pro/putg-image/?form=${form}`)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
     static async getAddit(): Promise<AdditResponse> {
         try {
             const res = await api.get<AdditResponse>("/sealur-pro/additionals/")
@@ -85,6 +97,15 @@ export default class ReadService {
             const res = await api.get(
                 `/sealur-pro/snp/?standId=${req.standId}&flangeId=${req.flangeId}`
             )
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async getPutg(req: IPutgReq): Promise<PutgResponse> {
+        try {
+            const res = await api.get(`/sealur-pro/putg/?form=${req.form}&flangeId=${req.flangeId}`)
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -119,17 +140,20 @@ export default class ReadService {
     }
 
     static async getDefaultPutg(): Promise<DefResponsePutg> {
-        // TODO дописать запрос на путг
-        const [fl, addit, typeFl] = await Promise.all([
+        const [fl, addit, typeFl, putg, sizes] = await Promise.all([
             this.getFlange(),
             this.getAddit(),
             this.getTypeFl(),
+            this.getPutg({ form: "Round", flangeId: "1" }),
+            this.getSize({ flShort: "33259", typeFlId: "1", standId: "0", typePr: "ПУТГ-А" }),
         ])
 
         return {
             fl: fl.data,
             addit: addit.data[0],
             typeFl: typeFl.data,
+            putg: putg.data,
+            sizes: sizes.data,
         }
     }
 

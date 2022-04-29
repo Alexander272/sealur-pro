@@ -2,13 +2,16 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
-import { IConstruction, IPUTG } from "../../types/putg"
+import { IConstruction, IObturator, IPUTG, IPutgImage, IPutgReq } from "../../types/putg"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
 interface IPutgState {
     loading: boolean
     fetching: boolean
     error: boolean
+
+    putgImage: IPutgImage[]
+    form: "Round" | "Oval" | "Rectangular"
 
     putgs: IPUTG[]
     sizes: ISize[]
@@ -24,7 +27,8 @@ interface IPutgState {
     constructions: IConstruction[]
 
     construction: string
-    obturation: string
+    obturator: string
+    imageUrl: string
 
     flange: string
     coating: string
@@ -52,104 +56,37 @@ interface IPutgState {
     isOpenOl: boolean
 }
 
-const testPutg: IPUTG = {
-    id: "1",
-    typeFlId: "1",
-    typePr: "ПУТГ-А",
-    form: "Round",
-    construction: [
-        {
-            grap: "2",
-            temperatures: [
-                {
-                    temp: "1",
-                    constructions: [
-                        {
-                            short: "200",
-                            obturators: [
-                                {
-                                    short: "01",
-                                    imageUrl: "/image/putg/construction/100-01.webp",
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            grap: "1",
-            temperatures: [],
-        },
-    ],
-    temperatures: [
-        { grap: "2", temps: [{ id: "1", mods: ["0", "1", "2", "3"] }] },
-        { grap: "1", temps: [] },
-    ],
-    reinforce: { values: ["*"], default: "1" },
-    obturator: { values: ["*"], default: "2" },
-    iLimiter: { values: ["*"], default: "2" },
-    oLimiter: { values: ["*"], default: "2" },
-    coating: ["*"],
-    mounting: ["*"],
-    graphite: ["2", "1"],
-}
-
-const testSize: ISize = {
-    id: "1",
-    dn: "10",
-    pn: "0,1 (1,0);0,25 (2,5);0,6 (6,0)",
-    typePr: "ПУТГ-А",
-    typeFlId: "1",
-    d3: "38",
-    d2: "14",
-    h: "2,0",
-}
-
 export const putg = createModel<ProModel>()({
     state: {
         loading: true,
         fetching: false,
         error: false,
 
-        putgs: [testPutg],
-        sizes: [testSize],
+        putgImage: [],
+        form: "Round",
+
+        putgs: [],
+        sizes: [],
         dns: [],
         dn: "",
         pn: "",
         h: "",
         oh: "",
 
-        putg: testPutg,
-        size: testSize,
+        putg: null,
+        size: null,
 
-        constructions: [
-            {
-                short: "200",
-                obturators: [
-                    {
-                        short: "01",
-                        imageUrl: "/image/putg/construction/100-01.webp",
-                    },
-                ],
-            },
-        ],
+        constructions: [],
 
-        construction: "200",
-        obturation: "01",
+        construction: "",
+        obturator: "",
+        imageUrl: "",
 
-        // test value
-        flange: "1",
-        coating: "0",
-        grap: "2",
-        temp: "1",
-        mod: "0",
-
-        // flange: "",
-        // coating: "",
-        // grap: "",
-        // temp: "",
-        // mod: "",
+        flange: "",
+        coating: "",
+        grap: "",
+        temp: "",
+        mod: "",
 
         isJumper: false,
         jumper: "A",
@@ -182,6 +119,15 @@ export const putg = createModel<ProModel>()({
         },
         setError(state, payload: boolean) {
             state.error = payload
+            return state
+        },
+
+        setPutgImage(state, payload: IPutgImage[]) {
+            state.putgImage = payload
+            return state
+        },
+        setForm(state, payload: "Round" | "Oval" | "Rectangular") {
+            state.form = payload
             return state
         },
 
@@ -225,14 +171,21 @@ export const putg = createModel<ProModel>()({
 
         setConstructions(state, payload: IConstruction[]) {
             state.constructions = payload
+            state.construction = payload[0].short
+            state.obturator = payload[0].obturators[0].short
+            state.imageUrl = payload[0].obturators[0].imageUrl
             return state
         },
         setConstruction(state, payload: string) {
             state.construction = payload
             return state
         },
-        setObturation(state, payload: string) {
-            state.obturation = payload
+        setObturator(state, payload: string) {
+            state.obturator = payload
+            return state
+        },
+        setImageUrl(state, payload: string) {
+            state.imageUrl = payload
             return state
         },
         setFlange(state, payload: string) {
@@ -337,35 +290,60 @@ export const putg = createModel<ProModel>()({
         //     state.fr = payload.frame.default || ""
         //     return state
         // },
-        // changeSize(state, payload: ISize) {
-        //     state.size = payload
-        //     state.dn = payload.dn
-        //     state.h = payload.h.split(";")[0] || ""
-        //     state.s2 = payload.s2?.split(";")[0] || ""
-        //     state.s3 = payload.s3?.split(";")[0] || ""
-        //     return state
-        // },
-        // changePn(state, payload: string) {
-        //     state.pn = payload
-        //     return state
-        // },
-        // changeH(state, payload: number) {
-        //     if (payload === -1) {
-        //         state.h = "др."
-        //         state.s2 = ""
-        //         state.s3 = ""
-        //     } else {
-        //         state.h = state.size?.h.split(";")[payload] || ""
-        //         state.s2 = state.size?.s2?.split(";")[payload] || ""
-        //         state.s3 = state.size?.s3?.split(";")[payload] || ""
-        //     }
+        changeSize(state, payload: ISize) {
+            state.size = payload
+            state.dn = payload.dn
+            state.h = payload.h.split(";")[0] || ""
+            return state
+        },
+        changePn(state, payload: string) {
+            state.pn = payload
+            return state
+        },
+        changeH(state, payload: number) {
+            if (payload === -1) {
+                state.h = "др."
+            } else {
+                state.h = state.size?.h.split(";")[payload] || ""
+            }
 
-        //     return state
-        // },
-        // changeOH(state, payload: string) {
-        //     state.oh = payload
-        //     return state
-        // },
+            return state
+        },
+        changeOH(state, payload: string) {
+            state.oh = payload
+            return state
+        },
+
+        changeGrap(state, payload: string) {
+            state.grap = payload
+
+            const constr = state.putg?.construction.find(c => c.grap === payload)
+            if (constr) {
+                state.constructions = constr.temperatures[0].constructions
+                state.construction = constr.temperatures[0].constructions[0].short
+                state.obturator = constr.temperatures[0].constructions[0].obturators[0].short
+                state.imageUrl = constr.temperatures[0].constructions[0].obturators[0].imageUrl
+            }
+
+            const temp = state.putg?.temperatures.find(t => t.grap === payload)
+            if (temp) {
+                state.temp = temp.temps[0].id
+                state.mod = temp.temps[0].mods[0]
+            }
+        },
+
+        changeConstruction(state, payload: string) {
+            state.construction = payload
+            const con = state.constructions.find(c => c.short === payload)
+            if (!con?.obturators.some(o => o.short === state.obturator)) {
+                state.obturator = con?.obturators[0].short || ""
+                state.imageUrl = con?.obturators[0].imageUrl || ""
+            }
+        },
+        changeObturatoe(state, payload: IObturator) {
+            state.obturator = payload.short
+            state.imageUrl = payload.imageUrl
+        },
 
         // changeFiller(state, payload: string) {
         //     state.filler = payload
@@ -378,16 +356,39 @@ export const putg = createModel<ProModel>()({
             const temps = state.putg?.temperatures.find(t => t.grap === state.grap)
             const temp = temps?.temps.find(t => t.id === payload)
             if (!temp?.mods.includes(state.mod)) state.mod = temp?.mods[0] || ""
+
+            const constr = state.putg?.construction.find(c => c.grap === state.grap)
+            const con = constr?.temperatures.find(t => t.temp === payload)
+
+            if (con) {
+                state.constructions = con.constructions
+                state.construction = con.constructions[0].short
+                state.obturator = con.constructions[0].obturators[0].short
+                state.imageUrl = con.constructions[0].obturators[0].imageUrl
+            }
+
             return state
         },
         changeMod(state, payload: string) {
             state.mod = payload
             const temp = state.putg?.temperatures.find(t => t.grap === state.grap)
+            let newTemp = ""
             temp?.temps.forEach(t => {
                 if (t.mods.includes(payload)) {
-                    if (t.id !== state.temp) state.temp = t.id
+                    if (t.id !== state.temp) newTemp = t.id
                 }
             })
+            if (newTemp) state.temp = newTemp
+
+            const constr = state.putg?.construction.find(c => c.grap === state.grap)
+            const con = constr?.temperatures.find(t => t.temp === (newTemp || state.temp))
+
+            if (con) {
+                state.constructions = con.constructions
+                state.construction = con.constructions[0].short
+                state.obturator = con.constructions[0].obturators[0].short
+                state.imageUrl = con.constructions[0].obturators[0].imageUrl
+            }
             return state
         },
     },
@@ -395,6 +396,15 @@ export const putg = createModel<ProModel>()({
     effects: dispatch => {
         const { putg, addit } = dispatch
         return {
+            async getPutgImage(form: string) {
+                try {
+                    const res = await ReadService.getPutgImage(form)
+                    putg.setPutgImage(res.data)
+                } catch (error: any) {
+                    toast.error("Не удалось загрузить чертежи")
+                }
+            },
+
             async getDefault() {
                 putg.setLoading(true)
                 console.log("getDefault")
@@ -403,38 +413,39 @@ export const putg = createModel<ProModel>()({
                     addit.setFl(res.fl)
                     addit.setAddit(res.addit)
                     addit.setTypeFl(res.typeFl)
-                    //     snp.setSnps(res!.snp)
-                    //     snp.setSizes(res!.sizes.sizes)
-                    //     snp.setDns(res!.sizes.dn)
-                    //     snp.setSnp(res!.snp[0])
-                    //     snp.setSize(res!.sizes.sizes[0])
-                    //     snp.setDn(res!.sizes.sizes[0].dn)
-                    //     snp.setPn(res!.sizes.sizes[0].pn.split(";")[0])
-                    //     snp.setH(res!.sizes.sizes[0].h.split(";")[0])
-                    //     snp.setS2(res!.sizes.sizes[0].s2?.split(";")[0] || "")
-                    //     snp.setS3(res!.sizes.sizes[0].s3?.split(";")[0] || "")
-                    //     const grap =
-                    //         res!.snp[0].graphite[0] === "*"
-                    //             ? res!.addit?.graphite[0].short
-                    //             : res!.snp[0].graphite[0]
-                    putg.setConstruction("100")
-                    putg.setObturation("01")
-                    //     const fil = res!.snp[0].fillers[0].id
-                    //     const temp = res!.snp[0].fillers[0].temps[0].id
-                    //     const mod = res!.snp[0].fillers[0].temps[0].mods[0]
-                    //     snp.setGrap(grap || "")
-                    //     snp.setFil(fil)
-                    //     snp.setTemp(temp)
-                    //     snp.setMod(mod)
+                    putg.setPutgs(res.putg)
+                    putg.setSizes(res!.sizes.sizes)
+                    putg.setDns(res!.sizes.dn)
+                    putg.setPutg(res.putg[0])
+                    putg.setSize(res!.sizes.sizes[0])
+                    putg.setDn(res!.sizes.sizes[0].dn)
+                    putg.setPn(res!.sizes.sizes[0].pn.split(";")[0])
+                    putg.setH(res!.sizes.sizes[0].h.split(";")[0])
+
+                    putg.setConstructions(res.putg[0].construction[0].temperatures[0].constructions)
+                    putg.setConstruction(
+                        res.putg[0].construction[0].temperatures[0].constructions[0].short
+                    )
+                    putg.setObturator(
+                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
+                            .short
+                    )
+                    putg.setImageUrl(
+                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
+                            .imageUrl
+                    )
+
+                    putg.setGrap(res.putg[0].construction[0].grap)
+                    putg.setTemp(res.putg[0].temperatures[0].temps[0].id)
+                    putg.setMod(res.putg[0].temperatures[0].temps[0].mods[0])
+                    // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
                     putg.setMoun(res.addit.mounting[0].title)
-                    //     snp.setIr(res!.snp[0].ir.default)
-                    //     snp.setOr(res!.snp[0].or?.default)
-                    //     snp.setFr(res!.snp[0].frame?.default)
-                    putg.setRf("1")
-                    putg.setOb("1")
-                    putg.setIl("1")
-                    putg.setOl("1")
-                    //     snp.setSt(res!.stfl[0].id)
+                    putg.setCoating(res.addit.coating[0].id)
+
+                    putg.setRf(res.putg[0].reinforce.default)
+                    putg.setOb(res.putg[0].obturator.default)
+                    putg.setIl(res.putg[0].iLimiter.default)
+                    putg.setOl(res.putg[0].oLimiter.default)
                 } catch (error) {
                     putg.setError(true)
                     toast.error("Не удалось загрузить данные", { autoClose: false })
@@ -458,18 +469,35 @@ export const putg = createModel<ProModel>()({
                     putg.setFetching(false)
                 }
             },
-            async getPutg({ flange, req }: { flange: string; req: any }) {
+            async getPutg({ flange, req }: { flange: string; req: IPutgReq }) {
                 putg.setLoading(true)
                 try {
-                    //         const res = await ReadService.getSnp(req)
+                    const res = await ReadService.getPutg(req)
                     putg.setFlange(flange)
                     //         snp.setSt(st)
-                    //         snp.setSnp(res.data[0])
-                    //         snp.setSnps(res.data)
+                    putg.setPutg(res.data[0])
+                    putg.setPutgs(res.data)
 
                     //         if (res.data[0].graphite[0] !== "*") {
-                    //             snp.setGrap(res.data[0].graphite[0])
+                    // putg.setGrap(res.data[0].graphite[0])
                     //         }
+
+                    putg.setConstructions(res.data[0].construction[0].temperatures[0].constructions)
+                    putg.setConstruction(
+                        res.data[0].construction[0].temperatures[0].constructions[0].short
+                    )
+                    putg.setObturator(
+                        res.data[0].construction[0].temperatures[0].constructions[0].obturators[0]
+                            .short
+                    )
+                    putg.setImageUrl(
+                        res.data[0].construction[0].temperatures[0].constructions[0].obturators[0]
+                            .imageUrl
+                    )
+
+                    putg.setGrap(res.data[0].construction[0].grap)
+                    putg.setTemp(res.data[0].temperatures[0].temps[0].id)
+                    putg.setMod(res.data[0].temperatures[0].temps[0].mods[0])
 
                     //         const fil = res.data[0].fillers[0].id
                     //         const temp = res.data[0].fillers[0].temps[0].id
@@ -478,11 +506,12 @@ export const putg = createModel<ProModel>()({
                     //         snp.setTemp(temp)
                     //         snp.setMod(mod)
 
-                    //         snp.setIr(res.data[0].ir.default || "")
-                    //         snp.setOr(res.data[0].or.default || "")
-                    //         snp.setFr(res.data[0].frame.default || "")
+                    putg.setRf(res.data[0].reinforce.default || "")
+                    putg.setOb(res.data[0].obturator.default || "")
+                    putg.setIl(res.data[0].iLimiter.default || "")
+                    putg.setOl(res.data[0].oLimiter.default || "")
                 } catch (error) {
-                    //         toast.error("Не удалось загрузить данные", { autoClose: false })
+                    toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {
                     putg.setLoading(false)
                 }

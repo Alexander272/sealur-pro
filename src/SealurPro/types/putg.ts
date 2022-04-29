@@ -40,3 +40,14 @@ export interface IGrap {
     grap: string
     temps: ITemperature[]
 }
+
+export interface IPutgReq {
+    form: "Round" | "Oval" | "Rectangular"
+    flangeId: string
+}
+
+export interface IPutgImage {
+    form: "Round" | "Oval" | "Rectangular"
+    gasket: string
+    url: string
+}

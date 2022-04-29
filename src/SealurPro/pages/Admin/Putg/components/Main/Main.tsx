@@ -29,15 +29,20 @@ export const Main: FC<Props> = () => {
     const flanges = useSelector((state: ProState) => state.addit.fl)
     const flange = useSelector((state: ProState) => state.putg.flange)
     const putg = useSelector((state: ProState) => state.putg.putg)
+    const form = useSelector((state: ProState) => state.putg.form)
 
     const dispatch = useDispatch<Dispatch>()
 
     useEffect(() => {
-        dispatch.putg.getPutg({ flange: "1", req: { standId: "0", flangeId: "1" } })
+        dispatch.putg.getPutg({ flange: "1", req: { form: "Round", flangeId: "1" } })
     }, [dispatch.putg])
 
+    useEffect(() => {
+        dispatch.putg.getPutgImage(putg?.form || "Round")
+    }, [putg?.form, dispatch.putg])
+
     const flHandler = (value: string) => {
-        dispatch.putg.getPutg({ flange: value, req: { standId: "0", flangeId: value } })
+        dispatch.putg.getPutg({ flange: value, req: { form: form, flangeId: value } })
     }
 
     const formHandler = (type: string) => {

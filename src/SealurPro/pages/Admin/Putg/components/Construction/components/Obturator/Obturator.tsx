@@ -23,6 +23,7 @@ export const Obturator: FC<Props> = () => {
     const construction = useSelector((state: ProState) => state.putg.construction)
     const grap = useSelector((state: ProState) => state.putg.grap)
     const temp = useSelector((state: ProState) => state.putg.temp)
+    const putgImage = useSelector((state: ProState) => state.putg.putgImage)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -49,7 +50,8 @@ export const Obturator: FC<Props> = () => {
         if (cur) {
             c[idx].obturators = c[idx].obturators.filter(o => o.short !== short)
         } else {
-            c[idx].obturators.push({ short, imageUrl: "" })
+            const image = putgImage.find(i => i.gasket === `${construction}-${short}`)
+            c[idx].obturators.push({ short, imageUrl: image?.url || "" })
         }
         dispatch.putg.setConstructions(c)
 

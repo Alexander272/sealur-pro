@@ -1,8 +1,9 @@
 import { FC } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Tabs } from "../../../../../components/Tabs/Tabs"
 import { Select } from "../../../../../components/UI/Select/Select"
-import { ProState } from "../../../../store/store"
+import { Dispatch, ProState } from "../../../../store/store"
+import { Gasket } from "./Gasket/Gasket"
 import classes from "../../../style/pages.module.scss"
 
 const { Option } = Select
@@ -35,6 +36,8 @@ export const Main: FC<Props> = () => {
     const flangesType = useSelector((state: ProState) => state.addit.typeFl)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const flange = useSelector((state: ProState) => state.putg.flange)
+
+    const dispatch = useDispatch<Dispatch>()
 
     return (
         <div className={classes.container}>
@@ -82,23 +85,7 @@ export const Main: FC<Props> = () => {
                     )}
                 </div>
 
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Тип прокладки</p>
-                    <Select value='100' onChange={() => {}}>
-                        <Option value='100'>100</Option>
-                        <Option value='211'>211</Option>
-                        <Option value='212'>212</Option>
-                    </Select>
-                </div>
-
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Тип конструкции</p>
-                    <Select value='01' onChange={() => {}}>
-                        <Option value='01'>01 без обтюраторов</Option>
-                        <Option value='02'>02 с внут обтюратором</Option>
-                        <Option value='03'>03 с нар обтюратором</Option>
-                    </Select>
-                </div>
+                <Gasket />
             </div>
             <div className={`${classes.block} ${classes.putgDrawing}`}>
                 <p className={classes.titleGroup}>Чертеж типа фланца</p>

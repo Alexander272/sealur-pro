@@ -19,7 +19,7 @@ export const Cofiguration: FC<Props> = () => {
     const dispatch = useDispatch<Dispatch>()
 
     const changeGrapHandler = (value: string) => {
-        dispatch.putg.setGrap(value)
+        dispatch.putg.changeGrap(value)
     }
 
     const changeTempHandler = (value: string) => {
@@ -34,6 +34,29 @@ export const Cofiguration: FC<Props> = () => {
         dispatch.putg.setCoating(value)
     }
 
+    const renderTempMod = () => {
+        const temps = putg?.temperatures.find(t => t.grap === graphite)?.temps
+
+        return (
+            <>
+                <Temperature
+                    temp={temp}
+                    temps={temps || []}
+                    tempHandler={changeTempHandler}
+                    className={classes.group}
+                    classTitle={classes.titleGroup}
+                />
+                <Modifier
+                    modifier={mod}
+                    modHandler={changeModHandler}
+                    temps={temps || []}
+                    className={classes.group}
+                    classTitle={classes.titleGroup}
+                />
+            </>
+        )
+    }
+
     return (
         <>
             <Graphite
@@ -44,20 +67,7 @@ export const Cofiguration: FC<Props> = () => {
                 grap={putg?.graphite || []}
             />
 
-            {/* <Temperature
-                temp={temp}
-                temps={putg?.temperatures || []}
-                tempHandler={changeTempHandler}
-                className={classes.group}
-                classTitle={classes.titleGroup}
-            />
-            <Modifier
-                modifier={mod}
-                modHandler={changeModHandler}
-                temps={putg?.temperatures || []}
-                className={classes.group}
-                classTitle={classes.titleGroup}
-            /> */}
+            {renderTempMod()}
 
             <Coating
                 className={classes.group}

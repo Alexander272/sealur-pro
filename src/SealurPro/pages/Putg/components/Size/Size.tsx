@@ -7,22 +7,9 @@ import classes from "../../../style/pages.module.scss"
 
 const { Option } = Select
 
-//TODO Надо придумать что сделать с картинками (текущий вариант не очень подходит т.к. их слишком много и они зависят и от конструкции и от обтюратора)
-// возможно стоит их хранить в бд вместе с обтюраторами в putg.construction
-
-// Размеры зависят от обтюратора (не от конструкции)
-const imgUrls = {
-    "100": {
-        "01": "/image/putg/constraction/100-01.webp",
-    },
-}
-
 type Props = {}
 
 export const Size: FC<Props> = () => {
-    const construction = useSelector((state: ProState) => state.putg.construction)
-    const obturation = useSelector((state: ProState) => state.putg.obturation)
-
     const dns = useSelector((state: ProState) => state.putg.dns)
     const dn = useSelector((state: ProState) => state.putg.dn)
     const sizes = useSelector((state: ProState) => state.putg.sizes)
@@ -30,6 +17,8 @@ export const Size: FC<Props> = () => {
     const pn = useSelector((state: ProState) => state.putg.pn)
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
+
+    const imageUrl = useSelector((state: ProState) => state.putg.imageUrl)
 
     if (!sizes.length) return <div className={classes.container}></div>
 
@@ -100,7 +89,7 @@ export const Size: FC<Props> = () => {
                             className={classes.image}
                             width={800}
                             height={180}
-                            src={imgUrls[construction as "100"][obturation as "01"]}
+                            src={imageUrl}
                             alt='gasket drawing'
                         />
                     </div>

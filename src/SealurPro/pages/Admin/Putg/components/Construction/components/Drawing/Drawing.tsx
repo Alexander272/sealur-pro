@@ -14,16 +14,21 @@ export const Drawing: FC<Props> = () => {
             con.obturators.forEach(o => {
                 drawings.push(
                     <p key={`${con.short}-${o.short}`} className={classes.listItem}>
-                        {con.short}-{o.short}:{" "}
+                        <span>
+                            {con.short}-{o.short}:
+                        </span>
                         {o.imageUrl !== "" ? (
-                            <a
-                                href={o.imageUrl}
-                                className={classes.link}
-                                target='_blank'
-                                rel='noreferrer'
-                            >
-                                {o.imageUrl}
-                            </a>
+                            <>
+                                <a
+                                    href={o.imageUrl}
+                                    className={classes.link}
+                                    target='_blank'
+                                    rel='noreferrer'
+                                >
+                                    {o.imageUrl}
+                                </a>
+                                <span className={classes.times}>&times;</span>
+                            </>
                         ) : (
                             <span className={classes.choose}>Выберите файл</span>
                         )}
