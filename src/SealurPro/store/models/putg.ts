@@ -171,9 +171,9 @@ export const putg = createModel<ProModel>()({
 
         setConstructions(state, payload: IConstruction[]) {
             state.constructions = payload
-            state.construction = payload[0].short
-            state.obturator = payload[0].obturators[0].short
-            state.imageUrl = payload[0].obturators[0].imageUrl
+            state.construction = payload[0]?.short || ""
+            state.obturator = payload[0]?.obturators[0]?.short || ""
+            state.imageUrl = payload[0]?.obturators[0]?.imageUrl || ""
             return state
         },
         setConstruction(state, payload: string) {
@@ -469,47 +469,59 @@ export const putg = createModel<ProModel>()({
                     putg.setFetching(false)
                 }
             },
+            async getAllSizes(req: ISizeReq) {
+                putg.setFetching(true)
+                try {
+                    const res = await ReadService.getAllSize(req)
+                    putg.setSizes(res.data.sizes)
+                    putg.setDns(res.data.dn)
+                    putg.setSize(res.data.sizes[0])
+                } catch (error) {
+                    toast.error("Не удалось загрузить размеры", { autoClose: false })
+                } finally {
+                    putg.setFetching(false)
+                }
+            },
             async getPutg({ flange, req }: { flange: string; req: IPutgReq }) {
                 putg.setLoading(true)
                 try {
                     const res = await ReadService.getPutg(req)
-                    putg.setFlange(flange)
-                    //         snp.setSt(st)
-                    putg.setPutg(res.data[0])
-                    putg.setPutgs(res.data)
 
-                    //         if (res.data[0].graphite[0] !== "*") {
-                    // putg.setGrap(res.data[0].graphite[0])
-                    //         }
+                    if (res.data === null) {
+                        putg.setPutgs([])
+                        putg.setPutg(null)
+                        putg.setConstructions([])
+                        putg.setForm(req.form)
+                    } else {
+                        putg.setFlange(flange)
+                        putg.setPutg(res.data[0])
+                        putg.setPutgs(res.data)
+                        putg.setForm(res.data[0].form)
 
-                    putg.setConstructions(res.data[0].construction[0].temperatures[0].constructions)
-                    putg.setConstruction(
-                        res.data[0].construction[0].temperatures[0].constructions[0].short
-                    )
-                    putg.setObturator(
-                        res.data[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .short
-                    )
-                    putg.setImageUrl(
-                        res.data[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .imageUrl
-                    )
+                        putg.setConstructions(
+                            res.data[0].construction[0].temperatures[0].constructions
+                        )
+                        putg.setConstruction(
+                            res.data[0].construction[0].temperatures[0].constructions[0].short
+                        )
+                        putg.setObturator(
+                            res.data[0].construction[0].temperatures[0].constructions[0]
+                                .obturators[0].short
+                        )
+                        putg.setImageUrl(
+                            res.data[0].construction[0].temperatures[0].constructions[0]
+                                .obturators[0].imageUrl
+                        )
 
-                    putg.setGrap(res.data[0].construction[0].grap)
-                    putg.setTemp(res.data[0].temperatures[0].temps[0].id)
-                    putg.setMod(res.data[0].temperatures[0].temps[0].mods[0])
+                        putg.setGrap(res.data[0].construction[0].grap)
+                        putg.setTemp(res.data[0].temperatures[0].temps[0].id)
+                        putg.setMod(res.data[0].temperatures[0].temps[0].mods[0])
 
-                    //         const fil = res.data[0].fillers[0].id
-                    //         const temp = res.data[0].fillers[0].temps[0].id
-                    //         const mod = res.data[0].fillers[0].temps[0].mods[0]
-                    //         snp.setFil(fil)
-                    //         snp.setTemp(temp)
-                    //         snp.setMod(mod)
-
-                    putg.setRf(res.data[0].reinforce.default || "")
-                    putg.setOb(res.data[0].obturator.default || "")
-                    putg.setIl(res.data[0].iLimiter.default || "")
-                    putg.setOl(res.data[0].oLimiter.default || "")
+                        putg.setRf(res.data[0].reinforce.default || "")
+                        putg.setOb(res.data[0].obturator.default || "")
+                        putg.setIl(res.data[0].iLimiter.default || "")
+                        putg.setOl(res.data[0].oLimiter.default || "")
+                    }
                 } catch (error) {
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {

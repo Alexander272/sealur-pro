@@ -1,4 +1,4 @@
-import { IMaterial, ITemperature } from "./snp"
+import { ITemperature } from "./snp"
 
 export interface IPUTG {
     id: string
@@ -14,6 +14,12 @@ export interface IPUTG {
     coating: string[]
     mounting: string[]
     graphite: string[]
+}
+
+export interface IMaterial {
+    values: string[]
+    default: string
+    obturators: string[]
 }
 
 export interface IConstr {

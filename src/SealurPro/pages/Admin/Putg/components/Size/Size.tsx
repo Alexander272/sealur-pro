@@ -13,7 +13,7 @@ export const Size: FC<Props> = () => {
 
     const flanges = useSelector((state: ProState) => state.addit.fl)
 
-    const sizes = useSelector((state: ProState) => state.snp.sizes)
+    const sizes = useSelector((state: ProState) => state.putg.sizes)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const flange = useSelector((state: ProState) => state.putg.flange)
 
@@ -22,7 +22,7 @@ export const Size: FC<Props> = () => {
     useEffect(() => {
         const fl = flanges.find(f => f.id === flange)
         if (fl && putg?.typePr && putg?.typeFlId)
-            dispatch.putg.getSizes({
+            dispatch.putg.getAllSizes({
                 flShort: fl.short,
                 standId: "0",
                 typePr: putg.typePr,
@@ -34,9 +34,9 @@ export const Size: FC<Props> = () => {
 
     // добавление сохраненных размеров
     const savedSizeHandler = (size: ISize, isNew: boolean) => {
-        if (isNew) dispatch.snp.setSizes([...sizes, size])
+        if (isNew) dispatch.putg.setSizes([...sizes, size])
         else {
-            dispatch.snp.setSizes(
+            dispatch.putg.setSizes(
                 sizes.map(s => {
                     if (s.id === size.id) return size
                     return s
@@ -48,8 +48,10 @@ export const Size: FC<Props> = () => {
     // удаление размеров
     const deleteSizeHandler = (id: string, isAll: boolean) => {
         if (isAll) dispatch.snp.setSizes([])
-        else dispatch.snp.setSizes(sizes.filter(s => s.id !== id))
+        else dispatch.putg.setSizes(sizes.filter(s => s.id !== id))
     }
+
+    if (!sizes.length) return null
 
     return (
         <>

@@ -153,8 +153,8 @@ export const MainSnp: FC<Props> = () => {
                 <div className={classes.blockImage}>
                     <img
                         className={classes.image}
-                        width={600}
-                        height={319}
+                        width={450}
+                        height={239}
                         src={imgUrls[snp?.typeFlId as "1"]}
                         alt='flange type drawing'
                     />

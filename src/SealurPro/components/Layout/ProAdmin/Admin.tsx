@@ -7,12 +7,13 @@ import { MatForm } from "../../../pages/Admin/components/AdditForms/MatForm"
 import { ModForm } from "../../../pages/Admin/components/AdditForms/ModForm"
 import { MounForm } from "../../../pages/Admin/components/AdditForms/MounForm"
 import { TempForm } from "../../../pages/Admin/components/AdditForms/TempForm"
+import { CoatingForm } from "../../../pages/Admin/components/AdditForms/CoatingForm"
 import { useModal } from "../../../../components/Modal/hooks/useModal"
 import { Modal } from "../../../../components/Modal/Modal"
 import { Tabs } from "../../../../components/Tabs/Tabs"
 import { List } from "../../../../components/UI/List/List"
 import { Loader } from "../../../../components/UI/Loader/Loader"
-import { IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
+import { ICoating, IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
 import classes from "./admin.module.scss"
 
 const initTabs: any = {
@@ -89,6 +90,17 @@ export default function AdminLayout() {
         toggle()
     }
 
+    const updateCoatingHandler = (coat: ICoating) => {
+        setFormType("coating")
+        setData({
+            id: coat.id,
+            short: coat.short,
+            title: coat.title,
+            description: coat.description,
+        })
+        toggle()
+    }
+
     const sendHandler = () => setSending(prev => !prev)
 
     if (loading) {
@@ -118,6 +130,9 @@ export default function AdminLayout() {
                 )}
                 {formType === "grap" && (
                     <GrapForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
+                )}
+                {formType === "coating" && (
+                    <CoatingForm closeHandler={toggle} data={data} sendHandler={sendHandler} />
                 )}
             </Modal>
             <div className={classes.main}>
@@ -223,6 +238,20 @@ export default function AdminLayout() {
                         return (
                             <Item key={g.short} value={g}>
                                 {g.short} {g.title}
+                            </Item>
+                        )
+                    })}
+                </List>
+
+                <List
+                    title='Способ исполнения'
+                    addHandler={openFormHandler("coating")}
+                    updateHandler={updateCoatingHandler}
+                >
+                    {addit?.coating.map(c => {
+                        return (
+                            <Item key={c.id} value={c}>
+                                {c.id} {c.title}
                             </Item>
                         )
                     })}

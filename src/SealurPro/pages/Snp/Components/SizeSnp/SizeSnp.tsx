@@ -187,8 +187,8 @@ export const SizeSnp: FC<Props> = () => {
                     <div className={classes.imageContainer}>
                         <img
                             className={classes.image}
-                            width={800}
-                            height={348}
+                            width={470}
+                            height={200}
                             src={imgUrls[(typePr as "Д") || "Д"]}
                             alt='gasket drawing'
                         />

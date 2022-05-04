@@ -122,6 +122,16 @@ export default class ReadService {
             throw error.response.data
         }
     }
+    static async getAllSize(req: ISizeReq): Promise<SizesResponse> {
+        try {
+            const res = await api.get(
+                `/sealur-pro/sizes/all?flange=${req.flShort}&typeFlId=${req.typeFlId}&standId=${req.standId}&typePr=${req.typePr}`
+            )
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
 
     static async getDefaultSnp(): Promise<DefResponseSnp> {
         const [stfl, addit, def] = await Promise.all([

@@ -47,6 +47,7 @@ export const Main: FC<Props> = () => {
 
     const formHandler = (type: string) => {
         //TODO добавить создание прокладки (или выбор существующей)
+        dispatch.putg.getPutg({ flange: flange, req: { form: type as "Round", flangeId: flange } })
         if (putg) dispatch.putg.setPutg({ ...putg, form: type as "Round" })
     }
 
@@ -59,7 +60,7 @@ export const Main: FC<Props> = () => {
                             key={t.type}
                             className={[
                                 classes.variants,
-                                putg?.form === t.type ? classes.active : null,
+                                form === t.type ? classes.active : null,
                             ].join(" ")}
                             data-type={t.type}
                         >

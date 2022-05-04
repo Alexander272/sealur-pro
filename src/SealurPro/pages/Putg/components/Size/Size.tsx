@@ -87,8 +87,8 @@ export const Size: FC<Props> = () => {
                     <div className={classes.imageContainer}>
                         <img
                             className={classes.image}
-                            width={800}
-                            height={180}
+                            width={500}
+                            height={113}
                             src={imageUrl}
                             alt='gasket drawing'
                         />

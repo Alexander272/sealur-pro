@@ -92,8 +92,8 @@ export const Main: FC<Props> = () => {
                 <div className={classes.blockImage}>
                     <img
                         className={classes.image}
-                        width={500}
-                        height={266}
+                        width={450}
+                        height={239}
                         src={imgUrls[(putg?.typeFlId as "1") || "1"]}
                         alt='flange type drawing'
                     />

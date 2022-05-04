@@ -4,6 +4,7 @@ import { Materials } from "../../../../../components/Materials/Materials"
 import { Dispatch, ProState } from "../../../../../store/store"
 import { IPUTG } from "../../../../../types/putg"
 import { AdminMat } from "../../../components/AdminMat/AdminMat"
+import MultiSelect from "./components/MultiSelect/MultiSelect"
 import classes from "../../../pages.module.scss"
 
 type Props = {}
@@ -41,10 +42,22 @@ export const Material: FC<Props> = () => {
         dispatch.putg.setPutg(newPutg)
     }
 
+    const changeObturatorHandler = (name: string) => (obts: string[]) => {
+        let newPutg: IPUTG = JSON.parse(JSON.stringify(putg))
+        newPutg[name as "reinforce"].obturators = obts
+
+        dispatch.putg.setPutg(newPutg)
+    }
+
     return (
         <div className={classes.line}>
             <div className={classes.fil}>
                 <p className={classes.titleGroup}>Армирующий элемент</p>
+                <MultiSelect
+                    selectedObts={putg?.reinforce.obturators || []}
+                    obturators={addit?.obturator || []}
+                    changeObturator={changeObturatorHandler("reinforce")}
+                />
                 <Materials
                     className={classes.def}
                     classTitle={classes.defTitle}
@@ -67,6 +80,11 @@ export const Material: FC<Props> = () => {
             </div>
             <div className={classes.fil}>
                 <p className={classes.titleGroup}>Обтюраторы</p>
+                <MultiSelect
+                    selectedObts={putg?.obturator.obturators || []}
+                    obturators={addit?.obturator || []}
+                    changeObturator={changeObturatorHandler("obturator")}
+                />
                 <Materials
                     className={classes.def}
                     classTitle={classes.defTitle}
@@ -90,6 +108,11 @@ export const Material: FC<Props> = () => {
 
             <div className={classes.fil}>
                 <p className={classes.titleGroup}>Ограничитель внутренний</p>
+                <MultiSelect
+                    selectedObts={putg?.iLimiter.obturators || []}
+                    obturators={addit?.obturator || []}
+                    changeObturator={changeObturatorHandler("iLimiter")}
+                />
                 <Materials
                     className={classes.def}
                     classTitle={classes.defTitle}
@@ -112,6 +135,11 @@ export const Material: FC<Props> = () => {
             </div>
             <div className={classes.fil}>
                 <p className={classes.titleGroup}>Ограничитель внешний</p>
+                <MultiSelect
+                    selectedObts={putg?.oLimiter.obturators || []}
+                    obturators={addit?.obturator || []}
+                    changeObturator={changeObturatorHandler("oLimiter")}
+                />
                 <Materials
                     className={classes.def}
                     classTitle={classes.defTitle}
