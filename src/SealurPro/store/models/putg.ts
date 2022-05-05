@@ -473,7 +473,7 @@ export const putg = createModel<ProModel>()({
                 putg.setFetching(true)
                 try {
                     const res = await ReadService.getAllSize(req)
-                    putg.setSizes(res.data.sizes)
+                    putg.setSizes(res.data.sizes || [])
                     putg.setDns(res.data.dn)
                     putg.setSize(res.data.sizes[0])
                 } catch (error) {

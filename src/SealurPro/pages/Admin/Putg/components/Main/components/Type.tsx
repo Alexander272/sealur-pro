@@ -1,7 +1,11 @@
-import { FC } from "react"
-import { useSelector } from "react-redux"
+import { FC, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { ConfirmModal } from "../../../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../../../components/Modal/hooks/useModal"
 import { Checkbox } from "../../../../../../../components/UI/Checkbox/Checkbox"
-import { ProState } from "../../../../../../store/store"
+import { Dispatch, ProState } from "../../../../../../store/store"
+import { IPUTG } from "../../../../../../types/putg"
 import classes from "./type.module.scss"
 
 type Props = {}
@@ -10,15 +14,128 @@ export const Type: FC<Props> = () => {
     const typeFl = useSelector((state: ProState) => state.addit.typeFl)
     const putgs = useSelector((state: ProState) => state.putg.putgs)
     const putg = useSelector((state: ProState) => state.putg.putg)
+    const form = useSelector((state: ProState) => state.putg.form)
+
+    const dispatch = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
+
+    const t = useRef("")
+
+    // создание новой прокладки
+    const createNewPutg = (curType: string) => {
+        let typeFlId = "1"
+        if (curType === "Б") typeFlId = "2"
+        if (curType === "В") typeFlId = "3"
+        const newPutg: IPUTG = {
+            id: "new",
+            typeFlId: typeFlId,
+            typePr: `ПУТГ-${curType}`,
+            form,
+            construction: [
+                { grap: "2", temperatures: [] },
+                { grap: "1", temperatures: [] },
+            ],
+            temperatures: [
+                { grap: "2", temps: [] },
+                { grap: "1", temps: [] },
+            ],
+            reinforce: { values: [], default: "", obturators: [] },
+            obturator: { values: [], default: "", obturators: [] },
+            iLimiter: { values: [], default: "", obturators: [] },
+            oLimiter: { values: [], default: "", obturators: [] },
+            coating: ["*"],
+            mounting: ["*"],
+            graphite: ["2", "1"],
+        }
+
+        return newPutg
+    }
 
     // выбор прокладки (добавление если ее нет)
     const choseTypeHandler = (type: string) => () => {
-        console.log(type)
+        if (putg?.id === "new") {
+            t.current = type
+            toggle()
+            return
+        }
+
+        const tmp = putgs.filter(s => s.typePr.includes(`ПУТГ-${type}`))
+        if (!tmp.length) {
+            const newPutg = createNewPutg(type)
+            dispatch.putg.setPutgs([...putgs, newPutg])
+            dispatch.putg.setPutg(newPutg)
+            dispatch.putg.setConstructions([])
+            dispatch.putg.setTemp("")
+            return
+        }
+
+        dispatch.putg.setPutg(tmp[0])
+        dispatch.putg.setConstructions(tmp[0].construction[0]?.temperatures[0]?.constructions || [])
+        dispatch.putg.setTemp(tmp[0].construction[0]?.temperatures[0]?.temp || "")
     }
 
     // добавление (удаление) прокладки
     const changeTypeHandler = (curType: string) => () => {
-        console.log(curType)
+        const tmp = putgs.filter(s => s.typePr.includes(`ПУТГ-${curType}`))
+        if (tmp.length) {
+            if (tmp[0].id !== "new" && putg?.id === "new") {
+                toast.info(
+                    "Перед добавлением новой прокладки необходимо сохранить (удалить) текущую"
+                )
+                return
+            }
+            if (tmp[0].id === "new") {
+                t.current = ""
+                denyHandler(false)
+                return
+            }
+
+            toggle()
+            return
+        }
+
+        if (putg?.id === "new") {
+            toast.info("Перед добавлением новой прокладки необходимо сохранить (удалить) текущую")
+            return
+        }
+    }
+
+    // закрытие модалки
+    const cancelHandler = () => {
+        toggle()
+    }
+
+    // закрытие модалки без сохранения изменений
+    const denyHandler = (isToggle = true) => {
+        const newPutgs = putgs.filter(p => p.id !== "new")
+        dispatch.putg.setPutgs([...newPutgs])
+        const tmp = newPutgs.filter(p => p.typePr.includes(`ПУТГ-${t.current}`))
+        if (isToggle) toggle()
+
+        if (!tmp.length) {
+            const newPutg = createNewPutg(t.current)
+            dispatch.putg.setPutgs([...newPutgs, newPutg])
+            dispatch.putg.setPutg(newPutg)
+            dispatch.putg.setConstructions([])
+            dispatch.putg.setTemp("")
+            return
+        }
+
+        dispatch.putg.setPutg(tmp[0])
+        dispatch.putg.setConstructions(tmp[0].construction[0]?.temperatures[0]?.constructions || [])
+        dispatch.putg.setTemp(tmp[0].construction[0]?.temperatures[0]?.temp || "")
+        t.current = ""
+    }
+
+    // закрытие модалки с сохранением и переходом на другую прокладку
+    const saveHandler = async () => {
+        console.log("save")
+    }
+
+    // удаление прокладки
+    const deleteHandler = async () => {
+        console.log("delete")
     }
 
     const renderTypes = () => {
@@ -28,7 +145,7 @@ export const Type: FC<Props> = () => {
             return (
                 <div key={t.id} className={classes.types}>
                     <p
-                        onClick={choseTypeHandler(t.id)}
+                        onClick={choseTypeHandler(t.short || t.id)}
                         className={`${classes.type} ${
                             putg?.typePr.toLowerCase() === `ПУТГ-${t.short}`.toLowerCase()
                                 ? classes.active
@@ -38,9 +155,9 @@ export const Type: FC<Props> = () => {
                         {t.short} {t.title}
                     </p>
                     <Checkbox
-                        id={t.id}
-                        name={t.id}
-                        onChange={changeTypeHandler(t.id)}
+                        id={t.short || t.id}
+                        name={t.short || t.id}
+                        onChange={changeTypeHandler(t.short || t.id)}
                         checked={!!s}
                         label={!s ? "Добавить" : "Удалить"}
                     />
@@ -51,21 +168,15 @@ export const Type: FC<Props> = () => {
 
     return (
         <>
-            {/* <ConfirmModal
-                title={
-                    isModified.current && !isCurSnp.current
-                        ? "Сохранить изменения?"
-                        : "Удалить прокладку?"
-                }
+            <ConfirmModal
+                title={putg?.id === "new" ? "Сохранить изменения?" : "Удалить прокладку?"}
                 isOpen={isOpen}
-                isNo={isModified.current && !isCurSnp.current}
+                isNo={putg?.id === "new"}
                 toggle={cancelHandler}
                 cancelHandler={cancelHandler}
                 denyHandler={denyHandler}
-                confirmHandler={
-                    isModified.current && !isCurSnp.current ? saveHandler : deleteHandler
-                }
-            /> */}
+                confirmHandler={putg?.id === "new" ? saveHandler : deleteHandler}
+            />
             {renderTypes()}
         </>
     )

@@ -1,0 +1,16 @@
+.container {
+    flex-grow: 1;
+    margin: 50px 10px;
+    width: 1580px;
+    align-self: center;
+}
+
+.buttons {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: flex-end;
+
+    & > button {
+        margin-left: 20px;
+    }
+}

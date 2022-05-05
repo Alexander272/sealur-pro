@@ -1,7 +1,9 @@
 import { FC } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
-import { ProState } from "../../../../store/store"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IResult } from "../../../../types/list"
 import classes from "../../../style/pages.module.scss"
 
 const typesFl = {
@@ -44,6 +46,26 @@ export const ResultSnp: FC<Props> = () => {
     const jumper = useSelector((state: ProState) => state.snp.jumper)
     const jumWidth = useSelector((state: ProState) => state.snp.jumWidth)
     const isHole = useSelector((state: ProState) => state.snp.isHole)
+
+    const dispatch = useDispatch<Dispatch>()
+
+    const resultHandler = (count: string, designation: string, description: string) => {
+        let sizes = designation.split("[")[1].split("]")[0]
+
+        //TODO после сохранения нужно заменить id и чертеж
+        const result: IResult = {
+            id: "new",
+            designation,
+            sizes,
+            count,
+            description,
+        }
+
+        //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
+        dispatch.list.addResult(result)
+
+        toast.success("Прокладка добавлена")
+    }
 
     const createDescr = (): string => {
         const s = stfl.find(s => s.id === st)
@@ -190,6 +212,7 @@ export const ResultSnp: FC<Props> = () => {
             className={classes.resultContainer}
             description={createDescr()}
             designation={createDesig()}
+            addDesignation={resultHandler}
         />
     )
 }

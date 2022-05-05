@@ -18,6 +18,7 @@ const Snp = lazy(() => import("../SealurPro/pages/Snp/Snp"))
 const Putg = lazy(() => import("../SealurPro/pages/Putg/Putg"))
 const Putgm = lazy(() => import("../SealurPro/pages/Putgm/Putgm"))
 const Survey = lazy(() => import("../SealurPro/pages/Survey/Survey"))
+const List = lazy(() => import("../SealurPro/pages/List/List"))
 
 //* Pro service Admin
 const Admin = lazy(() => import("../SealurPro/components/Layout/ProAdmin/Admin"))
@@ -41,6 +42,7 @@ export const MyRoutes = () => {
                             <Route path='putgm' element={<Putgm />} />
                         </Route>
                         <Route path='survey' element={<Survey />} />
+                        <Route path='list' element={<List />} />
                     </Route>
                     <Route path='/admin' element={<Admin />}>
                         <Route index element={<AdminSnp />} />
