@@ -75,8 +75,15 @@ export const Design: FC<Props> = () => {
         dispatch.putg.setConstruction(short)
         const cur = constructions.find(c => c.short === short)
         if (!cur) {
-            changeDesignHandler(short)()
-            return
+            const constr = changeDesign(short)
+            dispatch.putg.setOnlyConstructions(constr)
+
+            const con: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
+            const cIdx = con.findIndex(c => c.grap === grap)
+            const tIdx = con[cIdx].temperatures.findIndex(t => t.temp === temp)
+            con[cIdx].temperatures[tIdx].constructions = constr
+
+            if (putg) dispatch.putg.setPutg({ ...putg, construction: con })
         }
     }
 

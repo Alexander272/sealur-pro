@@ -53,7 +53,7 @@ export const Obturator: FC<Props> = () => {
             const image = putgImage.find(i => i.gasket === `${construction}-${short}`)
             c[idx].obturators.push({ short, imageUrl: image?.url || "" })
         }
-        dispatch.putg.setConstructions(c)
+        dispatch.putg.setOnlyConstructions(c)
 
         const constr: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
         const cIdx = constr.findIndex(c => c.grap === grap)

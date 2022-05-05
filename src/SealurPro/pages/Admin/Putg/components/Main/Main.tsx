@@ -42,13 +42,19 @@ export const Main: FC<Props> = () => {
     }, [putg?.form, dispatch.putg])
 
     const flHandler = (value: string) => {
+        dispatch.putg.setFlange(value)
         dispatch.putg.getPutg({ flange: value, req: { form: form, flangeId: value } })
     }
 
     const formHandler = (type: string) => {
-        //TODO добавить создание прокладки (или выбор существующей)
-        dispatch.putg.getPutg({ flange: flange, req: { form: type as "Round", flangeId: flange } })
-        if (putg) dispatch.putg.setPutg({ ...putg, form: type as "Round" })
+        let flange = flanges[0].id
+        if (type !== "Round") flange = "0"
+
+        dispatch.putg.getPutg({
+            flange: flange,
+            req: { form: type as "Round", flangeId: putg?.typeFlId || "1" },
+        })
+        dispatch.putg.setFlange(flange)
     }
 
     return (
@@ -69,7 +75,7 @@ export const Main: FC<Props> = () => {
                     ))}
                 </Tabs>
             </div>
-            {putg?.form === "Round" && (
+            {form === "Round" ? (
                 <div className={classes.line}>
                     {flanges && (
                         <Select value={flange} onChange={flHandler}>
@@ -82,7 +88,7 @@ export const Main: FC<Props> = () => {
                     )}
                     {/* <Button>Добавить</Button> */}
                 </div>
-            )}
+            ) : null}
             <div className={classes.group}>
                 <p>Тип фланца</p>
                 <div className={classes.line}>

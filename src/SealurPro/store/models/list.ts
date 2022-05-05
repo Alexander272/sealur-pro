@@ -1,5 +1,4 @@
 import { createModel } from "@rematch/core"
-import { toast } from "react-toastify"
 import { ProModel } from "."
 import { IResult } from "../../types/list"
 
@@ -29,10 +28,5 @@ export const list = createModel<ProModel>()({
             })
             return state
         },
-    },
-
-    effects: dispatch => {
-        const { list } = dispatch
-        return {}
     },
 })

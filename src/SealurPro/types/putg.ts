@@ -57,3 +57,19 @@ export interface IPutgImage {
     gasket: string
     url: string
 }
+
+export interface IPutgDTO {
+    flangeId: string
+    typeFlId: string
+    typePr: string
+    form: "Round" | "Oval" | "Rectangular"
+    construction: IConstr[]
+    temperatures: IGrap[]
+    reinforce: IMaterial
+    obturator: IMaterial
+    iLimiter: IMaterial
+    oLimiter: IMaterial
+    coating: string[]
+    mounting: string[]
+    graphite: string[]
+}

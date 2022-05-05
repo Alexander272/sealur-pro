@@ -30,6 +30,7 @@ const Table: FC<Props> = () => {
                 <p className={classes.th}>Чертеж</p>
                 <p className={classes.th}>Описание</p>
             </div>
+            {/* //TODO добавить возможность удаления строк и полное очищение таблицы */}
             {list.map(d => (
                 <div className={`${classes.row} ${classes.tr}`} key={d.id}>
                     <p className={classes.td}>{d.designation}</p>

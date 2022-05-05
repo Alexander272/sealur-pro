@@ -169,6 +169,10 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
+        setOnlyConstructions(state, payload: IConstruction[]) {
+            state.constructions = payload
+            return state
+        },
         setConstructions(state, payload: IConstruction[]) {
             state.constructions = payload
             state.construction = payload[0]?.short || ""

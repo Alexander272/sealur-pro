@@ -4,8 +4,9 @@ import { toast } from "react-toastify"
 import { ConfirmModal } from "../../../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../../../components/Modal/hooks/useModal"
 import { Checkbox } from "../../../../../../../components/UI/Checkbox/Checkbox"
+import PutgService from "../../../../../../service/putg"
 import { Dispatch, ProState } from "../../../../../../store/store"
-import { IPUTG } from "../../../../../../types/putg"
+import { IPUTG, IPutgDTO } from "../../../../../../types/putg"
 import classes from "./type.module.scss"
 
 type Props = {}
@@ -15,6 +16,7 @@ export const Type: FC<Props> = () => {
     const putgs = useSelector((state: ProState) => state.putg.putgs)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const form = useSelector((state: ProState) => state.putg.form)
+    const flange = useSelector((state: ProState) => state.putg.flange)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -91,6 +93,7 @@ export const Type: FC<Props> = () => {
                 return
             }
 
+            t.current = curType
             toggle()
             return
         }
@@ -99,6 +102,12 @@ export const Type: FC<Props> = () => {
             toast.info("Перед добавлением новой прокладки необходимо сохранить (удалить) текущую")
             return
         }
+
+        const newPutg = createNewPutg(curType)
+        dispatch.putg.setPutgs([...putgs, newPutg])
+        dispatch.putg.setPutg(newPutg)
+        dispatch.putg.setConstructions([])
+        dispatch.putg.setTemp("")
     }
 
     // закрытие модалки
@@ -110,7 +119,7 @@ export const Type: FC<Props> = () => {
     const denyHandler = (isToggle = true) => {
         const newPutgs = putgs.filter(p => p.id !== "new")
         dispatch.putg.setPutgs([...newPutgs])
-        const tmp = newPutgs.filter(p => p.typePr.includes(`ПУТГ-${t.current}`))
+        const tmp = newPutgs.filter(p => p.typePr.includes(t.current))
         if (isToggle) toggle()
 
         if (!tmp.length) {
@@ -130,12 +139,92 @@ export const Type: FC<Props> = () => {
 
     // закрытие модалки с сохранением и переходом на другую прокладку
     const saveHandler = async () => {
-        console.log("save")
+        if (!putg) {
+            toast.error("Тип путг не добавлен")
+            toggle()
+            return
+        }
+
+        let id = ""
+        try {
+            dispatch.putg.setLoading(true)
+            const data: IPutgDTO = {
+                flangeId: flange,
+                typeFlId: putg.typeFlId,
+                typePr: putg.typePr,
+                form: putg.form,
+                construction: putg.construction,
+                temperatures: putg.temperatures,
+                reinforce: putg.reinforce,
+                obturator: putg.obturator,
+                iLimiter: putg.iLimiter,
+                oLimiter: putg.oLimiter,
+                coating: putg.coating,
+                mounting: putg.mounting,
+                graphite: putg.graphite,
+            }
+
+            if (putg.id === "new") {
+                const res = await PutgService.create(data)
+                id = res.id || ""
+                toast.success("Успешно создано")
+            } else {
+                await PutgService.update(data, putg.id)
+                id = putg.id
+                toast.success("Успешно обновлено")
+            }
+        } catch (error: any) {
+            toast.error("Не удалось выполнить запрос на сервер")
+        } finally {
+            dispatch.putg.setLoading(false)
+        }
+
+        let tmp = [...putgs]
+        tmp = tmp.map(p => {
+            if (p.id === putg.id) return { ...putg, id: id }
+            return p
+        })
+
+        dispatch.putg.setPutgs(tmp)
+        toggle()
+
+        const newPutgs = tmp.filter(s => s.typePr.includes(t.current))
+        if (!newPutgs.length) {
+            const newPutg = createNewPutg(t.current)
+            dispatch.putg.setPutgs([...newPutgs, newPutg])
+            dispatch.putg.setPutg(newPutg)
+            dispatch.putg.setConstructions([])
+            dispatch.putg.setTemp("")
+            return
+        }
+        dispatch.putg.setPutg(tmp[0])
+        dispatch.putg.setConstructions(tmp[0].construction[0]?.temperatures[0]?.constructions || [])
+        dispatch.putg.setTemp(tmp[0].construction[0]?.temperatures[0]?.temp || "")
+        t.current = ""
     }
 
     // удаление прокладки
     const deleteHandler = async () => {
-        console.log("delete")
+        let id = putg?.id || ""
+        if (!putg?.typePr.includes(t.current)) {
+            const tmp = putgs.find(p => p.typePr.includes(t.current))
+            id = tmp?.id || ""
+        }
+
+        try {
+            dispatch.putg.setLoading(true)
+            await PutgService.delete(id)
+            toast.success("Успешно удалено")
+        } catch (error) {
+            toast.error("Не удалось выполнить запрос на сервер")
+        } finally {
+            dispatch.putg.setLoading(false)
+        }
+
+        const newPutgs = putgs.filter(p => p.typePr !== `ПУТГ-${t.current}`)
+        dispatch.putg.setPutgs(newPutgs)
+        dispatch.putg.setPutg(newPutgs[0] || null)
+        toggle()
     }
 
     const renderTypes = () => {
