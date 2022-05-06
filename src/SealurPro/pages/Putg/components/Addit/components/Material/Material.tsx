@@ -13,6 +13,11 @@ export const Material: FC<Props> = () => {
     const il = useSelector((state: ProState) => state.putg.il)
     const ol = useSelector((state: ProState) => state.putg.ol)
 
+    const construction = useSelector((state: ProState) => state.putg.construction)
+    const obturator = useSelector((state: ProState) => state.putg.obturator)
+
+    const addit = useSelector((state: ProState) => state.addit.addit)
+
     const dispatch = useDispatch<Dispatch>()
 
     // TODO а нужно ли тут что-либо подсвечивать?
@@ -30,10 +35,14 @@ export const Material: FC<Props> = () => {
         if (name === "ol") dispatch.putg.setOl(value)
     }
 
+    if (addit?.construction.find(c => c.short === construction)?.title === "без армирования") {
+        return <></>
+    }
+
     return (
         <>
             <p className={classes.title}>Материалы</p>
-            {putg?.reinforce.values && (
+            {putg?.reinforce.obturators.includes(obturator) && putg?.reinforce.values ? (
                 <Materials
                     className={`${classes.group} ${classes.inline} ${classes.mater}`}
                     classTitle={classes.titleGroup}
@@ -43,8 +52,8 @@ export const Material: FC<Props> = () => {
                     onOpen={openHandler("rf")}
                     title='Армирующий элемент'
                 />
-            )}
-            {putg?.obturator.values && (
+            ) : null}
+            {putg?.obturator.obturators.includes(obturator) && putg?.obturator.values ? (
                 <Materials
                     className={`${classes.group} ${classes.inline} ${classes.mater}`}
                     classTitle={classes.titleGroup}
@@ -54,8 +63,8 @@ export const Material: FC<Props> = () => {
                     onOpen={openHandler("ob")}
                     title='Обтюраторы'
                 />
-            )}
-            {putg?.iLimiter.values && (
+            ) : null}
+            {putg?.iLimiter.obturators.includes(obturator) && putg?.iLimiter.values ? (
                 <Materials
                     className={`${classes.group} ${classes.inline} ${classes.mater}`}
                     classTitle={classes.titleGroup}
@@ -65,8 +74,8 @@ export const Material: FC<Props> = () => {
                     onOpen={openHandler("il")}
                     title='Ограничитель внутренний'
                 />
-            )}
-            {putg?.oLimiter.values && (
+            ) : null}
+            {putg?.oLimiter.obturators.includes(obturator) && putg?.oLimiter.values ? (
                 <Materials
                     className={`${classes.group} ${classes.inline} ${classes.mater}`}
                     classTitle={classes.titleGroup}
@@ -76,7 +85,7 @@ export const Material: FC<Props> = () => {
                     onOpen={openHandler("ol")}
                     title='Ограничитель внешний'
                 />
-            )}
+            ) : null}
         </>
     )
 }

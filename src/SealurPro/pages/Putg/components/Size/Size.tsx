@@ -1,8 +1,9 @@
-import { FC } from "react"
-import { useSelector } from "react-redux"
+import { FC, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
-import { ProState } from "../../../../store/store"
+import { Dispatch, ProState } from "../../../../store/store"
+import { Sizes } from "./components/Sizes"
 import classes from "../../../style/pages.module.scss"
 
 const { Option } = Select
@@ -18,7 +19,31 @@ export const Size: FC<Props> = () => {
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
 
+    const flanges = useSelector((state: ProState) => state.addit.fl)
+
     const imageUrl = useSelector((state: ProState) => state.putg.imageUrl)
+    const obturator = useSelector((state: ProState) => state.putg.obturator)
+    const putg = useSelector((state: ProState) => state.putg.putg)
+    const flange = useSelector((state: ProState) => state.putg.flange)
+
+    const dispatch = useDispatch<Dispatch>()
+
+    //TODO тут костыль (надо бы придумать как сделать нормально)
+    useEffect(() => {
+        const fl = flanges.find(f => f.id === flange)
+
+        if (fl && putg?.typePr) {
+            let typePr = putg.typePr
+            if (["042", "043", "044"].includes(obturator)) typePr = `${putg.typePr}-${obturator}`
+
+            dispatch.putg.getSizes({
+                flShort: fl.short,
+                typePr: typePr,
+                typeFlId: putg?.typeFlId || "1",
+                standId: "0",
+            })
+        }
+    }, [obturator, dispatch.putg, flange, flanges, putg?.typePr, putg?.typeFlId])
 
     if (!sizes.length) return <div className={classes.container}></div>
 
@@ -91,6 +116,12 @@ export const Size: FC<Props> = () => {
                             height={113}
                             src={imageUrl}
                             alt='gasket drawing'
+                        />
+                        <Sizes
+                            d1={size?.d1 || "0"}
+                            d2={size?.d2 || "0"}
+                            d3={size?.d3 || "0"}
+                            d4={size?.d4 || "0"}
                         />
                     </div>
                 </div>

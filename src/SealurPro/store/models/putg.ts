@@ -263,37 +263,29 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        // setIsOpenFrame(state, payload: boolean) {
-        //     state.isOpenFr = payload
-        //     return state
-        // },
-        // setIsOpenIr(state, payload: boolean) {
-        //     state.isOpenIr = payload
-        //     return state
-        // },
-        // setIsOpenOr(state, payload: boolean) {
-        //     state.isOpenOr = payload
-        //     return state
-        // },
+        changePutg(state, payload: IPUTG) {
+            state.putg = payload
+            state.grap = payload.graphite[0]
 
-        // changeSnp(state, payload: ISNP) {
-        //     state.snp = payload
-        //     if (payload.graphite[0] !== "*") {
-        //         state.grap = payload.graphite[0]
-        //     }
+            state.constructions = payload.construction[0].temperatures[0].constructions
+            state.construction = payload.construction[0].temperatures[0].constructions[0].short
+            state.obturator =
+                payload.construction[0].temperatures[0].constructions[0].obturators[0].short
+            state.imageUrl =
+                payload.construction[0].temperatures[0].constructions[0].obturators[0].imageUrl
 
-        //     const fil = payload.fillers[0].id
-        //     const temp = payload.fillers[0].temps[0].id
-        //     const mod = payload.fillers[0].temps[0].mods[0]
-        //     state.filler = fil
-        //     state.temp = temp
-        //     state.mod = mod
+            state.temp = payload.temperatures[0].temps[0].id
+            state.mod = payload.temperatures[0].temps[0].mods[0]
 
-        //     state.ir = payload.ir.default || ""
-        //     state.or = payload.or.default || ""
-        //     state.fr = payload.frame.default || ""
-        //     return state
-        // },
+            state.rf = payload.reinforce.default
+            state.ob = payload.obturator.default
+            state.il = payload.iLimiter.default
+            state.ol = payload.oLimiter.default
+
+            if (payload.coating[0] !== "*") state.coating = payload.coating[0]
+
+            return state
+        },
         changeSize(state, payload: ISize) {
             state.size = payload
             state.dn = payload.dn
@@ -349,12 +341,6 @@ export const putg = createModel<ProModel>()({
             state.imageUrl = payload.imageUrl
         },
 
-        // changeFiller(state, payload: string) {
-        //     state.filler = payload
-        //     const fil = state.snp?.fillers.find(f => f.id === payload)
-        //     state.temp = fil?.temps[0].id || ""
-        //     state.mod = fil?.temps[0].mods[0] || ""
-        // },
         changeTemp(state, payload: string) {
             state.temp = payload
             const temps = state.putg?.temperatures.find(t => t.grap === state.grap)
@@ -403,7 +389,7 @@ export const putg = createModel<ProModel>()({
             async getPutgImage(form: string) {
                 try {
                     const res = await ReadService.getPutgImage(form)
-                    putg.setPutgImage(res.data)
+                    putg.setPutgImage(res.data || [])
                 } catch (error: any) {
                     toast.error("Не удалось загрузить чертежи")
                 }
@@ -425,6 +411,8 @@ export const putg = createModel<ProModel>()({
                     putg.setDn(res!.sizes.sizes[0].dn)
                     putg.setPn(res!.sizes.sizes[0].pn.split(";")[0])
                     putg.setH(res!.sizes.sizes[0].h.split(";")[0])
+
+                    putg.setFlange(res.fl[0].id)
 
                     putg.setConstructions(res.putg[0].construction[0].temperatures[0].constructions)
                     putg.setConstruction(
@@ -487,7 +475,7 @@ export const putg = createModel<ProModel>()({
                 }
             },
             async getPutg({ flange, req }: { flange: string; req: IPutgReq }) {
-                putg.setLoading(true)
+                putg.setFetching(true)
                 try {
                     const res = await ReadService.getPutg(req)
 
@@ -529,7 +517,7 @@ export const putg = createModel<ProModel>()({
                 } catch (error) {
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {
-                    putg.setLoading(false)
+                    putg.setFetching(false)
                 }
             },
         }

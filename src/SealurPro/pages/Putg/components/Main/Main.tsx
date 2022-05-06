@@ -36,21 +36,41 @@ export const Main: FC<Props> = () => {
     const flangesType = useSelector((state: ProState) => state.addit.typeFl)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const flange = useSelector((state: ProState) => state.putg.flange)
+    const form = useSelector((state: ProState) => state.putg.form)
+    const putgs = useSelector((state: ProState) => state.putg.putgs)
 
     const dispatch = useDispatch<Dispatch>()
+
+    const flangeHandler = (value: string) => {
+        dispatch.putg.getPutg({ flange: value, req: { form, flangeId: value } })
+    }
+
+    const formHandler = (value: string) => {
+        if (value === "Round")
+            dispatch.putg.getPutg({
+                flange: flanges[0].id,
+                req: { form: value, flangeId: flanges[0].id },
+            })
+        else dispatch.putg.getPutg({ flange: "0", req: { form: value as "Round", flangeId: "0" } })
+    }
+
+    const changeTypeFlHandler = (value: string) => {
+        const tmp = putgs.filter(p => p.typeFlId.includes(value))
+        dispatch.putg.changePutg(tmp[0])
+    }
 
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Конфигурация прокладки</p>
-                    <Tabs initWidth={85} onClick={() => {}}>
+                    <Tabs initWidth={85} onClick={formHandler}>
                         {types.map(t => (
                             <p
                                 key={t.type}
                                 className={[
                                     classes.variants,
-                                    putg?.form === t.type ? classes.active : null,
+                                    form === t.type ? classes.active : null,
                                 ].join(" ")}
                                 data-type={t.type}
                             >
@@ -60,27 +80,30 @@ export const Main: FC<Props> = () => {
                     </Tabs>
                 </div>
 
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Стандарт на фланец</p>
-                    <Select value={flange || "1"} onChange={() => {}}>
-                        {flanges.map(f => (
-                            <Option key={f.id} value={f.id}>
-                                {f.title}
-                            </Option>
-                        ))}
-                    </Select>
-                </div>
+                {form === "Round" && (
+                    <div className={classes.group}>
+                        <p className={classes.titleGroup}>Стандарт на фланец</p>
+                        <Select value={flange || "1"} onChange={flangeHandler}>
+                            {flanges.map(f => (
+                                <Option key={f.id} value={f.id}>
+                                    {f.title}
+                                </Option>
+                            ))}
+                        </Select>
+                    </div>
+                )}
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Тип фланца</p>
-                    {/* // TODO надо бы фильровать типы как в снп */}
                     {flangesType.length > 0 && (
-                        <Select value={putg?.typeFlId || "1"} onChange={() => {}}>
-                            {flangesType.map(t => (
-                                <Option key={t.id} value={t.id}>
-                                    {t.short} {t.title}
-                                </Option>
-                            ))}
+                        <Select value={putg?.typeFlId || "1"} onChange={changeTypeFlHandler}>
+                            {flangesType
+                                .filter(tfl => putgs.some(p => p.typeFlId === tfl.id))
+                                .map(t => (
+                                    <Option key={t.id} value={t.id}>
+                                        {t.short} {t.title}
+                                    </Option>
+                                ))}
                         </Select>
                     )}
                 </div>

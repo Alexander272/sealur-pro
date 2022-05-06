@@ -1,0 +1,86 @@
+.sizes {
+    position: absolute;
+}
+
+.d {
+    color: #8c8e91;
+}
+
+.two,
+.three_one,
+.three_two,
+.four {
+    font-size: 0.85rem;
+}
+
+.two {
+    &.d1 {
+        display: none;
+    }
+
+    &.d2 {
+        top: 50%;
+    }
+
+    &.d3 {
+        top: 77%;
+    }
+
+    &.d4 {
+        display: none;
+    }
+}
+
+.three_one {
+    &.d1 {
+        top: 30%;
+    }
+
+    &.d2 {
+        top: 50%;
+    }
+
+    &.d3 {
+        top: 77%;
+    }
+
+    &.d4 {
+        display: none;
+    }
+}
+
+.three_two {
+    &.d1 {
+        display: none;
+    }
+
+    &.d2 {
+        top: 38%;
+    }
+
+    &.d3 {
+        top: 56%;
+    }
+
+    &.d4 {
+        top: 78%;
+    }
+}
+
+.four {
+    &.d1 {
+        top: 36%;
+    }
+
+    &.d2 {
+        top: 54%;
+    }
+
+    &.d3 {
+        top: 73%;
+    }
+
+    &.d4 {
+        top: 92%;
+    }
+}
