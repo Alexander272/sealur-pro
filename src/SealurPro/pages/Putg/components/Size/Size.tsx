@@ -52,6 +52,7 @@ export const Size: FC<Props> = () => {
             <div className={`${classes.block} ${classes.full}`}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Проход, DN</p>
+                    {/* //TODO дописать */}
                     <Select value={dn} onChange={() => {}}>
                         {dns.map(dn => (
                             <Option key={dn.dn} value={dn.dn}>
@@ -85,6 +86,7 @@ export const Size: FC<Props> = () => {
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Толщина прокладки</p>
+                    {/* //TODO дописать изменение толщины */}
                     <Select value={h} onChange={() => {}}>
                         {size?.h.split(";").map(h => (
                             <Option key={h} value={h}>

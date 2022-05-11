@@ -1,0 +1,51 @@
+.sizes {
+    position: absolute;
+}
+
+.field,
+.dimen {
+    font-size: 0.85rem;
+}
+
+.dimen {
+    &.d4 {
+        top: 34%;
+        left: 15%;
+    }
+
+    &.d3 {
+        top: 34%;
+        left: 1%;
+    }
+
+    &.d2 {
+        bottom: 13%;
+        left: 59%;
+    }
+
+    &.d1 {
+        bottom: 2%;
+        left: 59%;
+    }
+}
+
+.field {
+    &.d4 {
+        display: none;
+    }
+
+    &.d3 {
+        bottom: 3%;
+        left: 59%;
+    }
+
+    &.d2 {
+        top: 34%;
+        left: 8%;
+    }
+
+    &.d1 {
+        right: 2%;
+        top: 27%;
+    }
+}

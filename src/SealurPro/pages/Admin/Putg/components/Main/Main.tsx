@@ -52,7 +52,7 @@ export const Main: FC<Props> = () => {
 
         dispatch.putg.getPutg({
             flange: flange,
-            req: { form: type as "Round", flangeId: putg?.typeFlId || "1" },
+            req: { form: type as "Round", flangeId: flange || "1" },
         })
         dispatch.putg.setFlange(flange)
     }

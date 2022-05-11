@@ -58,7 +58,7 @@ interface IPutgState {
 
 export const putg = createModel<ProModel>()({
     state: {
-        loading: true,
+        loading: false,
         fetching: false,
         error: false,
 
@@ -292,10 +292,10 @@ export const putg = createModel<ProModel>()({
             state.h = payload.h.split(";")[0] || ""
             return state
         },
-        changePn(state, payload: string) {
-            state.pn = payload
-            return state
-        },
+        // changePn(state, payload: string) {
+        //     state.pn = payload
+        //     return state
+        // },
         changeH(state, payload: number) {
             if (payload === -1) {
                 state.h = "др."

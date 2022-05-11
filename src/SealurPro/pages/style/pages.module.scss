@@ -14,12 +14,14 @@
     background-color: var(--theme-bg-color);
     box-shadow: 0px 0px 4px 0px #2626262b;
 }
+
 .container,
 .resultContainer {
     display: flex;
     justify-content: space-between;
     // flex-wrap: wrap;
 }
+
 .resultContainer {
     flex-direction: column;
 }
@@ -29,12 +31,14 @@
     grid-column-start: 1;
     grid-column-end: 8;
 }
+
 .sideContainer {
     grid-column-start: 8;
     grid-column-end: 13;
     grid-row-start: 2;
     grid-row-end: 5;
 }
+
 // .resultContainer {
 //     grid-column-start: 1;
 //     grid-column-end: 13;
@@ -60,6 +64,7 @@
         flex-grow: 1;
     }
 }
+
 .blockImage {
     display: flex;
     justify-content: center;
@@ -80,9 +85,11 @@
 .snpDrawFl {
     flex-basis: 55%;
 }
+
 .snpDraw {
     flex-basis: 50%;
 }
+
 .putgDrawFl {
     flex-basis: 65%;
 }
@@ -99,6 +106,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .inline {
     display: flex;
     justify-content: space-between;
@@ -106,13 +114,15 @@
     flex-wrap: wrap;
     flex-direction: row;
 }
+
 .box {
     display: flex;
     align-items: center;
 
-    & > div:not(:only-child):first-child {
+    &>div:not(:only-child):first-child {
         margin-right: 5px;
     }
+
     // & > div:last-child {
     //     max-width: 150px;
     // }
@@ -155,16 +165,22 @@
 .thic {
     display: flex;
 
-    & > div:first-child {
+    &>div:first-child {
         margin-right: 10px;
     }
-    & > div:only-child {
+
+    &>div:only-child {
         margin-right: 0;
     }
 }
 
 .image {
     margin: auto 0;
+}
+
+.drawingContainer {
+    position: relative;
+    margin-left: 25px;
 }
 
 .imageContainer {
@@ -180,6 +196,7 @@
     flex-grow: 1;
     justify-content: flex-end;
 }
+
 .warn {
     font-size: 1.3rem;
     color: var(--danger-color);
@@ -187,11 +204,13 @@
 }
 
 @media (max-width: 1080px) {
+
     .container,
     .resultContainer {
         grid-column-start: 1;
         grid-column-end: 13;
     }
+
     .sideContainer {
         grid-column-start: 1;
         grid-column-end: 13;
@@ -203,35 +222,43 @@
     .container {
         flex-wrap: wrap;
     }
+
     .snpDraw,
     .putgDrawing {
         flex-basis: 100%;
         // max-height: 250px;
     }
+
     .blockImage,
     .image {
         max-height: 220px;
     }
+
     .imageContainer {
         margin-top: 40px;
     }
 }
+
 @media (max-width: 680px) {
     .block {
         margin-right: 0;
     }
+
     .snpDrawFl,
     .putgDrawFl {
         flex-basis: 100%;
         max-height: 250px;
     }
 }
+
 @media (max-width: 560px) {
+
     .container,
     .sideContainer,
     .resultContainer {
         padding: 10px 12px;
     }
+
     .mater {
         & div {
             flex-basis: 100%;
