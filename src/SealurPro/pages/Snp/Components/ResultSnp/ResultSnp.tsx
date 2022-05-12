@@ -128,6 +128,7 @@ export const ResultSnp: FC<Props> = () => {
             if (jumWidth !== "") width = ` шириной ${jumWidth}мм`
             jum = `, с перемычкой типа ${jumper}${width}`
         }
+
         let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${snp?.typePr} ${rings} и наполнителем из ${fil} ${gr}, для применения на фланце "${tfl?.title}" по ${s?.flange} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${hole}${jum}`
         return res
     }

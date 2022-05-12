@@ -35,7 +35,7 @@ export const Material: FC<Props> = () => {
         if (name === "ol") dispatch.putg.setOl(value)
     }
 
-    if (addit?.construction.find(c => c.short === construction)?.title === "без армирования") {
+    if (!addit?.construction.find(c => c.short === construction)?.isHaveMaterial) {
         return <></>
     }
 

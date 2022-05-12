@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { ChangeEvent, FC, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
@@ -45,6 +45,35 @@ export const Size: FC<Props> = () => {
         }
     }, [obturator, dispatch.putg, flange, flanges, putg?.typePr, putg?.typeFlId])
 
+    const changeDnHandler = (value: string) => {
+        const tmpSizes = sizes.filter(s => s.dn === value)
+        if (!size) return
+
+        let idx = tmpSizes.findIndex(s => s.pn.includes(pn))
+        if (idx === -1) {
+            dispatch.putg.setPn(tmpSizes[0].pn.split(";")[0])
+            idx = 0
+        }
+        dispatch.putg.changeSize(tmpSizes[idx])
+    }
+
+    const changePnHandler = (value: string) => {
+        if (!size?.pn.includes(value)) {
+            const tmpSize = sizes.find(s => s.dn.toString() === dn && s.pn.includes(value))
+            if (tmpSize) dispatch.putg.changeSize(tmpSize)
+        }
+        dispatch.putg.setPn(value)
+    }
+
+    const changeHHandler = (value: string) => {
+        let idx = size?.h.split(";").findIndex(h => h === value)
+        dispatch.putg.changeH(idx || 0)
+    }
+
+    const changeOhHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        dispatch.putg.changeOH(event.target.value.replaceAll(".", ","))
+    }
+
     if (!sizes.length) return <div className={classes.container}></div>
 
     return (
@@ -52,8 +81,7 @@ export const Size: FC<Props> = () => {
             <div className={`${classes.block} ${classes.full}`}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Проход, DN</p>
-                    {/* //TODO дописать */}
-                    <Select value={dn} onChange={() => {}}>
+                    <Select value={dn} onChange={changeDnHandler}>
                         {dns.map(dn => (
                             <Option key={dn.dn} value={dn.dn}>
                                 {dn.dn}
@@ -64,7 +92,7 @@ export const Size: FC<Props> = () => {
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Давление, PN</p>
-                    <Select value={pn} onChange={() => {}}>
+                    <Select value={pn} onChange={changePnHandler}>
                         {sizes
                             .filter(s => s.dn === dn)
                             .map(s => {
@@ -86,26 +114,27 @@ export const Size: FC<Props> = () => {
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Толщина прокладки</p>
-                    {/* //TODO дописать изменение толщины */}
-                    <Select value={h} onChange={() => {}}>
-                        {size?.h.split(";").map(h => (
-                            <Option key={h} value={h}>
-                                {h}
-                            </Option>
-                        ))}
-                        <Option value='др.'>др.</Option>
-                    </Select>
-                    {h === "др." && (
-                        <Input
-                            placeholder='толщина'
-                            min={0.1}
-                            step={0.1}
-                            value={oh.replaceAll(",", ".")}
-                            type='number'
-                            name='thickness'
-                            onChange={() => {}}
-                        />
-                    )}
+                    <div className={classes.thic}>
+                        <Select value={h} onChange={changeHHandler}>
+                            {size?.h.split(";").map(h => (
+                                <Option key={h} value={h}>
+                                    {h}
+                                </Option>
+                            ))}
+                            <Option value='др.'>др.</Option>
+                        </Select>
+                        {h === "др." && (
+                            <Input
+                                placeholder='толщина'
+                                min={0.1}
+                                step={0.1}
+                                value={oh.replaceAll(",", ".")}
+                                type='number'
+                                name='thickness'
+                                onChange={changeOhHandler}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
             <div className={`${classes.block} ${classes.putgDrawFl}`}>

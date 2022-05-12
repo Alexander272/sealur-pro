@@ -115,7 +115,7 @@ export const Design: FC<Props> = () => {
                 short: form.short,
                 title: form.title,
                 description: form.description,
-                forDescr: form.forDescr,
+                isHaveMaterial: form.isHaveMaterial,
             })
         } else {
             con = con?.map(c => {
@@ -149,12 +149,12 @@ export const Design: FC<Props> = () => {
             short: con.short,
             title: con.title,
             description: con.description,
-            forDescr: con.forDescr,
+            isHaveMaterial: con.isHaveMaterial,
         })
         setValue("short", con.short)
         setValue("title", con.title)
         setValue("description", con.description)
-        // setValue("forDescr", con.forDescr)
+        setValue("isHaveMaterial", con.isHaveMaterial)
         toggle()
     }
 
@@ -163,7 +163,7 @@ export const Design: FC<Props> = () => {
         setValue("short", "")
         setValue("title", "")
         setValue("description", "")
-        // setValue("forDescr", "")
+        setValue("isHaveMaterial", true)
         toggle()
     }
 

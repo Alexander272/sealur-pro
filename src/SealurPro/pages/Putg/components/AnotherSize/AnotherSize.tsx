@@ -185,25 +185,27 @@ export const AnotherSize: FC<Props> = () => {
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Толщина прокладки</p>
-                    <Select value={h} onChange={changeHHandler}>
-                        {size?.h.split(";").map(h => (
-                            <Option key={h} value={h}>
-                                {h}
-                            </Option>
-                        ))}
-                        <Option value='др.'>др.</Option>
-                    </Select>
-                    {h === "др." && (
-                        <Input
-                            placeholder='толщина'
-                            min={0.1}
-                            step={0.1}
-                            value={oh.replaceAll(",", ".")}
-                            type='number'
-                            name='thickness'
-                            onChange={changeOhHandler}
-                        />
-                    )}
+                    <div className={classes.thic}>
+                        <Select value={h} onChange={changeHHandler}>
+                            {size?.h.split(";").map(h => (
+                                <Option key={h} value={h}>
+                                    {h}
+                                </Option>
+                            ))}
+                            <Option value='др.'>др.</Option>
+                        </Select>
+                        {h === "др." && (
+                            <Input
+                                placeholder='толщина'
+                                min={0.1}
+                                step={0.1}
+                                value={oh.replaceAll(",", ".")}
+                                type='number'
+                                name='thickness'
+                                onChange={changeOhHandler}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
             <div className={`${classes.block} ${classes.snpDraw}`}>
@@ -231,6 +233,7 @@ export const AnotherSize: FC<Props> = () => {
                                 alt='gasket drawing'
                             />
                             <Sizes
+                                form={form}
                                 type={type}
                                 d1={size?.d1 || "0"}
                                 d2={size?.d2 || "0"}

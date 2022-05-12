@@ -22,4 +22,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    // border: 1px solid var(--button-color);
+    // padding: 2px 12px;
+    // border-radius: 8px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    height: 20px;
+    width: auto;
+    flex-grow: 1;
+    margin-right: 5px;
+    fill: var(--button-color);
 }

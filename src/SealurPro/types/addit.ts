@@ -53,13 +53,14 @@ export interface IConstruction {
     short: string
     title: string
     description: string
-    forDescr: string
+    isHaveMaterial: boolean
 }
 
 export interface IObturator {
     short: string
     title: string
     description: string
+    forDescr: string
 }
 
 export interface ICoating {

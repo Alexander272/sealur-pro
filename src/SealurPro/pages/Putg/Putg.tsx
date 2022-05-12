@@ -2,12 +2,12 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Dispatch, ProState } from "../../store/store"
 import ServerError from "../../../Error/ServerError"
-import { ResultBlock } from "../../components/ResultBlock/ResultBlock"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import { Main } from "./components/Main/Main"
 import { Addit } from "./components/Addit/Addit"
 import { Size } from "./components/Size/Size"
 import { AnotherSize } from "./components/AnotherSize/AnotherSize"
+import { Result } from "./components/Result/Result"
 import classes from "../style/pages.module.scss"
 
 export default function Putg() {
@@ -39,15 +39,7 @@ export default function Putg() {
             <Addit />
             {form === "Round" && <Size />}
             {form === "Oval" || form === "Rectangular" ? <AnotherSize /> : null}
-
-            <ResultBlock
-                className={classes.resultContainer}
-                description='Lorem ipsum dolor sit, amet
-                    consectetur adipisicing elit. Cumque non aperiam ea, earum accusamus harum,
-                    repellendus dolorem delectus veniam itaque temporibus doloribus quia soluta
-                    fugit sit eligendi mollitia consectetur. Impedit porro cum possimus quidem ut!'
-                designation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti vero'
-            />
+            <Result />
         </>
     )
 }

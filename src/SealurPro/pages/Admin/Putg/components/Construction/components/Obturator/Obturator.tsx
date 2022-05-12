@@ -90,6 +90,7 @@ export const Obturator: FC<Props> = () => {
                 short: form.short,
                 title: form.title,
                 description: form.description,
+                forDescr: form.forDescr,
             })
         } else {
             obts = obts?.map(o => {
@@ -118,10 +119,16 @@ export const Obturator: FC<Props> = () => {
     }
 
     const updateObturatorHandler = (ob: IObturator) => () => {
-        setData({ short: ob.short, title: ob.title, description: ob.description })
+        setData({
+            short: ob.short,
+            title: ob.title,
+            description: ob.description,
+            forDescr: ob.forDescr,
+        })
         setValue("short", ob.short)
         setValue("title", ob.title)
         setValue("description", ob.description)
+        setValue("forDescr", ob.forDescr)
         toggle()
     }
 
@@ -130,6 +137,7 @@ export const Obturator: FC<Props> = () => {
         setValue("short", "")
         setValue("title", "")
         setValue("description", "")
+        setValue("forDescr", "")
         toggle()
     }
 
@@ -158,6 +166,15 @@ export const Obturator: FC<Props> = () => {
                             errorText='Поле не заполнено'
                         />
                         <Textarea name='description' label='Пояснение' register={register} />
+                        <Textarea
+                            name='forDescr'
+                            label='Для описания'
+                            placeholder='с наружным обтюратором из нержавеющей ленты марки &'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.title}
+                            errorText='Поле не заполнено'
+                        />
                     </form>
                 </Modal.Content>
                 <Modal.Footer>

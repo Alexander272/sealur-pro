@@ -23,7 +23,7 @@ export const Addit: FC<Props> = () => {
             <FileInput name='drawing' id='file' label='Прикрепить чертеж' />
             <div className={classes.message}>
                 {/* //TODO добавить скрытие надписи при прикреплении чертежа */}
-                {(isJumper && !["A", "M", "J"].includes(jumper)) || isHole || form !== "Round" ? (
+                {(isJumper && !["A", "M", "J"].includes(jumper)) || isHole || form === "Oval" ? (
                     <p className={classes.warn}>К заявке приложите файл с чертежом.</p>
                 ) : null}
             </div>

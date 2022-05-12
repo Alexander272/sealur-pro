@@ -124,9 +124,9 @@ export const MainSnp: FC<Props> = () => {
                                     {d.stand} / {d.flange}
                                 </Option>
                             ))}
-                            <Option value='not_stand'>
+                            {/* <Option value='not_stand'>
                                 ТУ 3689-010-93978201-2008 / (станд. и нестанд. фланцы)
-                            </Option>
+                            </Option> */}
                         </Select>
                     </div>
                 )}
