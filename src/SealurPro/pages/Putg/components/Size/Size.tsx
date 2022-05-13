@@ -74,42 +74,46 @@ export const Size: FC<Props> = () => {
         dispatch.putg.changeOH(event.target.value.replaceAll(".", ","))
     }
 
-    if (!sizes.length) return <div className={classes.container}></div>
+    if (!sizes || !dns || !size) return <div className={classes.container}></div>
 
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Проход, DN</p>
-                    <Select value={dn} onChange={changeDnHandler}>
-                        {dns.map(dn => (
-                            <Option key={dn.dn} value={dn.dn}>
-                                {dn.dn}
-                            </Option>
-                        ))}
-                    </Select>
-                </div>
+                {dns.length && (
+                    <div className={classes.group}>
+                        <p className={classes.titleGroup}>Проход, DN</p>
+                        <Select value={dn} onChange={changeDnHandler}>
+                            {dns.map(dn => (
+                                <Option key={dn.dn} value={dn.dn}>
+                                    {dn.dn}
+                                </Option>
+                            ))}
+                        </Select>
+                    </div>
+                )}
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Давление, PN</p>
-                    <Select value={pn} onChange={changePnHandler}>
-                        {sizes
-                            .filter(s => s.dn === dn)
-                            .map(s => {
-                                if (s.pn.includes(";")) {
-                                    return s.pn.split(";").map(pn => (
-                                        <Option key={pn} value={pn}>
-                                            {pn}
+                    {sizes.length && (
+                        <Select value={pn} onChange={changePnHandler}>
+                            {sizes
+                                .filter(s => s.dn === dn)
+                                .map(s => {
+                                    if (s.pn.includes(";")) {
+                                        return s.pn.split(";").map(pn => (
+                                            <Option key={pn} value={pn}>
+                                                {pn}
+                                            </Option>
+                                        ))
+                                    }
+                                    return (
+                                        <Option key={s.pn} value={s.pn}>
+                                            {s.pn}
                                         </Option>
-                                    ))
-                                }
-                                return (
-                                    <Option key={s.pn} value={s.pn}>
-                                        {s.pn}
-                                    </Option>
-                                )
-                            })}
-                    </Select>
+                                    )
+                                })}
+                        </Select>
+                    )}
                 </div>
 
                 <div className={classes.group}>

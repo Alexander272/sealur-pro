@@ -51,7 +51,7 @@ export const Material: FC<Props> = () => {
 
     return (
         <div className={classes.line}>
-            <div className={classes.fil}>
+            {/* <div className={classes.fil}>
                 <p className={classes.titleGroup}>Армирующий элемент</p>
                 <MultiSelect
                     selectedObts={putg?.reinforce.obturators || []}
@@ -77,7 +77,7 @@ export const Material: FC<Props> = () => {
                         onChange={matHandler}
                     />
                 )}
-            </div>
+            </div> */}
             <div className={classes.fil}>
                 <p className={classes.titleGroup}>Обтюраторы</p>
                 <MultiSelect

@@ -1,3 +1,4 @@
+import { ProUrl } from "../../../components/routes"
 import { Tabs } from "../../../components/Tabs/Tabs"
 import { Button } from "../../../components/UI/Button/Button"
 import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
@@ -419,7 +420,7 @@ export default function Survey() {
                 <Textarea name='info' rows={4} />
             </div>
             <div className={classes.buttons}>
-                <Button.Link to='/' variant='grayPrimary' rounded='round'>
+                <Button.Link to={`${ProUrl}/`} variant='grayPrimary' rounded='round'>
                     Отмена
                 </Button.Link>
                 <Button rounded='round'>Отправить заявку</Button>

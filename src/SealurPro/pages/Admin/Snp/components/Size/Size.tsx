@@ -21,7 +21,7 @@ export const Size: FC<Props> = () => {
 
     useEffect(() => {
         const sf = stfl.find(s => s.id === st)
-        if (sf && snp?.typePr && snp.typeFlId)
+        if (sf && snp?.typePr && snp.typeFlId && sf.short)
             dispatch.snp.getSizes({
                 flShort: sf.short,
                 standId: sf.standId,

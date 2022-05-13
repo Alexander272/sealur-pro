@@ -331,10 +331,10 @@ export const putg = createModel<ProModel>()({
         changeConstruction(state, payload: string) {
             state.construction = payload
             const con = state.constructions.find(c => c.short === payload)
-            if (!con?.obturators.some(o => o.short === state.obturator)) {
-                state.obturator = con?.obturators[0].short || ""
-                state.imageUrl = con?.obturators[0].imageUrl || ""
-            }
+            // if (!con?.obturators.some(o => o.short === state.obturator)) {
+            state.obturator = con?.obturators[0].short || ""
+            state.imageUrl = con?.obturators[0].imageUrl || ""
+            // }
         },
         changeObturatoe(state, payload: IObturator) {
             state.obturator = payload.short

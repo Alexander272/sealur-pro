@@ -22,7 +22,10 @@ export const MainSnp: FC<Props> = () => {
     const stHandler = (value: string) => {
         const sf = stfl.find(s => s.id === value)
         if (sf) {
-            dispatch.snp.getSnp({ st: value, req: { standId: sf.standId, flangeId: sf.flangeId } })
+            dispatch.snp.getSnp({
+                st: value,
+                req: { standId: sf.standId, flangeId: sf.flangeId !== "0" ? sf.flangeId : "1" },
+            })
         }
     }
 

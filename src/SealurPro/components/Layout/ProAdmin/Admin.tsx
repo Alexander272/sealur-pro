@@ -17,7 +17,7 @@ import { ICoating, IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
 import classes from "./admin.module.scss"
 
 const initTabs: any = {
-    def: {
+    admin: {
         width: 103,
         position: 0,
     },
@@ -45,6 +45,7 @@ export default function AdminLayout() {
 
     const location = useLocation()
     const pathname = location.pathname
+    const path = pathname.split("/")
 
     const [sending, setSending] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -137,34 +138,36 @@ export default function AdminLayout() {
             </Modal>
             <div className={classes.main}>
                 <Tabs
-                    initWidth={initTabs[pathname.split("/")[2] || "def"].width}
-                    initPos={initTabs[pathname.split("/")[2] || "def"].position}
+                    initWidth={initTabs[path[path.length - 1] || "admin"].width}
+                    initPos={initTabs[path[path.length - 1] || "admin"].position}
                     type='nav'
                 >
                     <Link
                         className={[
                             classes.link,
-                            pathname === "/admin" ? classes.active : null,
+                            path[path.length - 1] === "admin" || path[path.length - 1] === ""
+                                ? classes.active
+                                : null,
                         ].join(" ")}
-                        to='/admin'
+                        to=''
                     >
                         СНП
                     </Link>
                     <Link
                         className={[
                             classes.link,
-                            pathname === "/admin/putg" ? classes.active : null,
+                            path[path.length - 1] === "putg" ? classes.active : null,
                         ].join(" ")}
-                        to='/admin/putg'
+                        to='putg'
                     >
                         ПУТГ
                     </Link>
                     <Link
                         className={[
                             classes.link,
-                            pathname === "/admin/putgm" ? classes.active : null,
+                            path[path.length - 1] === "putgm" ? classes.active : null,
                         ].join(" ")}
-                        to='/admin/putgm'
+                        to='putgm'
                     >
                         ПУТГм
                     </Link>

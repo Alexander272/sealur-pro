@@ -32,7 +32,7 @@ const types = [
 
 export const AnotherSize: FC<Props> = () => {
     const form = useSelector((state: ProState) => state.putg.form)
-    const pn = useSelector((state: ProState) => state.putg.pn)
+    // const pn = useSelector((state: ProState) => state.putg.pn)
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
     const imageUrl = useSelector((state: ProState) => state.putg.imageUrl)
@@ -57,9 +57,9 @@ export const AnotherSize: FC<Props> = () => {
         setType(type as "dimen")
     }
 
-    const changePnHandler = (value: string) => {
-        dispatch.putg.setPn(value)
-    }
+    // const changePnHandler = (value: string) => {
+    //     dispatch.putg.setPn(value)
+    // }
 
     const changeSizeHandler =
         (name: "d4" | "d3" | "d2" | "d1") => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ export const AnotherSize: FC<Props> = () => {
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>
-                <div className={classes.group}>
+                {/* <div className={classes.group}>
                     <p className={classes.titleGroup}>Давление, PN</p>
                     <Select value={pn} onChange={changePnHandler}>
                         {size?.pn.split(";").map(pn => {
@@ -92,7 +92,7 @@ export const AnotherSize: FC<Props> = () => {
                             )
                         })}
                     </Select>
-                </div>
+                </div> */}
 
                 <div className={classes.group}>
                     <Tabs initWidth={94} onClick={changeTypeHandler}>

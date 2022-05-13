@@ -51,7 +51,7 @@ export const MainSnp: FC<Props> = () => {
 
     useEffect(() => {
         const sf = stfl.find(s => s.id === st)
-        if (sf) {
+        if (sf && sf.short) {
             dispatch.snp.getSizes({
                 flShort: sf.short,
                 standId: sf.standId,
@@ -64,7 +64,10 @@ export const MainSnp: FC<Props> = () => {
     const changeStHandler = (value: string) => {
         const sf = stfl.find(s => s.id === value)
         if (sf) {
-            dispatch.snp.getSnp({ st: value, req: { standId: sf.standId, flangeId: sf.flangeId } })
+            dispatch.snp.getSnp({
+                st: value,
+                req: { standId: sf.standId, flangeId: sf.flangeId !== "0" ? sf.flangeId : "1" },
+            })
         }
     }
 
@@ -119,11 +122,19 @@ export const MainSnp: FC<Props> = () => {
                             Стандарт на прокладку / стандарт на фланец
                         </p>
                         <Select value={st} onChange={changeStHandler}>
-                            {stfl.map(d => (
-                                <Option key={d.id} value={d.id}>
-                                    {d.stand} / {d.flange}
-                                </Option>
-                            ))}
+                            {stfl.map(d => {
+                                if (!d.flange)
+                                    return (
+                                        <Option key={d.id} value={d.id}>
+                                            {d.stand} / (станд. и нестанд. фланцы)
+                                        </Option>
+                                    )
+                                return (
+                                    <Option key={d.id} value={d.id}>
+                                        {d.stand} / {d.flange}
+                                    </Option>
+                                )
+                            })}
                             {/* <Option value='not_stand'>
                                 ТУ 3689-010-93978201-2008 / (станд. и нестанд. фланцы)
                             </Option> */}

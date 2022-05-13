@@ -42,50 +42,55 @@ export const Material: FC<Props> = () => {
     return (
         <>
             <p className={classes.title}>Материалы</p>
-            {putg?.reinforce.obturators.includes(obturator) && putg?.reinforce.values ? (
-                <Materials
-                    className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                    classTitle={classes.titleGroup}
-                    value={rf}
-                    onChange={changeMatHandler("rf")}
-                    mater={putg?.reinforce.values}
-                    onOpen={openHandler("rf")}
-                    title='Армирующий элемент'
-                />
-            ) : null}
-            {putg?.obturator.obturators.includes(obturator) && putg?.obturator.values ? (
-                <Materials
-                    className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                    classTitle={classes.titleGroup}
-                    value={ob}
-                    onChange={changeMatHandler("ob")}
-                    mater={putg?.obturator.values}
-                    onOpen={openHandler("ob")}
-                    title='Обтюраторы'
-                />
-            ) : null}
-            {putg?.iLimiter.obturators.includes(obturator) && putg?.iLimiter.values ? (
-                <Materials
-                    className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                    classTitle={classes.titleGroup}
-                    value={il}
-                    onChange={changeMatHandler("il")}
-                    mater={putg?.iLimiter.values}
-                    onOpen={openHandler("il")}
-                    title='Ограничитель внутренний'
-                />
-            ) : null}
-            {putg?.oLimiter.obturators.includes(obturator) && putg?.oLimiter.values ? (
-                <Materials
-                    className={`${classes.group} ${classes.inline} ${classes.mater}`}
-                    classTitle={classes.titleGroup}
-                    value={ol}
-                    onChange={changeMatHandler("ol")}
-                    mater={putg?.oLimiter.values}
-                    onOpen={openHandler("ol")}
-                    title='Ограничитель внешний'
-                />
-            ) : null}
+            {putg?.reinforce.values &&
+                (putg?.reinforce.obturators.includes(obturator) ? (
+                    <Materials
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                        classTitle={classes.titleGroup}
+                        value={rf}
+                        onChange={changeMatHandler("rf")}
+                        mater={putg?.reinforce.values}
+                        onOpen={openHandler("rf")}
+                        title='Армирующий элемент'
+                    />
+                ) : null)}
+
+            {putg?.obturator.values &&
+                (putg?.obturator.obturators.includes(obturator) ? (
+                    <Materials
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                        classTitle={classes.titleGroup}
+                        value={ob}
+                        onChange={changeMatHandler("ob")}
+                        mater={putg?.obturator.values}
+                        onOpen={openHandler("ob")}
+                        title='Обтюраторы'
+                    />
+                ) : null)}
+            {putg?.iLimiter.values &&
+                (putg?.iLimiter.obturators.includes(obturator) ? (
+                    <Materials
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                        classTitle={classes.titleGroup}
+                        value={il}
+                        onChange={changeMatHandler("il")}
+                        mater={putg?.iLimiter.values}
+                        onOpen={openHandler("il")}
+                        title='Ограничитель внутренний'
+                    />
+                ) : null)}
+            {putg?.oLimiter.values &&
+                (putg?.oLimiter.obturators.includes(obturator) ? (
+                    <Materials
+                        className={`${classes.group} ${classes.inline} ${classes.mater}`}
+                        classTitle={classes.titleGroup}
+                        value={ol}
+                        onChange={changeMatHandler("ol")}
+                        mater={putg?.oLimiter.values}
+                        onOpen={openHandler("ol")}
+                        title='Ограничитель внешний'
+                    />
+                ) : null)}
         </>
     )
 }

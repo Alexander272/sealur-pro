@@ -129,7 +129,9 @@ export const ResultSnp: FC<Props> = () => {
             jum = `, с перемычкой типа ${jumper}${width}`
         }
 
-        let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${snp?.typePr} ${rings} и наполнителем из ${fil} ${gr}, для применения на фланце "${tfl?.title}" по ${s?.flange} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${hole}${jum}`
+        let fl = s?.flange ? ` по ${s?.flange}` : ""
+
+        let res = `Спирально-навитая прокладка (СНП) по ${s?.stand} типа ${snp?.typePr} ${rings} и наполнителем из ${fil} ${gr}, для применения на фланце "${tfl?.title}"${fl} с размерами ${sizes}, толщиной ${thick}мм${modif}${mount}${hole}${jum}`
         return res
     }
 
@@ -203,6 +205,9 @@ export const ResultSnp: FC<Props> = () => {
                 thick = ""
                 if (h === "др.") thick = `-${oh}`
                 res = `СНП-${snp?.typePr}-${dn}-${py}-F.G${thick}${mater}${modif}${elem} ${s.stand} [${sizes}]`
+                break
+            case "6":
+                res = `СНП-${snp?.typePr}-${filler}-${sizes}-${thick}${mater}${modif}${elem} ${s.stand}`
                 break
         }
         return res

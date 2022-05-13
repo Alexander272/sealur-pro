@@ -1,8 +1,13 @@
 import { FC } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import { ProAdminUrl } from "../../../components/routes"
 import classes from "./header.module.scss"
 
 export const Header: FC = () => {
+    const location = useLocation()
+
+    const path = location.pathname.split("/")
+
     return (
         <header className={classes.header}>
             <div className={classes.content}>
@@ -23,7 +28,7 @@ export const Header: FC = () => {
                 </a>
                 <div className={classes.admin}>
                     {/* //TODO добавить проверку на роль */}
-                    <Link to='/admin' className={classes.link}>
+                    <Link to={`${ProAdminUrl}/${path[path.length - 1]}`} className={classes.link}>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -40,9 +45,6 @@ export const Header: FC = () => {
                         </svg>
                         <p>Редактировать</p>
                     </Link>
-                    {/* <Link to='/admin'>Admin</Link> */}
-                    {/* &#128221; */}
-                    {/* &#9998; */}
                 </div>
             </div>
         </header>

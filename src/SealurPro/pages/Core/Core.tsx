@@ -6,7 +6,7 @@ import { Loader } from "../../../components/UI/Loader/Loader"
 import classes from "./core.module.scss"
 
 const initTabs: any = {
-    def: {
+    pro: {
         width: 103,
         position: 0,
     },
@@ -26,49 +26,54 @@ const initTabs: any = {
 
 export default function Core() {
     const location = useLocation()
-    const pathname = location.pathname
+    let pathname = location.pathname
+
+    const path = pathname.split("/")
 
     return (
         <div className={classes.container}>
             <div className={classes.header}>
                 <Tabs
-                    initWidth={initTabs[pathname.split("/")[1] || "def"].width}
-                    initPos={initTabs[pathname.split("/")[1] || "def"].position}
+                    initWidth={initTabs[path[path.length - 1] || "pro"].width}
+                    initPos={initTabs[path[path.length - 1] || "pro"].position}
                     type='nav'
                 >
                     <Link
-                        className={[classes.link, pathname === "/" ? classes.active : null].join(
-                            " "
-                        )}
-                        to='/'
+                        className={[
+                            classes.link,
+                            path[path.length - 1] === "pro" || path[path.length - 1] === ""
+                                ? classes.active
+                                : null,
+                        ].join(" ")}
+                        to=''
                     >
                         СНП
                     </Link>
                     <Link
                         className={[
                             classes.link,
-                            pathname === "/putg" ? classes.active : null,
+                            path[path.length - 1] === "putg" ? classes.active : null,
                         ].join(" ")}
-                        to='/putg'
+                        to='putg'
                     >
                         ПУТГ
                     </Link>
                     <Link
                         className={[
                             classes.link,
-                            pathname === "/putgm" ? classes.active : null,
+                            path[path.length - 1] === "putgm" ? classes.active : null,
                         ].join(" ")}
-                        to='/putgm'
+                        to='putgm'
                     >
                         ПУТГм
                     </Link>
                 </Tabs>
 
                 <nav className={classes.buttons}>
-                    <Button.Link to='/survey' variant='grayPrimary' rounded='round'>
+                    <Button.Link to='survey' variant='grayPrimary' rounded='round'>
                         Заполнить опросный лист
                     </Button.Link>
-                    <Button.Link to='/list' rounded='round'>
+                    <Button.Link to='list' rounded='round'>
                         Перейти к списку
                     </Button.Link>
                 </nav>

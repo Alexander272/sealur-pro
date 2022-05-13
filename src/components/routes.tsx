@@ -26,17 +26,21 @@ const AdminSnp = lazy(() => import("../SealurPro/pages/Admin/Snp/Snp"))
 const AdminPutg = lazy(() => import("../SealurPro/pages/Admin/Putg/Putg"))
 const AdminPutgm = lazy(() => import("../SealurPro/pages/Admin/Putgm/Putgm"))
 
+export const ProAdminUrl = "/admin"
+export const ProUrl = ""
+
 export const MyRoutes = () => {
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route path='/auth/' element={<Auth />} />
                 <Route path='*' element={<PageNotFound />} />
+                <Route path='/' element={<PageNotFound />} />
 
                 {/* selection  */}
                 <Route path='/' element={<ProApp />}>
-                    <Route path='/' element={<Main />}>
-                        <Route path='/' element={<Core />}>
+                    <Route path='' element={<Main />}>
+                        <Route path='' element={<Core />}>
                             <Route index element={<Snp />} />
                             <Route path='putg' element={<Putg />} />
                             <Route path='putgm' element={<Putgm />} />
@@ -44,12 +48,12 @@ export const MyRoutes = () => {
                         <Route path='survey' element={<Survey />} />
                         <Route path='list' element={<List />} />
                     </Route>
-                    <Route path='/admin' element={<Admin />}>
+                    <Route path='admin' element={<Admin />}>
                         <Route index element={<AdminSnp />} />
                         <Route path='putg' element={<AdminPutg />} />
                         <Route path='putgm' element={<AdminPutgm />} />
                     </Route>
-                    <Route path='/protected' element={<Main />}>
+                    <Route path='protected' element={<Main />}>
                         <Route
                             index
                             element={

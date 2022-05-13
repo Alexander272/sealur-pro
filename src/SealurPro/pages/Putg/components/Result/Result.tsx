@@ -1,19 +1,24 @@
 import { FC } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
-import { ProState } from "../../../../store/store"
+import { Dispatch, ProState } from "../../../../store/store"
+import { IResult } from "../../../../types/list"
 import classes from "../../../style/pages.module.scss"
 
 type Props = {}
 
 export const Result: FC<Props> = () => {
     const graphite = useSelector((state: ProState) => state.addit.addit?.graphite) || []
+    const flanges = useSelector((state: ProState) => state.addit.fl) || []
     const constructions = useSelector((state: ProState) => state.addit.addit?.construction) || []
     const obturators = useSelector((state: ProState) => state.addit.addit?.obturator) || []
     const materials = useSelector((state: ProState) => state.addit.addit?.materials) || []
     const mods = useSelector((state: ProState) => state.addit.addit?.mod) || []
     const coatings = useSelector((state: ProState) => state.addit.addit?.coating) || []
     const typeFl = useSelector((state: ProState) => state.addit.typeFl)
+
+    const fl = useSelector((state: ProState) => state.putg.flange)
 
     const putg = useSelector((state: ProState) => state.putg.putg)
     const form = useSelector((state: ProState) => state.putg.form)
@@ -26,8 +31,10 @@ export const Result: FC<Props> = () => {
     const size = useSelector((state: ProState) => state.putg.size)
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
+    const dn = useSelector((state: ProState) => state.putg.dn)
+    const pn = useSelector((state: ProState) => state.putg.pn)
 
-    const fr = useSelector((state: ProState) => state.putg.rf)
+    // const fr = useSelector((state: ProState) => state.putg.rf)
     const ob = useSelector((state: ProState) => state.putg.ob)
     const il = useSelector((state: ProState) => state.putg.il)
     const ol = useSelector((state: ProState) => state.putg.ol)
@@ -41,19 +48,24 @@ export const Result: FC<Props> = () => {
     const isDetachable = useSelector((state: ProState) => state.putg.isDetachable)
     const parts = useSelector((state: ProState) => state.putg.parts)
 
+    const dispatch = useDispatch<Dispatch>()
+
     const resultHandler = (count: string, designation: string, description: string) => {
-        // let sizes = designation.split("[")[1].split("]")[0]
-        // //TODO после сохранения нужно заменить id и чертеж
-        // const result: IResult = {
-        //     id: "new",
-        //     designation,
-        //     sizes,
-        //     count,
-        //     description,
-        // }
-        // //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
-        // dispatch.list.addResult(result)
-        // toast.success("Прокладка добавлена")
+        let sizes = ""
+        if (size?.d4) sizes += size.d4 + "x"
+        sizes += `${size?.d3}x${size?.d2}`
+        if (size?.d1) sizes += "x" + size.d1
+        //TODO после сохранения нужно заменить id и чертеж
+        const result: IResult = {
+            id: "new",
+            designation,
+            sizes,
+            count,
+            description,
+        }
+        //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
+        dispatch.list.addResult(result)
+        toast.success("Прокладка добавлена")
     }
 
     const createDescr = (): string => {
@@ -66,35 +78,33 @@ export const Result: FC<Props> = () => {
 
         const constr = constructions.find(c => c.short === construction)
         let c = ""
-        let reinforce = ""
+        // let reinforce = ""
         let obt = ""
         let iLimiter = ""
         let oLimiter = ""
         materials.forEach(m => {
-            if (m.short === fr) reinforce = m.title
+            // if (m.short === fr) reinforce = m.title
             if (m.short === ob) obt = m.title
             if (m.short === il) iLimiter = m.title
             if (m.short === ol) oLimiter = m.title
         })
 
-        if (constr?.isHaveMaterial) {
-            c = `${constr.title} марки ${reinforce}`
-        } else c = constr?.title || ""
+        // if (constr?.isHaveMaterial) {
+        //     c = `${constr.title} марки ${reinforce}`
+        // } else
+        c = constr?.title || ""
 
         let mat = obturators.find(o => o.short === obturator)?.forDescr || ""
         let i = 0
         while (mat.includes("&")) {
             switch (i) {
                 case 0:
-                    mat = mat.replace("&", reinforce)
-                    break
-                case 1:
                     mat = mat.replace("&", obt)
                     break
-                case 2:
+                case 1:
                     mat = mat.replace("&", iLimiter)
                     break
-                case 3:
+                case 2:
                     mat = mat.replace("&", oLimiter)
                     break
             }
@@ -114,20 +124,15 @@ export const Result: FC<Props> = () => {
         let findCoat = coatings.find(c => c.id === coating)?.description
         let coat = findCoat ? `, ${findCoat}` : ""
 
-        let modif = ""
         let m = mods.find(m => m.id === mod)?.description
-        if (m) modif = `, с добавлением ${m}`
+        let modif = m ? `, с добавлением ${m}` : ""
 
         let mount = isMoun ? `, с фиксатором ${moun}` : ""
 
         let hole = isHole ? `, с отверстиями (по чертежу)` : ""
 
-        let jum = ""
-        if (isJumper) {
-            let width = ""
-            if (jumWidth !== "") width = ` шириной ${jumWidth}мм`
-            jum = `, с перемычкой типа ${jumper}${width}`
-        }
+        let width = jumWidth !== "" ? ` шириной ${jumWidth}мм` : ""
+        let jum = isJumper ? `, с перемычкой типа ${jumper}${width}` : ""
 
         let det = isDetachable ? `, разъемная (количество частей - ${parts})` : ""
 
@@ -138,15 +143,61 @@ export const Result: FC<Props> = () => {
     const createDesig = (): string => {
         const tfl = typeFl.find(t => t.id === putg?.typeFlId)
 
+        let isDef = true
+        let obt = ""
+        let ilim = ""
+        let olim = ""
+        if (ob && putg?.obturator.obturators.includes(obturator)) {
+            if (ob !== putg?.obturator.default) isDef = false
+            obt = ob
+        } else obt = "0"
+        if (il && putg?.iLimiter.obturators.includes(obturator)) {
+            if (il !== putg?.iLimiter.default) isDef = false
+            ilim = il
+        } else ilim = "0"
+        if (ol && putg?.oLimiter.obturators.includes(obturator)) {
+            if (ol !== putg?.oLimiter.default) isDef = false
+            olim = ol
+        } else olim = "0"
+
+        let mat = !isDef ? `-${ilim}${obt}${olim}` : ""
+
         let sizes = ""
         if (size?.d4) sizes += size.d4 + "x"
         sizes += `${size?.d3}x${size?.d2}`
         if (size?.d1) sizes += "x" + size.d1
         let thick = h
         if (h === "др.") thick = oh
-        sizes += "-" + thick
 
-        let res = `ПУТГ-${tfl?.short}-${construction}-${obturator}-${sizes}`
+        const py = pn.split(" ")[0]
+
+        let jum = isJumper ? (jumWidth ? `(${jumper}/${jumWidth})` : `(${jumper})`) : ""
+
+        let m = mods.find(m => m.id === mod)?.short
+        let modif = m ? `-${m}` : ""
+
+        let elems = []
+        if (isMoun) elems.push(moun)
+        if (isDetachable) elems.push(`${parts} сегм.`)
+        if (isHole) elems.push("черт.")
+        let findCoat = coatings.find(c => c.id === coating)?.short
+        if (findCoat) elems.push(findCoat)
+
+        let elem = elems.length ? ` (${elems.join(", ")})` : ""
+
+        let res = `ПУТГ-${tfl?.short}-${construction}-${obturator}-${dn}-${py}-${thick}${jum}${mat}${modif}${elem} [${sizes}]`
+        if (["3", "4", "5"].includes(fl)) {
+            const st = flanges.find(f => f.id === fl)
+            res = `ПУТГ-${
+                tfl?.short
+            }-${construction}-${obturator}-${dn}"-${pn}#-${thick}${jum}${mat}${modif}${elem} ${
+                st?.title === "ASME B 16.5" ? "ASME B 16.21" : st?.title
+            } [${sizes}]`
+        }
+
+        if (form !== "Round") {
+            res = `ПУТГ-${tfl?.short}-${construction}-${obturator}-${sizes}-${thick}${jum}${mat}${modif}${elem}`
+        }
 
         return res
     }
