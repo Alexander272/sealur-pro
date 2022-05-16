@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Dispatch, ProState } from "../../../../store/store"
-import { Sizes } from "./components/Sizes"
+import { Sizes } from "./components/Sizes/Sizes"
 import classes from "../../../style/pages.module.scss"
+import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
+import { InputSize } from "./components/InputSize/InputSize"
 
 const { Option } = Select
 
@@ -25,6 +27,8 @@ export const Size: FC<Props> = () => {
     const obturator = useSelector((state: ProState) => state.putg.obturator)
     const putg = useSelector((state: ProState) => state.putg.putg)
     const flange = useSelector((state: ProState) => state.putg.flange)
+
+    const notStand = useSelector((state: ProState) => state.putg.notStand)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -74,47 +78,56 @@ export const Size: FC<Props> = () => {
         dispatch.putg.changeOH(event.target.value.replaceAll(".", ","))
     }
 
+    const changeNotStand = (event: ChangeEvent<HTMLInputElement>) => {
+        dispatch.putg.setNotStand(event.target.checked)
+    }
+
     if (!sizes || !dns || !size) return <div className={classes.container}></div>
 
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>
-                {dns.length && (
-                    <div className={classes.group}>
-                        <p className={classes.titleGroup}>Проход, DN</p>
-                        <Select value={dn} onChange={changeDnHandler}>
-                            {dns.map(dn => (
-                                <Option key={dn.dn} value={dn.dn}>
-                                    {dn.dn}
-                                </Option>
-                            ))}
-                        </Select>
-                    </div>
-                )}
-
-                <div className={classes.group}>
-                    <p className={classes.titleGroup}>Давление, PN</p>
-                    {sizes.length && (
-                        <Select value={pn} onChange={changePnHandler}>
-                            {sizes
-                                .filter(s => s.dn === dn)
-                                .map(s => {
-                                    if (s.pn.includes(";")) {
-                                        return s.pn.split(";").map(pn => (
-                                            <Option key={pn} value={pn}>
-                                                {pn}
-                                            </Option>
-                                        ))
-                                    }
-                                    return (
-                                        <Option key={s.pn} value={s.pn}>
-                                            {s.pn}
+                {notStand && <InputSize />}
+                {!notStand && (
+                    <>
+                        {dns.length && (
+                            <div className={classes.group}>
+                                <p className={classes.titleGroup}>Проход, DN</p>
+                                <Select value={dn} onChange={changeDnHandler}>
+                                    {dns.map(dn => (
+                                        <Option key={dn.dn} value={dn.dn}>
+                                            {dn.dn}
                                         </Option>
-                                    )
-                                })}
-                        </Select>
-                    )}
-                </div>
+                                    ))}
+                                </Select>
+                            </div>
+                        )}
+
+                        <div className={classes.group}>
+                            <p className={classes.titleGroup}>Давление, PN</p>
+                            {sizes.length && (
+                                <Select value={pn} onChange={changePnHandler}>
+                                    {sizes
+                                        .filter(s => s.dn === dn)
+                                        .map(s => {
+                                            if (s.pn.includes(";")) {
+                                                return s.pn.split(";").map(pn => (
+                                                    <Option key={pn} value={pn}>
+                                                        {pn}
+                                                    </Option>
+                                                ))
+                                            }
+                                            return (
+                                                <Option key={s.pn} value={s.pn}>
+                                                    {s.pn}
+                                                </Option>
+                                            )
+                                        })}
+                                </Select>
+                            )}
+                        </div>
+                    </>
+                )}
 
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Толщина прокладки</p>
@@ -159,6 +172,16 @@ export const Size: FC<Props> = () => {
                             d4={size?.d4 || "0"}
                         />
                     </div>
+                </div>
+                <div className={classes.inline}>
+                    <Checkbox
+                        id='not_stand'
+                        name='notStand'
+                        label='нестандартный фланец'
+                        checked={notStand}
+                        onChange={changeNotStand}
+                    />
+                    <p className={classes.max}>(ввести размеры в ручную)</p>
                 </div>
             </div>
         </div>

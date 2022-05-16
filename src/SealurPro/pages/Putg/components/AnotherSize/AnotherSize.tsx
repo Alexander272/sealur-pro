@@ -4,10 +4,10 @@ import { Tabs } from "../../../../../components/Tabs/Tabs"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Dispatch, ProState } from "../../../../store/store"
+import { ISize } from "../../../../types/size"
 import { Sizes } from "./components/Sizes/Sizes"
 
 import classes from "../../../style/pages.module.scss"
-import { ISize } from "../../../../types/size"
 
 type Props = {}
 

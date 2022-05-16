@@ -12,6 +12,7 @@ export interface IAddit {
     construction: IConstruction[]
     obturator: IObturator[]
     basis: IBasis[]
+    pObturator: IObturator[]
     sealant: ISealant[]
 }
 
@@ -70,6 +71,15 @@ export interface ICoating {
     description: string
 }
 
-export interface IBasis {}
+export interface IBasis {
+    short: string
+    title: string
+    description: string
+}
 
-export interface ISealant {}
+export interface ISealant {
+    id: string
+    short: string
+    title: string
+    description: string
+}

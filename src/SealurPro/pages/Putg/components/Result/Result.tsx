@@ -28,6 +28,8 @@ export const Result: FC<Props> = () => {
     const mod = useSelector((state: ProState) => state.putg.mod)
     const coating = useSelector((state: ProState) => state.putg.coating)
 
+    const notStand = useSelector((state: ProState) => state.putg.notStand)
+
     const size = useSelector((state: ProState) => state.putg.size)
     const h = useSelector((state: ProState) => state.putg.h)
     const oh = useSelector((state: ProState) => state.putg.oh)
@@ -136,7 +138,9 @@ export const Result: FC<Props> = () => {
 
         let det = isDetachable ? `, разъемная (количество частей - ${parts})` : ""
 
-        let res = `Прокладка ${f}из терморасширенного графита (ТРГ ${gr}), ${c}, ${mat}, для уплотнения фланцевой поверхности исполнения "${tfl?.title}"${coat}${modif}${mount}${hole}${jum}${det}, с размерами ${sizes}`
+        let ns = notStand ? " нестандартными" : ""
+
+        let res = `Прокладка ${f}из терморасширенного графита (ТРГ ${gr}), ${c}, ${mat}, для уплотнения фланцевой поверхности исполнения "${tfl?.title}"${coat}${modif}${mount}${hole}${jum}${det}, с${ns} размерами ${sizes}`
         return res
     }
 
@@ -195,8 +199,9 @@ export const Result: FC<Props> = () => {
             } [${sizes}]`
         }
 
-        if (form !== "Round") {
-            res = `ПУТГ-${tfl?.short}-${construction}-${obturator}-${sizes}-${thick}${jum}${mat}${modif}${elem}`
+        if (form !== "Round" || notStand) {
+            let ns = notStand ? " [нестанд.]" : ""
+            res = `ПУТГ-${tfl?.short}-${construction}-${obturator}-${sizes}-${thick}${jum}${mat}${modif}${elem}${ns}`
         }
 
         return res

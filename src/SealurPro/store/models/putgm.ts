@@ -2,10 +2,11 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
-import { IConstruction, IObturator, IPUTG, IPutgImage, IPutgReq } from "../../types/putg"
+import { IConstruction, IObturator, IPutgImage, IPutgReq } from "../../types/putg"
+import { IPUTGM } from "../../types/putgm"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
-interface IPutgState {
+interface IPutgmState {
     loading: boolean
     fetching: boolean
     error: boolean
@@ -13,7 +14,7 @@ interface IPutgState {
     putgImage: IPutgImage[]
     form: "Round" | "Oval" | "Rectangular"
 
-    putgs: IPUTG[]
+    putgms: IPUTGM[]
     sizes: ISize[]
     dns: IDn[]
     dn: string
@@ -21,12 +22,12 @@ interface IPutgState {
     h: string
     oh: string
 
-    putg: IPUTG | null
+    putgm: IPUTGM | null
     size: ISize | null
 
     notStand: boolean
 
-    constructions: IConstruction[]
+    // constructions: IConstruction[]
 
     construction: string
     obturator: string
@@ -42,23 +43,16 @@ interface IPutgState {
     jumper: string
     jumWidth: string
     isHole: boolean
-    isDetachable: boolean
     parts: string
     isMoun: boolean
     moun: string
 
-    rf: string
-    ob: string
-    il: string
-    ol: string
-
-    // isOpenRf: boolean
-    // isOpenOb: boolean
-    // isOpenIl: boolean
-    // isOpenOl: boolean
+    seal: string
+    obt: string
+    basis: string
 }
 
-export const putg = createModel<ProModel>()({
+export const putgm = createModel<ProModel>()({
     state: {
         loading: false,
         fetching: false,
@@ -67,7 +61,7 @@ export const putg = createModel<ProModel>()({
         putgImage: [],
         form: "Round",
 
-        putgs: [],
+        putgms: [],
         sizes: [],
         dns: [],
         dn: "",
@@ -75,7 +69,7 @@ export const putg = createModel<ProModel>()({
         h: "",
         oh: "",
 
-        putg: null,
+        putgm: null,
         size: null,
 
         notStand: false,
@@ -101,16 +95,10 @@ export const putg = createModel<ProModel>()({
         isMoun: false,
         moun: "",
 
-        rf: "",
-        ob: "",
-        il: "",
-        ol: "",
-
-        // isOpenRf: false,
-        // isOpenOb: false,
-        // isOpenIl: false,
-        // isOpenOl: false,
-    } as IPutgState,
+        seal: "",
+        obt: "",
+        basis: "",
+    } as IPutgmState,
 
     reducers: {
         setLoading(state, payload: boolean) {
@@ -135,8 +123,8 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        setPutgs(state, payload: IPUTG[]) {
-            state.putgs = payload
+        setPutgms(state, payload: IPUTGM[]) {
+            state.putgms = payload
             return state
         },
         setSizes(state, payload: ISize[]) {
@@ -164,8 +152,8 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        setPutg(state, payload: IPUTG | null) {
-            state.putg = payload
+        setPutgm(state, payload: IPUTGM | null) {
+            state.putgm = payload
             return state
         },
         setSize(state, payload: ISize | null) {
@@ -178,17 +166,17 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        setOnlyConstructions(state, payload: IConstruction[]) {
-            state.constructions = payload
-            return state
-        },
-        setConstructions(state, payload: IConstruction[]) {
-            state.constructions = payload
-            state.construction = payload[0]?.short || ""
-            state.obturator = payload[0]?.obturators[0]?.short || ""
-            state.imageUrl = payload[0]?.obturators[0]?.imageUrl || ""
-            return state
-        },
+        // setOnlyConstructions(state, payload: IConstruction[]) {
+        //     state.constructions = payload
+        //     return state
+        // },
+        // setConstructions(state, payload: IConstruction[]) {
+        //     state.constructions = payload
+        //     state.construction = payload[0]?.short || ""
+        //     state.obturator = payload[0]?.obturators[0]?.short || ""
+        //     state.imageUrl = payload[0]?.obturators[0]?.imageUrl || ""
+        //     return state
+        // },
         setConstruction(state, payload: string) {
             state.construction = payload
             return state
@@ -222,22 +210,22 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        setRf(state, payload: string) {
-            state.rf = payload
-            return state
-        },
-        setOb(state, payload: string) {
-            state.ob = payload
-            return state
-        },
-        setIl(state, payload: string) {
-            state.il = payload
-            return state
-        },
-        setOl(state, payload: string) {
-            state.ol = payload
-            return state
-        },
+        // setRf(state, payload: string) {
+        //     state.rf = payload
+        //     return state
+        // },
+        // setOb(state, payload: string) {
+        //     state.ob = payload
+        //     return state
+        // },
+        // setIl(state, payload: string) {
+        //     state.il = payload
+        //     return state
+        // },
+        // setOl(state, payload: string) {
+        //     state.ol = payload
+        //     return state
+        // },
 
         setIsJumper(state, payload: boolean) {
             state.isJumper = payload
@@ -255,10 +243,10 @@ export const putg = createModel<ProModel>()({
             state.isHole = payload
             return state
         },
-        setIsDetachable(state, payload: boolean) {
-            state.isDetachable = payload
-            return state
-        },
+        // setIsDetachable(state, payload: boolean) {
+        //     state.isDetachable = payload
+        //     return state
+        // },
         setParts(state, payload: string) {
             state.parts = payload
             return state
@@ -272,24 +260,24 @@ export const putg = createModel<ProModel>()({
             return state
         },
 
-        changePutg(state, payload: IPUTG) {
-            state.putg = payload
+        changePutg(state, payload: IPUTGM) {
+            state.putgm = payload
             state.grap = payload.graphite[0]
 
-            state.constructions = payload.construction[0].temperatures[0].constructions
-            state.construction = payload.construction[0].temperatures[0].constructions[0].short
-            state.obturator =
-                payload.construction[0].temperatures[0].constructions[0].obturators[0].short
-            state.imageUrl =
-                payload.construction[0].temperatures[0].constructions[0].obturators[0].imageUrl
+            // state.constructions = payload.construction[0].temperatures[0].constructions
+            // state.construction = payload.construction[0].temperatures[0].constructions[0].short
+            // state.obturator =
+            //     payload.construction[0].temperatures[0].constructions[0].obturators[0].short
+            // state.imageUrl =
+            //     payload.construction[0].temperatures[0].constructions[0].obturators[0].imageUrl
 
-            state.temp = payload.temperatures[0].temps[0].id
-            state.mod = payload.temperatures[0].temps[0].mods[0]
+            // state.temp = payload.temperatures[0].temps[0].id
+            // state.mod = payload.temperatures[0].temps[0].mods[0]
 
-            state.rf = payload.reinforce.default
-            state.ob = payload.obturator.default
-            state.il = payload.iLimiter.default
-            state.ol = payload.oLimiter.default
+            // state.rf = payload.reinforce.default
+            // state.ob = payload.obturator.default
+            // state.il = payload.iLimiter.default
+            // state.ol = payload.oLimiter.default
 
             if (payload.coating[0] !== "*") state.coating = payload.coating[0]
 
@@ -322,15 +310,15 @@ export const putg = createModel<ProModel>()({
         changeGrap(state, payload: string) {
             state.grap = payload
 
-            const constr = state.putg?.construction.find(c => c.grap === payload)
-            if (constr) {
-                state.constructions = constr.temperatures[0].constructions
-                state.construction = constr.temperatures[0].constructions[0].short
-                state.obturator = constr.temperatures[0].constructions[0].obturators[0].short
-                state.imageUrl = constr.temperatures[0].constructions[0].obturators[0].imageUrl
-            }
+            // const constr = state.putgm?.construction.find(c => c.grap === payload)
+            // if (constr) {
+            //     state.constructions = constr.temperatures[0].constructions
+            //     state.construction = constr.temperatures[0].constructions[0].short
+            //     state.obturator = constr.temperatures[0].constructions[0].obturators[0].short
+            //     state.imageUrl = constr.temperatures[0].constructions[0].obturators[0].imageUrl
+            // }
 
-            const temp = state.putg?.temperatures.find(t => t.grap === payload)
+            const temp = state.putgm?.temperatures.find(t => t.grap === payload)
             if (temp) {
                 state.temp = temp.temps[0].id
                 state.mod = temp.temps[0].mods[0]
@@ -339,11 +327,9 @@ export const putg = createModel<ProModel>()({
 
         changeConstruction(state, payload: string) {
             state.construction = payload
-            const con = state.constructions.find(c => c.short === payload)
-            // if (!con?.obturators.some(o => o.short === state.obturator)) {
-            state.obturator = con?.obturators[0].short || ""
-            state.imageUrl = con?.obturators[0].imageUrl || ""
-            // }
+            // const con = state.constructions.find(c => c.short === payload)
+            // state.obturator = con?.obturators[0].short || ""
+            // state.imageUrl = con?.obturators[0].imageUrl || ""
         },
         changeObturatoe(state, payload: IObturator) {
             state.obturator = payload.short
@@ -352,25 +338,25 @@ export const putg = createModel<ProModel>()({
 
         changeTemp(state, payload: string) {
             state.temp = payload
-            const temps = state.putg?.temperatures.find(t => t.grap === state.grap)
+            const temps = state.putgm?.temperatures.find(t => t.grap === state.grap)
             const temp = temps?.temps.find(t => t.id === payload)
             if (!temp?.mods.includes(state.mod)) state.mod = temp?.mods[0] || ""
 
-            const constr = state.putg?.construction.find(c => c.grap === state.grap)
-            const con = constr?.temperatures.find(t => t.temp === payload)
+            // const constr = state.putgm?.construction.find(c => c.grap === state.grap)
+            // const con = constr?.temperatures.find(t => t.temp === payload)
 
-            if (con) {
-                state.constructions = con.constructions
-                state.construction = con.constructions[0].short
-                state.obturator = con.constructions[0].obturators[0].short
-                state.imageUrl = con.constructions[0].obturators[0].imageUrl
-            }
+            // if (con) {
+            //     state.constructions = con.constructions
+            //     state.construction = con.constructions[0].short
+            //     state.obturator = con.constructions[0].obturators[0].short
+            //     state.imageUrl = con.constructions[0].obturators[0].imageUrl
+            // }
 
             return state
         },
         changeMod(state, payload: string) {
             state.mod = payload
-            const temp = state.putg?.temperatures.find(t => t.grap === state.grap)
+            const temp = state.putgm?.temperatures.find(t => t.grap === state.grap)
             let newTemp = ""
             temp?.temps.forEach(t => {
                 if (t.mods.includes(payload)) {
@@ -379,15 +365,15 @@ export const putg = createModel<ProModel>()({
             })
             if (newTemp) state.temp = newTemp
 
-            const constr = state.putg?.construction.find(c => c.grap === state.grap)
-            const con = constr?.temperatures.find(t => t.temp === (newTemp || state.temp))
+            // const constr = state.putgm?.construction.find(c => c.grap === state.grap)
+            // const con = constr?.temperatures.find(t => t.temp === (newTemp || state.temp))
 
-            if (con) {
-                state.constructions = con.constructions
-                state.construction = con.constructions[0].short
-                state.obturator = con.constructions[0].obturators[0].short
-                state.imageUrl = con.constructions[0].obturators[0].imageUrl
-            }
+            // if (con) {
+            //     state.constructions = con.constructions
+            //     state.construction = con.constructions[0].short
+            //     state.obturator = con.constructions[0].obturators[0].short
+            //     state.imageUrl = con.constructions[0].obturators[0].imageUrl
+            // }
             return state
         },
     },

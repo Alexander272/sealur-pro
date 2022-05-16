@@ -50,7 +50,10 @@ export const ResultSnp: FC<Props> = () => {
     const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = (count: string, designation: string, description: string) => {
-        let sizes = designation.split("[")[1].split("]")[0]
+        let sizes = ""
+        if (size?.d4) sizes += size.d4 + "x"
+        sizes += `${size!.d3}x${size!.d2}`
+        if (size?.d1) sizes += "x" + size.d1
 
         //TODO после сохранения нужно заменить id и чертеж
         const result: IResult = {
