@@ -11,18 +11,17 @@ import { Textarea } from "../../../../../../../../components/UI/Input/Textarea"
 import AdditService from "../../../../../../../service/addit"
 import { Dispatch, ProState } from "../../../../../../../store/store"
 import { IAddit, IConstruction } from "../../../../../../../types/addit"
-import { IConstr, IConstruction as IConstructions } from "../../../../../../../types/putg"
+import { IBasis, IConstruction as IConstructions } from "../../../../../../../types/putgm"
 import classes from "../graphite.module.scss"
 
 type Props = {}
 
 export const Design: FC<Props> = () => {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    const putg = useSelector((state: ProState) => state.putg.putg)
-    const construction = useSelector((state: ProState) => state.putg.construction)
-    const constructions = useSelector((state: ProState) => state.putg.constructions)
-    const grap = useSelector((state: ProState) => state.putg.grap)
-    const temp = useSelector((state: ProState) => state.putg.temp)
+    const putgm = useSelector((state: ProState) => state.putgm.putgm)
+    const construction = useSelector((state: ProState) => state.putgm.construction)
+    const constructions = useSelector((state: ProState) => state.putgm.constructions)
+    const grap = useSelector((state: ProState) => state.putgm.grap)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -37,79 +36,77 @@ export const Design: FC<Props> = () => {
     } = useForm<IConstruction>()
 
     const changeDesign = (short: string) => {
-        let constrs: IConstructions[] = JSON.parse(JSON.stringify(constructions))
-        const cur = constrs.find(c => c.short === short)
+        let constrs: IBasis[] = JSON.parse(JSON.stringify(constructions))
+        const cur = constrs.find(c => c.basis === short)
         if (cur) {
-            constrs = constrs.filter(c => c.short !== short)
+            constrs = constrs.filter(c => c.basis !== short)
         } else {
-            constrs.push({ short, obturators: [] })
+            constrs.push({ basis: short, obturator: [] })
         }
 
         return constrs
     }
 
     const changeDesignHandler = (short: string) => () => {
-        if (!temp) {
-            toast.error("Температура не выбрана")
+        if (!grap) {
+            toast.error("Чистота графита не выбрана")
             return
         }
 
         const constr = changeDesign(short)
-        dispatch.putg.setConstructions(constr)
-        if (short === construction) dispatch.putg.setConstruction("")
+        dispatch.putgm.setConstructions(constr)
+        if (short === construction) dispatch.putgm.setConstruction("")
 
-        const con: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
+        const con: IConstructions[] = JSON.parse(JSON.stringify(putgm?.construction))
         const cIdx = con.findIndex(c => c.grap === grap)
-        const tIdx = con[cIdx].temperatures.findIndex(t => t.temp === temp)
-        con[cIdx].temperatures[tIdx].constructions = constr
+        con[cIdx].basis = constr
 
-        if (putg) dispatch.putg.setPutg({ ...putg, construction: con })
+        if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: con })
     }
 
     const chooseDesignHandler = (short: string) => () => {
-        if (!temp) {
-            toast.error("Температура не выбрана")
+        if (!grap) {
+            toast.error("Чистота графита не выбрана")
             return
         }
 
-        dispatch.putg.setConstruction(short)
-        const cur = constructions.find(c => c.short === short)
+        dispatch.putgm.setConstruction(short)
+        const cur = constructions.find(c => c.basis === short)
         if (!cur) {
             const constr = changeDesign(short)
-            dispatch.putg.setOnlyConstructions(constr)
+            dispatch.putgm.setOnlyConstructions(constr)
 
-            const con: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
+            const con: IConstructions[] = JSON.parse(JSON.stringify(putgm?.construction))
             const cIdx = con.findIndex(c => c.grap === grap)
-            const tIdx = con[cIdx].temperatures.findIndex(t => t.temp === temp)
-            con[cIdx].temperatures[tIdx].constructions = constr
+            con[cIdx].basis = constr
 
-            if (putg) dispatch.putg.setPutg({ ...putg, construction: con })
+            if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: con })
         }
     }
 
     const deleteHandler = async () => {
         if (!addit || !data) return
-        let con = addit?.construction || []
+        let con = addit?.basis || []
         con = con.filter(c => c.short !== data.short)
 
         try {
-            dispatch.putg.setLoading(true)
-            await AdditService.updateConstruction(addit.id, con, "delete", data.short)
+            dispatch.putgm.setLoading(true)
+            await AdditService.updateBasis(addit.id, con, "delete", data.short)
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.construction = con
+            add.basis = con
             dispatch.addit.setAddit(add)
             toast.success("Успешно удалено")
             toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            dispatch.putg.setLoading(false)
+            dispatch.putgm.setLoading(false)
         }
     }
 
     const submitHandler = async (form: IConstruction) => {
         if (!addit) return
-        let con = [...addit.construction] || []
+        let con = [...addit.basis] || []
         if (!data) {
             con.push({
                 short: form.short,
@@ -124,22 +121,22 @@ export const Design: FC<Props> = () => {
         }
 
         try {
-            dispatch.putg.setLoading(true)
-            await AdditService.updateConstruction(
+            dispatch.putgm.setLoading(true)
+            await AdditService.updateBasis(
                 addit.id,
                 con,
                 data ? "update" : "add",
                 data ? "" : form.short
             )
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.construction = con
+            add.basis = con
             dispatch.addit.setAddit(add)
             toast.success(data ? "Успешно обновлено" : "Успешно создано")
             toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            dispatch.putg.setLoading(false)
+            dispatch.putgm.setLoading(false)
         }
     }
 
@@ -172,7 +169,7 @@ export const Design: FC<Props> = () => {
                         <Input
                             name='short'
                             label='Короткое обозначение'
-                            placeholder='210'
+                            placeholder='01'
                             register={register}
                             rule={{ required: true }}
                             error={errors.short}
@@ -181,19 +178,13 @@ export const Design: FC<Props> = () => {
                         <Input
                             name='title'
                             label='Название'
-                            placeholder='армированная'
+                            placeholder='ПУТГм-01'
                             register={register}
                             rule={{ required: true }}
                             error={errors.title}
                             errorText='Поле не заполнено'
                         />
                         <Textarea name='description' label='Пояснение' register={register} />
-                        {/* <Textarea
-                            name='description'
-                            label='Для описания'
-                            placeholder=''
-                            register={register}
-                        /> */}
                     </form>
                 </Modal.Content>
                 <Modal.Footer>
@@ -218,14 +209,14 @@ export const Design: FC<Props> = () => {
                 Добавить
             </p>
             <div className={`${classes.list} scroll`}>
-                {addit?.construction.map(con => {
-                    const idx = constructions.findIndex(c => c.short === con.short)
+                {addit?.basis.map(con => {
+                    const idx = constructions.findIndex(c => c.basis === con.short)
 
                     return (
                         <div key={con.short} className={classes.listItem}>
                             <Checkbox
                                 name={con.short}
-                                id={con.short}
+                                id={`des-${con.short}`}
                                 checked={idx > -1}
                                 onChange={changeDesignHandler(con.short)}
                             />

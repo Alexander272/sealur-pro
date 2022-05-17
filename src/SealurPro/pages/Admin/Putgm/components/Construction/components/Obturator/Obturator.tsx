@@ -10,23 +10,25 @@ import { Input } from "../../../../../../../../components/UI/Input/Input"
 import { Textarea } from "../../../../../../../../components/UI/Input/Textarea"
 import AdditService from "../../../../../../../service/addit"
 import { Dispatch, ProState } from "../../../../../../../store/store"
-import { IAddit, IConstruction } from "../../../../../../../types/addit"
-import { IConstr, IConstruction as IConstructions } from "../../../../../../../types/putg"
+import { IAddit, IObturator } from "../../../../../../../types/addit"
+import { IBasis, IConstruction } from "../../../../../../../types/putgm"
 import classes from "../graphite.module.scss"
 
 type Props = {}
 
-export const Design: FC<Props> = () => {
+export const Obturator: FC<Props> = () => {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    const putg = useSelector((state: ProState) => state.putg.putg)
-    const construction = useSelector((state: ProState) => state.putg.construction)
-    const constructions = useSelector((state: ProState) => state.putg.constructions)
-    const grap = useSelector((state: ProState) => state.putg.grap)
-    const temp = useSelector((state: ProState) => state.putg.temp)
+    const putgm = useSelector((state: ProState) => state.putgm.putgm)
+    const constructions = useSelector((state: ProState) => state.putgm.constructions)
+    const construction = useSelector((state: ProState) => state.putgm.construction)
+    const seal = useSelector((state: ProState) => state.putgm.seal)
+    const grap = useSelector((state: ProState) => state.putgm.grap)
+    const temp = useSelector((state: ProState) => state.putgm.temp)
+    const putgmImage = useSelector((state: ProState) => state.putgm.putgmImage)
 
     const dispatch = useDispatch<Dispatch>()
 
-    const [data, setData] = useState<IConstruction | null>(null)
+    const [data, setData] = useState<IObturator | null>(null)
 
     const { isOpen, toggle } = useModal()
     const {
@@ -34,132 +36,109 @@ export const Design: FC<Props> = () => {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<IConstruction>()
+    } = useForm<IObturator>()
 
-    const changeDesign = (short: string) => {
-        let constrs: IConstructions[] = JSON.parse(JSON.stringify(constructions))
-        const cur = constrs.find(c => c.short === short)
+    //TODO добавить выбор обтюратора
+
+    const changeObturatorHandler = (short: string) => () => {
+        const c: IBasis[] = JSON.parse(JSON.stringify(constructions))
+        let idx = c.findIndex(c => c.basis === construction)
+
+        if (idx === -1) {
+            toast.error("Тип прокладки не выбран")
+            return
+        }
+
+        const cur = c[idx]?.obturator.find(o => o.obturator === short)
         if (cur) {
-            constrs = constrs.filter(c => c.short !== short)
+            c[idx].obturator = c[idx].obturator.filter(o => o.obturator !== short)
         } else {
-            constrs.push({ short, obturators: [] })
+            c[idx].obturator.push({ obturator: short, sealant: [] })
         }
+        dispatch.putgm.setOnlyConstructions(c)
 
-        return constrs
-    }
+        const constr: IConstruction[] = JSON.parse(JSON.stringify(putgm?.construction))
+        const cIdx = constr.findIndex(c => c.grap === grap)
+        constr[cIdx].basis = c
 
-    const changeDesignHandler = (short: string) => () => {
-        if (!temp) {
-            toast.error("Температура не выбрана")
-            return
-        }
-
-        const constr = changeDesign(short)
-        dispatch.putg.setConstructions(constr)
-        if (short === construction) dispatch.putg.setConstruction("")
-
-        const con: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
-        const cIdx = con.findIndex(c => c.grap === grap)
-        const tIdx = con[cIdx].temperatures.findIndex(t => t.temp === temp)
-        con[cIdx].temperatures[tIdx].constructions = constr
-
-        if (putg) dispatch.putg.setPutg({ ...putg, construction: con })
-    }
-
-    const chooseDesignHandler = (short: string) => () => {
-        if (!temp) {
-            toast.error("Температура не выбрана")
-            return
-        }
-
-        dispatch.putg.setConstruction(short)
-        const cur = constructions.find(c => c.short === short)
-        if (!cur) {
-            const constr = changeDesign(short)
-            dispatch.putg.setOnlyConstructions(constr)
-
-            const con: IConstr[] = JSON.parse(JSON.stringify(putg?.construction))
-            const cIdx = con.findIndex(c => c.grap === grap)
-            const tIdx = con[cIdx].temperatures.findIndex(t => t.temp === temp)
-            con[cIdx].temperatures[tIdx].constructions = constr
-
-            if (putg) dispatch.putg.setPutg({ ...putg, construction: con })
-        }
+        if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: constr })
     }
 
     const deleteHandler = async () => {
         if (!addit || !data) return
-        let con = addit?.construction || []
-        con = con.filter(c => c.short !== data.short)
-
+        let obts = addit?.pObturator || []
+        obts = obts.filter(o => o.short !== data.short)
         try {
-            dispatch.putg.setLoading(true)
-            await AdditService.updateConstruction(addit.id, con, "delete", data.short)
+            dispatch.putgm.setLoading(true)
+            await AdditService.updateObturators(addit.id, obts, "delete", data.short)
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.construction = con
+            add.pObturator = obts
             dispatch.addit.setAddit(add)
             toast.success("Успешно удалено")
             toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            dispatch.putg.setLoading(false)
+            dispatch.putgm.setLoading(false)
         }
     }
 
-    const submitHandler = async (form: IConstruction) => {
+    const submitHandler = async (form: IObturator) => {
         if (!addit) return
-        let con = [...addit.construction] || []
+        let obts = [...addit.pObturator] || []
         if (!data) {
-            con.push({
+            obts.push({
                 short: form.short,
                 title: form.title,
                 description: form.description,
+                forDescr: form.forDescr,
             })
         } else {
-            con = con?.map(c => {
-                if (c.short === data.short) return form
-                return c
+            obts = obts?.map(o => {
+                if (o.short === data.short) return form
+                return o
             })
         }
-
         try {
-            dispatch.putg.setLoading(true)
-            await AdditService.updateConstruction(
+            dispatch.putgm.setLoading(true)
+            await AdditService.updateObturators(
                 addit.id,
-                con,
+                obts,
                 data ? "update" : "add",
                 data ? "" : form.short
             )
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.construction = con
+            add.pObturator = obts
             dispatch.addit.setAddit(add)
             toast.success(data ? "Успешно обновлено" : "Успешно создано")
             toggle()
         } catch (error: any) {
             toast.error(`Возникла ошибка: ${error.message}`)
         } finally {
-            dispatch.putg.setLoading(false)
+            dispatch.putgm.setLoading(false)
         }
     }
 
-    const updateDesignHandler = (con: IConstruction) => () => {
+    const updateObturatorHandler = (ob: IObturator) => () => {
         setData({
-            short: con.short,
-            title: con.title,
-            description: con.description,
+            short: ob.short,
+            title: ob.title,
+            description: ob.description,
+            forDescr: ob.forDescr,
         })
-        setValue("short", con.short)
-        setValue("title", con.title)
-        setValue("description", con.description)
+        setValue("short", ob.short)
+        setValue("title", ob.title)
+        setValue("description", ob.description)
+        setValue("forDescr", ob.forDescr)
         toggle()
     }
 
-    const openDesignHandler = () => {
+    const openObturatorHandler = () => {
         setData(null)
         setValue("short", "")
         setValue("title", "")
         setValue("description", "")
+        setValue("forDescr", "")
         toggle()
     }
 
@@ -172,28 +151,31 @@ export const Design: FC<Props> = () => {
                         <Input
                             name='short'
                             label='Короткое обозначение'
-                            placeholder='210'
+                            placeholder='01'
                             register={register}
                             rule={{ required: true }}
                             error={errors.short}
                             errorText='Поле не заполнено'
                         />
-                        <Input
+                        <Textarea
                             name='title'
                             label='Название'
-                            placeholder='армированная'
+                            placeholder='без обтюраторов'
                             register={register}
                             rule={{ required: true }}
                             error={errors.title}
                             errorText='Поле не заполнено'
                         />
                         <Textarea name='description' label='Пояснение' register={register} />
-                        {/* <Textarea
-                            name='description'
+                        <Textarea
+                            name='forDescr'
                             label='Для описания'
-                            placeholder=''
+                            placeholder='с наружным обтюратором из нержавеющей ленты марки &'
                             register={register}
-                        /> */}
+                            rule={{ required: true }}
+                            error={errors.title}
+                            errorText='Поле не заполнено'
+                        />
                     </form>
                 </Modal.Content>
                 <Modal.Footer>
@@ -214,34 +196,32 @@ export const Design: FC<Props> = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <p className={classes.add} onClick={openDesignHandler}>
+            <p className={classes.add} onClick={openObturatorHandler}>
                 Добавить
             </p>
             <div className={`${classes.list} scroll`}>
-                {addit?.construction.map(con => {
-                    const idx = constructions.findIndex(c => c.short === con.short)
+                {addit?.pObturator.map(ob => {
+                    let idx = constructions
+                        .find(c => c.basis === construction)
+                        ?.obturator.findIndex(o => o.obturator === ob.short)
+                    if (idx === undefined) idx = -1
 
                     return (
-                        <div key={con.short} className={classes.listItem}>
+                        <div key={ob.short} className={classes.listItem}>
                             <Checkbox
-                                name={con.short}
-                                id={con.short}
+                                name={ob.short}
+                                id={`obt-${ob.short}`}
                                 checked={idx > -1}
-                                onChange={changeDesignHandler(con.short)}
+                                onChange={changeObturatorHandler(ob.short)}
+                                label={`${ob.short} ${ob.title}`}
                             />
-                            <p
-                                className={`${classes.filItem} ${
-                                    con.short === construction ? classes.active : ""
-                                }`}
-                                onClick={chooseDesignHandler(con.short)}
-                            >
-                                {con.short} {con.title}
+                            <p className={classes.countItem}>
                                 {idx > -1 ? (
                                     <span className={classes.count}>({idx + 1})</span>
                                 ) : null}
                             </p>
 
-                            <p className={classes.icon} onClick={updateDesignHandler(con)}>
+                            <p className={classes.icon} onClick={updateObturatorHandler(ob)}>
                                 &#9998;
                             </p>
                         </div>

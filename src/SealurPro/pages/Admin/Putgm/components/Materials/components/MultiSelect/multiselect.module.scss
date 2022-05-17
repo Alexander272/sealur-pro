@@ -1,0 +1,74 @@
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.item {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background-color: rgba(0, 119, 255, 0.06);
+    cursor: pointer;
+
+    &:hover {
+        & .icon {
+            color: var(--button-color);
+        }
+    }
+}
+.add {
+    background-color: var(--button-color);
+    color: #fff;
+}
+
+.icon {
+    margin-left: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 50;
+}
+
+.container {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.roster {
+    position: absolute;
+    z-index: 55;
+    background-color: #fff;
+    left: 0;
+    right: 0;
+    border: 1px solid var(--button-color);
+    border-radius: 8px;
+    // padding: 10px;
+    max-height: 350px;
+    overflow: auto;
+}
+
+.rosterItem {
+    cursor: pointer;
+    padding: 5px 12px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: rgba(0, 119, 255, 0.06);
+    }
+}
+.selected {
+    background-color: rgba(0, 119, 255, 0.06);
+}

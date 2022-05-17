@@ -2,8 +2,8 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
-import { IConstruction, IObturator, IPutgImage, IPutgReq } from "../../types/putg"
-import { IPUTGM } from "../../types/putgm"
+import { IObturator, IPutgImage, IPutgReq } from "../../types/putg"
+import { IPUTGM, IBasis } from "../../types/putgm"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
 interface IPutgmState {
@@ -11,7 +11,7 @@ interface IPutgmState {
     fetching: boolean
     error: boolean
 
-    putgImage: IPutgImage[]
+    putgmImage: IPutgImage[]
     form: "Round" | "Oval" | "Rectangular"
 
     putgms: IPUTGM[]
@@ -27,7 +27,7 @@ interface IPutgmState {
 
     notStand: boolean
 
-    // constructions: IConstruction[]
+    constructions: IBasis[]
 
     construction: string
     obturator: string
@@ -58,7 +58,7 @@ export const putgm = createModel<ProModel>()({
         fetching: false,
         error: false,
 
-        putgImage: [],
+        putgmImage: [],
         form: "Round",
 
         putgms: [],
@@ -114,8 +114,8 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        setPutgImage(state, payload: IPutgImage[]) {
-            state.putgImage = payload
+        setPutgmImage(state, payload: IPutgImage[]) {
+            state.putgmImage = payload
             return state
         },
         setForm(state, payload: "Round" | "Oval" | "Rectangular") {
@@ -166,23 +166,28 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        // setOnlyConstructions(state, payload: IConstruction[]) {
-        //     state.constructions = payload
-        //     return state
-        // },
-        // setConstructions(state, payload: IConstruction[]) {
-        //     state.constructions = payload
-        //     state.construction = payload[0]?.short || ""
-        //     state.obturator = payload[0]?.obturators[0]?.short || ""
-        //     state.imageUrl = payload[0]?.obturators[0]?.imageUrl || ""
-        //     return state
-        // },
+        setOnlyConstructions(state, payload: IBasis[]) {
+            state.constructions = payload
+            return state
+        },
+        setConstructions(state, payload: IBasis[]) {
+            state.constructions = payload
+            state.construction = payload[0]?.basis || ""
+            state.obturator = payload[0]?.obturator[0]?.obturator || ""
+            state.seal = payload[0]?.obturator[0]?.sealant[0].seal || ""
+            state.imageUrl = payload[0]?.obturator[0]?.sealant[0].imageUrl || ""
+            return state
+        },
         setConstruction(state, payload: string) {
             state.construction = payload
             return state
         },
         setObturator(state, payload: string) {
             state.obturator = payload
+            return state
+        },
+        setSeal(state, payload: string) {
+            state.seal = payload
             return state
         },
         setImageUrl(state, payload: string) {
@@ -210,22 +215,14 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        // setRf(state, payload: string) {
-        //     state.rf = payload
-        //     return state
-        // },
-        // setOb(state, payload: string) {
-        //     state.ob = payload
-        //     return state
-        // },
-        // setIl(state, payload: string) {
-        //     state.il = payload
-        //     return state
-        // },
-        // setOl(state, payload: string) {
-        //     state.ol = payload
-        //     return state
-        // },
+        setBasis(state, payload: string) {
+            state.basis = payload
+            return state
+        },
+        setObt(state, payload: string) {
+            state.obt = payload
+            return state
+        },
 
         setIsJumper(state, payload: boolean) {
             state.isJumper = payload
@@ -243,10 +240,7 @@ export const putgm = createModel<ProModel>()({
             state.isHole = payload
             return state
         },
-        // setIsDetachable(state, payload: boolean) {
-        //     state.isDetachable = payload
-        //     return state
-        // },
+
         setParts(state, payload: string) {
             state.parts = payload
             return state
@@ -379,140 +373,130 @@ export const putgm = createModel<ProModel>()({
     },
 
     effects: dispatch => {
-        const { putg, addit } = dispatch
+        const { putgm, addit } = dispatch
         return {
-            async getPutgImage(form: string) {
+            async getPutgmImage(form: string) {
                 try {
                     const res = await ReadService.getPutgImage(form)
-                    putg.setPutgImage(res.data || [])
+                    putgm.setPutgmImage(res.data || [])
                 } catch (error: any) {
                     toast.error("Не удалось загрузить чертежи")
                 }
             },
 
             async getDefault() {
-                putg.setLoading(true)
+                putgm.setLoading(true)
                 console.log("getDefault")
                 try {
-                    const res = await ReadService.getDefaultPutg()
+                    const res = await ReadService.getDefaultPutgm()
                     addit.setFl(res.fl)
                     addit.setAddit(res.addit)
                     addit.setTypeFl(res.typeFl)
-                    putg.setPutgs(res.putg)
-                    putg.setSizes(res!.sizes.sizes)
-                    putg.setDns(res!.sizes.dn)
-                    putg.setPutg(res.putg[0])
-                    putg.setSize(res!.sizes.sizes[0])
-                    putg.setDn(res!.sizes.sizes[0].dn)
-                    putg.setPn(res!.sizes.sizes[0].pn.split(";")[0])
-                    putg.setH(res!.sizes.sizes[0].h.split(";")[0])
+                    putgm.setPutgms(res.putgm)
+                    putgm.setSizes(res!.sizes.sizes)
+                    putgm.setDns(res!.sizes.dn)
+                    putgm.setPutgm(res.putgm[0])
+                    // putgm.setSize(res!.sizes.sizes[0])
+                    // putgm.setDn(res!.sizes.sizes[0].dn)
+                    // putgm.setPn(res!.sizes.sizes[0].pn.split(";")[0])
+                    // putgm.setH(res!.sizes.sizes[0].h.split(";")[0])
 
-                    putg.setFlange(res.fl[0].id)
+                    putgm.setFlange(res.fl[0].id)
 
-                    putg.setConstructions(res.putg[0].construction[0].temperatures[0].constructions)
-                    putg.setConstruction(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].short
+                    putgm.setConstructions(res.putgm[0].construction[0].basis)
+                    putgm.setConstruction(res.putgm[0].construction[0].basis[0].basis)
+                    putgm.setObturator(res.putgm[0].construction[0].basis[0].obturator[0].obturator)
+                    putgm.setSeal(
+                        res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].seal
                     )
-                    putg.setObturator(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .short
-                    )
-                    putg.setImageUrl(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .imageUrl
+                    putgm.setImageUrl(
+                        res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].imageUrl
                     )
 
-                    putg.setGrap(res.putg[0].construction[0].grap)
-                    putg.setTemp(res.putg[0].temperatures[0].temps[0].id)
-                    putg.setMod(res.putg[0].temperatures[0].temps[0].mods[0])
+                    putgm.setGrap(res.putgm[0].construction[0].grap)
+                    putgm.setTemp(res.putgm[0].temperatures[0].temps[0].id)
+                    putgm.setMod(res.putgm[0].temperatures[0].temps[0].mods[0])
                     // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
-                    putg.setMoun(res.addit.mounting[0].title)
-                    putg.setCoating(res.addit.coating[0].id)
+                    putgm.setMoun(res.addit.mounting[0].title)
+                    putgm.setCoating(res.addit.coating[0].id)
 
-                    putg.setRf(res.putg[0].reinforce.default)
-                    putg.setOb(res.putg[0].obturator.default)
-                    putg.setIl(res.putg[0].iLimiter.default)
-                    putg.setOl(res.putg[0].oLimiter.default)
+                    putgm.setBasis(res.putgm[0].basis.default)
+                    putgm.setObt(res.putgm[0].obturator.default)
                 } catch (error) {
-                    putg.setError(true)
+                    putgm.setError(true)
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {
-                    putg.setLoading(false)
+                    putgm.setLoading(false)
                 }
             },
             async getSizes(req: ISizeReq) {
-                putg.setFetching(true)
+                putgm.setFetching(true)
                 try {
                     const res = await ReadService.getSize(req)
-                    putg.setSizes(res.data.sizes)
-                    putg.setDns(res.data.dn)
-                    putg.setSize(res.data.sizes[0])
-                    putg.setDn(res.data.sizes[0].dn)
-                    putg.setPn(res.data.sizes[0].pn.split(";")[0])
-                    putg.setH(res.data.sizes[0].h.split(";")[0])
+                    putgm.setSizes(res.data.sizes)
+                    putgm.setDns(res.data.dn)
+                    putgm.setSize(res.data.sizes[0])
+                    putgm.setDn(res.data.sizes[0].dn)
+                    putgm.setPn(res.data.sizes[0].pn.split(";")[0])
+                    putgm.setH(res.data.sizes[0].h.split(";")[0])
                 } catch (error) {
                     toast.error("Не удалось загрузить размеры", { autoClose: false })
                 } finally {
-                    putg.setFetching(false)
+                    putgm.setFetching(false)
                 }
             },
             async getAllSizes(req: ISizeReq) {
-                putg.setFetching(true)
+                putgm.setFetching(true)
                 try {
                     const res = await ReadService.getAllSize(req)
-                    putg.setSizes(res.data.sizes || [])
-                    putg.setDns(res.data.dn)
-                    putg.setSize(res.data.sizes[0])
+                    putgm.setSizes(res.data.sizes || [])
+                    putgm.setDns(res.data.dn)
+                    putgm.setSize(res.data.sizes[0])
                 } catch (error) {
                     toast.error("Не удалось загрузить размеры", { autoClose: false })
                 } finally {
-                    putg.setFetching(false)
+                    putgm.setFetching(false)
                 }
             },
-            async getPutg({ flange, req }: { flange: string; req: IPutgReq }) {
-                putg.setFetching(true)
+            async getPutgm({ flange, req }: { flange: string; req: IPutgReq }) {
+                putgm.setFetching(true)
                 try {
-                    const res = await ReadService.getPutg(req)
+                    const res = await ReadService.getPutgm(req)
 
                     if (res.data === null) {
-                        putg.setPutgs([])
-                        putg.setPutg(null)
-                        putg.setConstructions([])
-                        putg.setForm(req.form)
+                        putgm.setPutgms([])
+                        putgm.setPutgm(null)
+                        putgm.setConstructions([])
+                        putgm.setForm(req.form)
                     } else {
-                        putg.setFlange(flange)
-                        putg.setPutg(res.data[0])
-                        putg.setPutgs(res.data)
-                        putg.setForm(res.data[0].form)
+                        putgm.setFlange(flange)
+                        putgm.setPutgm(res.data[0])
+                        putgm.setPutgms(res.data)
+                        putgm.setForm(res.data[0].form)
 
-                        putg.setConstructions(
-                            res.data[0].construction[0].temperatures[0].constructions
+                        putgm.setConstructions(res.data[0].construction[0].basis)
+                        putgm.setConstruction(res.data[0].construction[0].basis[0].basis)
+                        putgm.setObturator(
+                            res.data[0].construction[0].basis[0].obturator[0].obturator
                         )
-                        putg.setConstruction(
-                            res.data[0].construction[0].temperatures[0].constructions[0].short
+                        putgm.setSeal(
+                            res.data[0].construction[0].basis[0].obturator[0].sealant[0].seal
                         )
-                        putg.setObturator(
-                            res.data[0].construction[0].temperatures[0].constructions[0]
-                                .obturators[0].short
-                        )
-                        putg.setImageUrl(
-                            res.data[0].construction[0].temperatures[0].constructions[0]
-                                .obturators[0].imageUrl
+                        putgm.setImageUrl(
+                            res.data[0].construction[0].basis[0].obturator[0].sealant[0].imageUrl
                         )
 
-                        putg.setGrap(res.data[0].construction[0].grap)
-                        putg.setTemp(res.data[0].temperatures[0].temps[0].id)
-                        putg.setMod(res.data[0].temperatures[0].temps[0].mods[0])
+                        putgm.setGrap(res.data[0].construction[0].grap)
+                        putgm.setTemp(res.data[0].temperatures[0].temps[0].id)
+                        putgm.setMod(res.data[0].temperatures[0].temps[0].mods[0])
 
-                        putg.setRf(res.data[0].reinforce.default || "")
-                        putg.setOb(res.data[0].obturator.default || "")
-                        putg.setIl(res.data[0].iLimiter.default || "")
-                        putg.setOl(res.data[0].oLimiter.default || "")
+                        putgm.setBasis(res.data[0].basis.default)
+                        putgm.setObt(res.data[0].obturator.default)
                     }
                 } catch (error) {
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {
-                    putg.setFetching(false)
+                    putgm.setFetching(false)
                 }
             },
         }

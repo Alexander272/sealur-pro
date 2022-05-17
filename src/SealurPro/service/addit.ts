@@ -1,6 +1,7 @@
 import api from "./api"
 import { IResponse } from "../types/response"
 import {
+    IBasis,
     ICoating,
     IConstruction,
     IFiller,
@@ -9,6 +10,7 @@ import {
     IMod,
     IMoun,
     IObturator,
+    ISealant,
     ITemp,
 } from "../types/addit"
 
@@ -166,6 +168,60 @@ export default class AdditService {
         try {
             const res = await api.patch(`/sealur-pro/additionals/${id}/obt`, {
                 obturator: obts,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updateBasis(
+        id: string,
+        constr: IBasis[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/basis`, {
+                constr: constr,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updatePObturators(
+        id: string,
+        obts: IObturator[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/pobt`, {
+                pobturator: obts,
+                type,
+                change,
+            })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async updateSealant(
+        id: string,
+        seal: ISealant[],
+        type: string,
+        change: string
+    ): Promise<IResponse> {
+        try {
+            const res = await api.patch(`/sealur-pro/additionals/${id}/seal`, {
+                sealant: seal,
                 type,
                 change,
             })

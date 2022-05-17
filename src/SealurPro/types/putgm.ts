@@ -6,23 +6,22 @@ export interface IPUTGM {
     typeFlId: string
     typePr: string
     form: "Round" | "Oval" | "Rectangular"
-    // construction: IConstr[]
-
+    construction: IConstruction[]
     temperatures: IGrap[]
     basis: IMaterial
     obturator: IMaterial
-    seal: ISnpMaterial
+    // seal: ISnpMaterial
     coating: string[]
     mounting: string[]
     graphite: string[]
 }
 
-export interface IPutgDTO {
+export interface IPutgmDTO {
     flangeId: string
     typeFlId: string
     typePr: string
     form: "Round" | "Oval" | "Rectangular"
-    // construction: IConstr[]
+    construction: IConstruction[]
     temperatures: IGrap[]
     basis: IMaterial
     obturator: IMaterial
@@ -30,3 +29,31 @@ export interface IPutgDTO {
     mounting: string[]
     graphite: string[]
 }
+
+export interface IConstruction {
+    grap: string
+    basis: IBasis[]
+}
+
+export interface IBasis {
+    basis: string
+    obturator: IObturator[]
+}
+
+export interface IObturator {
+    obturator: string
+    sealant: ISeal[]
+}
+
+export interface ISeal {
+    seal: string
+    imageUrl: string
+}
+
+// export interface IObturator {
+//     obt
+// }
+
+// export interface ISealant {
+//     grap: string
+// }

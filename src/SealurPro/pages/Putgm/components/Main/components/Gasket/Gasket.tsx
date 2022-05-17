@@ -10,38 +10,41 @@ type Props = {}
 
 export const Gasket: FC<Props> = () => {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    // const constructions = useSelector((state: ProState) => state.putg.constructions)
+    const constructions = useSelector((state: ProState) => state.putgm.constructions)
     const construction = useSelector((state: ProState) => state.putgm.construction)
     const obturator = useSelector((state: ProState) => state.putgm.obturator)
+    const seal = useSelector((state: ProState) => state.putgm.seal)
 
     const dispatch = useDispatch<Dispatch>()
 
     const constructionHandler = (value: string) => {
-        // dispatch.putg.changeConstruction(value)
+        dispatch.putgm.changeConstruction(value)
     }
 
     const obturatorHandler = (value: string) => {
-        // dispatch.putg.setObturator(value)
-        // const constr = constructions.find(c => c.short === construction)
-        // const obturator = constr?.obturators.find(o => o.short === value)
-        // if (obturator) dispatch.putg.setImageUrl(obturator.imageUrl)
+        dispatch.putgm.setObturator(value)
+        const constr = constructions.find(c => c.basis === construction)
+        const obturator = constr?.obturator.find(o => o.obturator === value)
+        const sealant = obturator?.sealant.find(o => o.seal === seal)
+        if (sealant) dispatch.putgm.setImageUrl(sealant.imageUrl)
     }
 
     const renderConstruction = () => {
-        const bas = addit?.basis || []
-        // addit?.basis.filter(con => constructions.some(c => c.short === con.short)) || []
+        // const bas = addit?.basis || []
+        const bas = addit?.basis.filter(con => constructions.some(c => c.basis === con.short)) || []
         return bas.map(b => (
             <Option key={b.short} value={b.short}>
-                {b.short} {b.title}
+                {b.title}
             </Option>
         ))
     }
 
     const renderObturator = () => {
-        // const constr = constructions.find(c => c.short === construction)
-        const obts = addit?.pObturator || []
-        // addit?.obturator.filter(obt => constr?.obturators.some(o => o.short === obt.short)) ||
-        // []
+        const constr = constructions.find(c => c.basis === construction)
+        const obts =
+            addit?.obturator.filter(obt =>
+                constr?.obturator.some(o => o.obturator === obt.short)
+            ) || []
 
         return obts.map(o => (
             <Option key={o.short} value={o.short}>

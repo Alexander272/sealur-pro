@@ -54,7 +54,6 @@ export interface IConstruction {
     short: string
     title: string
     description: string
-    isHaveMaterial: boolean
 }
 
 export interface IObturator {
@@ -78,7 +77,6 @@ export interface IBasis {
 }
 
 export interface ISealant {
-    id: string
     short: string
     title: string
     description: string

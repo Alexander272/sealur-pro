@@ -13,30 +13,30 @@ export const Size: FC<Props> = () => {
 
     const flanges = useSelector((state: ProState) => state.addit.fl)
 
-    const sizes = useSelector((state: ProState) => state.putg.sizes)
-    const putg = useSelector((state: ProState) => state.putg.putg)
-    const flange = useSelector((state: ProState) => state.putg.flange)
+    const sizes = useSelector((state: ProState) => state.putgm.sizes)
+    const putgm = useSelector((state: ProState) => state.putgm.putgm)
+    const flange = useSelector((state: ProState) => state.putgm.flange)
 
     const dispatch = useDispatch<Dispatch>()
 
     useEffect(() => {
         const fl = flanges.find(f => f.id === flange)
-        if (fl && putg?.typePr && putg?.typeFlId)
-            dispatch.putg.getAllSizes({
+        if (fl && putgm?.typePr && putgm?.typeFlId)
+            dispatch.putgm.getAllSizes({
                 flShort: fl.short,
                 standId: "0",
-                typePr: putg.typePr,
-                typeFlId: putg.typeFlId,
+                typePr: putgm.typePr,
+                typeFlId: putgm.typeFlId,
             })
-    }, [putg?.typePr, putg?.typeFlId, flanges, flange, dispatch.putg])
+    }, [putgm?.typePr, putgm?.typeFlId, flanges, flange, dispatch.putgm])
 
     const openTableHandler = () => setIsOpenTable(prev => !prev)
 
     // добавление сохраненных размеров
     const savedSizeHandler = (size: ISize, isNew: boolean) => {
-        if (isNew) dispatch.putg.setSizes([...sizes, size])
+        if (isNew) dispatch.putgm.setSizes([...sizes, size])
         else {
-            dispatch.putg.setSizes(
+            dispatch.putgm.setSizes(
                 sizes.map(s => {
                     if (s.id === size.id) return size
                     return s
@@ -47,8 +47,8 @@ export const Size: FC<Props> = () => {
 
     // удаление размеров
     const deleteSizeHandler = (id: string, isAll: boolean) => {
-        if (isAll) dispatch.putg.setSizes([])
-        else dispatch.putg.setSizes(sizes.filter(s => s.id !== id))
+        if (isAll) dispatch.putgm.setSizes([])
+        else dispatch.putgm.setSizes(sizes.filter(s => s.id !== id))
     }
 
     if (!sizes.length) return null

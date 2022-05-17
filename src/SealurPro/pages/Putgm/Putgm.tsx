@@ -1,8 +1,10 @@
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import ServerError from "../../../Error/ServerError"
 import { Dispatch, ProState } from "../../store/store"
 import classes from "../style/pages.module.scss"
+import { Addit } from "./components/Addit/Addit"
 import { Main } from "./components/Main/Main"
 
 export default function Putgm() {
@@ -15,10 +17,10 @@ export default function Putgm() {
 
     const { putgm } = useDispatch<Dispatch>()
 
-    // useEffect(() => {
-    //     // получение начальных значений (прокладки, размеры первой из них, типы фланцев)
-    //     putgm.getDefault()
-    // }, [putgm])
+    useEffect(() => {
+        // получение начальных значений (прокладки, размеры первой из них, типы фланцев)
+        putgm.getDefault()
+    }, [putgm])
 
     if (loading || loadingPutg) return <Loader />
 
@@ -32,6 +34,7 @@ export default function Putgm() {
             </h3>
 
             <Main />
+            <Addit />
         </>
     )
 }
