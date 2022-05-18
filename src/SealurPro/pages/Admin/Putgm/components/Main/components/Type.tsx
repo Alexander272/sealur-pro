@@ -4,6 +4,7 @@ import { toast } from "react-toastify"
 import { ConfirmModal } from "../../../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../../../components/Modal/hooks/useModal"
 import { Checkbox } from "../../../../../../../components/UI/Checkbox/Checkbox"
+import PutgmService from "../../../../../../service/putgm"
 import { Dispatch, ProState } from "../../../../../../store/store"
 import { IPUTGM, IPutgmDTO } from "../../../../../../types/putgm"
 import classes from "./type.module.scss"
@@ -59,7 +60,7 @@ export const Type: FC<Props> = () => {
             return
         }
 
-        const tmp = putgms.filter(s => s.typePr.includes(`ПУТГ-${type}`))
+        const tmp = putgms.filter(s => s.typePr.includes(`ПУТГм-${type}`))
         if (!tmp.length) {
             const newPutgm = createNewPutgm(type)
             dispatch.putgm.setPutgms([...putgms, newPutgm])
@@ -76,7 +77,7 @@ export const Type: FC<Props> = () => {
 
     // добавление (удаление) прокладки
     const changeTypeHandler = (curType: string) => () => {
-        const tmp = putgms.filter(s => s.typePr.includes(`ПУТГ-${curType}`))
+        const tmp = putgms.filter(s => s.typePr.includes(`ПУТГм-${curType}`))
         if (tmp.length) {
             if (tmp[0].id !== "new" && putgm?.id === "new") {
                 toast.info(
@@ -137,7 +138,7 @@ export const Type: FC<Props> = () => {
     // закрытие модалки с сохранением и переходом на другую прокладку
     const saveHandler = async () => {
         if (!putgm) {
-            toast.error("Тип путг не добавлен")
+            toast.error("Тип путгм не добавлен")
             toggle()
             return
         }
@@ -159,19 +160,19 @@ export const Type: FC<Props> = () => {
                 graphite: putgm.graphite,
             }
 
-            // if (putgm.id === "new") {
-            //     const res = await PutgmService.create(data)
-            //     id = res.id || ""
-            //     toast.success("Успешно создано")
-            // } else {
-            //     await PutgmService.update(data, putgm.id)
-            //     id = putgm.id
-            //     toast.success("Успешно обновлено")
-            // }
+            if (putgm.id === "new") {
+                const res = await PutgmService.create(data)
+                id = res.id || ""
+                toast.success("Успешно создано")
+            } else {
+                await PutgmService.update(data, putgm.id)
+                id = putgm.id
+                toast.success("Успешно обновлено")
+            }
         } catch (error: any) {
             toast.error("Не удалось выполнить запрос на сервер")
         } finally {
-            dispatch.putg.setLoading(false)
+            dispatch.putgm.setLoading(false)
         }
 
         let tmp = [...putgms]
@@ -206,17 +207,17 @@ export const Type: FC<Props> = () => {
             id = tmp?.id || ""
         }
 
-        // try {
-        //     dispatch.putg.setLoading(true)
-        //     await PutgmService.delete(id)
-        //     toast.success("Успешно удалено")
-        // } catch (error) {
-        //     toast.error("Не удалось выполнить запрос на сервер")
-        // } finally {
-        //     dispatch.putgm.setLoading(false)
-        // }
+        try {
+            dispatch.putgm.setLoading(true)
+            await PutgmService.delete(id)
+            toast.success("Успешно удалено")
+        } catch (error) {
+            toast.error("Не удалось выполнить запрос на сервер")
+        } finally {
+            dispatch.putgm.setLoading(false)
+        }
 
-        const newPutgs = putgms.filter(p => p.typePr !== `ПУТГ-${t.current}`)
+        const newPutgs = putgms.filter(p => p.typePr !== `ПУТГм-${t.current}`)
         dispatch.putgm.setPutgms(newPutgs)
         dispatch.putgm.setPutgm(newPutgs[0] || null)
         toggle()
@@ -224,14 +225,14 @@ export const Type: FC<Props> = () => {
 
     const renderTypes = () => {
         return typeFl.map(t => {
-            let s = putgms.find(p => p.typePr.toLowerCase() === `ПУТГ-${t.short}`.toLowerCase())
+            let s = putgms.find(p => p.typePr.toLowerCase() === `ПУТГм-${t.short}`.toLowerCase())
 
             return (
                 <div key={t.id} className={classes.types}>
                     <p
                         onClick={choseTypeHandler(t.short || t.id)}
                         className={`${classes.type} ${
-                            putgm?.typePr.toLowerCase() === `ПУТГ-${t.short}`.toLowerCase()
+                            putgm?.typePr.toLowerCase() === `ПУТГм-${t.short}`.toLowerCase()
                                 ? classes.active
                                 : ""
                         }`}

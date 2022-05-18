@@ -6,34 +6,39 @@ import classes from "./drawing.module.scss"
 type Props = {}
 
 export const Drawing: FC<Props> = () => {
-    const constructions = useSelector((state: ProState) => state.putg.constructions)
+    const constructions = useSelector((state: ProState) => state.putgm.constructions)
 
     const renderDrawing = () => {
         const drawings: JSX.Element[] = []
         constructions.forEach(con => {
-            con.obturators.forEach(o => {
-                drawings.push(
-                    <p key={`${con.short}-${o.short}`} className={classes.listItem}>
-                        <span>
-                            {con.short}-{o.short}:
-                        </span>
-                        {o.imageUrl !== "" ? (
-                            <>
-                                <a
-                                    href={o.imageUrl}
-                                    className={classes.link}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                >
-                                    {o.imageUrl}
-                                </a>
-                                <span className={classes.times}>&times;</span>
-                            </>
-                        ) : (
-                            <span className={classes.choose}>Выберите файл</span>
-                        )}
-                    </p>
-                )
+            con.obturator.forEach(o => {
+                o.sealant.forEach(s => {
+                    drawings.push(
+                        <p
+                            key={`${con.basis}-${o.obturator}-${s.seal}`}
+                            className={classes.listItem}
+                        >
+                            <span>
+                                {con.basis}-{o.obturator}-{s.seal}:
+                            </span>
+                            {s.imageUrl !== "" ? (
+                                <>
+                                    <a
+                                        href={s.imageUrl}
+                                        className={classes.link}
+                                        target='_blank'
+                                        rel='noreferrer'
+                                    >
+                                        {s.imageUrl}
+                                    </a>
+                                    <span className={classes.times}>&times;</span>
+                                </>
+                            ) : (
+                                <span className={classes.choose}>Выберите файл</span>
+                            )}
+                        </p>
+                    )
+                })
             })
         })
 

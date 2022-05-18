@@ -10,23 +10,25 @@ import { Input } from "../../../../../../../../components/UI/Input/Input"
 import { Textarea } from "../../../../../../../../components/UI/Input/Textarea"
 import AdditService from "../../../../../../../service/addit"
 import { Dispatch, ProState } from "../../../../../../../store/store"
-import { IAddit, IObturator } from "../../../../../../../types/addit"
+import { IAddit, ISealant } from "../../../../../../../types/addit"
 import { IBasis, IConstruction } from "../../../../../../../types/putgm"
 import classes from "../graphite.module.scss"
 
 type Props = {}
 
-export const Obturator: FC<Props> = () => {
+export const Sealant: FC<Props> = () => {
     const addit = useSelector((state: ProState) => state.addit.addit)
     const putgm = useSelector((state: ProState) => state.putgm.putgm)
     const constructions = useSelector((state: ProState) => state.putgm.constructions)
+    const grap = useSelector((state: ProState) => state.putgm.grap)
     const construction = useSelector((state: ProState) => state.putgm.construction)
     const obturator = useSelector((state: ProState) => state.putgm.obturator)
-    const grap = useSelector((state: ProState) => state.putgm.grap)
+    const seal = useSelector((state: ProState) => state.putgm.seal)
+    const putgmImage = useSelector((state: ProState) => state.putgm.putgmImage)
 
     const dispatch = useDispatch<Dispatch>()
 
-    const [data, setData] = useState<IObturator | null>(null)
+    const [data, setData] = useState<ISealant | null>(null)
 
     const { isOpen, toggle } = useModal()
     const {
@@ -34,30 +36,27 @@ export const Obturator: FC<Props> = () => {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<IObturator>()
+    } = useForm<ISealant>()
 
-    //TODO добавить выбор обтюратора
-
-    const changeObturator = (short: string) => {
+    const changeSealantHandler = (short: string) => () => {
         const c: IBasis[] = JSON.parse(JSON.stringify(constructions))
         let idx = c.findIndex(c => c.basis === construction)
-        const cur = c[idx]?.obturator.find(o => o.obturator === short)
-        if (cur) {
-            c[idx].obturator = c[idx].obturator.filter(o => o.obturator !== short)
-        } else {
-            c[idx].obturator.push({ obturator: short, sealant: [] })
-        }
 
-        return c
-    }
-
-    const changeObturatorHandler = (short: string) => () => {
-        if (!construction) {
+        if (idx === -1) {
             toast.error("Тип основания не выбран")
             return
         }
 
-        const c = changeObturator(short)
+        const oIdx = c[idx].obturator.findIndex(o => o.obturator === obturator)
+        const cur = c[idx].obturator[oIdx].sealant.find(s => s.seal === short)
+        if (cur) {
+            c[idx].obturator[oIdx].sealant = c[idx].obturator[oIdx].sealant.filter(
+                s => s.seal !== short
+            )
+        } else {
+            const image = putgmImage.find(i => i.gasket === `${construction}-${short}-${seal}`)
+            c[idx].obturator[oIdx].sealant.push({ seal: short, imageUrl: image?.url || "" })
+        }
         dispatch.putgm.setOnlyConstructions(c)
 
         const constr: IConstruction[] = JSON.parse(JSON.stringify(putgm?.construction))
@@ -67,37 +66,15 @@ export const Obturator: FC<Props> = () => {
         if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: constr })
     }
 
-    const chooseObturatorHandler = (short: string) => () => {
-        if (!construction) {
-            toast.error("Тип основания не выбран")
-            return
-        }
-
-        dispatch.putgm.setObturator(short)
-        const c: IBasis[] = JSON.parse(JSON.stringify(constructions))
-        let idx = c.findIndex(c => c.basis === construction)
-        const cur = c[idx]?.obturator.find(o => o.obturator === short)
-        if (!cur) {
-            const constr = changeObturator(short)
-            dispatch.putgm.setOnlyConstructions(constr)
-
-            const con: IConstruction[] = JSON.parse(JSON.stringify(putgm?.construction))
-            const cIdx = con.findIndex(c => c.grap === grap)
-            con[cIdx].basis = constr
-
-            if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: con })
-        }
-    }
-
     const deleteHandler = async () => {
         if (!addit || !data) return
-        let obts = addit?.pObturator || []
-        obts = obts.filter(o => o.short !== data.short)
+        let seals = addit?.sealant || []
+        seals = seals.filter(o => o.short !== data.short)
         try {
             dispatch.putgm.setLoading(true)
-            await AdditService.updateObturators(addit.id, obts, "delete", data.short)
+            await AdditService.updateSealant(addit.id, seals, "delete", data.short)
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.pObturator = obts
+            add.sealant = seals
             dispatch.addit.setAddit(add)
             toast.success("Успешно удалено")
             toggle()
@@ -108,32 +85,31 @@ export const Obturator: FC<Props> = () => {
         }
     }
 
-    const submitHandler = async (form: IObturator) => {
+    const submitHandler = async (form: ISealant) => {
         if (!addit) return
-        let obts = [...addit.pObturator] || []
+        let seals = [...addit.sealant] || []
         if (!data) {
-            obts.push({
+            seals.push({
                 short: form.short,
                 title: form.title,
                 description: form.description,
-                forDescr: form.forDescr,
             })
         } else {
-            obts = obts?.map(o => {
-                if (o.short === data.short) return form
-                return o
+            seals = seals?.map(s => {
+                if (s.short === data.short) return form
+                return s
             })
         }
         try {
             dispatch.putgm.setLoading(true)
-            await AdditService.updateObturators(
+            await AdditService.updateSealant(
                 addit.id,
-                obts,
+                seals,
                 data ? "update" : "add",
                 data ? "" : form.short
             )
             let add: IAddit = JSON.parse(JSON.stringify(addit))
-            add.pObturator = obts
+            add.sealant = seals
             dispatch.addit.setAddit(add)
             toast.success(data ? "Успешно обновлено" : "Успешно создано")
             toggle()
@@ -144,26 +120,23 @@ export const Obturator: FC<Props> = () => {
         }
     }
 
-    const updateObturatorHandler = (ob: IObturator) => () => {
+    const updateSealantHandler = (seal: ISealant) => () => {
         setData({
-            short: ob.short,
-            title: ob.title,
-            description: ob.description,
-            forDescr: ob.forDescr,
+            short: seal.short,
+            title: seal.title,
+            description: seal.description,
         })
-        setValue("short", ob.short)
-        setValue("title", ob.title)
-        setValue("description", ob.description)
-        setValue("forDescr", ob.forDescr)
+        setValue("short", seal.short)
+        setValue("title", seal.title)
+        setValue("description", seal.description)
         toggle()
     }
 
-    const openObturatorHandler = () => {
+    const openSealantHandler = () => {
         setData(null)
         setValue("short", "")
         setValue("title", "")
         setValue("description", "")
-        setValue("forDescr", "")
         toggle()
     }
 
@@ -221,44 +194,33 @@ export const Obturator: FC<Props> = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <p className={classes.add} onClick={openObturatorHandler}>
+            <p className={classes.add} onClick={openSealantHandler}>
                 Добавить
             </p>
             <div className={`${classes.list} scroll`}>
-                {addit?.pObturator.map(ob => {
+                {addit?.sealant.map(seal => {
                     let idx = constructions
                         .find(c => c.basis === construction)
-                        ?.obturator.findIndex(o => o.obturator === ob.short)
+                        ?.obturator.find(o => o.obturator === obturator)
+                        ?.sealant.findIndex(s => s.seal === seal.short)
                     if (idx === undefined) idx = -1
 
                     return (
-                        <div key={ob.short} className={classes.listItem}>
+                        <div key={seal.short} className={classes.listItem}>
                             <Checkbox
-                                name={ob.short}
-                                id={`obt-${ob.short}`}
+                                name={seal.short}
+                                id={`seal-${seal.short}`}
                                 checked={idx > -1}
-                                onChange={changeObturatorHandler(ob.short)}
-                                // label={`${ob.short} ${ob.title}`}
+                                onChange={changeSealantHandler(seal.short)}
+                                label={`${seal.title}`}
                             />
-                            <p
-                                className={`${classes.filItem} ${
-                                    ob.short === obturator ? classes.active : ""
-                                }`}
-                                onClick={chooseObturatorHandler(ob.short)}
-                            >
-                                {ob.short} {ob.title}
+                            <p className={classes.countItem}>
                                 {idx > -1 ? (
                                     <span className={classes.count}>({idx + 1})</span>
                                 ) : null}
                             </p>
 
-                            {/* <p className={classes.countItem}>
-                                {idx > -1 ? (
-                                    <span className={classes.count}>({idx + 1})</span>
-                                ) : null}
-                            </p> */}
-
-                            <p className={classes.icon} onClick={updateObturatorHandler(ob)}>
+                            <p className={classes.icon} onClick={updateSealantHandler(seal)}>
                                 &#9998;
                             </p>
                         </div>

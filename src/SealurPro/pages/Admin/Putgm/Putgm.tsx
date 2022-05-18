@@ -10,6 +10,8 @@ import { Main } from "./components/Main/Main"
 import { Material } from "./components/Materials/Materials"
 import { Construction } from "./components/Construction/Construction"
 import { Addit } from "./components/Addit/Addit"
+import { Temperature } from "./components/Temperature/Temperature"
+import PutgmService from "../../../service/putgm"
 import classes from "../pages.module.scss"
 
 export default function Putgm() {
@@ -38,7 +40,7 @@ export default function Putgm() {
     // сохранение прокладки
     const saveHandler = async () => {
         if (!putgm) {
-            toast.error("Тип путг не добавлен")
+            toast.error("Тип путгм не добавлен")
             return
         }
 
@@ -59,15 +61,15 @@ export default function Putgm() {
                 graphite: putgm.graphite,
             }
 
-            // if (putgm.id === "new") {
-            //     const res = await PutgmService.create(data)
-            //     id = res.id || ""
-            //     toast.success("Успешно создано")
-            // } else {
-            //     await PutgmService.update(data, putgm.id)
-            //     id = putgm.id
-            //     toast.success("Успешно обновлено")
-            // }
+            if (putgm.id === "new") {
+                const res = await PutgmService.create(data)
+                id = res.id || ""
+                toast.success("Успешно создано")
+            } else {
+                await PutgmService.update(data, putgm.id)
+                id = putgm.id
+                toast.success("Успешно обновлено")
+            }
         } catch (error: any) {
             toast.error("Не удалось выполнить запрос на сервер")
         } finally {
@@ -99,6 +101,7 @@ export default function Putgm() {
             {putgm && (
                 <>
                     <Construction />
+                    <Temperature />
                     <Material />
                     <Addit />
                     <div className={classes.line}>

@@ -82,8 +82,8 @@ export const Graphite: FC<Props> = () => {
             return (
                 <div key={g.short} className={classes.listItem}>
                     <Checkbox
-                        name={`grap-${g.short}`}
-                        id={`grap-${g.short}`}
+                        name={`grap_t-${g.short}`}
+                        id={`grap_t-${g.short}`}
                         checked={idx > -1}
                         onChange={changeGrapHandler(g.short)}
                     />

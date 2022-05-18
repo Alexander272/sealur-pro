@@ -10,9 +10,9 @@ type Props = {}
 
 export const Modifier: FC<Props> = () => {
     const addit = useSelector((state: ProState) => state.addit.addit)
-    const putg = useSelector((state: ProState) => state.putg.putg)
-    const grap = useSelector((state: ProState) => state.putg.grap)
-    const temp = useSelector((state: ProState) => state.putg.temp)
+    const putgm = useSelector((state: ProState) => state.putgm.putgm)
+    const grap = useSelector((state: ProState) => state.putgm.grap)
+    const temp = useSelector((state: ProState) => state.putgm.temp)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -22,7 +22,7 @@ export const Modifier: FC<Props> = () => {
             return
         }
 
-        const temperatures: IGrap[] = JSON.parse(JSON.stringify(putg?.temperatures)) || []
+        const temperatures: IGrap[] = JSON.parse(JSON.stringify(putgm?.temperatures)) || []
 
         const idx = temperatures.findIndex(t => t.grap === grap)
         const mIdx = temperatures[idx].temps?.findIndex(t => t.id === temp)
@@ -35,11 +35,11 @@ export const Modifier: FC<Props> = () => {
             temperatures[idx].temps[mIdx].mods.push(mod)
         }
 
-        if (putg) dispatch.putg.setPutg({ ...putg, temperatures })
+        if (putgm) dispatch.putgm.setPutgm({ ...putgm, temperatures })
     }
 
     const renderMod = () => {
-        const temps = putg?.temperatures.find(t => t.grap === grap)?.temps
+        const temps = putgm?.temperatures.find(t => t.grap === grap)?.temps
         const mods = temps?.find(t => t.id === temp)?.mods || []
 
         return addit?.mod.map(m => {

@@ -259,7 +259,7 @@ const testPutgm: IPUTGM = {
     // seal: ISnpMaterial
     coating: ["*"],
     mounting: ["*"],
-    graphite: ["2", "1"],
+    graphite: ["2"],
 }
 
 export default class ReadService {
