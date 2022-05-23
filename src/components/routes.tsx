@@ -35,10 +35,17 @@ export const MyRoutes = () => {
             <Routes>
                 <Route path='/auth/' element={<Auth />} />
                 <Route path='*' element={<PageNotFound />} />
-                <Route path='/' element={<PageNotFound />} />
+                {/* <Route path='/' element={<PageNotFound />} /> */}
 
-                {/* selection  */}
-                <Route path='/' element={<ProApp />}>
+                {/* section pro  */}
+                <Route
+                    path='/'
+                    element={
+                        <RequireAuth>
+                            <ProApp />
+                        </RequireAuth>
+                    }
+                >
                     <Route path='' element={<Main />}>
                         <Route path='' element={<Core />}>
                             <Route index element={<Snp />} />

@@ -36,8 +36,6 @@ export const Obturator: FC<Props> = () => {
         formState: { errors },
     } = useForm<IObturator>()
 
-    //TODO добавить выбор обтюратора
-
     const changeObturator = (short: string) => {
         const c: IBasis[] = JSON.parse(JSON.stringify(constructions))
         let idx = c.findIndex(c => c.basis === construction)

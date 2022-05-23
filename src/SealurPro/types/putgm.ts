@@ -50,10 +50,8 @@ export interface ISeal {
     imageUrl: string
 }
 
-// export interface IObturator {
-//     obt
-// }
-
-// export interface ISealant {
-//     grap: string
-// }
+export interface IPutgmImage {
+    form: "Round" | "Oval" | "Rectangular"
+    gasket: string
+    url: string
+}

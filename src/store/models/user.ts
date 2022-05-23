@@ -24,10 +24,10 @@ export const user = createModel<RootModel>()({
             accessToken: "",
             expiresAt: 0,
         },
-        role: "",
-        userId: "",
-        nickname: "",
-        isAuth: false,
+        role: "admin",
+        userId: "testId",
+        nickname: "Alex",
+        isAuth: true,
     } as IUserState,
 
     reducers: {

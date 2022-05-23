@@ -54,7 +54,7 @@ export const Sealant: FC<Props> = () => {
                 s => s.seal !== short
             )
         } else {
-            const image = putgmImage.find(i => i.gasket === `${construction}-${short}-${seal}`)
+            const image = putgmImage.find(i => i.gasket === `${construction}-${obturator}-${short}`)
             c[idx].obturator[oIdx].sealant.push({ seal: short, imageUrl: image?.url || "" })
         }
         dispatch.putgm.setOnlyConstructions(c)
@@ -69,10 +69,10 @@ export const Sealant: FC<Props> = () => {
     const deleteHandler = async () => {
         if (!addit || !data) return
         let seals = addit?.sealant || []
-        seals = seals.filter(o => o.short !== data.short)
+        seals = seals.filter(o => o.id !== data.id)
         try {
             dispatch.putgm.setLoading(true)
-            await AdditService.updateSealant(addit.id, seals, "delete", data.short)
+            await AdditService.updateSealant(addit.id, seals, "delete", data.id)
             let add: IAddit = JSON.parse(JSON.stringify(addit))
             add.sealant = seals
             dispatch.addit.setAddit(add)
@@ -90,13 +90,15 @@ export const Sealant: FC<Props> = () => {
         let seals = [...addit.sealant] || []
         if (!data) {
             seals.push({
+                id: form.id,
                 short: form.short,
                 title: form.title,
                 description: form.description,
+                forDescr: form.forDescr,
             })
         } else {
             seals = seals?.map(s => {
-                if (s.short === data.short) return form
+                if (s.id === data.id) return form
                 return s
             })
         }
@@ -106,7 +108,7 @@ export const Sealant: FC<Props> = () => {
                 addit.id,
                 seals,
                 data ? "update" : "add",
-                data ? "" : form.short
+                data ? "" : form.id
             )
             let add: IAddit = JSON.parse(JSON.stringify(addit))
             add.sealant = seals
@@ -122,21 +124,27 @@ export const Sealant: FC<Props> = () => {
 
     const updateSealantHandler = (seal: ISealant) => () => {
         setData({
+            id: seal.id,
             short: seal.short,
             title: seal.title,
             description: seal.description,
+            forDescr: seal.forDescr,
         })
+        setValue("id", seal.id)
         setValue("short", seal.short)
         setValue("title", seal.title)
         setValue("description", seal.description)
+        setValue("forDescr", seal.forDescr)
         toggle()
     }
 
     const openSealantHandler = () => {
         setData(null)
+        setValue("id", "")
         setValue("short", "")
         setValue("title", "")
         setValue("description", "")
+        setValue("forDescr", "")
         toggle()
     }
 
@@ -147,9 +155,18 @@ export const Sealant: FC<Props> = () => {
                 <Modal.Content>
                     <form className={classes.form}>
                         <Input
+                            name='id'
+                            label='Id'
+                            placeholder='1'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.short}
+                            errorText='Поле не заполнено'
+                        />
+                        <Input
                             name='short'
                             label='Короткое обозначение'
-                            placeholder='01'
+                            placeholder='2'
                             register={register}
                             rule={{ required: true }}
                             error={errors.short}
@@ -158,7 +175,7 @@ export const Sealant: FC<Props> = () => {
                         <Textarea
                             name='title'
                             label='Название'
-                            placeholder='без обтюраторов'
+                            placeholder='МГЛ, армированный перфорированной фольгой из коррозионно-стойкой стали'
                             register={register}
                             rule={{ required: true }}
                             error={errors.title}
@@ -168,7 +185,7 @@ export const Sealant: FC<Props> = () => {
                         <Textarea
                             name='forDescr'
                             label='Для описания'
-                            placeholder='с наружным обтюратором из нержавеющей ленты марки &'
+                            placeholder='с уплотнительным элементом из МГЛ, армированного фольгой из коррозионно-стойкой стали'
                             register={register}
                             rule={{ required: true }}
                             error={errors.title}
@@ -202,17 +219,17 @@ export const Sealant: FC<Props> = () => {
                     let idx = constructions
                         .find(c => c.basis === construction)
                         ?.obturator.find(o => o.obturator === obturator)
-                        ?.sealant.findIndex(s => s.seal === seal.short)
+                        ?.sealant.findIndex(s => s.seal === seal.id)
                     if (idx === undefined) idx = -1
 
                     return (
-                        <div key={seal.short} className={classes.listItem}>
+                        <div key={seal.id} className={classes.listItem}>
                             <Checkbox
                                 name={seal.short}
-                                id={`seal-${seal.short}`}
+                                id={`seal-${seal.id}`}
                                 checked={idx > -1}
-                                onChange={changeSealantHandler(seal.short)}
-                                label={`${seal.title}`}
+                                onChange={changeSealantHandler(seal.id)}
+                                label={`${seal.short} ${seal.title}`}
                             />
                             <p className={classes.countItem}>
                                 {idx > -1 ? (

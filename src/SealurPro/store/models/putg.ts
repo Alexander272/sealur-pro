@@ -483,7 +483,7 @@ export const putg = createModel<ProModel>()({
                     putg.setFetching(false)
                 }
             },
-            async getPutg({ flange, req }: { flange: string; req: IPutgReq }) {
+            async getPutg({ flange, req }: { flange: string; req: IPutgReq }, state) {
                 putg.setFetching(true)
                 try {
                     const res = await ReadService.getPutg(req)
@@ -493,6 +493,7 @@ export const putg = createModel<ProModel>()({
                         putg.setPutg(null)
                         putg.setConstructions([])
                         putg.setForm(req.form)
+                        if (state.putg.flange === "") putg.setFlange(flange)
                     } else {
                         putg.setFlange(flange)
                         putg.setPutg(res.data[0])

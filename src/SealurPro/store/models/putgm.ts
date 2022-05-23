@@ -377,7 +377,7 @@ export const putgm = createModel<ProModel>()({
         return {
             async getPutgmImage(form: string) {
                 try {
-                    const res = await ReadService.getPutgImage(form)
+                    const res = await ReadService.getPutgmImage(form)
                     putgm.setPutgmImage(res.data || [])
                 } catch (error: any) {
                     toast.error("Не удалось загрузить чертежи")
@@ -458,7 +458,7 @@ export const putgm = createModel<ProModel>()({
                     putgm.setFetching(false)
                 }
             },
-            async getPutgm({ flange, req }: { flange: string; req: IPutgReq }) {
+            async getPutgm({ flange, req }: { flange: string; req: IPutgReq }, state) {
                 putgm.setFetching(true)
                 try {
                     const res = await ReadService.getPutgm(req)
@@ -468,6 +468,7 @@ export const putgm = createModel<ProModel>()({
                         putgm.setPutgm(null)
                         putgm.setConstructions([])
                         putgm.setForm(req.form)
+                        if (state.putgm.flange === "") putgm.setFlange(flange)
                     } else {
                         putgm.setFlange(flange)
                         putgm.setPutgm(res.data[0])

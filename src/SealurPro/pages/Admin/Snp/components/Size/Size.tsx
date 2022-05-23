@@ -65,7 +65,7 @@ export const Size: FC<Props> = () => {
                     </div>
                     <SizeTable
                         data={sizes}
-                        typePr={sizes[0].typePr}
+                        typePr={sizes[0]?.typePr}
                         stand={stfl.find(s => s.id === st) || null}
                         saveHandler={savedSizeHandler}
                         deleteHandler={deleteSizeHandler}

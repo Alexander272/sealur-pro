@@ -80,12 +80,12 @@ export const Design: FC<Props> = () => {
             const cIdx = con.findIndex(c => c.grap === grap)
             con[cIdx].basis = constr
 
-            dispatch.putgm.setObturator(constr[0].obturator[0].obturator)
+            dispatch.putgm.setObturator(constr[0]?.obturator[0]?.obturator || "")
 
             if (putgm) dispatch.putgm.setPutgm({ ...putgm, construction: con })
             return
         }
-        dispatch.putgm.setObturator(cur.obturator[0].obturator)
+        dispatch.putgm.setObturator(cur.obturator[0]?.obturator || "")
     }
 
     const deleteHandler = async () => {
@@ -230,7 +230,7 @@ export const Design: FC<Props> = () => {
                                 }`}
                                 onClick={chooseDesignHandler(con.short)}
                             >
-                                {con.short} {con.title}
+                                {con.title}
                                 {idx > -1 ? (
                                     <span className={classes.count}>({idx + 1})</span>
                                 ) : null}

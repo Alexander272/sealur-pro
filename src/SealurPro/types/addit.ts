@@ -77,7 +77,9 @@ export interface IBasis {
 }
 
 export interface ISealant {
+    id: string
     short: string
     title: string
     description: string
+    forDescr: string
 }

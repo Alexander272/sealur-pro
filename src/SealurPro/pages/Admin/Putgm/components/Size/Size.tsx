@@ -51,8 +51,6 @@ export const Size: FC<Props> = () => {
         else dispatch.putgm.setSizes(sizes.filter(s => s.id !== id))
     }
 
-    if (!sizes.length) return null
-
     return (
         <>
             <Button rounded='round' variant='grayPrimary' onClick={openTableHandler}>
@@ -67,7 +65,7 @@ export const Size: FC<Props> = () => {
                     </div>
                     <SizeTable
                         data={sizes}
-                        typePr={sizes[0].typePr}
+                        typePr={sizes[0]?.typePr}
                         stand={
                             {
                                 short: flanges.find(f => f.id === flange)?.short || "",
