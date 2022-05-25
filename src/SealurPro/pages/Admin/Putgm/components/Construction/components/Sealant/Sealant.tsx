@@ -23,7 +23,6 @@ export const Sealant: FC<Props> = () => {
     const grap = useSelector((state: ProState) => state.putgm.grap)
     const construction = useSelector((state: ProState) => state.putgm.construction)
     const obturator = useSelector((state: ProState) => state.putgm.obturator)
-    const seal = useSelector((state: ProState) => state.putgm.seal)
     const putgmImage = useSelector((state: ProState) => state.putgm.putgmImage)
 
     const dispatch = useDispatch<Dispatch>()

@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import ServerError from "../../../Error/ServerError"
 import { Dispatch, ProState } from "../../store/store"
-import classes from "../style/pages.module.scss"
 import { Addit } from "./components/Addit/Addit"
+import { AnotherSize } from "./components/AnotherSize/AnotherSize"
 import { Main } from "./components/Main/Main"
+import { Result } from "./components/Result/Result"
+import { Size } from "./components/Size/Size"
+import classes from "../style/pages.module.scss"
 
 export default function Putgm() {
     const loading = useSelector((state: ProState) => state.addit.loading)
@@ -32,9 +35,11 @@ export default function Putgm() {
             <h3 className={classes.description}>
                 Прокладки уплотнительные на металлическом основании
             </h3>
-
             <Main />
             <Addit />
+            {form === "Round" && <Size />}
+            {form !== "Round" && <AnotherSize />}
+            <Result />
         </>
     )
 }

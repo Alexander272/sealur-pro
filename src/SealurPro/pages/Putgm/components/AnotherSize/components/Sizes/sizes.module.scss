@@ -1,0 +1,62 @@
+.sizes {
+    position: absolute;
+}
+
+.Rectangular_field,
+.Rectangular_dimen,
+.Oval_field,
+.Oval_dimen {
+    font-size: 0.85rem;
+}
+
+.Rectangular_dimen,
+.Oval_dimen {
+    &.d1 {
+        top: 34%;
+        left: 15%;
+    }
+
+    &.d2 {
+        top: 34%;
+        left: 1%;
+    }
+
+    &.d3 {
+        bottom: 13%;
+        left: 59%;
+    }
+
+    &.d4 {
+        bottom: 2%;
+        left: 59%;
+    }
+}
+
+.Rectangular_field,
+.Oval_field {
+    &.d4 {
+        display: none;
+    }
+
+    &.d3 {
+        bottom: 3%;
+        left: 59%;
+    }
+
+    &.d2 {
+        top: 34%;
+        left: 8%;
+    }
+
+    &.d1 {
+        right: 2%;
+        top: 27%;
+    }
+}
+
+.Rectangular_field {
+    &.d1 {
+        right: 2%;
+        top: 14%;
+    }
+}

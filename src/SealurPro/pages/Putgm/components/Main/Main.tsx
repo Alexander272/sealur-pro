@@ -42,21 +42,22 @@ export const Main: FC<Props> = () => {
     const dispatch = useDispatch<Dispatch>()
 
     const flangeHandler = (value: string) => {
-        // dispatch.putg.getPutg({ flange: value, req: { form, flangeId: value } })
+        dispatch.putgm.getPutgm({ flange: value, req: { form, flangeId: value } })
     }
 
     const formHandler = (value: string) => {
-        // if (value === "Round")
-        //     dispatch.putg.getPutg({
-        //         flange: flanges[0].id,
-        //         req: { form: value, flangeId: flanges[0].id },
-        //     })
-        // else dispatch.putg.getPutg({ flange: "0", req: { form: value as "Round", flangeId: "0" } })
+        if (value === "Round")
+            dispatch.putgm.getPutgm({
+                flange: flanges[0].id,
+                req: { form: value, flangeId: flanges[0].id },
+            })
+        else
+            dispatch.putgm.getPutgm({ flange: "0", req: { form: value as "Round", flangeId: "0" } })
     }
 
     const changeTypeFlHandler = (value: string) => {
-        // const tmp = putgs.filter(p => p.typeFlId.includes(value))
-        // dispatch.putg.changePutg(tmp[0])
+        const tmp = putgms.filter(p => p.typeFlId.includes(value))
+        dispatch.putgm.changePutgm(tmp[0])
     }
 
     return (
@@ -98,7 +99,7 @@ export const Main: FC<Props> = () => {
                     {flangesType.length > 0 && (
                         <Select value={putgm?.typeFlId || "1"} onChange={changeTypeFlHandler}>
                             {flangesType
-                                // .filter(tfl => putgms.some(p => p.typeFlId === tfl.id))
+                                .filter(tfl => putgms.some(p => p.typeFlId === tfl.id))
                                 .map(t => (
                                     <Option key={t.id} value={t.id}>
                                         {t.short} {t.title}

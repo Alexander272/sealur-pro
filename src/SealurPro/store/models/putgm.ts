@@ -2,8 +2,7 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
-import { IObturator, IPutgImage, IPutgReq } from "../../types/putg"
-import { IPUTGM, IBasis } from "../../types/putgm"
+import { IPUTGM, IBasis, IPutgmImage, IPutgmReq } from "../../types/putgm"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
 interface IPutgmState {
@@ -11,7 +10,7 @@ interface IPutgmState {
     fetching: boolean
     error: boolean
 
-    putgmImage: IPutgImage[]
+    putgmImage: IPutgmImage[]
     form: "Round" | "Oval" | "Rectangular"
 
     putgms: IPUTGM[]
@@ -114,7 +113,7 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        setPutgmImage(state, payload: IPutgImage[]) {
+        setPutgmImage(state, payload: IPutgmImage[]) {
             state.putgmImage = payload
             return state
         },
@@ -254,24 +253,21 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        changePutg(state, payload: IPUTGM) {
+        changePutgm(state, payload: IPUTGM) {
             state.putgm = payload
             state.grap = payload.graphite[0]
 
-            // state.constructions = payload.construction[0].temperatures[0].constructions
-            // state.construction = payload.construction[0].temperatures[0].constructions[0].short
-            // state.obturator =
-            //     payload.construction[0].temperatures[0].constructions[0].obturators[0].short
-            // state.imageUrl =
-            //     payload.construction[0].temperatures[0].constructions[0].obturators[0].imageUrl
+            state.constructions = payload.construction[0].basis
+            state.construction = payload.construction[0].basis[0].basis
+            state.obturator = payload.construction[0].basis[0].obturator[0].obturator
+            state.seal = payload.construction[0].basis[0].obturator[0].sealant[0].seal
+            state.imageUrl = payload.construction[0].basis[0].obturator[0].sealant[0].imageUrl
 
-            // state.temp = payload.temperatures[0].temps[0].id
-            // state.mod = payload.temperatures[0].temps[0].mods[0]
+            state.temp = payload.temperatures[0].temps[0].id
+            state.mod = payload.temperatures[0].temps[0].mods[0]
 
-            // state.rf = payload.reinforce.default
-            // state.ob = payload.obturator.default
-            // state.il = payload.iLimiter.default
-            // state.ol = payload.oLimiter.default
+            state.basis = payload.basis.default
+            state.obt = payload.obturator.default
 
             if (payload.coating[0] !== "*") state.coating = payload.coating[0]
 
@@ -283,10 +279,6 @@ export const putgm = createModel<ProModel>()({
             state.h = payload.h.split(";")[0] || ""
             return state
         },
-        // changePn(state, payload: string) {
-        //     state.pn = payload
-        //     return state
-        // },
         changeH(state, payload: number) {
             if (payload === -1) {
                 state.h = "др."
@@ -304,14 +296,6 @@ export const putgm = createModel<ProModel>()({
         changeGrap(state, payload: string) {
             state.grap = payload
 
-            // const constr = state.putgm?.construction.find(c => c.grap === payload)
-            // if (constr) {
-            //     state.constructions = constr.temperatures[0].constructions
-            //     state.construction = constr.temperatures[0].constructions[0].short
-            //     state.obturator = constr.temperatures[0].constructions[0].obturators[0].short
-            //     state.imageUrl = constr.temperatures[0].constructions[0].obturators[0].imageUrl
-            // }
-
             const temp = state.putgm?.temperatures.find(t => t.grap === payload)
             if (temp) {
                 state.temp = temp.temps[0].id
@@ -321,13 +305,10 @@ export const putgm = createModel<ProModel>()({
 
         changeConstruction(state, payload: string) {
             state.construction = payload
-            // const con = state.constructions.find(c => c.short === payload)
-            // state.obturator = con?.obturators[0].short || ""
-            // state.imageUrl = con?.obturators[0].imageUrl || ""
-        },
-        changeObturatoe(state, payload: IObturator) {
-            state.obturator = payload.short
-            state.imageUrl = payload.imageUrl
+            const con = state.constructions.find(c => c.basis === payload)
+            state.obturator = con?.obturator[0]?.obturator || ""
+            state.seal = con?.obturator[0]?.sealant[0]?.seal || ""
+            state.imageUrl = con?.obturator[0]?.sealant[0]?.imageUrl || ""
         },
 
         changeTemp(state, payload: string) {
@@ -335,16 +316,6 @@ export const putgm = createModel<ProModel>()({
             const temps = state.putgm?.temperatures.find(t => t.grap === state.grap)
             const temp = temps?.temps.find(t => t.id === payload)
             if (!temp?.mods.includes(state.mod)) state.mod = temp?.mods[0] || ""
-
-            // const constr = state.putgm?.construction.find(c => c.grap === state.grap)
-            // const con = constr?.temperatures.find(t => t.temp === payload)
-
-            // if (con) {
-            //     state.constructions = con.constructions
-            //     state.construction = con.constructions[0].short
-            //     state.obturator = con.constructions[0].obturators[0].short
-            //     state.imageUrl = con.constructions[0].obturators[0].imageUrl
-            // }
 
             return state
         },
@@ -359,15 +330,6 @@ export const putgm = createModel<ProModel>()({
             })
             if (newTemp) state.temp = newTemp
 
-            // const constr = state.putgm?.construction.find(c => c.grap === state.grap)
-            // const con = constr?.temperatures.find(t => t.temp === (newTemp || state.temp))
-
-            // if (con) {
-            //     state.constructions = con.constructions
-            //     state.construction = con.constructions[0].short
-            //     state.obturator = con.constructions[0].obturators[0].short
-            //     state.imageUrl = con.constructions[0].obturators[0].imageUrl
-            // }
             return state
         },
     },
@@ -396,10 +358,6 @@ export const putgm = createModel<ProModel>()({
                     putgm.setSizes(res!.sizes.sizes)
                     putgm.setDns(res!.sizes.dn)
                     putgm.setPutgm(res.putgm[0])
-                    // putgm.setSize(res!.sizes.sizes[0])
-                    // putgm.setDn(res!.sizes.sizes[0].dn)
-                    // putgm.setPn(res!.sizes.sizes[0].pn.split(";")[0])
-                    // putgm.setH(res!.sizes.sizes[0].h.split(";")[0])
 
                     putgm.setFlange(res.fl[0].id)
 
@@ -433,12 +391,19 @@ export const putgm = createModel<ProModel>()({
                 putgm.setFetching(true)
                 try {
                     const res = await ReadService.getSize(req)
-                    putgm.setSizes(res.data.sizes)
-                    putgm.setDns(res.data.dn)
-                    putgm.setSize(res.data.sizes[0])
-                    putgm.setDn(res.data.sizes[0].dn)
-                    putgm.setPn(res.data.sizes[0].pn.split(";")[0])
-                    putgm.setH(res.data.sizes[0].h.split(";")[0])
+
+                    if (!res.data.sizes) {
+                        putgm.setSizes([])
+                        putgm.setDns([])
+                        putgm.setSize(null)
+                    } else {
+                        putgm.setSizes(res.data.sizes)
+                        putgm.setDns(res.data.dn)
+                        putgm.setSize(res.data.sizes[0])
+                        putgm.setDn(res.data.sizes[0].dn)
+                        putgm.setPn(res.data.sizes[0].pn.split(";")[0])
+                        putgm.setH(res.data.sizes[0].h.split(";")[0])
+                    }
                 } catch (error) {
                     toast.error("Не удалось загрузить размеры", { autoClose: false })
                 } finally {
@@ -458,7 +423,7 @@ export const putgm = createModel<ProModel>()({
                     putgm.setFetching(false)
                 }
             },
-            async getPutgm({ flange, req }: { flange: string; req: IPutgReq }, state) {
+            async getPutgm({ flange, req }: { flange: string; req: IPutgmReq }, state) {
                 putgm.setFetching(true)
                 try {
                     const res = await ReadService.getPutgm(req)

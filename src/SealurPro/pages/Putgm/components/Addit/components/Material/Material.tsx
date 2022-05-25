@@ -26,7 +26,14 @@ export const Material: FC<Props> = () => {
     const changeMatHandler = (name: string) => (value: string) => {
         if (name === "basis") dispatch.putgm.setBasis(value)
         if (name === "obt") dispatch.putgm.setObt(value)
-        if (name === "seal") dispatch.putgm.setSeal(value)
+        if (name === "seal") {
+            dispatch.putgm.setSeal(value)
+
+            const constr = constructions.find(c => c.basis === construction)
+            const obt = constr?.obturator.find(o => o.obturator === obturator)
+            const sealant = obt?.sealant.find(o => o.seal === value)
+            if (sealant) dispatch.putgm.setImageUrl(sealant.imageUrl)
+        }
     }
 
     const renderSealant = () => {
@@ -34,14 +41,14 @@ export const Material: FC<Props> = () => {
         const ob = constr?.obturator.find(o => o.obturator === obturator)
         const sealant = ob?.sealant
 
-        const s = addit?.sealant.filter(s => sealant?.some(seal => seal.seal === s.short))
+        const s = addit?.sealant.filter(s => sealant?.some(seal => seal.seal === s.id))
 
         if (s)
             return (
                 <Select value={seal} onChange={changeMatHandler("seal")}>
                     {s.map(s => (
-                        <Option key={s.short} value={s.short}>
-                            {s.title}
+                        <Option key={s.id} value={s.id}>
+                            {s.short} {s.title}
                         </Option>
                     ))}
                 </Select>

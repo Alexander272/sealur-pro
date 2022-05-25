@@ -55,3 +55,8 @@ export interface IPutgmImage {
     gasket: string
     url: string
 }
+
+export interface IPutgmReq {
+    form: "Round" | "Oval" | "Rectangular"
+    flangeId: string
+}

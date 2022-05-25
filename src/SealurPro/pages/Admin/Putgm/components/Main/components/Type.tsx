@@ -187,14 +187,14 @@ export const Type: FC<Props> = () => {
         const newPutgs = tmp.filter(s => s.typePr.includes(t.current))
         if (!newPutgs.length) {
             const newPutgm = createNewPutgm(t.current)
-            dispatch.putgm.setPutgms([...newPutgs, newPutgm])
+            dispatch.putgm.setPutgms([...tmp, newPutgm])
             dispatch.putgm.setPutgm(newPutgm)
             dispatch.putgm.setConstructions([])
             dispatch.putgm.setTemp("")
             return
         }
-        dispatch.putgm.setPutgm(tmp[0])
-        dispatch.putgm.setConstructions(tmp[0].construction[0]?.basis || [])
+        dispatch.putgm.setPutgm(newPutgs[0])
+        dispatch.putgm.setConstructions(newPutgs[0].construction[0]?.basis || [])
         // dispatch.putgm.setTemp(tmp[0].construction[0]?.temperatures[0]?.temp || "")
         t.current = ""
     }
