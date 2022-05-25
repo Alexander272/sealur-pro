@@ -1,12 +1,90 @@
-import { FC } from "react"
-import { useSelector } from "react-redux"
-import { ProState } from "../../../../../../../store/store"
+import React, { FC } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import FileService from "../../../../../../../service/file"
+import { Dispatch, ProState } from "../../../../../../../store/store"
+import { IBasis, IPutgmImage } from "../../../../../../../types/putgm"
 import classes from "./drawing.module.scss"
 
 type Props = {}
 
 export const Drawing: FC<Props> = () => {
+    const putgmImage = useSelector((state: ProState) => state.putgm.putgmImage)
     const constructions = useSelector((state: ProState) => state.putgm.constructions)
+    const form = useSelector((state: ProState) => state.putgm.form)
+
+    const { putgm } = useDispatch<Dispatch>()
+
+    const uploadFile =
+        (basis: string, obt: string, seal: string) =>
+        async (event: React.ChangeEvent<HTMLInputElement>) => {
+            const files = event.target.files
+            if (!files) return
+
+            if (files[0].type !== "image/webp") {
+                toast.error("Нужно выбрать файл с расширением WEBP")
+                event.target.files = null
+                event.target.value = ""
+                return
+            }
+
+            const imgUrl =
+                form !== "Round"
+                    ? `/image/putgm/half/${files[0].name}`
+                    : `/image/putgm/construction/${files[0].name}`
+
+            const formData = new FormData()
+            formData.append("drawing", files[0])
+
+            formData.append("form", form)
+            formData.append("gasket", `${basis}-${obt}-${seal}`)
+            formData.append("url", imgUrl)
+
+            try {
+                const res = await FileService.create(formData, "/sealur-pro/putgm-image")
+
+                const newImage: IPutgmImage[] = JSON.parse(JSON.stringify(putgmImage))
+                newImage.push({
+                    id: res.id || "",
+                    form,
+                    gasket: `${basis}-${obt}-${seal}`,
+                    url: imgUrl,
+                })
+                putgm.setPutgmImage(newImage)
+
+                const newCon: IBasis[] = JSON.parse(JSON.stringify(constructions))
+                const idx = newCon.findIndex(c => c.basis === basis)
+                const oIdx = newCon[idx].obturator.findIndex(o => o.obturator === obt)
+                const sIdx = newCon[idx].obturator[oIdx].sealant.findIndex(s => s.seal === seal)
+                newCon[idx].obturator[oIdx].sealant[sIdx].imageUrl = imgUrl
+                putgm.setConstructions(newCon)
+            } catch (error) {
+                toast.error("Не удалось загрузить файл")
+            }
+        }
+
+    const deleteFile = (basis: string, obt: string, seal: string) => async () => {
+        const image = putgmImage.find(i => i.gasket === `${basis}-${obt}-${seal}`)
+
+        let url = `/sealur-pro/putgm-image/${image?.id}?file=${image?.url.replace("/image/", "")}`
+
+        try {
+            await FileService.delete(url)
+
+            let newImage: IPutgmImage[] = JSON.parse(JSON.stringify(putgmImage))
+            newImage = newImage.filter(i => i.id !== image?.id)
+            putgm.setPutgmImage(newImage)
+
+            const newCon: IBasis[] = JSON.parse(JSON.stringify(constructions))
+            const idx = newCon.findIndex(c => c.basis === basis)
+            const oIdx = newCon[idx].obturator.findIndex(o => o.obturator === obt)
+            const sIdx = newCon[idx].obturator[oIdx].sealant.findIndex(s => s.seal === seal)
+            newCon[idx].obturator[oIdx].sealant[sIdx].imageUrl = ""
+            putgm.setConstructions(newCon)
+        } catch (error) {
+            toast.error("Не удалось удалить файл")
+        }
+    }
 
     const renderDrawing = () => {
         const drawings: JSX.Element[] = []
@@ -31,10 +109,21 @@ export const Drawing: FC<Props> = () => {
                                     >
                                         {s.imageUrl}
                                     </a>
-                                    <span className={classes.times}>&times;</span>
+                                    <span
+                                        className={classes.times}
+                                        onClick={deleteFile(con.basis, o.obturator, s.seal)}
+                                    >
+                                        &times;
+                                    </span>
                                 </>
                             ) : (
-                                <span className={classes.choose}>Выберите файл</span>
+                                <input
+                                    name='drawing'
+                                    type='file'
+                                    id='file'
+                                    className={classes.choose}
+                                    onChange={uploadFile(con.basis, o.obturator, s.seal)}
+                                />
                             )}
                         </p>
                     )

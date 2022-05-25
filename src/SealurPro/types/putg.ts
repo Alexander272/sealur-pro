@@ -53,6 +53,7 @@ export interface IPutgReq {
 }
 
 export interface IPutgImage {
+    id: string
     form: "Round" | "Oval" | "Rectangular"
     gasket: string
     url: string

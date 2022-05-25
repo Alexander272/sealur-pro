@@ -30,7 +30,8 @@ export const Header: FC = () => {
                     />
                 </a>
                 <div className={classes.admin}>
-                    {state.user.role === "admin" && (
+                    {state.user.role === "admin" &&
+                    ["", "putg", "putgm"].includes(path[path.length - 1]) ? (
                         <Link
                             to={`${ProAdminUrl}/${path[path.length - 1]}`}
                             className={classes.link}
@@ -51,7 +52,7 @@ export const Header: FC = () => {
                             </svg>
                             <p>Редактировать</p>
                         </Link>
-                    )}
+                    ) : null}
                 </div>
             </div>
         </header>

@@ -2,6 +2,7 @@
     max-height: 300px;
     overflow-y: auto;
 }
+
 .listItem {
     // display: flex;
     // align-items: center;
@@ -36,4 +37,6 @@
     margin-left: 10px;
     cursor: pointer;
     color: var(--button-color);
+    display: inline-block;
+    width: 70%;
 }

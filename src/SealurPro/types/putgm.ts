@@ -51,6 +51,7 @@ export interface ISeal {
 }
 
 export interface IPutgmImage {
+    id: string
     form: "Round" | "Oval" | "Rectangular"
     gasket: string
     url: string

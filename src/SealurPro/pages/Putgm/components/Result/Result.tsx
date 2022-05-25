@@ -55,21 +55,21 @@ export const Result: FC<Props> = () => {
     const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = (count: string, designation: string, description: string) => {
-        // let sizes = ""
-        // if (size?.d4) sizes += size.d4 + "x"
-        // sizes += `${size?.d3}x${size?.d2}`
-        // if (size?.d1) sizes += "x" + size.d1
-        // //TODO после сохранения нужно заменить id и чертеж
-        // const result: IResult = {
-        //     id: "new",
-        //     designation,
-        //     sizes,
-        //     count,
-        //     description,
-        // }
-        // //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
-        // dispatch.list.addResult(result)
-        // toast.success("Прокладка добавлена")
+        let sizes = ""
+        if (size?.d4) sizes += size.d4 + "x"
+        sizes += `${size?.d3}x${size?.d2}`
+        if (size?.d1) sizes += "x" + size.d1
+        //TODO после сохранения нужно заменить id и чертеж
+        const result: IResult = {
+            id: "new",
+            designation,
+            sizes,
+            count,
+            description,
+        }
+        //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
+        dispatch.list.addResult(result)
+        toast.success("Прокладка добавлена")
     }
 
     const createDescr = (): string => {
@@ -167,7 +167,6 @@ export const Result: FC<Props> = () => {
 
         let elems = []
         if (isMoun) elems.push(moun)
-        // if (isDetachable) elems.push(`${parts} сегм.`)
         if (isHole) elems.push("черт.")
         let findCoat = coatings.find(c => c.id === coating)?.short
         if (findCoat) elems.push(findCoat)
