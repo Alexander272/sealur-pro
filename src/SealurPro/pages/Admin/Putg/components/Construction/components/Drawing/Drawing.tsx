@@ -1,6 +1,8 @@
-import { FC } from "react"
+import { FC, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import { ConfirmModal } from "../../../../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../../../../components/Modal/hooks/useModal"
 import FileService from "../../../../../../../service/file"
 import { Dispatch, ProState } from "../../../../../../../store/store"
 import { IConstruction, IPutgImage } from "../../../../../../../types/putg"
@@ -14,6 +16,11 @@ export const Drawing: FC<Props> = () => {
     const putgImage = useSelector((state: ProState) => state.putg.putgImage)
 
     const { putg } = useDispatch<Dispatch>()
+
+    const { isOpen, toggle } = useModal()
+
+    const c = useRef("")
+    const o = useRef("")
 
     const uploadFile =
         (con: string, obt: string) => async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +68,7 @@ export const Drawing: FC<Props> = () => {
             }
         }
 
-    const deleteFile = (con: string, obt: string) => async () => {
+    const deleteFile = async (con: string, obt: string) => {
         const image = putgImage.find(i => i.gasket === `${con}-${obt}`)
         let url = `/sealur-pro/putg-image/${image?.id}?file=${image?.url.replace("/image/", "")}`
         try {
@@ -79,6 +86,17 @@ export const Drawing: FC<Props> = () => {
         } catch (error) {
             toast.error("Не удалось удалить файл")
         }
+    }
+
+    const openHandler = (con: string, obt: string) => () => {
+        c.current = con
+        o.current = obt
+        toggle()
+    }
+
+    const deleteHandler = async () => {
+        await deleteFile(c.current, o.current)
+        toggle()
     }
 
     const renderDrawing = () => {
@@ -102,7 +120,7 @@ export const Drawing: FC<Props> = () => {
                                 </a>
                                 <span
                                     className={classes.times}
-                                    onClick={deleteFile(con.short, o.short)}
+                                    onClick={openHandler(con.short, o.short)}
                                 >
                                     &times;
                                 </span>
@@ -124,5 +142,16 @@ export const Drawing: FC<Props> = () => {
         return drawings
     }
 
-    return <div className={`${classes.list} scroll`}>{renderDrawing()}</div>
+    return (
+        <>
+            <ConfirmModal
+                title='Удалить изображение?'
+                isOpen={isOpen}
+                toggle={toggle}
+                cancelHandler={toggle}
+                confirmHandler={deleteHandler}
+            />
+            <div className={`${classes.list} scroll`}>{renderDrawing()}</div>
+        </>
+    )
 }

@@ -10,10 +10,6 @@ const initTabs: any = {
         width: 103,
         position: 0,
     },
-    test: {
-        width: 103,
-        position: 0,
-    },
     putg: {
         width: 105,
         position: 103,

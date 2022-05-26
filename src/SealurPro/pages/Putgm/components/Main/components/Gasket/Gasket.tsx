@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Input } from "../../../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../../../components/UI/Select/Select"
 import { Dispatch, ProState } from "../../../../../../store/store"
 import classes from "../../../../../style/pages.module.scss"
@@ -15,6 +16,8 @@ export const Gasket: FC<Props> = () => {
     const obturator = useSelector((state: ProState) => state.putgm.obturator)
     const seal = useSelector((state: ProState) => state.putgm.seal)
 
+    const parts = useSelector((state: ProState) => state.putgm.parts)
+
     const dispatch = useDispatch<Dispatch>()
 
     const constructionHandler = (value: string) => {
@@ -27,6 +30,10 @@ export const Gasket: FC<Props> = () => {
         const obturator = constr?.obturator.find(o => o.obturator === value)
         const sealant = obturator?.sealant.find(o => o.seal === seal)
         if (sealant) dispatch.putgm.setImageUrl(sealant.imageUrl)
+    }
+
+    const partsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch.putgm.setParts(event.target.value)
     }
 
     const renderConstruction = () => {
@@ -60,6 +67,20 @@ export const Gasket: FC<Props> = () => {
                 <Select value={construction} onChange={constructionHandler}>
                     {renderConstruction()}
                 </Select>
+                {construction.includes("&") && (
+                    <div className={classes.input}>
+                        <Input
+                            id='parts'
+                            name='parts'
+                            type='number'
+                            value={parts}
+                            min={2}
+                            onChange={partsHandler}
+                            orentation='horizontal'
+                            label='Количество слоев'
+                        />
+                    </div>
+                )}
             </div>
 
             <div className={classes.group}>

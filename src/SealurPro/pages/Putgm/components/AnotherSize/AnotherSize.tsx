@@ -44,13 +44,13 @@ export const AnotherSize: FC<Props> = () => {
     const [type, setType] = useState<"dimen" | "field">("dimen")
 
     useEffect(() => {
-        dispatch.putg.getSizes({
-            flShort: "putg",
+        dispatch.putgm.getSizes({
+            flShort: "putgm",
             typePr: `${form}-${type}`,
             typeFlId: putgm?.typeFlId || "1",
             standId: "0",
         })
-    }, [dispatch.putg, form, type, putgm?.typePr, putgm?.typeFlId])
+    }, [dispatch.putgm, form, type, putgm?.typePr, putgm?.typeFlId])
 
     const changeTypeHandler = (type: string) => {
         setType(type as "dimen")
@@ -61,16 +61,16 @@ export const AnotherSize: FC<Props> = () => {
             let newSize: ISize = JSON.parse(JSON.stringify(size))
             newSize[name] = event.target.value
 
-            dispatch.putg.setSize(newSize)
+            dispatch.putgm.setSize(newSize)
         }
 
     const changeHHandler = (value: string) => {
         let idx = size?.h.split(";").findIndex(h => h === value)
-        dispatch.putg.changeH(idx || 0)
+        dispatch.putgm.changeH(idx || 0)
     }
 
     const changeOhHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch.putg.changeOH(event.target.value.replaceAll(".", ","))
+        dispatch.putgm.changeOH(event.target.value.replaceAll(".", ","))
     }
 
     return (

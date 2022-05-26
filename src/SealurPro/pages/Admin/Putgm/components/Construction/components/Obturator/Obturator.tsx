@@ -57,6 +57,7 @@ export const Obturator: FC<Props> = () => {
 
         const c = changeObturator(short)
         dispatch.putgm.setOnlyConstructions(c)
+        if (short === obturator) dispatch.putgm.setObturator("")
 
         const constr: IConstruction[] = JSON.parse(JSON.stringify(putgm?.construction))
         const cIdx = constr.findIndex(c => c.grap === grap)

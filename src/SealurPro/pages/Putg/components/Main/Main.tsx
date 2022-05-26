@@ -29,6 +29,21 @@ const imgUrls = {
     3: "/image/putg/PUTG-C.webp",
 }
 
+const initTabs = {
+    Round: {
+        width: 85,
+        position: 0,
+    },
+    Oval: {
+        width: 100,
+        position: 85,
+    },
+    Rectangular: {
+        width: 141,
+        position: 185,
+    },
+}
+
 type Props = {}
 
 export const Main: FC<Props> = () => {
@@ -64,7 +79,11 @@ export const Main: FC<Props> = () => {
             <div className={`${classes.block} ${classes.full}`}>
                 <div className={classes.group}>
                     <p className={classes.titleGroup}>Конфигурация прокладки</p>
-                    <Tabs initWidth={85} onClick={formHandler}>
+                    <Tabs
+                        initWidth={initTabs[form].width}
+                        initPos={initTabs[form].position}
+                        onClick={formHandler}
+                    >
                         {types.map(t => (
                             <p
                                 key={t.type}
