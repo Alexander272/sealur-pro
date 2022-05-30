@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import React, { FC } from "react"
 import classes from "./input.module.scss"
 
 type Props = {
@@ -6,15 +6,13 @@ type Props = {
     label?: string
     name: string
     rounded?: "round" | "rounded"
-    onChange?: () => void
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const FileInput: FC<Props> = ({ name, id, label, rounded }) => {
-    const [title, setTitle] = useState(label)
-
+export const FileInput: FC<Props> = ({ name, id, label, rounded, onChange }) => {
     return (
         <div className={classes.field}>
-            <input type='file' name={name} id={id} className={classes.input} />
+            <input type='file' name={name} id={id} className={classes.input} onChange={onChange} />
             <label htmlFor={id} className={`${classes.label} ${classes[rounded || "rounded"]}`}>
                 <span className={classes.icon}>
                     <svg
@@ -38,7 +36,7 @@ export const FileInput: FC<Props> = ({ name, id, label, rounded }) => {
                         />
                     </svg>
                 </span>
-                {title}
+                {label}
             </label>
         </div>
     )

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import React, { FC, useState } from "react"
 import { useSelector } from "react-redux"
 import { ProState } from "../../../../store/store"
 import { FileInput } from "../../../../../components/UI/FileInput/FileInput"
@@ -15,12 +15,18 @@ export const Addit: FC<Props> = () => {
     const isHole = useSelector((state: ProState) => state.putg.isHole)
     const form = useSelector((state: ProState) => state.putg.form)
 
+    const [title, setTitle] = useState("Прикрепить чертеж")
+
+    const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value)
+    }
+
     return (
         <div className={classes.sideContainer}>
             <Cofiguration />
             <Construction />
             <Material />
-            <FileInput name='drawing' id='file' label='Прикрепить чертеж' />
+            <FileInput name='drawing' id='file' label={title} onChange={uploadFile} />
             <div className={classes.message}>
                 {/* //TODO добавить скрытие надписи при прикреплении чертежа */}
                 {(isJumper && !["A", "M", "J"].includes(jumper)) || isHole || form === "Oval" ? (

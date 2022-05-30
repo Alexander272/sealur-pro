@@ -13,6 +13,8 @@ interface IPutgmState {
     putgmImage: IPutgmImage[]
     form: "Round" | "Oval" | "Rectangular"
 
+    drawing: string
+
     putgms: IPUTGM[]
     sizes: ISize[]
     dns: IDn[]
@@ -59,6 +61,8 @@ export const putgm = createModel<ProModel>()({
 
         putgmImage: [],
         form: "Round",
+
+        drawing: "",
 
         putgms: [],
         sizes: [],
@@ -119,6 +123,11 @@ export const putgm = createModel<ProModel>()({
         },
         setForm(state, payload: "Round" | "Oval" | "Rectangular") {
             state.form = payload
+            return state
+        },
+
+        setDrawing(state, payload: string) {
+            state.drawing = payload
             return state
         },
 

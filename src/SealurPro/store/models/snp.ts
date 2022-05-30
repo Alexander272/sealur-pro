@@ -10,6 +10,8 @@ interface ISnpState {
     fetching: boolean
     error: boolean
 
+    drawing: string
+
     snps: ISNP[]
     sizes: ISize[]
     dns: IDn[]
@@ -50,6 +52,8 @@ export const snp = createModel<ProModel>()({
         loading: true,
         fetching: false,
         error: false,
+
+        drawing: "",
 
         snps: [],
         sizes: [],
@@ -97,6 +101,11 @@ export const snp = createModel<ProModel>()({
         },
         setError(state, payload: boolean) {
             state.error = payload
+            return state
+        },
+
+        setDrawing(state, payload: string) {
+            state.drawing = payload
             return state
         },
 

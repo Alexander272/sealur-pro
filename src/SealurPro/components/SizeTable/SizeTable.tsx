@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import React, { FC, useState } from "react"
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form"
 import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
@@ -14,6 +14,7 @@ import { FileInput } from "../../../components/UI/FileInput/FileInput"
 import { Input } from "../../../components/UI/Input/Input"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import classes from "./table.module.scss"
+import FileService from "../../service/file"
 
 type Stand = {
     short: string
@@ -153,6 +154,27 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
             toast.error("Не удалось выполнить запрос на сервер")
         } finally {
             setLoading(false)
+        }
+    }
+
+    const uploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files
+        if (!files) return
+
+        if (files[0].type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            toast.error("Нужно выбрать файл с расширением XLSX")
+            event.target.files = null
+            event.target.value = ""
+            return
+        }
+
+        const formData = new FormData()
+        formData.append("sizes", files[0])
+
+        try {
+            await FileService.create(formData, "/sealur-pro/sizes/file")
+        } catch (error) {
+            toast.error("Не удалось загрузить файл")
         }
     }
 
@@ -319,7 +341,12 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
             </div>
             <div className={classes.footer}>
                 <Button onClick={addHandler}>Добавить</Button>
-                <FileInput label='Загрузить из файла' name='sizes' id='sizes' />
+                <FileInput
+                    label='Загрузить из файла'
+                    name='sizes'
+                    id='sizes'
+                    onChange={uploadFile}
+                />
                 <a href='/examples/size.xlsx' className={classes.link}>
                     Скачать пример
                 </a>
