@@ -34,5 +34,8 @@ export const list = createModel<ProModel>()({
             })
             return state
         },
+        deleteItem(state, payload: string) {
+            state.list = state.list.filter(l => l.id !== payload)
+        },
     },
 })
