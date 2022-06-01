@@ -47,6 +47,8 @@ export const ResultSnp: FC<Props> = () => {
     const jumWidth = useSelector((state: ProState) => state.snp.jumWidth)
     const isHole = useSelector((state: ProState) => state.snp.isHole)
 
+    const drawing = useSelector((state: ProState) => state.snp.drawing)
+
     const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = (count: string, designation: string, description: string) => {
@@ -61,6 +63,7 @@ export const ResultSnp: FC<Props> = () => {
             designation,
             sizes,
             count,
+            drawing,
             description,
         }
 

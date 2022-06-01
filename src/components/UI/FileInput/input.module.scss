@@ -1,5 +1,8 @@
 .field {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .input {
@@ -15,6 +18,8 @@
     // color: #ffffff;
     font-family: var(--body-font);
     letter-spacing: 1px;
+    flex-grow: 1;
+    max-width: 290px;
 
     cursor: pointer;
     // text-align: center;
@@ -36,6 +41,15 @@
 
     &:hover {
         border-color: rgba(17, 97, 237, 1);
+    }
+
+    &.danger {
+        margin-left: 10px;
+        border: 2px solid rgba(237, 17, 17, 0.5);
+
+        &:hover {
+            border-color: rgb(237, 17, 17);
+        }
     }
 }
 

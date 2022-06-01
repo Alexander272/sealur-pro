@@ -2,6 +2,7 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
+import { IDrawing } from "../../types/drawing"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 import { ISNP, ISNPReq } from "../../types/snp"
 
@@ -10,7 +11,7 @@ interface ISnpState {
     fetching: boolean
     error: boolean
 
-    drawing: string
+    drawing: IDrawing | null
 
     snps: ISNP[]
     sizes: ISize[]
@@ -53,7 +54,7 @@ export const snp = createModel<ProModel>()({
         fetching: false,
         error: false,
 
-        drawing: "",
+        drawing: null,
 
         snps: [],
         sizes: [],
@@ -104,7 +105,7 @@ export const snp = createModel<ProModel>()({
             return state
         },
 
-        setDrawing(state, payload: string) {
+        setDrawing(state, payload: IDrawing | null) {
             state.drawing = payload
             return state
         },

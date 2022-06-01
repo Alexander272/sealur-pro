@@ -44,7 +44,19 @@ const Table: FC<Props> = () => {
                     {/* <p className={classes.td}>{d.count}</p> */}
                     <p className={classes.td}>{d.sizes}</p>
                     {/* //TODO сделать ссылкой */}
-                    <p className={classes.td}>{d.drawing?.name}</p>
+                    {d.drawing ? (
+                        <p className={classes.td}>
+                            <a
+                                href={d.drawing?.link}
+                                download={d.drawing?.name}
+                                className={classes.link}
+                            >
+                                {d.drawing?.name}
+                            </a>
+                        </p>
+                    ) : (
+                        <p className={classes.td}></p>
+                    )}
                     <p className={`${classes.td} ${classes.description} scroll`}>{d.description}</p>
                 </div>
             ))}

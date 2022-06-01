@@ -2,6 +2,7 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { ProModel } from "."
 import ReadService from "../../service/read"
+import { IDrawing } from "../../types/drawing"
 import { IPUTGM, IBasis, IPutgmImage, IPutgmReq } from "../../types/putgm"
 import { IDn, ISize, ISizeReq } from "../../types/size"
 
@@ -13,7 +14,7 @@ interface IPutgmState {
     putgmImage: IPutgmImage[]
     form: "Round" | "Oval" | "Rectangular"
 
-    drawing: string
+    drawing: IDrawing | null
 
     putgms: IPUTGM[]
     sizes: ISize[]
@@ -62,8 +63,7 @@ export const putgm = createModel<ProModel>()({
         putgmImage: [],
         form: "Round",
 
-        drawing: "",
-
+        drawing: null,
         putgms: [],
         sizes: [],
         dns: [],
@@ -126,7 +126,7 @@ export const putgm = createModel<ProModel>()({
             return state
         },
 
-        setDrawing(state, payload: string) {
+        setDrawing(state, payload: IDrawing | null) {
             state.drawing = payload
             return state
         },

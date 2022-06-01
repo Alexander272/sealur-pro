@@ -1,12 +1,15 @@
-import { FC, useState } from "react"
+import { FC } from "react"
+import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
 import { Dispatch, ProState } from "../../../../store/store"
+import { IDrawing } from "../../../../types/drawing"
+import FileService from "../../../../service/file"
 import { FileInput } from "../../../../../components/UI/FileInput/FileInput"
 import { Cofiguration } from "./components/Configuration/Configuration"
 import { Construction } from "./components/Construction/Construction"
 import { Material } from "./components/Material/Material"
 import classes from "../../../style/pages.module.scss"
-import FileService from "../../../../service/file"
+import { FileDownload } from "../../../../../components/UI/FileInput/FileDownload"
 
 type Props = {}
 
@@ -17,24 +20,50 @@ export const Addit: FC<Props> = () => {
     const form = useSelector((state: ProState) => state.putgm.form)
 
     const drawing = useSelector((state: ProState) => state.putgm.drawing)
+    const orderId = useSelector((state: ProState) => state.list.orderId)
 
-    const { putgm } = useDispatch<Dispatch>()
+    const { putgm, list } = useDispatch<Dispatch>()
 
     const uploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.files)
-
         const files = event.target.files
-
         if (!files) return
 
         const formData = new FormData()
         formData.append("drawing", files[0])
-        try {
-            await FileService.create(formData, "/files/drawings/")
+        formData.append("group", orderId)
 
-            putgm.setDrawing(files[0].name)
+        try {
+            const res: IDrawing = await FileService.create(formData, "/files/drawings/")
+            putgm.setDrawing(res)
+            if (orderId === "") {
+                list.setOrderId(res.group)
+            }
         } catch (error) {
             console.log(error)
+            toast.error("Не удалось загрузить файл")
+        }
+    }
+
+    const downloadFile = async () => {
+        try {
+            await FileService.get(
+                `/files/drawings/${drawing?.origName}?id=${drawing?.id}&group=${drawing?.group}`
+            )
+        } catch (error) {
+            console.log(error)
+            toast.error("Не удалось получить файл")
+        }
+    }
+
+    const deleteFile = async () => {
+        try {
+            await FileService.delete(
+                `/files/drawings/${drawing?.origName}?id=${drawing?.id}&group=${drawing?.group}`
+            )
+            putgm.setDrawing(null)
+        } catch (error) {
+            console.log(error)
+            toast.error("Не удалось удалить файл")
         }
     }
 
@@ -43,12 +72,23 @@ export const Addit: FC<Props> = () => {
             <Cofiguration />
             <Construction />
             <Material />
-            <FileInput
-                name='drawing'
-                id='file'
-                label={drawing || "Прикрепить чертеж"}
-                onChange={uploadFile}
-            />
+
+            {drawing ? (
+                <FileDownload
+                    text={drawing.origName}
+                    name='drawing'
+                    link={drawing.link}
+                    onSave={downloadFile}
+                    onDelete={deleteFile}
+                />
+            ) : (
+                <FileInput
+                    name='drawing'
+                    id='file'
+                    label={"Прикрепить чертеж"}
+                    onChange={uploadFile}
+                />
+            )}
 
             <div className={classes.message}>
                 {!drawing &&

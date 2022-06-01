@@ -4,14 +4,20 @@ import { IResult } from "../../types/list"
 
 interface IListState {
     list: IResult[]
+    orderId: string
 }
 
 export const list = createModel<ProModel>()({
     state: {
         list: [],
+        orderId: "",
     } as IListState,
 
     reducers: {
+        setOrderId(state, payload: string) {
+            state.orderId = payload
+            return state
+        },
         setList(state, payload: IResult[]) {
             state.list = payload
             return state

@@ -50,6 +50,8 @@ export const Result: FC<Props> = () => {
     const isDetachable = useSelector((state: ProState) => state.putg.isDetachable)
     const parts = useSelector((state: ProState) => state.putg.parts)
 
+    const drawing = useSelector((state: ProState) => state.putg.drawing)
+
     const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = (count: string, designation: string, description: string) => {
@@ -63,11 +65,14 @@ export const Result: FC<Props> = () => {
             designation,
             sizes,
             count,
+            drawing,
             description,
         }
         //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
         dispatch.list.addResult(result)
         toast.success("Прокладка добавлена")
+
+        //TODO надо как минимум чистить чертеж
     }
 
     const createDescr = (): string => {
