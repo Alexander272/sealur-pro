@@ -4,6 +4,7 @@ import { list } from "./list"
 import { putg } from "./putg"
 import { putgm } from "./putgm"
 import { snp } from "./snp"
+import { survey } from "./survey"
 
 export interface ProModel extends Models<ProModel> {
     addit: typeof addit
@@ -11,6 +12,7 @@ export interface ProModel extends Models<ProModel> {
     putg: typeof putg
     putgm: typeof putgm
     list: typeof list
+    survey: typeof survey
 }
 
 export const models: ProModel = {
@@ -19,4 +21,5 @@ export const models: ProModel = {
     putg,
     putgm,
     list,
+    survey,
 }

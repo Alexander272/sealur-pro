@@ -60,16 +60,6 @@ export const MyRoutes = () => {
                         <Route path='putg' element={<AdminPutg />} />
                         <Route path='putgm' element={<AdminPutgm />} />
                     </Route>
-                    <Route path='protected' element={<Main />}>
-                        <Route
-                            index
-                            element={
-                                <RequireAuth>
-                                    <Core />
-                                </RequireAuth>
-                            }
-                        />
-                    </Route>
                 </Route>
             </Routes>
         </Suspense>
