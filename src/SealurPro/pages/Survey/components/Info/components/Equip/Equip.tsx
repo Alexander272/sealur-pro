@@ -2,7 +2,7 @@ import { ChangeEvent, FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Input } from "../../../../../../../components/UI/Input/Input"
 import { Dispatch, ProState } from "../../../../../../store/store"
-import { EquipFileds } from "../../../../../../types/survey"
+import { EquipFields } from "../../../../../../types/survey"
 import classes from "../../../../survey.module.scss"
 
 type Props = {}
@@ -13,7 +13,7 @@ export const Equipment: FC<Props> = () => {
     const { survey } = useDispatch<Dispatch>()
 
     const changeEquipDataHandler =
-        (field: EquipFileds) => (event: ChangeEvent<HTMLInputElement>) => {
+        (field: EquipFields) => (event: ChangeEvent<HTMLInputElement>) => {
             survey.setEqipData({ field, value: event.target.value })
         }
 

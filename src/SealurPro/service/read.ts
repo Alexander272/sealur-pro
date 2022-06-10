@@ -8,6 +8,7 @@ import { IFlange } from "../types/flange"
 import { IStand } from "../types/stand"
 import { IPUTG, IPutgImage, IPutgReq } from "../types/putg"
 import { IPUTGM, IPutgmImage } from "../types/putgm"
+import { IBoltMaterial, IMaterial, ISizeInt, ISizeIntReq } from "../types/survey"
 
 type StFlResponse = { data: IStFl[] }
 type FlangeResponse = { data: IFlange[] }
@@ -16,10 +17,16 @@ type StandResponse = { data: IStand[] }
 type PutgImageResponse = { data: IPutgImage[] }
 type PutgmImageResponse = { data: IPutgmImage[] }
 type AdditResponse = { data: IAddit[] }
+
 type SnpResponse = { data: ISNP[] }
 type PutgResponse = { data: IPUTG[] }
 type PutgmResponse = { data: IPUTGM[] }
 type SizesResponse = { data: { sizes: ISize[]; dn: IDn[] } }
+type SizesIntResponse = { data: { sizes: ISizeInt[]; dn: IDn[] } }
+
+type MaterialsResponse = { data: IMaterial[] }
+type BoltMaterialsResponse = { data: IBoltMaterial[] }
+
 type DefSnpResponse = {
     data: { typeFl: ITypeFl[]; snp: ISNP[]; sizes: { sizes: ISize[]; dn: IDn[] } }
 }
@@ -48,6 +55,12 @@ type DefResponsePutgm = {
     sizes: { sizes: ISize[]; dn: IDn[] }
 }
 
+type DefSurveyResponse = {
+    fl: IFlange[]
+    typeFl: ITypeFl[]
+    materials: IMaterial[]
+}
+
 export default class ReadService {
     static async getStFl(): Promise<StFlResponse> {
         try {
@@ -70,6 +83,14 @@ export default class ReadService {
     static async getTypeFl(): Promise<TypeFlResponse> {
         try {
             const res = await api.get("/sealur-pro/flange-types/")
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+    static async getTypeFlAll(): Promise<TypeFlResponse> {
+        try {
+            const res = await api.get("/sealur-pro/flange-types/all")
             return res.data
         } catch (error: any) {
             throw error.response.data
@@ -164,6 +185,33 @@ export default class ReadService {
         }
     }
 
+    static async getMaterials(): Promise<MaterialsResponse> {
+        try {
+            const res = await api.get("/sealur-pro/materials/")
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+    static async getBolt(): Promise<BoltMaterialsResponse> {
+        try {
+            const res = await api.get("/sealur-pro/bolt-materials/")
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+    static async getSurveySize(req: ISizeIntReq): Promise<SizesIntResponse> {
+        try {
+            const res = await api.get(
+                `/sealur-pro/size-interview/?flange=${req.flange}&typeFlId=${req.typeFl}&row=${req.row}`
+            )
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
     static async getDefaultSnp(): Promise<DefResponseSnp> {
         const [stfl, addit, def] = await Promise.all([
             this.getStFl(),
@@ -220,6 +268,24 @@ export default class ReadService {
         try {
             const res = await api.get("/sealur-pro/snp/default")
             return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async getSurveyData(): Promise<DefSurveyResponse> {
+        try {
+            const [fl, typeFl, materials] = await Promise.all([
+                this.getFlange(),
+                this.getTypeFlAll(),
+                this.getMaterials(),
+            ])
+
+            return {
+                fl: fl.data,
+                typeFl: typeFl.data,
+                materials: materials.data,
+            }
         } catch (error: any) {
             throw error.response.data
         }

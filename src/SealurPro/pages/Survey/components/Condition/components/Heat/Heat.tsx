@@ -2,7 +2,7 @@ import { ChangeEvent, FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Input } from "../../../../../../../components/UI/Input/Input"
 import { Dispatch, ProState } from "../../../../../../store/store"
-import { HeatFileds } from "../../../../../../types/survey"
+import { HeatFields } from "../../../../../../types/survey"
 import classes from "../../../../survey.module.scss"
 
 type Props = {}
@@ -12,7 +12,7 @@ export const Heat: FC<Props> = () => {
 
     const { survey } = useDispatch<Dispatch>()
 
-    const changeHeatDataHandler = (field: HeatFileds) => (event: ChangeEvent<HTMLInputElement>) => {
+    const changeHeatDataHandler = (field: HeatFields) => (event: ChangeEvent<HTMLInputElement>) => {
         survey.setHeatData({ field, value: event.target.value })
     }
 

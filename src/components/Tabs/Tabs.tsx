@@ -6,6 +6,7 @@ type Props = {
     size?: "small" | "middle" | "large"
     initWidth: number
     initPos?: number
+    disabled?: boolean
     onClick?: (type: string, idx: number, event: React.MouseEvent) => void
 }
 
@@ -14,6 +15,7 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
     initWidth,
     initPos,
     type,
+    disabled,
     onClick,
 }) => {
     const [substrate, setSubstrate] = useState({ width: initWidth, position: initPos || 0 })
@@ -23,12 +25,14 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
     }, [initWidth, initPos])
 
     const clickHandler = (idx: number, type: string) => (event: React.MouseEvent<any>) => {
-        setSubstrate({
-            width: (event.target as HTMLAnchorElement).offsetWidth,
-            position: (event.target as HTMLAnchorElement).offsetLeft,
-        })
+        if (!disabled) {
+            setSubstrate({
+                width: (event.target as HTMLAnchorElement).offsetWidth,
+                position: (event.target as HTMLAnchorElement).offsetLeft,
+            })
 
-        onClick && onClick(type, idx, event)
+            onClick && onClick(type, idx, event)
+        }
     }
 
     const child = (
@@ -40,6 +44,7 @@ export const Tabs: FC<PropsWithChildren<Props>> = ({
             {Children.map(children as React.ReactElement[], (child: React.ReactElement) =>
                 cloneElement(child, {
                     onClick: clickHandler(child.props["data-index"], child.props["data-type"]),
+                    className: [child.props.className, disabled ? classes.disabled : ""].join(" "),
                 })
             )}
         </>

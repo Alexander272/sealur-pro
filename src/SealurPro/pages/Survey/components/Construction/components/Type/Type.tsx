@@ -1,50 +1,107 @@
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Tabs } from "../../../../../../../components/Tabs/Tabs"
 import { Select } from "../../../../../../../components/UI/Select/Select"
+import { Dispatch, ProState } from "../../../../../../store/store"
+import { TypeFields } from "../../../../../../types/survey"
 import classes from "../../../../survey.module.scss"
 
 const { Option } = Select
 
+const initTabs = {
+    stand: {
+        width: 124,
+        pos: 142,
+    },
+    not_stand: {
+        width: 142,
+        pos: 0,
+    },
+}
+
 type Props = {}
 
 export const Type: FC<Props> = () => {
+    const fl = useSelector((state: ProState) => state.addit.fl)
+    const typeFl = useSelector((state: ProState) => state.addit.typeFl)
+    const type = useSelector((state: ProState) => state.survey.type)
+
+    const { survey } = useDispatch<Dispatch>()
+
+    const [onlyNotStand, setOnlyNotStand] = useState(false)
+
+    const changeTypeDataHandler = (field: TypeFields) => (value: string) => {
+        survey.setTypeData({ field, value })
+    }
+    const changeTypeHandler = (type: string) => {
+        survey.setTypeData({ field: "type", value: type })
+    }
+
+    //TODO по хорошему это надо делать без хардкода
+    useEffect(() => {
+        if (!["1", "2", "3"].includes(type.typeFl)) {
+            setOnlyNotStand(true)
+            survey.setTypeData({ field: "type", value: "not_stand" })
+        } else {
+            setOnlyNotStand(false)
+        }
+    }, [type.typeFl, survey])
+
     return (
         <>
             <p className={classes.title}>Конструкция узла</p>
             <div className={`${classes.inline} ${classes.node}`}>
                 <p className={classes.nodeTitle}>Тип фланцевого соединения</p>
-                <Select value='ledge' onChange={() => {}}>
-                    <Option value='ledge'>Соединительный выступ</Option>
-                    <Option value='ledge_trough'>Выступ-впадина</Option>
-                    <Option value='tenon'>Шип-паз</Option>
-                    <Option value='groove'>Паз - гладкая поверхность</Option>
-                    <Option value='lock_melt'>Замок (под плав головку теплообменника)</Option>
-                    <Option value='lock'>Замок</Option>
-                    <Option value='plug'>Под резьбую пробку</Option>
+                <Select value={type.typeFl} onChange={changeTypeDataHandler("typeFl")}>
+                    {typeFl.map(f => (
+                        <Option key={f.id} value={f.id}>
+                            {f.title}
+                        </Option>
+                    ))}
                     <Option value='another'>Другой</Option>
                 </Select>
-                <p className={classes.flange}>1-1/ RF/ В1/ В2</p>
+                <p className={classes.flange}>{typeFl.find(f => f.id === type.typeFl)?.descr}</p>
             </div>
             <div className={`${classes.inline} ${classes.stand}`}>
-                <Tabs initWidth={124} initPos={142}>
-                    <p className={[classes.variants].join(" ")} data-type='not_stand'>
+                <Tabs
+                    initWidth={initTabs[type.type as "stand"].width}
+                    initPos={initTabs[type.type as "stand"].pos}
+                    onClick={changeTypeHandler}
+                    disabled={onlyNotStand}
+                >
+                    <p
+                        className={[
+                            classes.variants,
+                            type.type === "not_stand" ? classes.active : "",
+                        ].join(" ")}
+                        data-type='not_stand'
+                    >
                         Нестандартный
                         <br />
                         фланец
                     </p>
-                    <p className={[classes.variants, classes.active].join(" ")} data-type='stand'>
+                    <p
+                        className={[
+                            classes.variants,
+                            type.type === "stand" ? classes.active : "",
+                        ].join(" ")}
+                        data-type='stand'
+                    >
                         Стандартный
                         <br />
                         фланец
                     </p>
                 </Tabs>
-                <Select value='gost12815' onChange={() => {}}>
-                    <Option value='gost12815'>ГОСТ 12815 (трубопроводы)</Option>
-                    <Option value='gost28759'>ГОСТ 28759 (сосуды и аппараты)</Option>
-                    <Option value='asmeb165'>ASME B 16.5</Option>
-                    <Option value='asmeb1647a'>ASME B 16.47A</Option>
-                    <Option value='asmeb1647b'>ASME B 16.47B</Option>
-                    <Option value='din'>DIN/EN 1092</Option>
+                <Select
+                    value={type.flange}
+                    onChange={changeTypeDataHandler("flange")}
+                    disabled={type.type === "not_stand"}
+                >
+                    {fl.map(f => (
+                        <Option key={f.id} value={f.id}>
+                            {f.title}
+                        </Option>
+                    ))}
                 </Select>
             </div>
         </>

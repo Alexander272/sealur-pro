@@ -5,6 +5,10 @@
     display: flex;
     position: relative;
     width: fit-content;
+
+    & .disabled {
+        cursor: not-allowed;
+    }
 }
 
 .substrate {

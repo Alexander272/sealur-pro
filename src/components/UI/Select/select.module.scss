@@ -42,6 +42,15 @@
     &:hover {
         border-color: rgba(17, 97, 237, 1);
     }
+
+    &.disabled {
+        color: #5c627e;
+        cursor: not-allowed;
+
+        &:hover {
+            border-color: rgba(3, 121, 255, 0.5);
+        }
+    }
 }
 
 .options {

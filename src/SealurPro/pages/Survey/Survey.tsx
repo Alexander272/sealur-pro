@@ -1,5 +1,8 @@
+import { useLayoutEffect } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../../../components/UI/Button/Button"
+import { Dispatch } from "../../store/store"
 import { Addit } from "./components/Addit/Addit"
 import { Condition } from "./components/Condition/Condition"
 import { Construction } from "./components/Construction/Construction"
@@ -12,6 +15,12 @@ export default function Survey() {
     const backHandler = () => {
         navigate(-1)
     }
+
+    const { survey } = useDispatch<Dispatch>()
+
+    useLayoutEffect(() => {
+        survey.getDefault()
+    }, [survey])
 
     return (
         <div className={classes.gridContainer}>

@@ -40,7 +40,10 @@ const Select = ({ children, value, disabled, onChange, onOpen }: PropsWithChildr
 
     return (
         <div className={`${classes.select} ${isOpen ? "" : classes.close}`}>
-            <p className={classes.selected} onClick={openHandler}>
+            <p
+                className={[classes.selected, disabled && classes.disabled].join(" ")}
+                onClick={openHandler}
+            >
                 {title}
                 {!disabled && <span className={classes.icon}>&#9660;</span>}
             </p>

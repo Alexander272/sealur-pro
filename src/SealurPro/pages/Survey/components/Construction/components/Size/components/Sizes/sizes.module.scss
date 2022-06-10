@@ -1,0 +1,79 @@
+.sizes {
+    position: absolute;
+}
+
+.type_a {
+    &.d2 {
+        top: 8px;
+        left: 45%;
+    }
+
+    &.d {
+        top: 58px;
+        right: 7%;
+    }
+
+    &.h2 {
+        top: 111px;
+        right: 0px;
+    }
+
+    &.h1 {
+        display: none;
+    }
+}
+
+.type_b {
+    &.d2 {
+        top: 8px;
+        left: 43%;
+    }
+
+    &.d {
+        top: 56px;
+        right: 7%;
+    }
+
+    &.h1 {
+        top: 110px;
+        right: -10px;
+    }
+
+    &.h2 {
+        top: 236px;
+        right: -10px;
+    }
+}
+
+.type_c {
+    &.d2 {
+        top: 8px;
+        left: 42%;
+    }
+
+    &.d {
+        top: 56px;
+        right: 7%;
+    }
+
+    &.h2 {
+        top: 110px;
+        right: -10px;
+    }
+
+    &.h1 {
+        top: 236px;
+        right: -10px;
+    }
+}
+
+
+.d1 {
+    bottom: 20px;
+    left: 43%;
+}
+
+.dup {
+    bottom: 61px;
+    left: 43%;
+}
