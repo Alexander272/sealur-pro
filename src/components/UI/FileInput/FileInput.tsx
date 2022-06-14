@@ -15,7 +15,7 @@ export const FileInput: FC<Props> = ({ name, id, label, rounded, onChange }) => 
             <input type='file' name={name} id={id} className={classes.input} onChange={onChange} />
             <label htmlFor={id} className={`${classes.label} ${classes[rounded || "rounded"]}`}>
                 <span className={classes.icon}>
-                    <img src='/image/upload-file.svg' alt='upload' />
+                    <img src='/image/upload-file.svg' width='24' height='22' alt='upload' />
                     {/* <svg
                         version='1.1'
                         id='Capa_1'

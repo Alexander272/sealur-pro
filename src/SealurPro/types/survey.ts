@@ -1,3 +1,6 @@
+import { ISignUp } from "../../types/user"
+import { IDrawing } from "./drawing"
+
 export type UserFields = "organization" | "name" | "email" | "city" | "position" | "phone"
 export type EquipFields =
     | "techprocess"
@@ -17,6 +20,8 @@ export type HeatFields =
 export type MediumBoolFields = "abrasive" | "crystallized" | "penetrating"
 export type MediumFields = "condition" | "period"
 export type TypeFields = "flange" | "typeFl" | "type"
+export type MaterFields = "material" | "boltMaterial"
+export type DefFields = "along" | "across" | "nonFlatness" | "drawingNumber"
 
 export interface IMaterial {
     id: string
@@ -46,6 +51,11 @@ export interface ISizeInt {
     h2: string
     bolt: string
     countBolt: number
+}
+export interface IPadSize {
+    dIn: string
+    dOut: string
+    h: string
 }
 
 export interface IEquipment {
@@ -87,4 +97,32 @@ export interface IType {
     flange: string
     typeFl: string
     type: string
+}
+
+export interface IMater {
+    material: string
+    boltMaterial: string
+    lubricant: boolean
+}
+
+export interface IDefects {
+    along: string
+    across: string
+    nonFlatness: string
+    mounting: boolean
+    drawingNumber: string
+}
+
+export interface ISurveyDTO
+    extends ISignUp,
+        IEquipment,
+        ITemperature,
+        IHeat,
+        IMedium,
+        IType,
+        IMater,
+        IDefects {
+    size: (IPadSize & ISizeInt) | ISizeInt
+    drawing: IDrawing | null
+    info: string
 }

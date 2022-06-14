@@ -1,11 +1,28 @@
-import { FC } from "react"
+import { ChangeEvent, FC } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Tabs } from "../../../../../../../components/Tabs/Tabs"
 import { Input } from "../../../../../../../components/UI/Input/Input"
+import { Dispatch, ProState } from "../../../../../../store/store"
+import { DefFields } from "../../../../../../types/survey"
 import classes from "../../../../survey.module.scss"
 
 type Props = {}
 
 export const Def: FC<Props> = () => {
+    const defects = useSelector((state: ProState) => state.survey.defects)
+
+    const { survey } = useDispatch<Dispatch>()
+
+    const changeDefectsDataHandler =
+        (field: DefFields) => (event: ChangeEvent<HTMLInputElement>) => {
+            survey.setDefectsData({ field, value: event.target.value })
+        }
+
+    const changeMountingHandler = (type: string) => {
+        if (type === "yes") survey.setMounting(true)
+        else survey.setMounting(false)
+    }
+
     return (
         <div className={classes.fb50}>
             <p className={classes.title}>Глубина и характер деффектов</p>
@@ -13,51 +30,72 @@ export const Def: FC<Props> = () => {
                 <div className={classes.fb50}>
                     <Input
                         label='вдоль'
-                        id='prestest'
-                        name='prestest'
+                        id='along'
+                        name='along'
                         type='number'
-                        placeholder='0.00'
+                        placeholder='0,00'
                         min={0}
                         step={0.01}
+                        value={defects.along}
+                        onChange={changeDefectsDataHandler("along")}
                     />
                 </div>
                 <div className={classes.fb50}>
                     <Input
                         label='поперек'
-                        id='prestest'
-                        name='prestest'
+                        id='across'
+                        name='across'
                         type='number'
-                        placeholder='0.00'
+                        placeholder='0,00'
                         min={0}
                         step={0.01}
+                        value={defects.across}
+                        onChange={changeDefectsDataHandler("across")}
                     />
                 </div>
             </div>
             <div className={classes.inline}>
                 <Input
                     label='Неплоскостность фланцев'
-                    id='prestest'
-                    name='prestest'
+                    id='nonFlatness'
+                    name='nonFlatness'
                     type='number'
-                    placeholder='0.00'
+                    placeholder='0,00'
                     min={0}
                     step={0.01}
                     orentation='horizontal'
+                    value={defects.nonFlatness}
+                    onChange={changeDefectsDataHandler("nonFlatness")}
                 />
             </div>
             <div className={classes.inline}>
                 <p>Необходимость крепления на фланце</p>
-                <Tabs initWidth={53} onClick={() => {}}>
-                    <p className={[classes.variants, classes.active].join(" ")} data-type='no'>
+                <Tabs initWidth={53} onClick={changeMountingHandler}>
+                    <p
+                        className={[classes.variants, !defects.mounting && classes.active].join(
+                            " "
+                        )}
+                        data-type='no'
+                    >
                         Нет
                     </p>
-                    <p className={[classes.variants].join(" ")} data-type='yes'>
+                    <p
+                        className={[classes.variants, defects.mounting && classes.active].join(" ")}
+                        data-type='yes'
+                    >
                         Да
                     </p>
                 </Tabs>
             </div>
             {/* <div className={classes.inline}> */}
-            <Input label='&#8470; чертежа' id='prestest' name='prestest' orentation='horizontal' />
+            <Input
+                label='&#8470; чертежа'
+                id='prestest'
+                name='prestest'
+                orentation='horizontal'
+                value={defects.drawingNumber}
+                onChange={changeDefectsDataHandler("drawingNumber")}
+            />
             {/* </div> */}
         </div>
     )

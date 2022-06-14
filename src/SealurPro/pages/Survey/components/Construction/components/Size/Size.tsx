@@ -4,6 +4,7 @@ import classes from "../../../../survey.module.scss"
 import { useDispatch, useSelector } from "react-redux"
 import { Dispatch, ProState } from "../../../../../../store/store"
 import { Sizes } from "./components/Sizes/Sizes"
+import { AnotherSize } from "./components/AnotherSize"
 
 type Props = {}
 
@@ -18,6 +19,7 @@ export const Size: FC<Props> = () => {
     const type = useSelector((state: ProState) => state.survey.type)
     const row = useSelector((state: ProState) => state.survey.row)
     const size = useSelector((state: ProState) => state.survey.size)
+    const anSize = useSelector((state: ProState) => state.survey.anotherSize)
 
     const { survey } = useDispatch<Dispatch>()
 
@@ -29,7 +31,7 @@ export const Size: FC<Props> = () => {
         <>
             <div className={classes.inline}>
                 {type.type === "stand" && <Dn />}
-                {type.type === "not_stand" && null}
+                {type.type === "not_stand" && <AnotherSize />}
 
                 <div className={classes.imageContainer}>
                     {["1", "2", "3"].includes(type.typeFl) && (
@@ -41,7 +43,12 @@ export const Size: FC<Props> = () => {
                                 src={imgUrls[type.typeFl as "1"]}
                                 alt='flange drawing'
                             />
-                            {size && <Sizes size={size} typeFl={type.typeFl} />}
+                            {type.type !== "not_stand" && size ? (
+                                <Sizes size={size} typeFl={type.typeFl} />
+                            ) : null}
+                            {type.type === "not_stand" && (
+                                <Sizes size={anSize} typeFl={type.typeFl} />
+                            )}
                         </>
                     )}
                 </div>

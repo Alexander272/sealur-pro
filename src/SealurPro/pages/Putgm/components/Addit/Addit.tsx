@@ -33,7 +33,7 @@ export const Addit: FC<Props> = () => {
         formData.append("group", orderId)
 
         try {
-            const res: IDrawing = await FileService.create(formData, "/files/drawings/")
+            const res: IDrawing = await FileService.create(formData, "/files/drawings/pro/")
             putgm.setDrawing(res)
             if (orderId === "") {
                 list.setOrderId(res.group)
@@ -44,21 +44,10 @@ export const Addit: FC<Props> = () => {
         }
     }
 
-    const downloadFile = async () => {
-        try {
-            await FileService.get(
-                `/files/drawings/${drawing?.origName}?id=${drawing?.id}&group=${drawing?.group}`
-            )
-        } catch (error) {
-            console.log(error)
-            toast.error("Не удалось получить файл")
-        }
-    }
-
     const deleteFile = async () => {
         try {
             await FileService.delete(
-                `/files/drawings/${drawing?.origName}?id=${drawing?.id}&group=${drawing?.group}`
+                `/files/drawings/pro/${drawing?.group}/${drawing?.id}/${drawing?.origName}`
             )
             putgm.setDrawing(null)
         } catch (error) {
@@ -78,7 +67,6 @@ export const Addit: FC<Props> = () => {
                     text={drawing.origName}
                     name='drawing'
                     link={drawing.link}
-                    onSave={downloadFile}
                     onDelete={deleteFile}
                 />
             ) : (

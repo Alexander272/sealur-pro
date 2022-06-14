@@ -3,19 +3,25 @@ import { toast } from "react-toastify"
 import { ProModel } from "."
 import { ISignUp } from "../../../types/user"
 import ReadService from "../../service/read"
+import { IDrawing } from "../../types/drawing"
 import { IDn } from "../../types/size"
 import {
+    DefFields,
     EquipFields,
     HeatFields,
     IBoltMaterial,
+    IDefects,
     IEquipment,
     IHeat,
+    IMater,
     IMaterial,
     IMedium,
+    IPadSize,
     ISizeInt,
     ISizeIntReq,
     ITemperature,
     IType,
+    MaterFields,
     MediumBoolFields,
     MediumFields,
     TempFields,
@@ -24,13 +30,16 @@ import {
 } from "../../types/survey"
 
 interface ISurveyState {
+    error: boolean
     loading: boolean
     fetching: boolean
+
     materials: IMaterial[]
-    boltMaterials: IBoltMaterial[]
+    boltMaterials: IMaterial[]
     sizes: ISizeInt[]
     dns: IDn[]
     row: 1 | 2
+    bolts: IBoltMaterial[]
 
     user: ISignUp
     equip: IEquipment
@@ -41,10 +50,17 @@ interface ISurveyState {
     py: string
     dy: string
     size: null | ISizeInt
+    anotherSize: IPadSize & ISizeInt
+    mater: IMater
+    bolt: string
+    defects: IDefects
+    drawing: IDrawing | null
+    info: string
 }
 
 export const survey = createModel<ProModel>()({
     state: {
+        error: false,
         loading: true,
         fetching: false,
         materials: [],
@@ -52,6 +68,7 @@ export const survey = createModel<ProModel>()({
         sizes: [],
         dns: [],
         row: 1,
+        bolts: [],
 
         user: {
             organization: "",
@@ -100,6 +117,37 @@ export const survey = createModel<ProModel>()({
         py: "",
         dy: "",
         size: null,
+        anotherSize: {
+            id: "not_stand",
+            dIn: "",
+            dOut: "",
+            h: "",
+            dy: "",
+            py: "",
+            dUp: "",
+            d1: "",
+            d2: "",
+            d: "",
+            h1: "",
+            h2: "",
+            bolt: "",
+            countBolt: 4,
+        },
+        mater: {
+            material: "",
+            boltMaterial: "",
+            lubricant: false,
+        },
+        bolt: "",
+        defects: {
+            along: "",
+            across: "",
+            nonFlatness: "",
+            mounting: false,
+            drawingNumber: "",
+        },
+        drawing: null,
+        info: "",
     } as ISurveyState,
 
     reducers: {
@@ -111,11 +159,16 @@ export const survey = createModel<ProModel>()({
             state.fetching = payload
             return state
         },
+        setError(state, payload: boolean) {
+            state.error = payload
+            return state
+        },
+
         setMaterials(state, payload: IMaterial[]) {
             state.materials = payload
             return state
         },
-        setBoltMaterials(state, payload: IBoltMaterial[]) {
+        setBoltMaterials(state, payload: IMaterial[]) {
             state.boltMaterials = payload
             return state
         },
@@ -129,6 +182,10 @@ export const survey = createModel<ProModel>()({
         },
         setDns(state, payload: IDn[]) {
             state.dns = payload
+            return state
+        },
+        setBolts(state, payload: IBoltMaterial[]) {
+            state.bolts = payload
             return state
         },
 
@@ -172,6 +229,38 @@ export const survey = createModel<ProModel>()({
             state.size = payload
             return state
         },
+        setAnotherSize(state, payload: IPadSize & ISizeInt) {
+            state.anotherSize = payload
+            return state
+        },
+        setMaterData(state, payload: { field: MaterFields; value: string }) {
+            state.mater[payload.field] = payload.value
+            return state
+        },
+        setLubricant(state, payload: boolean) {
+            state.mater.lubricant = payload
+            return state
+        },
+        setBolt(state, payload: string) {
+            state.bolt = payload
+            return state
+        },
+        setDefectsData(state, payload: { field: DefFields; value: string }) {
+            state.defects[payload.field] = payload.value
+            return state
+        },
+        setMounting(state, payload: boolean) {
+            state.defects.mounting = payload
+            return state
+        },
+        setDrawing(state, payload: IDrawing | null) {
+            state.drawing = payload
+            return state
+        },
+        setInfo(state, payload: string) {
+            state.info = payload
+            return state
+        },
     },
 
     effects: dispatch => {
@@ -183,11 +272,21 @@ export const survey = createModel<ProModel>()({
                     const res = await ReadService.getSurveyData()
                     addit.setFl(res.fl)
                     addit.setTypeFl(res.typeFl)
-                    survey.setMaterials(res.materials)
+                    const materials: IMaterial[] = []
+                    const boltMaterials: IMaterial[] = []
+                    res.materials.forEach(m => {
+                        if (m.typeMat === "flange") materials.push(m)
+                        else boltMaterials.push(m)
+                    })
+                    survey.setMaterials(materials)
+                    survey.setBoltMaterials(boltMaterials)
                     survey.setTypeData({ field: "flange", value: res.fl[0].id })
                     survey.setTypeData({ field: "typeFl", value: res.typeFl[0].id })
                     survey.setTypeData({ field: "type", value: "stand" })
+                    survey.setMaterData({ field: "material", value: materials[0].id })
+                    survey.setMaterData({ field: "boltMaterial", value: boltMaterials[0].id })
                 } catch (error: any) {
+                    survey.setError(true)
                     toast.error(error.message)
                 } finally {
                     survey.setLoading(false)
@@ -197,11 +296,13 @@ export const survey = createModel<ProModel>()({
                 try {
                     survey.setFetching(true)
                     const res = await ReadService.getSurveySize(req)
-                    survey.setSizes(res.data.sizes)
-                    survey.setDns(res.data.dn)
-                    survey.setDy(res.data.dn[0].dn)
-                    survey.setPy(res.data.sizes[0].py.split(";")[0])
-                    survey.setSize(res.data.sizes[0])
+                    if (res.data.sizes) {
+                        survey.setSizes(res.data.sizes)
+                        survey.setDns(res.data.dn)
+                        survey.setDy(res.data.dn[0].dn)
+                        survey.setPy(res.data.sizes[0].py.split(";")[0])
+                        survey.setSize(res.data.sizes[0])
+                    }
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {
@@ -212,7 +313,8 @@ export const survey = createModel<ProModel>()({
                 try {
                     survey.setFetching(true)
                     const res = await ReadService.getBolt()
-                    survey.setBoltMaterials(res.data)
+                    survey.setBolts(res.data)
+                    survey.setBolt(res.data[0].id)
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {

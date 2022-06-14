@@ -25,6 +25,7 @@ export const Type: FC<Props> = () => {
     const fl = useSelector((state: ProState) => state.addit.fl)
     const typeFl = useSelector((state: ProState) => state.addit.typeFl)
     const type = useSelector((state: ProState) => state.survey.type)
+    const bolts = useSelector((state: ProState) => state.survey.bolts)
 
     const { survey } = useDispatch<Dispatch>()
 
@@ -35,6 +36,7 @@ export const Type: FC<Props> = () => {
     }
     const changeTypeHandler = (type: string) => {
         survey.setTypeData({ field: "type", value: type })
+        if (!bolts.length) survey.getBoltMaterials()
     }
 
     //TODO по хорошему это надо делать без хардкода
@@ -42,10 +44,11 @@ export const Type: FC<Props> = () => {
         if (!["1", "2", "3"].includes(type.typeFl)) {
             setOnlyNotStand(true)
             survey.setTypeData({ field: "type", value: "not_stand" })
+            if (!bolts.length) survey.getBoltMaterials()
         } else {
             setOnlyNotStand(false)
         }
-    }, [type.typeFl, survey])
+    }, [type.typeFl, survey, bolts.length])
 
     return (
         <>
