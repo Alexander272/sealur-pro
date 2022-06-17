@@ -98,9 +98,9 @@ export const survey = createModel<ProModel>()({
             tempWorkPipe: "",
             presWorkPipe: "",
             environPipe: "",
-            tempWork: "",
-            presWork: "",
-            environ: "",
+            tempWorkAnn: "",
+            presWorkAnn: "",
+            environAnn: "",
         },
         medium: {
             abrasive: false,

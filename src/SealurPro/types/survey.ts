@@ -14,9 +14,9 @@ export type HeatFields =
     | "tempWorkPipe"
     | "presWorkPipe"
     | "environPipe"
-    | "tempWork"
-    | "presWork"
-    | "environ"
+    | "tempWorkAnn"
+    | "presWorkAnn"
+    | "environAnn"
 export type MediumBoolFields = "abrasive" | "crystallized" | "penetrating"
 export type MediumFields = "condition" | "period"
 export type TypeFields = "flange" | "typeFl" | "type"
@@ -80,9 +80,9 @@ export interface IHeat {
     tempWorkPipe: string
     presWorkPipe: string
     environPipe: string
-    tempWork: string
-    presWork: string
-    environ: string
+    tempWorkAnn: string
+    presWorkAnn: string
+    environAnn: string
 }
 
 export interface IMedium {

@@ -56,8 +56,8 @@ export const Heat: FC<Props> = () => {
                         type='number'
                         orentation='horizontal'
                         placeholder='0'
-                        value={heat.tempWork}
-                        onChange={changeHeatDataHandler("tempWork")}
+                        value={heat.tempWorkAnn}
+                        onChange={changeHeatDataHandler("tempWorkAnn")}
                     />
                     <Input
                         id='heat_preswork'
@@ -66,14 +66,14 @@ export const Heat: FC<Props> = () => {
                         min={0}
                         step={0.1}
                         placeholder='0.0'
-                        value={heat.presWork}
-                        onChange={changeHeatDataHandler("presWork")}
+                        value={heat.presWorkAnn}
+                        onChange={changeHeatDataHandler("presWorkAnn")}
                     />
                     <Input
                         name='environ'
                         id='heat_enviton'
-                        value={heat.environ}
-                        onChange={changeHeatDataHandler("environ")}
+                        value={heat.environAnn}
+                        onChange={changeHeatDataHandler("environAnn")}
                     />
                 </div>
             </div>

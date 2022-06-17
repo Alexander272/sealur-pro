@@ -25,7 +25,7 @@ export const Def: FC<Props> = () => {
 
     return (
         <div className={classes.fb50}>
-            <p className={classes.title}>Глубина и характер деффектов</p>
+            <p className={classes.title}>Глубина и характер дефектов</p>
             <div className={classes.inline}>
                 <div className={classes.fb50}>
                     <Input
@@ -35,7 +35,7 @@ export const Def: FC<Props> = () => {
                         type='number'
                         placeholder='0,00'
                         min={0}
-                        step={0.01}
+                        step={0.05}
                         value={defects.along}
                         onChange={changeDefectsDataHandler("along")}
                     />
@@ -48,7 +48,7 @@ export const Def: FC<Props> = () => {
                         type='number'
                         placeholder='0,00'
                         min={0}
-                        step={0.01}
+                        step={0.05}
                         value={defects.across}
                         onChange={changeDefectsDataHandler("across")}
                     />
@@ -62,7 +62,7 @@ export const Def: FC<Props> = () => {
                     type='number'
                     placeholder='0,00'
                     min={0}
-                    step={0.01}
+                    step={0.05}
                     orentation='horizontal'
                     value={defects.nonFlatness}
                     onChange={changeDefectsDataHandler("nonFlatness")}

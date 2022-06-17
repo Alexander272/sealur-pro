@@ -84,7 +84,7 @@ export const Mater: FC<Props> = () => {
                 )}
             </div>
             <div className={classes.inline}>
-                <p>Количествово болтов/шпилек, шт</p>
+                <p>Количество болтов/шпилек, шт.</p>
                 <Input
                     name='diffto'
                     type='number'
