@@ -2,53 +2,46 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { RootModel } from "."
 import AuthService from "../../service/auth"
-import { Token } from "../../types/response"
-import { ISignIn, ISignUp } from "../../types/user"
+import { ISignInResponse } from "../../types/response"
+import { ISignIn, ISignUp, IRole } from "../../types/user"
 
 interface IUserState {
+    ready: boolean
     loading: boolean
-    token: {
-        accessToken: string
-        expiresAt: number
-    }
     userId: string
-    nickname: string
-    role: string
+    email: string
+    roles: IRole[]
     isAuth: boolean
 }
 
 export const user = createModel<RootModel>()({
     state: {
+        ready: false,
         loading: false,
-        token: {
-            accessToken: "",
-            expiresAt: 0,
-        },
-        role: "admin",
-        userId: "testId",
-        nickname: "Alex",
-        isAuth: true,
+        roles: [],
+        userId: "",
+        email: "",
+        isAuth: false,
     } as IUserState,
 
     reducers: {
+        setReady(state, payload: boolean) {
+            state.ready = payload
+            return state
+        },
         setLoading(state, payload: boolean) {
             state.loading = payload
             return state
         },
-        setUser(state, payload: Token) {
-            state.token.accessToken = payload.token.accessToken
-            state.token.expiresAt = payload.token.exp
+        setUser(state, payload: ISignInResponse) {
             state.userId = payload.userId
-            state.nickname = payload.name
-            state.role = payload.role
+            state.email = payload.email
+            state.roles = payload.roles
             state.isAuth = true
             return state
         },
         clearUser(state) {
-            state.token.accessToken = ""
-            state.token.expiresAt = 0
-            state.role = ""
-            state.nickname = ""
+            state.roles = []
             state.userId = ""
             state.isAuth = false
             return state
@@ -64,7 +57,11 @@ export const user = createModel<RootModel>()({
                     const res = await AuthService.signIn(payload)
                     user.setUser(res.data)
                 } catch (error: any) {
-                    toast.error(error.message)
+                    if (error.message === "invalid data send")
+                        toast.error("Введены неверные данные для входа")
+                    else if (error.message === "something went wrong")
+                        toast.error("Произошла ошибка")
+                    else toast.error(error.message)
                 } finally {
                     user.setLoading(false)
                 }
@@ -74,7 +71,10 @@ export const user = createModel<RootModel>()({
                 user.setLoading(true)
                 try {
                     await AuthService.signUp(payload)
-                    toast.success("Registration completed successfully", { autoClose: false })
+                    toast.success(
+                        "Регистрация успешно завершена. Пожалуйста, дождитесь активации учетной записи",
+                        { autoClose: false }
+                    )
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {

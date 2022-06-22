@@ -1,5 +1,5 @@
 import { IResponse } from "../types/response"
-import api from "./api"
+import api from "../../service/api"
 
 export default class FileService {
     static async get(url: string): Promise<any> {

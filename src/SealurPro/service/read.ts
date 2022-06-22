@@ -1,4 +1,4 @@
-import api from "./api"
+import api from "../../service/api"
 import { IStFl } from "../types/stFl"
 import { IAddit } from "../types/addit"
 import { ISNP, ISNPReq } from "../types/snp"
@@ -67,7 +67,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/st-fl/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -76,7 +77,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/flanges/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -85,7 +87,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/flange-types/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
     static async getTypeFlAll(): Promise<TypeFlResponse> {
@@ -93,7 +96,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/flange-types/all")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -102,7 +106,8 @@ export default class ReadService {
             const res = await api.get("sealur-pro/standards/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -111,7 +116,8 @@ export default class ReadService {
             const res = await api.get(`sealur-pro/putg-image/?form=${form}`)
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -120,7 +126,8 @@ export default class ReadService {
             const res = await api.get(`sealur-pro/putgm-image/?form=${form}`)
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -129,7 +136,8 @@ export default class ReadService {
             const res = await api.get<AdditResponse>("/sealur-pro/additionals/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -140,7 +148,8 @@ export default class ReadService {
             )
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -149,7 +158,8 @@ export default class ReadService {
             const res = await api.get(`/sealur-pro/putg/?form=${req.form}&flangeId=${req.flangeId}`)
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -160,7 +170,8 @@ export default class ReadService {
             )
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
 
@@ -171,7 +182,8 @@ export default class ReadService {
             )
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: { sizes: [], dn: [] } }
         }
     }
     static async getAllSize(req: ISizeReq): Promise<SizesResponse> {
@@ -181,7 +193,8 @@ export default class ReadService {
             )
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: { sizes: [], dn: [] } }
         }
     }
 
@@ -190,7 +203,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/materials/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
     static async getBolt(): Promise<BoltMaterialsResponse> {
@@ -198,7 +212,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/bolt-materials/")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: [] }
         }
     }
     static async getSurveySize(req: ISizeIntReq): Promise<SizesIntResponse> {
@@ -208,7 +223,8 @@ export default class ReadService {
             )
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: { sizes: [], dn: [] } }
         }
     }
 

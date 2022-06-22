@@ -1,6 +1,6 @@
 import { IResponse } from "../types/response"
 import { ISNPDTO } from "../types/snp"
-import api from "./api"
+import api from "../../service/api"
 
 export default class SNPService {
     static async create(data: ISNPDTO): Promise<IResponse> {

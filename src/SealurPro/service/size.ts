@@ -1,6 +1,6 @@
 import { ISizeDTO } from "../types/size"
 import { IResponse } from "../types/response"
-import api from "./api"
+import api from "../../service/api"
 
 export default class SizeService {
     static async create(data: ISizeDTO): Promise<IResponse> {

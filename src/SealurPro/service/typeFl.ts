@@ -1,4 +1,4 @@
-import api from "./api"
+import api from "../../service/api"
 import { ITypeFlCreate } from "../types/typeFl"
 import { IResponse } from "../types/response"
 

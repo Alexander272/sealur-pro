@@ -1,6 +1,6 @@
 import { IPutgDTO } from "../types/putg"
 import { IResponse } from "../types/response"
-import api from "./api"
+import api from "../../service/api"
 
 export default class PutgService {
     static async create(data: IPutgDTO): Promise<IResponse> {

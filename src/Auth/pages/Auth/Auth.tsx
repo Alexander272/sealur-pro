@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useEffect, useLayoutEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Loader } from "../../../components/UI/Loader/Loader"
-import { RootState } from "../../../store/store"
+import { Dispatch, RootState } from "../../../store/store"
 import { SignInForm } from "../../components/AuthForms/SignInForm"
 import { SignUpForm } from "../../components/AuthForms/SignUpForm"
 import classes from "./auth.module.scss"
@@ -14,15 +14,23 @@ export default function Auth() {
     const location = useLocation()
 
     const loading = useSelector((state: RootState) => state.user.loading)
-    const token = useSelector((state: RootState) => state.user.token.accessToken)
+    const isAuth = useSelector((state: RootState) => state.user.isAuth)
 
     const from: string = (location.state as any)?.from?.pathname || "/"
 
+    const { user } = useDispatch<Dispatch>()
+
     useEffect(() => {
-        if (token !== "") {
+        if (isAuth) {
             navigate(from, { replace: true })
         }
-    }, [token, navigate, from])
+    }, [isAuth, navigate, from])
+
+    useLayoutEffect(() => {
+        if (!isAuth) {
+            user.refresh()
+        }
+    }, [isAuth, user])
 
     const changeTabHandler = (value: boolean) => () => {
         setIsSignIn(value)

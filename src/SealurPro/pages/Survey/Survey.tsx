@@ -32,6 +32,8 @@ export default function Survey() {
     if (loading) return <Loader />
     if (error) return <ServerError />
 
+    // TODO сделать старницу для редактирования данных
+
     return (
         <div className={classes.gridContainer}>
             {fetching && <Loader background='fill' />}

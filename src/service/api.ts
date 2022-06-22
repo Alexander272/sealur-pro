@@ -21,19 +21,8 @@ api.interceptors.response.use(
         return config
     },
     async error => {
-        const originalRequest = error.config
-
-        if (error.response.status === 401 && error.config && !error.config._isRetry) {
-            originalRequest._isRetry = true
-            const { user } = store.dispatch
-            try {
-                const res = await api.post(`/auth/refresh/`)
-                user.setUser(res.data)
-                return api.request(originalRequest)
-            } catch (e) {
-                user.clearUser()
-                console.log("НЕ АВТОРИЗОВАН")
-            }
+        if (error.response.status === 401) {
+            store.dispatch.user.clearUser()
         }
         throw error
     }

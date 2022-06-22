@@ -11,3 +11,9 @@ export interface ISignUp {
     position: string
     phone: string
 }
+
+export interface IRole {
+    id: string
+    service: string
+    role: string
+}

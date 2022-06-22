@@ -30,7 +30,7 @@ export const Header: FC = () => {
                     />
                 </a>
                 <div className={classes.admin}>
-                    {state.user.role === "admin" &&
+                    {state.user.roles.find(r => r.service === "pro")?.role === "admin" &&
                     ["", "putg", "putgm"].includes(path[path.length - 1]) ? (
                         <Link
                             to={`${ProAdminUrl}/${path[path.length - 1]}`}

@@ -1,3 +1,5 @@
+import { IRole } from "./user"
+
 export type Token = {
     token: TokenData
     userId: string
@@ -13,4 +15,10 @@ type TokenData = {
 export interface IResponse {
     id?: string
     message: string
+}
+
+export interface ISignInResponse {
+    userId: string
+    email: string
+    roles: IRole[]
 }

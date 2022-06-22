@@ -1,6 +1,6 @@
+import api from "../../service/api"
 import { IResponse } from "../types/response"
 import { ISurveyDTO } from "../types/survey"
-import api from "./api"
 
 export default class SurveyService {
     static async send(data: ISurveyDTO): Promise<IResponse> {
