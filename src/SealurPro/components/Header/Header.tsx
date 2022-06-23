@@ -1,7 +1,8 @@
 import { FC } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { ProAdminUrl } from "../../../components/routes"
 import { store } from "../../../store/store"
+import { ProAdminUrl } from "../../../components/routes"
+import { Profile } from "./Profile"
 import classes from "./header.module.scss"
 
 export const Header: FC = () => {
@@ -31,9 +32,11 @@ export const Header: FC = () => {
                 </a>
                 <div className={classes.admin}>
                     {state.user.roles.find(r => r.service === "pro")?.role === "admin" &&
-                    ["", "putg", "putgm"].includes(path[path.length - 1]) ? (
+                    ["", "pro", "putg", "putgm", "survey"].includes(path[path.length - 1]) ? (
                         <Link
-                            to={`${ProAdminUrl}/${path[path.length - 1]}`}
+                            to={`${ProAdminUrl}${
+                                path[path.length - 1] === "pro" ? "" : "/" + path[path.length - 1]
+                            }`}
                             className={classes.link}
                         >
                             <svg
@@ -53,6 +56,7 @@ export const Header: FC = () => {
                             <p>Редактировать</p>
                         </Link>
                     ) : null}
+                    {state.user.isAuth && <Profile />}
                 </div>
             </div>
         </header>

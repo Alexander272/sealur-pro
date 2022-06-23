@@ -51,6 +51,7 @@ export interface ISizeInt {
     h2: string
     bolt: string
     countBolt: number
+    row?: number
 }
 export interface IPadSize {
     dIn: string
@@ -125,4 +126,20 @@ export interface ISurveyDTO
     size: (IPadSize & ISizeInt) | ISizeInt
     drawing: IDrawing | null
     info: string
+}
+
+export interface ISizeIntDTO {
+    flange: string
+    typeFl: string
+    dy: string
+    py: string
+    dUp: string
+    d1: string
+    d2: string
+    d: string
+    h1: string
+    h2: string
+    bolt: string
+    countBolt: number
+    row?: number
 }

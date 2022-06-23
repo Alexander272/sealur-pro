@@ -1,45 +1,43 @@
-import React, { FC, useState } from "react"
-import { Controller, ControllerRenderProps, useForm } from "react-hook-form"
-import { useSelector } from "react-redux"
+import { FC, useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Select } from "../../../components/UI/Select/Select"
-import SizeService from "../../service/size"
-import FileService from "../../service/file"
-import { ProState } from "../../store/store"
-import { ISize, ISizeDTO } from "../../types/size"
-import { ConfirmModal } from "../../../components/ConfirmModal/ConfirmModal"
-import { useModal } from "../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../components/Modal/Modal"
-import { Button } from "../../../components/UI/Button/Button"
-import { FileInput } from "../../../components/UI/FileInput/FileInput"
-import { Input } from "../../../components/UI/Input/Input"
-import { Loader } from "../../../components/UI/Loader/Loader"
+import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../../components/Modal/Modal"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { FileInput } from "../../../../../components/UI/FileInput/FileInput"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Loader } from "../../../../../components/UI/Loader/Loader"
+import FileService from "../../../../service/file"
+import SurveyAdminService from "../../../../service/surveyAdmin"
+import { ISizeInt, ISizeIntDTO } from "../../../../types/survey"
 import classes from "./table.module.scss"
 
-type Stand = {
-    short: string
-    standId: string
-}
+const tableName = [
+    "Dy",
+    "Py",
+    "D",
+    "D1",
+    "D2",
+    "d",
+    "h1",
+    "h2",
+    "Ø болтов/шпилек",
+    "Количествово болтов/шпилек, шт",
+    "Ряд",
+]
 
 type Props = {
-    data: ISize[]
-    typePr: string
-    stand: Stand | null
-    saveHandler: (size: ISize, isNew: boolean) => void
+    data: ISizeInt[]
+    flange: string
+    typeFl: string
+    saveHandler: (size: ISizeInt, isNew: boolean) => void
     deleteHandler: (id: string, isAll: boolean) => void
 }
 
-//TODO добавить загрузку файла с размерами
-
-const tableName = ["Dn", "Pn", "Тип прокладки", "D4", "D3", "D2", "D1", "h", "S2", "S3"]
-
-const { Option } = Select
-
-export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteHandler }) => {
+export const SizeTable: FC<Props> = ({ data, flange, typeFl, saveHandler, deleteHandler }) => {
     const [loading, setLoading] = useState(false)
-    const [size, setSize] = useState<ISize | null>(null)
-
-    const typeFl = useSelector((state: ProState) => state.addit.typeFl)
+    const [size, setSize] = useState<ISizeInt | null>(null)
 
     const { isOpen, toggle } = useModal()
     const { isOpen: isOpenConfirm, toggle: toggleConfirm } = useModal()
@@ -47,75 +45,75 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
         register,
         handleSubmit,
         setValue,
-        control,
         formState: { errors },
-    } = useForm<ISize>()
+    } = useForm<ISizeInt>()
 
     const updateHandler = (idx: number) => () => {
         setSize(data[idx])
         setValue("id", data[idx].id)
-        setValue("dn", data[idx].dn)
-        setValue("pn", data[idx].pn)
-        setValue("typePr", data[idx].typePr)
-        setValue("typeFlId", data[idx].typeFlId)
-        setValue("d4", data[idx].d4)
-        setValue("d3", data[idx].d3)
-        setValue("d2", data[idx].d2)
+        setValue("dy", data[idx].dy)
+        setValue("py", data[idx].py)
+        setValue("dUp", data[idx].dUp)
         setValue("d1", data[idx].d1)
-        setValue("h", data[idx].h)
-        setValue("s2", data[idx].s2)
-        setValue("s3", data[idx].s3)
+        setValue("d2", data[idx].d2)
+        setValue("d", data[idx].d)
+        setValue("h1", data[idx].h1)
+        setValue("h2", data[idx].h2)
+        setValue("bolt", data[idx].bolt)
+        setValue("countBolt", data[idx].countBolt)
+        setValue("row", data[idx].row)
         toggle()
     }
 
     const addHandler = () => {
         setSize(null)
         setValue("id", "new")
-        setValue("dn", "")
-        setValue("pn", "")
-        setValue("typePr", "")
-        setValue("typeFlId", "1")
-        setValue("d4", undefined)
-        setValue("d3", "0")
-        setValue("d2", "0")
-        setValue("d1", undefined)
-        setValue("h", "")
-        setValue("s2", "")
-        setValue("s3", "")
+        setValue("dy", "")
+        setValue("py", "")
+        setValue("dUp", "")
+        setValue("d1", "")
+        setValue("d2", "")
+        setValue("d", "")
+        setValue("h1", "")
+        setValue("h2", "")
+        setValue("bolt", "")
+        setValue("countBolt", 4)
+        setValue("row", 1)
         toggle()
     }
 
     // добавление (обновление) размеров
-    const submitHandler = async (form: ISize) => {
-        if (!stand) {
+    const submitHandler = async (form: ISizeInt) => {
+        if (!flange) {
             return
         }
 
         try {
             setLoading(true)
-            const data: ISizeDTO = {
-                flange: stand.short,
-                standId: stand.standId,
-                dn: form.dn,
-                pn: form.pn,
-                typePr: form.typePr,
-                typeFlId: form.typeFlId,
-                d4: form.d4 ? form.d4 : "0",
-                d3: form.d3,
+            const data: ISizeIntDTO = {
+                flange: flange,
+                typeFl: typeFl,
+                dy: form.dy,
+                py: form.py,
+                dUp: form.dUp,
+                d1: form.d1,
                 d2: form.d2,
-                d1: form.d1 ? form.d1 : "0",
-                h: form.h,
-                s2: form.s2,
-                s3: form.s3,
+                d: form.d,
+                h1: form.h1,
+                h2: form.h2,
+                bolt: form.bolt,
+                countBolt: form.countBolt,
+                row: form.row,
             }
 
             if (form.id === "new") {
-                const res = await SizeService.create(data)
-                saveHandler({ ...data, id: res.id || "" }, true)
+                const res = await SurveyAdminService.createSize(data)
+                // let res = { id: "" }
+                saveHandler({ ...form, id: res.id || "" }, true)
                 toast.success("Успешно создано")
             } else {
-                await SizeService.update(form.id, data)
-                saveHandler({ ...data, id: form.id }, false)
+                await SurveyAdminService.updateSize(form.id, data)
+                saveHandler({ ...form }, false)
                 toast.success("Успешно обновлено")
             }
         } catch (error) {
@@ -127,11 +125,11 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
 
     // удаление размеров
     const delHandler = async () => {
-        if (!size || !stand) return
+        if (!size || !flange) return
 
         try {
             setLoading(false)
-            await SizeService.delete(size.id, stand.short)
+            await SurveyAdminService.deleteSize(size.id)
             deleteHandler(size.id, false)
             toast.success("Успешно удалено")
         } catch (error) {
@@ -141,13 +139,13 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
         }
     }
 
-    // Удаление всех размеров выбраного стандарта и типа прокладки
+    // Удаление всех размеров выбраного стандарта
     const deleteAllHandler = async () => {
-        if (!stand) return
+        if (!flange) return
 
         try {
             setLoading(false)
-            await SizeService.deleteAll(stand.short, typePr)
+            await SurveyAdminService.deleteAllSize(flange)
             deleteHandler("", true)
             toast.success("Успешно удалено")
         } catch (error) {
@@ -157,6 +155,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
         }
     }
 
+    // загрузка размеров из файла
     const uploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
         if (!files) return
@@ -172,22 +171,10 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
         formData.append("sizes", files[0])
 
         try {
-            await FileService.create(formData, "/sealur-pro/sizes/file")
+            await FileService.create(formData, "/sealur-pro/sizes-interview/file")
         } catch (error) {
             toast.error("Не удалось загрузить файл")
         }
-    }
-
-    const renderTypeFl = ({ field }: { field: ControllerRenderProps<ISize, "typeFlId"> }) => {
-        return (
-            <Select value={field.value} onChange={field.onChange}>
-                {typeFl.map(t => (
-                    <Option key={t.id} value={t.id}>
-                        {t.title}
-                    </Option>
-                ))}
-            </Select>
-        )
     }
 
     return (
@@ -209,52 +196,45 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                 <Modal.Content>
                     <form name='temperature' className={classes.form}>
                         <Input
-                            name='dn'
-                            label='Dn'
+                            name='dy'
+                            label='Dy'
                             orentation='horizontal'
                             register={register}
                             rule={{ required: true }}
-                            error={errors.dn}
+                            error={errors.dy}
                             errorText='Поле не заполнено'
                         />
                         <Input
-                            name='pn'
-                            label='Pn'
+                            name='py'
+                            label='Py'
                             orentation='horizontal'
                             register={register}
                             rule={{ required: true }}
-                            error={errors.pn}
+                            error={errors.py}
                             errorText='Поле не заполнено'
                         />
                         <Input
-                            name='typePr'
-                            label='Тип прокладки'
-                            orentation='horizontal'
-                            register={register}
-                            rule={{ required: true }}
-                            error={errors.typePr}
-                            errorText='Поле не заполнено'
-                        />
-                        <Controller name='typeFlId' control={control} render={renderTypeFl} />
-                        <Input
-                            name='d4'
-                            label='D4'
-                            type='number'
-                            min={0}
-                            step={0.1}
-                            orentation='horizontal'
-                            register={register}
-                        />
-                        <Input
-                            name='d3'
-                            label='D3'
+                            name='dUp'
+                            label='D'
                             type='number'
                             min={0}
                             step={0.1}
                             orentation='horizontal'
                             register={register}
                             rule={{ required: true }}
-                            error={errors.d3}
+                            error={errors.dUp}
+                            errorText='Поле не заполнено'
+                        />
+                        <Input
+                            name='d1'
+                            label='D1'
+                            type='number'
+                            min={0}
+                            step={0.1}
+                            orentation='horizontal'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.d1}
                             errorText='Поле не заполнено'
                         />
                         <Input
@@ -270,25 +250,62 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                             errorText='Поле не заполнено'
                         />
                         <Input
-                            name='d1'
+                            name='d'
+                            label='d'
                             type='number'
                             min={0}
                             step={0.1}
                             orentation='horizontal'
-                            label='D1'
+                            register={register}
+                            rule={{ required: true }}
+                            error={errors.d}
+                            errorText='Поле не заполнено'
+                        />
+                        <Input
+                            name='h1'
+                            label='h1'
+                            type='number'
+                            min={0}
+                            step={0.1}
+                            orentation='horizontal'
                             register={register}
                         />
                         <Input
-                            name='h'
-                            label='h'
+                            name='h2'
+                            label='h2'
+                            type='number'
+                            min={0}
+                            step={0.1}
                             orentation='horizontal'
                             register={register}
-                            rule={{ required: true }}
-                            error={errors.h}
-                            errorText='Поле не заполнено'
                         />
-                        <Input name='s2' label='S2' orentation='horizontal' register={register} />
-                        <Input name='s3' label='S3' orentation='horizontal' register={register} />
+                        <Input
+                            name='bolt'
+                            label='Ø болтов/шпилек'
+                            orentation='horizontal'
+                            register={register}
+                        />
+                        <Input
+                            name='countBolt'
+                            label='Количествово болтов/шпилек, шт'
+                            type='number'
+                            min={1}
+                            orentation='horizontal'
+                            register={register}
+                        />
+                        <Input
+                            name='row'
+                            label='Ряд'
+                            type='number'
+                            min={1}
+                            max={2}
+                            step={1}
+                            orentation='horizontal'
+                            register={register}
+                            rule={{ required: true, min: 1, max: 2 }}
+                            error={errors.d}
+                            errorText='Поле не корректно заполнено'
+                        />
                     </form>
                 </Modal.Content>
                 <Modal.Footer>
@@ -325,16 +342,17 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                                 key={d.id}
                                 onClick={updateHandler(idx)}
                             >
-                                <p className={classes.td}>{d.dn}</p>
-                                <p className={classes.td}>{d.pn}</p>
-                                <p className={classes.td}>{d.typePr}</p>
-                                <p className={classes.td}>{d.d4}</p>
-                                <p className={classes.td}>{d.d3}</p>
-                                <p className={classes.td}>{d.d2}</p>
+                                <p className={classes.td}>{d.dy}</p>
+                                <p className={classes.td}>{d.py}</p>
+                                <p className={classes.td}>{d.dUp}</p>
                                 <p className={classes.td}>{d.d1}</p>
-                                <p className={classes.td}>{d.h}</p>
-                                <p className={classes.td}>{d.s2}</p>
-                                <p className={classes.td}>{d.s3}</p>
+                                <p className={classes.td}>{d.d2}</p>
+                                <p className={classes.td}>{d.d}</p>
+                                <p className={classes.td}>{d.h1}</p>
+                                <p className={classes.td}>{d.h2}</p>
+                                <p className={classes.td}>{d.bolt}</p>
+                                <p className={classes.td}>{d.countBolt}</p>
+                                <p className={classes.td}>{d.row}</p>
                             </div>
                         ))}
                 </div>
@@ -347,7 +365,7 @@ export const SizeTable: FC<Props> = ({ data, typePr, stand, saveHandler, deleteH
                     id='sizes'
                     onChange={uploadFile}
                 />
-                <a href='/examples/size.xlsx' className={classes.link}>
+                <a href='/examples/size-int.xlsx' className={classes.link}>
                     Скачать пример
                 </a>
                 <Button variant='danger' onClick={toggleConfirm}>
