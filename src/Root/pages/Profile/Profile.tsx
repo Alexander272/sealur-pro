@@ -4,6 +4,7 @@ import { Dispatch, RootState } from "../../../store/store"
 import { Header } from "./components/Header/Header"
 import { Profile } from "./components/Profile/Profile"
 import { Services } from "./components/Services/Services"
+import { Users } from "./components/Users/Users"
 import classes from "./profile.module.scss"
 
 export default function ProfilePage() {
@@ -17,6 +18,7 @@ export default function ProfilePage() {
     return (
         <div className={classes.page}>
             <Header />
+            <Users />
             <main className={classes.main}>
                 <Profile />
                 <Services />

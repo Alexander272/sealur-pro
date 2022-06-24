@@ -18,9 +18,29 @@ export interface IRole {
     role: string
 }
 
+export interface IRoleDTO {
+    service: string
+    role: string
+    userId: string
+}
+
 export interface IUserDTO {
+    name?: string
+    email?: string
+    position?: string
+    phone?: string
+    login?: string
+    password?: string
+}
+
+export interface IUser {
+    id: string
+    organization: string
     name: string
     email: string
+    city: string
     position: string
     phone: string
+    login: string
+    roles: IRole[]
 }
