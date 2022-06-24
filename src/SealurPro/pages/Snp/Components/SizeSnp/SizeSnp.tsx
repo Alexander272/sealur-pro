@@ -99,6 +99,8 @@ export const SizeSnp: FC<Props> = () => {
         snp.changeOH(event.target.value.replaceAll(".", ","))
     }
 
+    if (!sizes.length) return <div className={classes.container}></div>
+
     return (
         <div className={classes.container}>
             <div className={`${classes.block} ${classes.full}`}>

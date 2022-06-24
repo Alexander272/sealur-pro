@@ -21,7 +21,7 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
 
     const { user } = useDispatch<Dispatch>()
 
-    const signInHandler: SubmitHandler<ISignUp> = data => {
+    const signUpHandler: SubmitHandler<ISignUp> = data => {
         user.singUp(data)
     }
 
@@ -29,7 +29,7 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
         <form
             onClick={!isOpen ? onChangeTab : undefined}
             className={`${classes.form} ${classes.signup} ${isOpen ? "" : classes.close}`}
-            onSubmit={handleSubmit(signInHandler)}
+            onSubmit={handleSubmit(signUpHandler)}
         >
             <h2 className={classes.title}>Регистрация</h2>
             <div className={classes.contents}>
@@ -48,7 +48,7 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                     placeholder='Ф.И.О.'
                     register={register}
                     rule={{ required: true }}
-                    error={errors.organization}
+                    error={errors.name}
                     errorText='Поле Ф.И.О. не может быть пустым'
                 />
                 <Input
@@ -62,7 +62,7 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                         pattern:
                             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     }}
-                    error={errors.organization}
+                    error={errors.email}
                     errorText='Email задан некорректно'
                 />
                 <Input
@@ -71,7 +71,7 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                     placeholder='Город'
                     register={register}
                     rule={{ required: true }}
-                    error={errors.organization}
+                    error={errors.city}
                     errorText='Поле город не может быть пустым'
                 />
                 <Input
@@ -80,10 +80,15 @@ export const SignUpForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                     placeholder='Должность'
                     register={register}
                     rule={{ required: true }}
-                    error={errors.organization}
+                    error={errors.position}
                     errorText='Поле должность не может быть пустым'
                 />
-                <Input name='phone' rounded='round' placeholder='Контактный телефон' />
+                <Input
+                    name='phone'
+                    rounded='round'
+                    placeholder='Контактный телефон'
+                    register={register}
+                />
                 <Button rounded='round'>Зарегистрироваться</Button>
             </div>
         </form>

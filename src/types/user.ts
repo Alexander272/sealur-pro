@@ -17,3 +17,10 @@ export interface IRole {
     service: string
     role: string
 }
+
+export interface IUserDTO {
+    name: string
+    email: string
+    position: string
+    phone: string
+}

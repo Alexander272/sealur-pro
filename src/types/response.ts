@@ -18,7 +18,16 @@ export interface IResponse {
 }
 
 export interface ISignInResponse {
-    userId: string
+    id: string
     email: string
     roles: IRole[]
+}
+
+export interface IUserResponse {
+    organization: string
+    name: string
+    email: string
+    city: string
+    position: string
+    phone: string
 }

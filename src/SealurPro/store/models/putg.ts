@@ -416,48 +416,55 @@ export const putg = createModel<ProModel>()({
 
             async getDefault() {
                 putg.setLoading(true)
+                putg.setError(false)
                 console.log("getDefault")
                 try {
                     const res = await ReadService.getDefaultPutg()
-                    addit.setFl(res.fl)
-                    addit.setAddit(res.addit)
-                    addit.setTypeFl(res.typeFl)
-                    putg.setPutgs(res.putg)
-                    putg.setSizes(res!.sizes.sizes)
-                    putg.setDns(res!.sizes.dn)
-                    putg.setPutg(res.putg[0])
-                    putg.setSize(res!.sizes.sizes[0])
-                    putg.setDn(res!.sizes.sizes[0].dn)
-                    putg.setPn(res!.sizes.sizes[0].pn.split(";")[0])
-                    putg.setH(res!.sizes.sizes[0].h.split(";")[0])
+                    if (res.addit != null) {
+                        addit.setFl(res.fl)
+                        addit.setAddit(res.addit)
+                        addit.setTypeFl(res.typeFl)
+                        putg.setPutgs(res.putg)
+                        putg.setSizes(res!.sizes.sizes)
+                        putg.setDns(res!.sizes.dn)
+                        putg.setPutg(res.putg[0])
+                        putg.setSize(res!.sizes.sizes[0])
+                        putg.setDn(res!.sizes.sizes[0].dn)
+                        putg.setPn(res!.sizes.sizes[0].pn.split(";")[0])
+                        putg.setH(res!.sizes.sizes[0].h.split(";")[0])
 
-                    putg.setFlange(res.fl[0].id)
+                        putg.setFlange(res.fl[0].id)
 
-                    putg.setConstructions(res.putg[0].construction[0].temperatures[0].constructions)
-                    putg.setConstruction(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].short
-                    )
-                    putg.setObturator(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .short
-                    )
-                    putg.setImageUrl(
-                        res.putg[0].construction[0].temperatures[0].constructions[0].obturators[0]
-                            .imageUrl
-                    )
+                        putg.setConstructions(
+                            res.putg[0].construction[0].temperatures[0].constructions
+                        )
+                        putg.setConstruction(
+                            res.putg[0].construction[0].temperatures[0].constructions[0].short
+                        )
+                        putg.setObturator(
+                            res.putg[0].construction[0].temperatures[0].constructions[0]
+                                .obturators[0].short
+                        )
+                        putg.setImageUrl(
+                            res.putg[0].construction[0].temperatures[0].constructions[0]
+                                .obturators[0].imageUrl
+                        )
 
-                    putg.setGrap(res.putg[0].construction[0].grap)
-                    putg.setTemp(res.putg[0].temperatures[0].temps[0].id)
-                    putg.setMod(res.putg[0].temperatures[0].temps[0].mods[0])
-                    // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
-                    putg.setMoun(res.addit.mounting[0].title)
-                    putg.setCoating(res.addit.coating[0].id)
+                        putg.setGrap(res.putg[0].construction[0].grap)
+                        putg.setTemp(res.putg[0].temperatures[0].temps[0].id)
+                        putg.setMod(res.putg[0].temperatures[0].temps[0].mods[0])
+                        // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
+                        putg.setMoun(res.addit.mounting[0].title)
+                        putg.setCoating(res.addit.coating[0].id)
 
-                    putg.setRf(res.putg[0].reinforce.default)
-                    putg.setOb(res.putg[0].obturator.default)
-                    putg.setIl(res.putg[0].iLimiter.default)
-                    putg.setOl(res.putg[0].oLimiter.default)
+                        putg.setRf(res.putg[0].reinforce.default)
+                        putg.setOb(res.putg[0].obturator.default)
+                        putg.setIl(res.putg[0].iLimiter.default)
+                        putg.setOl(res.putg[0].oLimiter.default)
+                    }
                 } catch (error) {
+                    console.log(error)
+
                     putg.setError(true)
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {

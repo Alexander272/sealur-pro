@@ -1,11 +1,26 @@
+import { useLayoutEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Dispatch, RootState } from "../../../store/store"
+import { Header } from "./components/Header/Header"
+import { Profile } from "./components/Profile/Profile"
+import { Services } from "./components/Services/Services"
 import classes from "./profile.module.scss"
 
-export default function Profile() {
+export default function ProfilePage() {
+    const userId = useSelector((state: RootState) => state.user.userId)
+    const { user } = useDispatch<Dispatch>()
+
+    useLayoutEffect(() => {
+        if (userId) user.getUser(userId)
+    }, [userId, user])
+
     return (
         <div className={classes.page}>
-            <div className={classes.header}></div>
-            <div className={classes.container}>Profile</div>
-            <aside className={classes.aside}></aside>
+            <Header />
+            <main className={classes.main}>
+                <Profile />
+                <Services />
+            </main>
         </div>
     )
 }

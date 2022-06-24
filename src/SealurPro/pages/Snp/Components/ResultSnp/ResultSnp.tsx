@@ -74,6 +74,8 @@ export const ResultSnp: FC<Props> = () => {
     }
 
     const createDescr = (): string => {
+        if (!size) return ""
+
         const s = stfl.find(s => s.id === st)
 
         let matFr = ""
@@ -111,7 +113,7 @@ export const ResultSnp: FC<Props> = () => {
 
         let sizes = ""
         if (size?.d4) sizes += size.d4 + "*"
-        sizes += `${size!.d3}*${size!.d2}`
+        sizes += `${size.d3}*${size.d2}`
         if (size?.d1) sizes += "*" + size.d1
 
         let thick = h

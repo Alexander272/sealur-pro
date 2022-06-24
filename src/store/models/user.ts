@@ -2,8 +2,9 @@ import { createModel } from "@rematch/core"
 import { toast } from "react-toastify"
 import { RootModel } from "."
 import AuthService from "../../service/auth"
-import { ISignInResponse } from "../../types/response"
-import { ISignIn, ISignUp, IRole } from "../../types/user"
+import UserService from "../../service/user"
+import { ISignInResponse, IUserResponse } from "../../types/response"
+import { ISignIn, ISignUp, IRole, IUserDTO } from "../../types/user"
 
 interface IUserState {
     ready: boolean
@@ -12,6 +13,7 @@ interface IUserState {
     email: string
     roles: IRole[]
     isAuth: boolean
+    user: ISignUp | null
 }
 
 export const user = createModel<RootModel>()({
@@ -22,6 +24,7 @@ export const user = createModel<RootModel>()({
         userId: "",
         email: "",
         isAuth: false,
+        user: null,
     } as IUserState,
 
     reducers: {
@@ -34,7 +37,7 @@ export const user = createModel<RootModel>()({
             return state
         },
         setUser(state, payload: ISignInResponse) {
-            state.userId = payload.userId
+            state.userId = payload.id
             state.email = payload.email
             state.roles = payload.roles
             state.isAuth = true
@@ -44,6 +47,11 @@ export const user = createModel<RootModel>()({
             state.roles = []
             state.userId = ""
             state.isAuth = false
+            return state
+        },
+
+        setUserData(state, payload: IUserResponse) {
+            state.user = payload
             return state
         },
     },
@@ -101,6 +109,32 @@ export const user = createModel<RootModel>()({
                     user.setUser(res.data)
                 } catch (error: any) {
                     console.log(error.message)
+                } finally {
+                    user.setLoading(false)
+                }
+            },
+
+            async getUser(payload: string) {
+                user.setLoading(true)
+                try {
+                    const res = await UserService.getUser(payload)
+                    user.setUserData(res.data)
+                } catch (error: any) {
+                    if (error.message === "something went wrong") toast.error("Произошла ошибка")
+                    else toast.error(error.message)
+                } finally {
+                    user.setLoading(false)
+                }
+            },
+
+            async updateUser(payload: { id: string; user: IUserDTO }) {
+                user.setLoading(true)
+                try {
+                    await UserService.updateUser(payload.id, payload.user)
+                    toast.success("Данные обновлены")
+                } catch (error: any) {
+                    if (error.message === "something went wrong") toast.error("Произошла ошибка")
+                    else toast.error(error.message)
                 } finally {
                     user.setLoading(false)
                 }

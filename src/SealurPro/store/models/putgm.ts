@@ -357,39 +357,46 @@ export const putgm = createModel<ProModel>()({
 
             async getDefault() {
                 putgm.setLoading(true)
+                putgm.setError(false)
                 console.log("getDefault")
                 try {
                     const res = await ReadService.getDefaultPutgm()
-                    addit.setFl(res.fl)
-                    addit.setAddit(res.addit)
-                    addit.setTypeFl(res.typeFl)
-                    putgm.setPutgms(res.putgm)
-                    putgm.setSizes(res!.sizes.sizes)
-                    putgm.setDns(res!.sizes.dn)
-                    putgm.setPutgm(res.putgm[0])
+                    if (res.addit != null) {
+                        addit.setFl(res.fl)
+                        addit.setAddit(res.addit)
+                        addit.setTypeFl(res.typeFl)
+                        putgm.setPutgms(res.putgm)
+                        putgm.setSizes(res!.sizes.sizes)
+                        putgm.setDns(res!.sizes.dn)
+                        putgm.setPutgm(res.putgm[0])
 
-                    putgm.setFlange(res.fl[0].id)
+                        putgm.setFlange(res.fl[0].id)
 
-                    putgm.setConstructions(res.putgm[0].construction[0].basis)
-                    putgm.setConstruction(res.putgm[0].construction[0].basis[0].basis)
-                    putgm.setObturator(res.putgm[0].construction[0].basis[0].obturator[0].obturator)
-                    putgm.setSeal(
-                        res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].seal
-                    )
-                    putgm.setImageUrl(
-                        res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].imageUrl
-                    )
+                        putgm.setConstructions(res.putgm[0].construction[0].basis)
+                        putgm.setConstruction(res.putgm[0].construction[0].basis[0].basis)
+                        putgm.setObturator(
+                            res.putgm[0].construction[0].basis[0].obturator[0].obturator
+                        )
+                        putgm.setSeal(
+                            res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].seal
+                        )
+                        putgm.setImageUrl(
+                            res.putgm[0].construction[0].basis[0].obturator[0].sealant[0].imageUrl
+                        )
 
-                    putgm.setGrap(res.putgm[0].construction[0].grap)
-                    putgm.setTemp(res.putgm[0].temperatures[0].temps[0].id)
-                    putgm.setMod(res.putgm[0].temperatures[0].temps[0].mods[0])
-                    // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
-                    putgm.setMoun(res.addit.mounting[0].title)
-                    putgm.setCoating(res.addit.coating[0].id)
+                        putgm.setGrap(res.putgm[0].construction[0].grap)
+                        putgm.setTemp(res.putgm[0].temperatures[0].temps[0].id)
+                        putgm.setMod(res.putgm[0].temperatures[0].temps[0].mods[0])
+                        // TODO по хорошему это надо поправить (у нас может не использоваться первый элемент в addit)
+                        putgm.setMoun(res.addit.mounting[0].title)
+                        putgm.setCoating(res.addit.coating[0].id)
 
-                    putgm.setBasis(res.putgm[0].basis.default)
-                    putgm.setObt(res.putgm[0].obturator.default)
+                        putgm.setBasis(res.putgm[0].basis.default)
+                        putgm.setObt(res.putgm[0].obturator.default)
+                    }
                 } catch (error) {
+                    console.log(error)
+
                     putgm.setError(true)
                     toast.error("Не удалось загрузить данные", { autoClose: false })
                 } finally {

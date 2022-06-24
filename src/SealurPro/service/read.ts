@@ -285,7 +285,8 @@ export default class ReadService {
             const res = await api.get("/sealur-pro/snp/default")
             return res.data
         } catch (error: any) {
-            throw error.response.data
+            if (error.response.status !== 401) throw error.response.data
+            return { data: { typeFl: [], snp: [], sizes: { sizes: [], dn: [] } } }
         }
     }
 
