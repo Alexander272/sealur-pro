@@ -9,6 +9,7 @@ import classes from "./profile.module.scss"
 
 export default function ProfilePage() {
     const userId = useSelector((state: RootState) => state.user.userId)
+    const roles = useSelector((state: RootState) => state.user.roles)
     const { user } = useDispatch<Dispatch>()
 
     useLayoutEffect(() => {
@@ -18,7 +19,7 @@ export default function ProfilePage() {
     return (
         <div className={classes.page}>
             <Header />
-            <Users />
+            {roles.some(r => r.service === "all" && r.role === "superuser") && <Users />}
             <main className={classes.main}>
                 <Profile />
                 <Services />

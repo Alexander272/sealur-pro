@@ -1,5 +1,5 @@
 import { IResponse, IUserResponse } from "../types/response"
-import { IUser, IUserDTO } from "../types/user"
+import { ConfirmUser, IUser, IUserDTO } from "../types/user"
 import api from "./api"
 
 export default class UserService {
@@ -30,6 +30,24 @@ export default class UserService {
         }
     }
 
+    static async confirmUser(data: ConfirmUser): Promise<IResponse> {
+        try {
+            const res = await api.post(`/users/confirm`, data)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async rejectUser(id: string): Promise<IResponse> {
+        try {
+            const res = await api.delete(`/users/reject/${id}`)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
     static async getAllUsers(): Promise<{ data: IUser[] }> {
         try {
             const res = await api.get(`/users/all`)
@@ -38,7 +56,7 @@ export default class UserService {
             throw error.response.data
         }
     }
-    static async getNewUsers(): Promise<{ data: IResponse[] }> {
+    static async getNewUsers(): Promise<{ data: IUser[] }> {
         try {
             const res = await api.get(`/users/new`)
             return res.data

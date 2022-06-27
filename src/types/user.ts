@@ -44,3 +44,10 @@ export interface IUser {
     login: string
     roles: IRole[]
 }
+
+export type ConfirmUser = {
+    id: string
+    login: string
+    password: string
+    roles: IRole[]
+}
