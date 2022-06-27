@@ -116,3 +116,40 @@
     display: flex;
     gap: 10px;
 }
+
+.ip_open {
+    margin-top: 10px;
+    cursor: pointer;
+    transition: color .3s ease-in-out;
+    display: flex;
+
+    &:hover {
+        color: var(--button-color);
+    }
+
+    &>.icon {
+        display: block;
+        transition: transform .3s ease-in-out;
+
+        &.rotate {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.ips {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height .4s ease-in-out;
+
+    &.close {
+        max-height: 0;
+    }
+}
+
+.ip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 5px;
+}

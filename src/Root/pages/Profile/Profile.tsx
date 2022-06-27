@@ -19,7 +19,7 @@ export default function ProfilePage() {
     return (
         <div className={classes.page}>
             <Header />
-            {roles.some(r => r.service === "all" && r.role === "superuser") && <Users />}
+            {roles.some(r => r.service === "sealur" && r.role === "superuser") && <Users />}
             <main className={classes.main}>
                 <Profile />
                 <Services />

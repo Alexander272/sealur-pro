@@ -7,6 +7,7 @@ import { Button } from "../../../../../components/UI/Button/Button"
 import { Select } from "../../../../../components/UI/Select/Select"
 import RoleService from "../../../../../service/role"
 import { IRole, IUser } from "../../../../../types/user"
+import { Ips } from "./Ips"
 import classes from "./users.module.scss"
 
 const { Option } = Select
@@ -137,6 +138,7 @@ export const User: FC<Props> = ({ user, onEdit, onDelete, getUsers }) => {
                     &#10010;
                 </p>
             </div>
+            <Ips ips={user.ip || []} />
         </div>
     )
 }

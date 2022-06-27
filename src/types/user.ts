@@ -1,3 +1,5 @@
+import { IIp } from "./ip"
+
 export interface ISignIn {
     login: string
     password: string
@@ -43,6 +45,7 @@ export interface IUser {
     phone: string
     login: string
     roles: IRole[]
+    ip?: IIp[]
 }
 
 export type ConfirmUser = {

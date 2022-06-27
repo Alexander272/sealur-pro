@@ -21,16 +21,19 @@ export const Services: FC<Props> = () => {
 
     return (
         <div className={classes.services}>
-            {roles.map(r => (
-                <div key={r.id} className={classes.item}>
-                    <Link to={"/" + r.service} className={classes.title}>
-                        {servicesData[r.service as "pro"].title}
-                    </Link>
-                    <p className={classes.description}>
-                        {servicesData[r.service as "pro"].description}
-                    </p>
-                </div>
-            ))}
+            {roles.map(r => {
+                if (r.service === "sealur") return null
+                return (
+                    <div key={r.id} className={classes.item}>
+                        <Link to={"/" + r.service} className={classes.title}>
+                            {servicesData[r.service as "pro"].title}
+                        </Link>
+                        <p className={classes.description}>
+                            {servicesData[r.service as "pro"].description}
+                        </p>
+                    </div>
+                )
+            })}
         </div>
     )
 }
