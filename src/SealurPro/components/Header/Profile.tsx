@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { OrderUrl, ProfileUrl } from "../../../components/routes"
 import { store } from "../../../store/store"
 import classes from "./header.module.scss"
@@ -8,9 +8,11 @@ type Props = {}
 
 export const Profile: FC<Props> = () => {
     const dispatch = store.dispatch.user
+    const navigate = useNavigate()
 
     const logoutHandler = async () => {
         await dispatch.singOut()
+        navigate("/auth")
     }
 
     return (

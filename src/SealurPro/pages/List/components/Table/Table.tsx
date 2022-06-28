@@ -3,12 +3,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
 import { Dispatch, ProState } from "../../../../store/store"
+import { IDrawing } from "../../../../types/drawing"
 import classes from "./table.module.scss"
 
 type Props = {}
 
 const Table: FC<Props> = () => {
+    const throttled = useRef<any>()
+
     const list = useSelector((state: ProState) => state.list.list)
+    const orderId = useSelector((state: ProState) => state.list.orderId)
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -24,6 +28,15 @@ const Table: FC<Props> = () => {
 
     const changeCountHandler = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch.list.changeCount({ id, count: event.target.value })
+
+        clearTimeout(throttled.current)
+        throttled.current = setTimeout(() => {
+            console.log("====>", event.target.value)
+            dispatch.list.updatePosition({ orderId, id, count: event.target.value })
+            // setFilteredCities(
+            //     citiesArray.filter(city => city.toLowerCase().includes(query.toLowerCase()))
+            // )
+        }, 500)
     }
 
     const openHadnler = (id: string) => () => {
@@ -55,7 +68,7 @@ const Table: FC<Props> = () => {
                     <p className={classes.th}>Чертеж</p>
                     <p className={classes.th}>Описание</p>
                 </div>
-                {/* //TODO добавить полное очищение таблицы */}
+
                 {list.map(d => (
                     <div className={`${classes.row} ${classes.tr}`} key={d.id}>
                         <p className={classes.td}>{d.designation}</p>
@@ -70,9 +83,16 @@ const Table: FC<Props> = () => {
                         <p className={classes.td}>{d.sizes}</p>
                         {d.drawing ? (
                             <p className={classes.td}>
-                                <a href={d.drawing?.link} download={d.drawing?.name}>
-                                    {d.drawing?.name}
-                                </a>
+                                {(d.drawing as IDrawing).name ? (
+                                    <a
+                                        href={(d.drawing as IDrawing).link}
+                                        download={(d.drawing as IDrawing).name}
+                                    >
+                                        {(d.drawing as IDrawing).name}
+                                    </a>
+                                ) : (
+                                    d.drawing
+                                )}
                             </p>
                         ) : (
                             <p className={classes.td}></p>

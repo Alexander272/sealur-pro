@@ -48,24 +48,38 @@ export const MyRoutes = () => {
                 />
 
                 {/* section pro  */}
-                <Route
-                    path='/pro'
-                    element={
-                        <RequireAuth>
-                            <ProApp />
-                        </RequireAuth>
-                    }
-                >
+                <Route path='/pro' element={<ProApp />}>
                     <Route path='' element={<Main />}>
-                        <Route path='' element={<Core />}>
+                        <Route
+                            path=''
+                            element={
+                                <RequireAuth>
+                                    <Core />
+                                </RequireAuth>
+                            }
+                        >
                             <Route index element={<Snp />} />
                             <Route path='putg' element={<Putg />} />
                             <Route path='putgm' element={<Putgm />} />
                         </Route>
                         <Route path='survey' element={<Survey />} />
-                        <Route path='list' element={<List />} />
+                        <Route
+                            path='list'
+                            element={
+                                <RequireAuth>
+                                    <List />
+                                </RequireAuth>
+                            }
+                        />
                     </Route>
-                    <Route path='admin' element={<Admin />}>
+                    <Route
+                        path='admin'
+                        element={
+                            <RequireAuth>
+                                <Admin />
+                            </RequireAuth>
+                        }
+                    >
                         <Route index element={<AdminSnp />} />
                         <Route path='putg' element={<AdminPutg />} />
                         <Route path='putgm' element={<AdminPutgm />} />

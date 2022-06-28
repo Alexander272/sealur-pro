@@ -10,6 +10,7 @@ import { Condition } from "./components/Condition/Condition"
 import { Construction } from "./components/Construction/Construction"
 import { Info } from "./components/Info/Info"
 import { Send } from "./components/Send"
+import { store } from "../../../store/store"
 import classes from "./survey.module.scss"
 
 export default function Survey() {
@@ -19,11 +20,21 @@ export default function Survey() {
     const fetching = useSelector((state: ProState) => state.survey.fetching)
     const error = useSelector((state: ProState) => state.survey.error)
 
+    const user = store.getState().user.user
+
     const { survey } = useDispatch<Dispatch>()
 
     useLayoutEffect(() => {
         survey.getDefault()
     }, [survey])
+
+    useLayoutEffect(() => {
+        if (user) {
+            survey.setUser(user)
+        } else if (store.getState().user.isAuth) {
+            store.dispatch.user.getUser(store.getState().user.userId)
+        }
+    }, [survey, user])
 
     const backHandler = () => {
         navigate(-1)
@@ -31,8 +42,6 @@ export default function Survey() {
 
     if (loading) return <Loader />
     if (error) return <ServerError />
-
-    // TODO сделать старницу для редактирования данных
 
     return (
         <div className={classes.gridContainer}>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
 import { Dispatch, ProState } from "../../../../store/store"
+import { IDrawing } from "../../../../types/drawing"
 import classes from "./item.module.scss"
 
 type Props = {}
@@ -72,9 +73,16 @@ export const Items: FC<Props> = () => {
                     </p>
                     <p className={classes.text}>
                         <b>Чертеж</b>:{" "}
-                        <a href={d.drawing?.link} download={d.drawing?.name}>
-                            {d.drawing?.name}
-                        </a>
+                        {d.drawing && (d.drawing as IDrawing).name ? (
+                            <a
+                                href={(d.drawing as IDrawing).link}
+                                download={(d.drawing as IDrawing).name}
+                            >
+                                {(d.drawing as IDrawing).name}
+                            </a>
+                        ) : (
+                            d.drawing
+                        )}
                     </p>
                     <p className={classes.text}>
                         <b>Описание</b>: {d.description}

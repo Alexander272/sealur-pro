@@ -45,7 +45,7 @@ export const User: FC<Props> = ({ user, onEdit, onDelete, getUsers }) => {
         try {
             if (!role) return
 
-            await RoleService.deleteRole(role.id)
+            await RoleService.deleteRole(role.id, user.id)
             toast.success("Роль удалена")
             confirmToggle()
             getUsers()

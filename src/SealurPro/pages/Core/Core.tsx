@@ -1,8 +1,11 @@
-import { Suspense } from "react"
+import { Suspense, useLayoutEffect } from "react"
+import { useDispatch } from "react-redux"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Tabs } from "../../../components/Tabs/Tabs"
 import { Button } from "../../../components/UI/Button/Button"
 import { Loader } from "../../../components/UI/Loader/Loader"
+import { Dispatch } from "../../store/store"
+import { store } from "../../../store/store"
 import classes from "./core.module.scss"
 
 const initTabs: any = {
@@ -25,6 +28,12 @@ export default function Core() {
     let pathname = location.pathname
 
     const path = pathname.split("/")
+
+    const { list } = useDispatch<Dispatch>()
+
+    useLayoutEffect(() => {
+        list.getPositions(store.getState().user.userId)
+    }, [list])
 
     return (
         <div className={classes.container}>

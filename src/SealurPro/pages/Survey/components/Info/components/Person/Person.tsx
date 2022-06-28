@@ -25,7 +25,7 @@ export const Person: FC<Props> = () => {
                     id='organization'
                     name='organization'
                     orentation='horizontal'
-                    value={user.organization}
+                    value={user.organization || ""}
                     onChange={changeUserDataHandler("organization")}
                 />
             </div>
@@ -35,7 +35,7 @@ export const Person: FC<Props> = () => {
                     id='name'
                     name='name'
                     orentation='horizontal'
-                    value={user.name}
+                    value={user.name || ""}
                     onChange={changeUserDataHandler("name")}
                 />
             </div>
@@ -46,7 +46,7 @@ export const Person: FC<Props> = () => {
                     id='email'
                     name='email'
                     orentation='horizontal'
-                    value={user.email}
+                    value={user.email || ""}
                     onChange={changeUserDataHandler("email")}
                 />
             </div>
@@ -56,7 +56,7 @@ export const Person: FC<Props> = () => {
                     id='city'
                     name='city'
                     orentation='horizontal'
-                    value={user.city}
+                    value={user.city || ""}
                     onChange={changeUserDataHandler("city")}
                 />
             </div>
@@ -66,7 +66,7 @@ export const Person: FC<Props> = () => {
                     id='position'
                     name='position'
                     orentation='horizontal'
-                    value={user.position}
+                    value={user.position || ""}
                     onChange={changeUserDataHandler("position")}
                 />
             </div>
@@ -76,7 +76,7 @@ export const Person: FC<Props> = () => {
                     id='phone'
                     name='phone'
                     orentation='horizontal'
-                    value={user.phone}
+                    value={user.phone || ""}
                     onChange={changeUserDataHandler("phone")}
                 />
             </div>

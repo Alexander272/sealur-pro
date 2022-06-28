@@ -188,6 +188,10 @@ export const survey = createModel<ProModel>()({
             state.bolts = payload
             return state
         },
+        setUser(state, payload: ISignUp) {
+            state.user = payload
+            return state
+        },
 
         setUserData(state, payload: { field: UserFields; value: string }) {
             state.user[payload.field] = payload.value

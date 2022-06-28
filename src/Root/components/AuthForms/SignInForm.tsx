@@ -7,6 +7,7 @@ import { ISignIn } from "../../../types/user"
 import { Button } from "../../../components/UI/Button/Button"
 import { Input } from "../../../components/UI/Input/Input"
 import classes from "./forms.module.scss"
+import { ProUrl } from "../../../components/routes"
 
 type Props = {
     isOpen: boolean
@@ -54,7 +55,7 @@ export const SignInForm: FC<Props> = ({ isOpen, onChangeTab }) => {
                     errorText='Поле пароль не может быть пустым'
                 />
                 <Button rounded='round'>Войти</Button>
-                <Link className={classes.link} to='/survey'>
+                <Link className={classes.link} to={`${ProUrl}/survey`}>
                     Заполнить опросный лист
                 </Link>
             </div>

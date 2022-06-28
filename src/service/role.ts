@@ -21,9 +21,9 @@ export default class RoleService {
         }
     }
 
-    static async deleteRole(id: string): Promise<IResponse> {
+    static async deleteRole(id: string, userId: string): Promise<IResponse> {
         try {
-            const res = await api.delete(`/users/roles/${id}`)
+            const res = await api.delete(`/users/roles/${id}?userId=${userId}`)
             return res.data
         } catch (error: any) {
             throw error.response.data

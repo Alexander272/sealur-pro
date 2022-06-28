@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { ConfirmModal } from "../../../components/ConfirmModal/ConfirmModal"
@@ -8,10 +8,12 @@ import { Button } from "../../../components/UI/Button/Button"
 import { Dispatch, ProState } from "../../store/store"
 import { Items } from "./components/Items/Items"
 import Table from "./components/Table/Table"
+import { store } from "../../../store/store"
 import classes from "./list.module.scss"
 
 export default function List() {
     const items = useSelector((state: ProState) => state.list.list)
+    const isOrderCreated = useSelector((state: ProState) => state.list.isOrderCreated)
 
     const navigate = useNavigate()
 
@@ -23,7 +25,11 @@ export default function List() {
         navigate(-1)
     }
 
-    const [windowSize, setWindwoSize] = useState<"small" | "normal">("small")
+    const [windowSize, setWindwoSize] = useState<"small" | "normal">("normal")
+
+    useLayoutEffect(() => {
+        if (!isOrderCreated) list.getPositions(store.getState().user.userId)
+    }, [isOrderCreated, list])
 
     useEffect(() => {
         if (window.innerWidth <= 1100) setWindwoSize("small")

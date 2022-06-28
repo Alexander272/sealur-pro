@@ -5,7 +5,7 @@ export interface IResult {
     designation: string
     count: string
     sizes: string
-    drawing: IDrawing | null
+    drawing: (IDrawing | null) | string
     description: string
 }
 

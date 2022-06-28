@@ -29,8 +29,6 @@ type Props = {
     deleteHandler: (id: string, isAll: boolean) => void
 }
 
-//TODO добавить загрузку файла с размерами
-
 const tableName = ["Dn", "Pn", "Тип прокладки", "D4", "D3", "D2", "D1", "h", "S2", "S3"]
 
 const { Option } = Select
