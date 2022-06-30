@@ -9,8 +9,6 @@ import classes from "./table.module.scss"
 type Props = {}
 
 const Table: FC<Props> = () => {
-    const throttled = useRef<any>()
-
     const list = useSelector((state: ProState) => state.list.list)
     const orderId = useSelector((state: ProState) => state.list.orderId)
 
@@ -18,6 +16,7 @@ const Table: FC<Props> = () => {
 
     const { isOpen, toggle } = useModal()
     const currentId = useRef("")
+    const throttled = useRef<any>()
 
     if (!list.length)
         return (
@@ -31,11 +30,7 @@ const Table: FC<Props> = () => {
 
         clearTimeout(throttled.current)
         throttled.current = setTimeout(() => {
-            console.log("====>", event.target.value)
             dispatch.list.updatePosition({ orderId, id, count: event.target.value })
-            // setFilteredCities(
-            //     citiesArray.filter(city => city.toLowerCase().includes(query.toLowerCase()))
-            // )
         }, 500)
     }
 
@@ -45,10 +40,8 @@ const Table: FC<Props> = () => {
     }
 
     const deleteHandler = () => {
-        console.log(currentId.current)
-        //TODO добавить удаление прокладки и чертежа (если он есть)
-
-        dispatch.list.deleteItem(currentId.current)
+        dispatch.list.deletePosition({ orderId, id: currentId.current })
+        toggle()
     }
 
     return (

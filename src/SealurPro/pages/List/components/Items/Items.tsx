@@ -10,11 +10,13 @@ type Props = {}
 
 export const Items: FC<Props> = () => {
     const list = useSelector((state: ProState) => state.list.list)
+    const orderId = useSelector((state: ProState) => state.list.orderId)
 
     const dispatch = useDispatch<Dispatch>()
 
     const { isOpen, toggle } = useModal()
     const currentId = useRef("")
+    const throttled = useRef<any>()
 
     if (!list.length)
         return (
@@ -25,6 +27,11 @@ export const Items: FC<Props> = () => {
 
     const changeCountHandler = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch.list.changeCount({ id, count: event.target.value })
+
+        clearTimeout(throttled.current)
+        throttled.current = setTimeout(() => {
+            dispatch.list.updatePosition({ orderId, id, count: event.target.value })
+        }, 500)
     }
 
     const openHadnler = (id: string) => () => {
@@ -33,10 +40,8 @@ export const Items: FC<Props> = () => {
     }
 
     const deleteHandler = () => {
-        console.log(currentId.current)
-        //TODO добавить удаление и чертежа (если он есть)
-
-        dispatch.list.deleteItem(currentId.current)
+        dispatch.list.deletePosition({ orderId, id: currentId.current })
+        toggle()
     }
 
     return (

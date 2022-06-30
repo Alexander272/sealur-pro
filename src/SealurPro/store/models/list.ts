@@ -117,11 +117,23 @@ export const list = createModel<ProModel>()({
                 try {
                     list.setLoading(true)
                     const res = await PositionService.getCur(userId)
-                    if (res.data.length > 0) {
+                    if (res.data && res.data.length > 0) {
                         list.setList(res.data)
                         list.setOrderId(res.data[0].orderId)
                         list.setIsOrderCreated(true)
                     }
+                } catch (error: any) {
+                    toast.error(error.message)
+                } finally {
+                    list.setLoading(false)
+                }
+            },
+
+            async deletePosition(payload: { orderId: string; id: string }) {
+                try {
+                    list.setLoading(true)
+                    await PositionService.delete(payload.orderId, payload.id)
+                    list.deleteItem(payload.id)
                 } catch (error: any) {
                     toast.error(error.message)
                 } finally {

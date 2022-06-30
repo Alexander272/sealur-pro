@@ -1,19 +1,22 @@
 import { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { ConfirmModal } from "../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../components/Modal/hooks/useModal"
 import { ProUrl } from "../../../components/routes"
 import { Button } from "../../../components/UI/Button/Button"
+import OrderService from "../../service/order"
 import { Dispatch, ProState } from "../../store/store"
+import { store } from "../../../store/store"
 import { Items } from "./components/Items/Items"
 import Table from "./components/Table/Table"
-import { store } from "../../../store/store"
 import classes from "./list.module.scss"
 
 export default function List() {
     const items = useSelector((state: ProState) => state.list.list)
     const isOrderCreated = useSelector((state: ProState) => state.list.isOrderCreated)
+    const orderId = useSelector((state: ProState) => state.list.orderId)
 
     const navigate = useNavigate()
 
@@ -37,9 +40,26 @@ export default function List() {
     }, [])
 
     const deleteAllItems = () => {
-        //TODO удалить прокладки и чертежи к ним (если есть)
+        list.deleteOrder(orderId)
+        toggle()
+    }
 
-        list.setList([])
+    const saveHandler = async () => {
+        try {
+            const res = await OrderService.saveAndGet(orderId)
+            const blob = new Blob([res.data])
+
+            const href = URL.createObjectURL(blob)
+            const link = document.createElement("a")
+            link.href = href
+            link.download = res.headers["content-disposition"].split("=")[1]
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error.message)
+        }
     }
 
     return (
@@ -58,7 +78,7 @@ export default function List() {
                             <Button variant='danger' rounded='round' onClick={toggle}>
                                 Очистить список
                             </Button>
-                            <Button variant='grayPrimary' rounded='round'>
+                            <Button variant='grayPrimary' rounded='round' onClick={saveHandler}>
                                 Сохранить список
                             </Button>
                             <Button rounded='round'>Отправить список</Button>

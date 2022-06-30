@@ -32,10 +32,24 @@ export default class OrderService {
         }
     }
 
-    static async save(orderId: string): Promise<IResponse> {
+    static async save(orderId: string) {
         try {
-            const res = await api.post<IResponse>(`/sealur-pro/orders/${orderId}`)
-            return res.data
+            const res = await api.post(`/sealur-pro/orders/${orderId}/save`, {
+                responseType: "blob",
+            })
+            return res
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
+    static async saveAndGet(orderId: string) {
+        try {
+            const res = await api.get(`/sealur-pro/orders/${orderId}/Order.zip`, {
+                responseType: "blob",
+            })
+
+            return res
         } catch (error: any) {
             throw error.response.data
         }

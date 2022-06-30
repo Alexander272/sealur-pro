@@ -4,6 +4,7 @@ import { toast } from "react-toastify"
 import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
 import { Dispatch, ProState } from "../../../../store/store"
 import { IResult } from "../../../../types/list"
+import { store } from "../../../../../store/store"
 import classes from "../../../style/pages.module.scss"
 
 type Props = {}
@@ -52,27 +53,56 @@ export const Result: FC<Props> = () => {
 
     const drawing = useSelector((state: ProState) => state.putg.drawing)
 
-    const dispatch = useDispatch<Dispatch>()
+    const isOrderCreated = useSelector((state: ProState) => state.list.isOrderCreated)
+    const orderId = useSelector((state: ProState) => state.list.orderId)
 
-    const resultHandler = (count: string, designation: string, description: string) => {
+    const { list } = useDispatch<Dispatch>()
+
+    const resultHandler = async (count: string, designation: string, description: string) => {
         let sizes = ""
         if (size?.d4) sizes += size.d4 + "x"
         sizes += `${size?.d3}x${size?.d2}`
         if (size?.d1) sizes += "x" + size.d1
-        //TODO после сохранения нужно заменить id и чертеж
-        const result: IResult = {
-            id: "new",
-            designation,
-            sizes,
-            count,
-            drawing,
-            description,
-        }
-        //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
-        dispatch.list.addResult(result)
-        toast.success("Прокладка добавлена")
 
-        //TODO надо как минимум чистить чертеж
+        if (!isOrderCreated) {
+            await list.createOrder({
+                order: { count: 0, userId: store.getState().user.userId },
+                position: {
+                    designation,
+                    count,
+                    sizes,
+                    drawing: drawing?.name || "",
+                    description,
+                    orderId,
+                },
+            })
+        }
+
+        if (orderId) {
+            await list.addPosition({
+                designation,
+                count,
+                sizes,
+                drawing: drawing?.name || "",
+                description,
+                orderId,
+            })
+        }
+
+        // //TODO после сохранения нужно заменить id и чертеж
+        // const result: IResult = {
+        //     id: "new",
+        //     designation,
+        //     sizes,
+        //     count,
+        //     drawing,
+        //     description,
+        // }
+        // //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
+        // dispatch.list.addResult(result)
+        // toast.success("Прокладка добавлена")
+
+        // //TODO надо как минимум чистить чертеж
     }
 
     const createDescr = (): string => {
