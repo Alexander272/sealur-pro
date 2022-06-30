@@ -14,12 +14,12 @@ const ProApp = lazy(() => import("../SealurPro/App"))
 
 const Main = lazy(() => import("../SealurPro/components/Layout/ProMain/Main"))
 const Core = lazy(() => import("../SealurPro/pages/Core/Core"))
-// import ListsPage from "../pages/Lists/Lists"
 const Snp = lazy(() => import("../SealurPro/pages/Snp/Snp"))
 const Putg = lazy(() => import("../SealurPro/pages/Putg/Putg"))
 const Putgm = lazy(() => import("../SealurPro/pages/Putgm/Putgm"))
 const Survey = lazy(() => import("../SealurPro/pages/Survey/Survey"))
 const List = lazy(() => import("../SealurPro/pages/List/List"))
+const Orders = lazy(() => import("../SealurPro/pages/Orders/Orders"))
 
 //* Pro service Admin
 const Admin = lazy(() => import("../SealurPro/components/Layout/ProAdmin/Admin"))
@@ -71,6 +71,14 @@ export const MyRoutes = () => {
                                 </RequireAuth>
                             }
                         />
+                        <Route
+                            path='orders'
+                            element={
+                                <RequireAuth>
+                                    <Orders />
+                                </RequireAuth>
+                            }
+                        />
                     </Route>
                     <Route
                         path='admin'
@@ -84,7 +92,14 @@ export const MyRoutes = () => {
                         <Route path='putg' element={<AdminPutg />} />
                         <Route path='putgm' element={<AdminPutgm />} />
                     </Route>
-                    <Route path='admin/survey' element={<AdminSurvey />} />
+                    <Route
+                        path='admin/survey'
+                        element={
+                            <RequireAuth>
+                                <AdminSurvey />
+                            </RequireAuth>
+                        }
+                    />
                 </Route>
 
                 <Route path='*' element={<PageNotFound />} />

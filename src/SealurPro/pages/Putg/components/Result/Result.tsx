@@ -1,9 +1,7 @@
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { toast } from "react-toastify"
 import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
 import { Dispatch, ProState } from "../../../../store/store"
-import { IResult } from "../../../../types/list"
 import { store } from "../../../../../store/store"
 import classes from "../../../style/pages.module.scss"
 
@@ -56,7 +54,7 @@ export const Result: FC<Props> = () => {
     const isOrderCreated = useSelector((state: ProState) => state.list.isOrderCreated)
     const orderId = useSelector((state: ProState) => state.list.orderId)
 
-    const { list } = useDispatch<Dispatch>()
+    const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = async (count: string, designation: string, description: string) => {
         let sizes = ""
@@ -65,7 +63,7 @@ export const Result: FC<Props> = () => {
         if (size?.d1) sizes += "x" + size.d1
 
         if (!isOrderCreated) {
-            await list.createOrder({
+            await dispatch.list.createOrder({
                 order: { count: 0, userId: store.getState().user.userId },
                 position: {
                     designation,
@@ -79,7 +77,7 @@ export const Result: FC<Props> = () => {
         }
 
         if (orderId) {
-            await list.addPosition({
+            await dispatch.list.addPosition({
                 designation,
                 count,
                 sizes,
@@ -87,22 +85,8 @@ export const Result: FC<Props> = () => {
                 description,
                 orderId,
             })
+            dispatch.putg.setDrawing(null)
         }
-
-        // //TODO после сохранения нужно заменить id и чертеж
-        // const result: IResult = {
-        //     id: "new",
-        //     designation,
-        //     sizes,
-        //     count,
-        //     drawing,
-        //     description,
-        // }
-        // //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
-        // dispatch.list.addResult(result)
-        // toast.success("Прокладка добавлена")
-
-        // //TODO надо как минимум чистить чертеж
     }
 
     const createDescr = (): string => {

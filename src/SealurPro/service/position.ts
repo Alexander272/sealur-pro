@@ -44,6 +44,18 @@ export default class PositionService {
         }
     }
 
+    static async copy(orderId: string, data: IPositionDTO): Promise<IResponse> {
+        try {
+            const res = await api.post<IResponse>(
+                `/sealur-pro/orders/${orderId}/positions/copy`,
+                data
+            )
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
     static async delete(orderId: string, id: string): Promise<IResponse> {
         try {
             const res = await api.delete<IResponse>(`/sealur-pro/orders/${orderId}/positions/${id}`)

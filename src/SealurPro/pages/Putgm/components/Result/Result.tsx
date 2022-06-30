@@ -1,16 +1,14 @@
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { toast } from "react-toastify"
 import { ResultBlock } from "../../../../components/ResultBlock/ResultBlock"
 import { Dispatch, ProState } from "../../../../store/store"
-import { IResult } from "../../../../types/list"
 import { store } from "../../../../../store/store"
 import classes from "../../../style/pages.module.scss"
 
 type Props = {}
 
 export const Result: FC<Props> = () => {
-    const graphite = useSelector((state: ProState) => state.addit.addit?.graphite) || []
+    // const graphite = useSelector((state: ProState) => state.addit.addit?.graphite) || []
     const flanges = useSelector((state: ProState) => state.addit.fl) || []
     // const constructions = useSelector((state: ProState) => state.addit.addit?.basis) || []
     const obturators = useSelector((state: ProState) => state.addit.addit?.pObturator) || []
@@ -24,7 +22,7 @@ export const Result: FC<Props> = () => {
 
     const putgm = useSelector((state: ProState) => state.putgm.putgm)
     const form = useSelector((state: ProState) => state.putgm.form)
-    const grap = useSelector((state: ProState) => state.putgm.grap)
+    // const grap = useSelector((state: ProState) => state.putgm.grap)
     const constructions = useSelector((state: ProState) => state.putgm.constructions)
     const construction = useSelector((state: ProState) => state.putgm.construction)
     const obturator = useSelector((state: ProState) => state.putgm.obturator)
@@ -58,7 +56,7 @@ export const Result: FC<Props> = () => {
     const isOrderCreated = useSelector((state: ProState) => state.list.isOrderCreated)
     const orderId = useSelector((state: ProState) => state.list.orderId)
 
-    const { list } = useDispatch<Dispatch>()
+    const dispatch = useDispatch<Dispatch>()
 
     const resultHandler = async (count: string, designation: string, description: string) => {
         let sizes = ""
@@ -67,7 +65,7 @@ export const Result: FC<Props> = () => {
         if (size?.d1) sizes += "x" + size.d1
 
         if (!isOrderCreated) {
-            await list.createOrder({
+            await dispatch.list.createOrder({
                 order: { count: 0, userId: store.getState().user.userId },
                 position: {
                     designation,
@@ -81,7 +79,7 @@ export const Result: FC<Props> = () => {
         }
 
         if (orderId) {
-            await list.addPosition({
+            await dispatch.list.addPosition({
                 designation,
                 count,
                 sizes,
@@ -89,21 +87,8 @@ export const Result: FC<Props> = () => {
                 description,
                 orderId,
             })
+            dispatch.putgm.setDrawing(null)
         }
-
-        // //TODO после сохранения нужно заменить id и чертеж
-        // const result: IResult = {
-        //     id: "new",
-        //     designation,
-        //     sizes,
-        //     count,
-        //     drawing: drawing,
-        //     description,
-        // }
-        // //TODO надо сохранять это все в бд (и куда-то сохранять чертеж)
-        // dispatch.list.addResult(result)
-        // toast.success("Прокладка добавлена")
-        // dispatch.putgm.setDrawing(null)
     }
 
     const createDescr = (): string => {
