@@ -19,6 +19,8 @@ type Props = {}
 export const Services: FC<Props> = () => {
     const roles = useSelector((state: RootState) => state.user.roles)
 
+    if (!roles.length) return null
+
     return (
         <div className={classes.services}>
             {roles.map(r => {

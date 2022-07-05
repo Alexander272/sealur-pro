@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -34,7 +34,7 @@ export default function List() {
         if (!isOrderCreated) list.getPositions(store.getState().user.userId)
     }, [isOrderCreated, list])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (window.innerWidth <= 1100) setWindwoSize("small")
         else setWindwoSize("normal")
     }, [])
@@ -56,6 +56,18 @@ export default function List() {
             document.body.appendChild(link)
             link.click()
             document.body.removeChild(link)
+            list.setList([])
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
+    const sendHandler = async () => {
+        try {
+            await OrderService.send(orderId)
+            toast.success("Заказ отправлен")
+            list.setList([])
         } catch (error: any) {
             console.log(error)
             toast.error(error.message)
@@ -81,7 +93,9 @@ export default function List() {
                             <Button variant='grayPrimary' rounded='round' onClick={saveHandler}>
                                 Сохранить список
                             </Button>
-                            <Button rounded='round'>Отправить список</Button>
+                            <Button rounded='round' onClick={sendHandler}>
+                                Отправить список
+                            </Button>
                         </>
                     ) : null}
                 </div>

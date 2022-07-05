@@ -119,18 +119,22 @@ export const User: FC<Props> = ({ user, onEdit, onDelete, getUsers }) => {
             <p>Предприятие: {user.organization}</p>
             <p className={classes.services}>Доступные сервисы:</p>
             <div className={classes.servicesContainer}>
-                {user.roles.map(r => (
-                    <p key={r.id} className={classes.service}>
-                        <span>Сервис: {r.service}</span>
-                        <span>Роль: {r.role}</span>
-                        <span className={classes.edit} onClick={openHandler(r, toggle)}>
-                            &#9998;
-                        </span>
-                        <span className={classes.delete} onClick={openHandler(r, confirmToggle)}>
-                            &#10008;
-                        </span>
-                    </p>
-                ))}
+                {user.roles &&
+                    user.roles.map(r => (
+                        <p key={r.id} className={classes.service}>
+                            <span>Сервис: {r.service}</span>
+                            <span>Роль: {r.role}</span>
+                            <span className={classes.edit} onClick={openHandler(r, toggle)}>
+                                &#9998;
+                            </span>
+                            <span
+                                className={classes.delete}
+                                onClick={openHandler(r, confirmToggle)}
+                            >
+                                &#10008;
+                            </span>
+                        </p>
+                    ))}
                 <p
                     className={classes.add}
                     onClick={openHandler({ id: "", service: "pro", role: "user" }, toggle)}

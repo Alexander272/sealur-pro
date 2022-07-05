@@ -36,14 +36,16 @@
 .input {
     // padding: 7px 15px;
     padding: 4px 12px;
-    border: 2px solid rgba(3, 121, 255, 0.5);
+    // border: 2px solid rgba(3, 121, 255, 0.5);
+    border: 2px solid rgba(7, 55, 177, 0.5);
     letter-spacing: 1px;
     transition: 0.3s all ease-in-out;
     outline: none;
 
     &:active,
     &:focus {
-        border-color: rgba(17, 97, 237, 1);
+        // border-color: rgba(17, 97, 237, 1);
+        border-color: rgba(7, 55, 177, 1);
     }
 
     &.round {
@@ -66,7 +68,7 @@
     top: 50%;
     transform: translateY(-50%);
 
-    & + .input {
+    &+.input {
         padding-right: 35px;
     }
 }

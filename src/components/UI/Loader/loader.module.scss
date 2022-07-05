@@ -12,6 +12,7 @@
     &.none {
         background-color: transparent;
     }
+
     &.fill {
         background-color: #eaeefc70;
         // background-color: #36363647;
@@ -39,7 +40,7 @@
     position: relative;
     z-index: 25;
     // color: hsl(var(--primary-hue), 92%, 53%);
-    color: hsl(var(--secondary-hue) 100% 42%);
+    color: hsl(var(--secondary-hue) 92% 26%);
     width: var(--size);
     height: var(--size);
 
@@ -55,30 +56,22 @@
         --animateSize: 90px;
     }
 
-    background: conic-gradient(
-            from -45deg at top var(--offsetSize) left 50%,
-            #0000,
-            currentColor 1deg 90deg,
-            #0000 91deg
-        ),
-        conic-gradient(
-            from 45deg at right var(--offsetSize) top 50%,
-            #0000,
-            currentColor 1deg 90deg,
-            #0000 91deg
-        ),
-        conic-gradient(
-            from 135deg at bottom var(--offsetSize) left 50%,
-            #0000,
-            currentColor 1deg 90deg,
-            #0000 91deg
-        ),
-        conic-gradient(
-            from -135deg at left var(--offsetSize) top 50%,
-            #0000,
-            currentColor 1deg 90deg,
-            #0000 91deg
-        );
+    background: conic-gradient(from -45deg at top var(--offsetSize) left 50%,
+        #0000,
+        currentColor 1deg 90deg,
+        #0000 91deg),
+    conic-gradient(from 45deg at right var(--offsetSize) top 50%,
+        #0000,
+        currentColor 1deg 90deg,
+        #0000 91deg),
+    conic-gradient(from 135deg at bottom var(--offsetSize) left 50%,
+        #0000,
+        currentColor 1deg 90deg,
+        #0000 91deg),
+    conic-gradient(from -135deg at left var(--offsetSize) top 50%,
+        #0000,
+        currentColor 1deg 90deg,
+        #0000 91deg);
     animation: animate 2s infinite cubic-bezier(0.3, 1, 0, 1);
 }
 
@@ -88,6 +81,7 @@
         height: var(--animateSize);
         transform: rotate(180deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

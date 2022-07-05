@@ -64,7 +64,7 @@ export const NewUsers: FC<Props> = ({ fetchAllUsers }) => {
     const rejectHandler = async () => {
         if (!user.current) return
         try {
-            UserService.rejectUser(user.current.id)
+            await UserService.rejectUser(user.current.id)
 
             let newUsers: IUser[] = JSON.parse(JSON.stringify(users))
             newUsers = newUsers.filter(u => u.id !== user.current?.id)
@@ -106,7 +106,7 @@ export const NewUsers: FC<Props> = ({ fetchAllUsers }) => {
         }
     }
 
-    if (!users.length) return null
+    if (!users) return null
 
     return (
         <div className={classes.container}>

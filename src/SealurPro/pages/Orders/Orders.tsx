@@ -1,15 +1,15 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import OrderService from "../../service/order"
 import { store } from "../../../store/store"
-import classes from "./orders.module.scss"
+import { Dispatch, ProState } from "../../store/store"
 import { IOrder } from "../../types/order"
 import { OrderItem } from "./components/OrderItem"
 import { Button } from "../../../components/UI/Button/Button"
 import { Order } from "./components/Order"
-import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { Dispatch, ProState } from "../../store/store"
+import classes from "./orders.module.scss"
 
 export default function Orders() {
     const [orders, setOrders] = useState<IOrder[]>([])
@@ -26,7 +26,7 @@ export default function Orders() {
     const fetchOrders = useCallback(async () => {
         try {
             const res = await OrderService.getAll(store.getState().user.userId)
-            setOrders(res.data)
+            setOrders(res.data || [])
         } catch (error: any) {
             toast.error(error.message)
         }
@@ -71,14 +71,18 @@ export default function Orders() {
 
             <Order orderId={orderId.current} isOpen={isOpen} onClose={closeHandler} />
 
-            {orders.map(o => (
-                <OrderItem
-                    key={o.id}
-                    order={o}
-                    onCopy={copyHandler(o.id)}
-                    onMore={moreHandler(o.id)}
-                />
-            ))}
+            {orders.length ? (
+                orders.map(o => (
+                    <OrderItem
+                        key={o.id}
+                        order={o}
+                        onCopy={copyHandler(o.id)}
+                        onMore={moreHandler(o.id)}
+                    />
+                ))
+            ) : (
+                <p>Заказов пока нет</p>
+            )}
         </div>
     )
 }

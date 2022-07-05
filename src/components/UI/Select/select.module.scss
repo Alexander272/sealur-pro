@@ -26,7 +26,8 @@
     padding: 4px 12px;
     padding-right: 30px;
     // padding: 7px 15px;
-    border: 2px solid rgba(3, 121, 255, 0.5);
+    // border: 2px solid rgba(3, 121, 255, 0.5);
+    border: 2px solid rgba(7, 55, 177, 0.5);
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
     position: relative;
@@ -40,7 +41,8 @@
     }
 
     &:hover {
-        border-color: rgba(17, 97, 237, 1);
+        // border-color: rgba(17, 97, 237, 1);
+        border-color: rgba(7, 55, 177, 1);
     }
 
     &.disabled {

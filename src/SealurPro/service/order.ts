@@ -32,6 +32,15 @@ export default class OrderService {
         }
     }
 
+    static async copy(orderId: string, data: { orderId: string }): Promise<IResponse> {
+        try {
+            const res = await api.post<IResponse>(`/sealur-pro/orders/${orderId}/copy`, data)
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
+
     static async saveAndGet(orderId: string) {
         try {
             const res = await api.get(`/sealur-pro/orders/${orderId}/Order.zip`, {
@@ -44,9 +53,9 @@ export default class OrderService {
         }
     }
 
-    static async copy(orderId: string, data: { orderId: string }): Promise<IResponse> {
+    static async send(orderId: string): Promise<IResponse> {
         try {
-            const res = await api.post<IResponse>(`/sealur-pro/orders/${orderId}/copy`, data)
+            const res = await api.post(`/sealur-pro/orders/${orderId}/send`)
             return res.data
         } catch (error: any) {
             throw error.response.data
