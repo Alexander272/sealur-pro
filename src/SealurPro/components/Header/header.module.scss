@@ -45,10 +45,10 @@
 .profile {
     // margin-left: 20px;
     padding-left: 20px;
-    padding-right: 20px;
-    margin-right: -20px;
+    // padding-right: 20px;
+    // margin-right: -20px;
     height: 100%;
-    width: 80px;
+    width: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,6 +65,7 @@
     & .items {
         position: absolute;
         top: 50px;
+        z-index: 10;
 
         overflow: hidden;
         border-radius: 8px;
@@ -86,5 +87,11 @@
         &:hover {
             background-color: var(--button-bg-color);
         }
+    }
+}
+
+@media (max-width: 1680px) {
+    .items {
+        right: 5px;
     }
 }

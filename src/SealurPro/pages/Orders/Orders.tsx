@@ -38,8 +38,12 @@ export default function Orders() {
 
     const closeHandler = () => setIsOpen(false)
 
-    const backHandler = () => {
-        navigate(-1)
+    const proHandler = () => {
+        navigate("/pro")
+    }
+
+    const listHandler = () => {
+        navigate("/pro/list")
     }
 
     const copyHandler = (orderId: string) => async () => {
@@ -66,7 +70,12 @@ export default function Orders() {
     return (
         <div className={classes.container}>
             <div className={classes.line}>
-                <Button onClick={backHandler}>Вернуться к выбору</Button>
+                <Button rounded='round' onClick={proHandler}>
+                    Вернуться к выбору
+                </Button>
+                <Button rounded='round' variant='grayPrimary' onClick={listHandler}>
+                    Перейти к списку
+                </Button>
             </div>
 
             <Order orderId={orderId.current} isOpen={isOpen} onClose={closeHandler} />

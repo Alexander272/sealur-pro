@@ -35,3 +35,12 @@
     font-size: 0.9rem;
     // color: var(--main-color);
 }
+
+@media (max-width: 960px) {
+    .services {
+        flex-basis: 100%;
+        order: -1;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}

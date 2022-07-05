@@ -7,8 +7,15 @@
 }
 
 .main {
-    max-width: 1600px;
+    max-width: 1580px;
     width: 100%;
+    padding: 0 10px;
     margin: 30px auto;
     display: flex;
+}
+
+@media (max-width: 960px) {
+    .main {
+        flex-wrap: wrap;
+    }
 }

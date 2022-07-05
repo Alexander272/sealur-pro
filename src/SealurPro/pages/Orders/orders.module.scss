@@ -1,13 +1,13 @@
 .container {
     flex-grow: 1;
-    margin: 50px 10px;
+    padding: 50px 10px;
     max-width: 1580px;
     width: 100%;
     align-self: center;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: center;
     align-content: flex-start;
     gap: 12px;
     position: relative;
@@ -15,6 +15,10 @@
 
 .line {
     flex-basis: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .item {
@@ -23,6 +27,7 @@
     background-color: var(--theme-bg-color);
     box-shadow: 0px 0px 4px 0px #2626262b;
     background-color: #fff;
+    flex-basis: 24%;
 
     & .title {
         text-align: center;
@@ -45,7 +50,9 @@
     position: absolute;
     top: 50px;
     bottom: 30px;
-    width: 100%;
+    left: 10px;
+    right: 10px;
+    // width: 100%;
     border-radius: 12px;
     background-color: var(--theme-bg-color);
     box-shadow: 0px 0px 4px 0px #2626262b;
@@ -68,6 +75,7 @@
     font-size: 1.4rem;
     line-height: 20px;
     cursor: pointer;
+    z-index: 10;
 }
 
 .table {
@@ -130,4 +138,19 @@
     // top: 50%;
     // transform: translateY(-50%);
     cursor: pointer;
+}
+
+.positions {
+    padding: 15px 22px;
+    margin-bottom: 10px;
+    position: relative;
+    border-bottom: 1px solid var(--button-bg-color);
+
+    & .descr {
+        margin-bottom: 10px;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
 }

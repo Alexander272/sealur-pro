@@ -98,7 +98,7 @@ select {
 
 body,
 .scroll {
-    scrollbar-color: hsl(var(--primary-hue), 92%, 53%) #d7d7d7;
+    scrollbar-color: hsl(var(--primary-hue), 92%, 26%) #d7d7d7;
     /* «цвет ползунка» «цвет полосы скроллбара» */
     scrollbar-width: thin;
 
@@ -113,7 +113,7 @@ body,
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: hsl(var(--primary-hue), 92%, 53%);
+        background-color: hsl(var(--primary-hue), 92%, 26%);
         border-radius: 6px;
     }
 }

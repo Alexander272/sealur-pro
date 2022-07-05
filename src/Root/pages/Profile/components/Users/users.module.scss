@@ -153,3 +153,9 @@
     gap: 10px;
     margin-bottom: 5px;
 }
+
+@media (max-width: 660px) {
+    .item {
+        flex-basis: 100%;
+    }
+}
