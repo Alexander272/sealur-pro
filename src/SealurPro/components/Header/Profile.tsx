@@ -17,7 +17,7 @@ export const Profile: FC<Props> = () => {
 
     return (
         <div className={classes.profile}>
-            <img src='/image/person-profile.svg' alt='profile' />
+            <img src='/image/person-profile.svg' alt='profile' width='40' height='40' />
             <div className={classes.items}>
                 <Link to={ProfileUrl} className={classes.item}>
                     Профиль

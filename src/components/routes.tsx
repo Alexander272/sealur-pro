@@ -28,16 +28,26 @@ const AdminPutg = lazy(() => import("../SealurPro/pages/Admin/Putg/Putg"))
 const AdminPutgm = lazy(() => import("../SealurPro/pages/Admin/Putgm/Putgm"))
 const AdminSurvey = lazy(() => import("../SealurPro/pages/Admin/Survey/Survey"))
 
+//* Moment service
+const MomentApp = lazy(() => import("../Moment/App"))
+
+const MomentHome = lazy(() => import("../Moment/pages/Home/Home"))
+const MomentMain = lazy(() => import("../Moment/components/layout/Main"))
+const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
+
+//* Urls
 export const ProAdminUrl = "/pro/admin"
 export const ProUrl = "/pro"
 export const ProfileUrl = "/"
 export const OrderUrl = "/pro/orders"
 
+export const MomentUrl = "/moment"
+
 export const MyRoutes = () => {
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
-                <Route path='/auth/' element={<Auth />} />
+                <Route path='/auth' element={<Auth />} />
                 <Route
                     path='/'
                     element={
@@ -100,6 +110,21 @@ export const MyRoutes = () => {
                             </RequireAuth>
                         }
                     />
+                </Route>
+
+                {/* moment pro  */}
+                <Route
+                    path='/moment'
+                    element={
+                        <RequireAuth>
+                            <MomentApp />
+                        </RequireAuth>
+                    }
+                >
+                    <Route index element={<MomentHome />} />
+                    <Route path='' element={<MomentMain />}>
+                        <Route path='flange' element={<MomentFlange />} />
+                    </Route>
                 </Route>
 
                 <Route path='*' element={<PageNotFound />} />
