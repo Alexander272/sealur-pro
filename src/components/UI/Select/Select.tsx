@@ -3,8 +3,8 @@ import { Option } from "./Option"
 import classes from "./select.module.scss"
 
 type Props = {
-    value: string
-    onChange: (value: string) => void
+    value: any
+    onChange: (value: any) => void
     onOpen?: (isOpen: boolean) => void
     disabled?: boolean
 }

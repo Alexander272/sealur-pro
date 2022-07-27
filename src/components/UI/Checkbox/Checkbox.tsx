@@ -1,4 +1,5 @@
 import { ChangeEvent, FC } from "react"
+import { UseFormRegister } from "react-hook-form"
 import classes from "./checkbox.module.scss"
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
     name: string
     checked?: boolean
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+    register?: UseFormRegister<any>
 }
 
 export const Checkbox: FC<Props & React.InputHTMLAttributes<HTMLInputElement>> = ({
@@ -15,19 +17,30 @@ export const Checkbox: FC<Props & React.InputHTMLAttributes<HTMLInputElement>> =
     name,
     checked,
     onChange,
+    register,
     ...attr
 }) => {
     return (
         <div className={`${classes.field}`}>
-            <input
-                className={`${classes.input}`}
-                id={id}
-                name={name}
-                checked={checked}
-                onChange={onChange}
-                type='checkbox'
-                {...attr}
-            />
+            {register ? (
+                <input
+                    className={`${classes.input}`}
+                    id={id}
+                    type='checkbox'
+                    {...attr}
+                    {...register(name)}
+                />
+            ) : (
+                <input
+                    className={`${classes.input}`}
+                    id={id}
+                    name={name}
+                    checked={checked}
+                    onChange={onChange}
+                    type='checkbox'
+                    {...attr}
+                />
+            )}
 
             <label className={classes.label} htmlFor={id}>
                 <span>

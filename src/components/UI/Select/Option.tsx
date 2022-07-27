@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from "react"
 import classes from "./select.module.scss"
 
 type Props = {
-    value: string
+    value: any
     disabled?: boolean
     className?: string
     onClick?: () => void

@@ -1,4 +1,4 @@
-import { Provider } from "react-redux"
+// import { Provider } from "react-redux"
 import { Outlet } from "react-router-dom"
 
 export default function App() {
