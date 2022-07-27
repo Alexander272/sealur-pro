@@ -27,43 +27,41 @@ export interface IFormCalculate {
         thickness: number
     }
     flangesData: {
-        first: {
-            type: "welded" | "flat" | "free"
-            standartId: string
-            markId: string
-            dy: number
-            py: number
-            corrosion: number
-        }
-        second: {
-            type: "welded" | "flat" | "free"
-            standartId: string
-            markId: string
-            dy: number
-            py: number
-            corrosion: number
-        }
+        first: IFlanges
+        second: IFlanges
     }
-    // flangesData: [
-    //     {
-    //         type: "welded" | "flat" | "free"
-    //         standartId: string
-    //         markId: string
-    //         dy: number
-    //         py: number
-    //         corrosion: number
-    //     },
-    //     {
-    //         type: "welded" | "flat" | "free"
-    //         standartId: string
-    //         markId: string
-    //         dy: number
-    //         py: number
-    //         corrosion: number
-    //     }
-    // ]
 
     isNeedFormulas: boolean
+}
+
+interface IFlanges {
+    type: "welded" | "flat" | "free"
+    standartId: string
+    markId: string
+    dy: number
+    py: number
+    corrosion: number
+    size: IFlangeSize
+    material: IFlangeMaterial
+}
+
+interface IFlangeSize {
+    dOut: number
+    d: number
+    h: number
+    s0: number
+    s1: number
+    l: number
+    d6: number
+}
+
+interface IFlangeMaterial {
+    title: string
+    alphaF: number
+    epsilonAt20: number
+    epsilon: number
+    sigmaAt20: number
+    sigma: number
 }
 
 export interface IFlangeData {

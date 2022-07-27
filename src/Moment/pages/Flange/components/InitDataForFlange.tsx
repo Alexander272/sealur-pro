@@ -4,14 +4,56 @@ import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
 import { Container } from "../../../components/Container/Container"
 import { IFormCalculate, IMaterial, IStandart, ITypeFlange } from "../../../types/flange"
+import { MaterialData } from "./MaterialData"
+import { FlangeSize } from "./FlangeSize"
 import classes from "../../styles/page.module.scss"
+import useSWR from "swr"
+import ReadService from "../../../service/read"
 
 const { Option } = Select
 
 const types = {
     "1": "welded",
-    "2": "flat",
-    "3": "free",
+    2: "flat",
+    3: "free",
+}
+const typeIds = {
+    welded: 1,
+    flat: 2,
+    free: 3,
+}
+
+const matTitles = {
+    name: "материала фланца",
+    alpha: "материала фланца",
+    epsilonAt20: "материала фланца",
+    epsilon: "материала фланца",
+    sigmaAt20: "материала фланца или бурта свободного фланца при температуре 20 ℃",
+    sigma: "материала фланца или бурта свободного фланца при расчетной температуре",
+}
+
+const matDesignation = {
+    alpha: (
+        <i>
+            &alpha;<sub>ф</sub>
+        </i>
+    ),
+    epsilonAt20: (
+        <i>
+            E<sup>20</sup>
+        </i>
+    ),
+    epsilon: <i>E</i>,
+    sigmaAt20: (
+        <>
+            [<i>&sigma;</i>]<sup>20</sup>
+        </>
+    ),
+    sigma: (
+        <>
+            [<i>&sigma;</i>]
+        </>
+    ),
 }
 
 type Props = {
@@ -33,6 +75,10 @@ const Flange: FC<Props> = ({
     control,
     setValue,
 }) => {
+    const type = useWatch({
+        control,
+        name: `flangesData.${id}.type`,
+    })
     const standartId = useWatch({
         control,
         name: `flangesData.${id}.standartId`,
@@ -40,6 +86,10 @@ const Flange: FC<Props> = ({
     const dn = useWatch({
         control,
         name: `flangesData.${id}.dy`,
+    })
+    const markId = useWatch({
+        control,
+        name: `flangesData.${id}.markId`,
     })
 
     useEffect(() => {
@@ -64,6 +114,25 @@ const Flange: FC<Props> = ({
             setValue(`flangesData.${id}.py`, 0)
         }
     }, [setValue, id, standartId, standarts, dn])
+
+    //TODO дописать получение данных на сервере
+    // условная выборка
+    const { data } = useSWR(
+        types[standarts[0].typeId as "1"] !== type && type
+            ? `/sealur-moment/standarts/size/?typeId=${typeIds[type]}`
+            : null,
+        ReadService.getStandarts
+    )
+    console.log(data)
+
+    useEffect(() => {
+        if (types[standarts[0].typeId as "1"] !== type && type) {
+            if (data) {
+            } else {
+                setValue(`flangesData.${id}.standartId`, "another")
+            }
+        }
+    }, [data, id, setValue, standarts, type])
 
     if (!typeFlange || !standarts || !materials) return null
 
@@ -128,57 +197,66 @@ const Flange: FC<Props> = ({
                 </div>
             </div>
 
-            <div className={classes.line}>
-                {/* //TODO заголовок тут меняется в зависимости от стандарта (и похоже не только заголовок меняется) */}
-                <p>Внутренний диаметр аппарата</p>
-                <p className={classes.designation}>
-                    <i>D</i>
-                </p>
-                <div className={classes["line-field"]}>
-                    <Controller
-                        name={`flangesData.${id}.dy`}
-                        control={control}
-                        render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
-                                {standarts
-                                    .find(s => s.id === standartId)
-                                    ?.sizes.sizeRow1.map(s => (
-                                        <Option key={s.dn} value={s.dn}>
-                                            {s.dn.toLocaleString("ru-RU")}
-                                        </Option>
-                                    ))}
-                            </Select>
-                        )}
-                    />
-                </div>
-            </div>
+            {standartId === "another" ? (
+                <FlangeSize id={id} type={type} register={register} />
+            ) : (
+                <>
+                    <div className={classes.line}>
+                        {/* //TODO заголовок тут меняется в зависимости от стандарта (и похоже не только заголовок меняется) 
+                        Надо бы это в отделный компонент выкинуть
+                        */}
+                        <p>Внутренний диаметр аппарата</p>
+                        <p className={classes.designation}>
+                            <i>D</i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Controller
+                                name={`flangesData.${id}.dy`}
+                                control={control}
+                                render={({ field }) => (
+                                    <Select value={field.value} onChange={field.onChange}>
+                                        {standarts
+                                            .find(s => s.id === standartId)
+                                            ?.sizes.sizeRow1.map(s => (
+                                                <Option key={s.dn} value={s.dn}>
+                                                    {s.dn.toLocaleString("ru-RU")}
+                                                </Option>
+                                            ))}
+                                    </Select>
+                                )}
+                            />
+                        </div>
+                    </div>
 
-            <div className={classes.line}>
-                <p>Давление условное (МПа)</p>
-                <p className={classes.designation}>
-                    <i>
-                        P<sub>у</sub>
-                    </i>
-                </p>
-                <div className={classes["line-field"]}>
-                    <Controller
-                        name={`flangesData.${id}.py`}
-                        control={control}
-                        render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
-                                {standarts
-                                    .find(s => s.id === standartId)
-                                    ?.sizes.sizeRow1.find(s => s.dn === dn)
-                                    ?.pn.map(s => (
-                                        <Option key={s} value={s}>
-                                            {s.toLocaleString("ru-RU")}
-                                        </Option>
-                                    ))}
-                            </Select>
-                        )}
-                    />
-                </div>
-            </div>
+                    <div className={classes.line}>
+                        <p>Давление условное (МПа)</p>
+                        <p className={classes.designation}>
+                            <i>
+                                P<sub>у</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Controller
+                                name={`flangesData.${id}.py`}
+                                control={control}
+                                render={({ field }) => (
+                                    <Select value={field.value} onChange={field.onChange}>
+                                        {standarts
+                                            .find(s => s.id === standartId)
+                                            ?.sizes.sizeRow1.find(s => s.dn === dn)
+                                            ?.pn.map(s => (
+                                                <Option key={s} value={s}>
+                                                    {s.toLocaleString("ru-RU")}
+                                                </Option>
+                                            ))}
+                                    </Select>
+                                )}
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
+
             <div className={classes.line}>
                 <p>Прибавка на коррозию</p>
                 <p className={classes.designation}>
@@ -194,6 +272,15 @@ const Flange: FC<Props> = ({
                     />
                 </div>
             </div>
+
+            {markId === "another" && (
+                <MaterialData
+                    path={`flangesData.${id}.material`}
+                    register={register}
+                    titles={matTitles}
+                    designation={matDesignation}
+                />
+            )}
         </Container>
     )
 }

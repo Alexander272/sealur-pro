@@ -5,4 +5,9 @@ export default class ReadService {
         const res = await api.get(url)
         return res.data
     }
+
+    static async getStandarts(url: string) {
+        const res = await api.get(url)
+        return res.data
+    }
 }

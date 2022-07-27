@@ -1,12 +1,53 @@
 import React, { FC, memo, useEffect } from "react"
-import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
+import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
 import { Container } from "../../../components/Container/Container"
 import { IFormCalculate, IMaterial } from "../../../types/flange"
 import classes from "../../styles/page.module.scss"
+import { MaterialData } from "./MaterialData"
 
 const { Option } = Select
+
+const boltTitles = {
+    name: "материала болта (шпильки)",
+    alpha: "материала болта (шпильки)",
+    epsilonAt20: "материала болта (шпильки)",
+    epsilon: "материала болта (шпильки)",
+    sigmaAt20: "болтов (шпилек) при затяжке",
+    sigma: "болтов (шпилек) в рабочих условиях и при расчете на условия испытания",
+}
+
+const boltDesignation = {
+    alpha: (
+        <i>
+            &alpha;<sub>б</sub>
+        </i>
+    ),
+    epsilonAt20: (
+        <i>
+            E<sup>20</sup>
+            <sub>б</sub>
+        </i>
+    ),
+    epsilon: (
+        <i>
+            E<sub>б</sub>
+        </i>
+    ),
+    sigmaAt20: (
+        <>
+            [<i>&sigma;</i>]<sup>б</sup>
+            <sub>м</sub>
+        </>
+    ),
+    sigma: (
+        <>
+            [<i>&sigma;</i>]<sup>б</sup>
+            <sub>р</sub>
+        </>
+    ),
+}
 
 type Props = {
     isFull?: boolean
@@ -17,6 +58,11 @@ type Props = {
 }
 
 const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => {
+    const markId = useWatch({
+        control,
+        name: `bolts.markId`,
+    })
+
     useEffect(() => {
         setValue("bolts.markId", materials[0].id)
     }, [setValue, materials])
@@ -36,6 +82,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                                         {m.title}
                                     </Option>
                                 ))}
+                                <Option value={"another"}>Другое ...</Option>
                             </Select>
                         )}
                     />
@@ -69,6 +116,15 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                         </div>
                     </div>
                 </>
+            )}
+
+            {markId === "another" && (
+                <MaterialData
+                    path='bolts'
+                    register={register}
+                    titles={boltTitles}
+                    designation={boltDesignation}
+                />
             )}
         </Container>
     )
