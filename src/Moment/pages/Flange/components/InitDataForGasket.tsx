@@ -4,6 +4,7 @@ import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
 import { Container } from "../../../components/Container/Container"
 import { IEnv, IFormCalculate, IGasket } from "../../../types/flange"
+import { GasketData } from "./GasketData"
 import classes from "../../styles/page.module.scss"
 
 const { Option } = Select
@@ -27,7 +28,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
     }, [setValue, gasket, env])
 
     useEffect(() => {
-        setValue("gasket.thickness", gasket.find(g => g.id === gasketId)?.thickness[0] || 1)
+        setValue("gasket.thickness", gasket.find(g => g.id === gasketId)?.thickness[0] || 3)
     }, [setValue, gasketId, gasket])
 
     return (
@@ -45,6 +46,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                                         {g.title}
                                     </Option>
                                 ))}
+                                <Option value='another'>Другое ...</Option>
                             </Select>
                         )}
                     />
@@ -73,21 +75,31 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
             <div className={classes.line}>
                 <p>Толщина прокладки</p>
                 <div className={classes["line-field"]}>
-                    <Controller
-                        name='gasket.thickness'
-                        control={control}
-                        render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
-                                {gasket
-                                    .find(g => g.id === gasketId)
-                                    ?.thickness.map(t => (
-                                        <Option key={t} value={t}>
-                                            {t.toLocaleString("ru-RU")}
-                                        </Option>
-                                    ))}
-                            </Select>
-                        )}
-                    />
+                    {gasketId !== "another" ? (
+                        <Controller
+                            name='gasket.thickness'
+                            control={control}
+                            render={({ field }) => (
+                                <Select value={field.value} onChange={field.onChange}>
+                                    {gasket
+                                        .find(g => g.id === gasketId)
+                                        ?.thickness.map(t => (
+                                            <Option key={t} value={t}>
+                                                {t.toLocaleString("ru-RU")}
+                                            </Option>
+                                        ))}
+                                </Select>
+                            )}
+                        />
+                    ) : (
+                        <Input
+                            name='gasket.thickness'
+                            id='gasket.thickness'
+                            type='number'
+                            register={register}
+                            suffix='мм'
+                        />
+                    )}
                 </div>
             </div>
 
@@ -126,6 +138,10 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                     />
                 </div>
             </div>
+
+            {gasketId === "another" && (
+                <GasketData register={register} control={control} setValue={setValue} />
+            )}
         </Container>
     )
 }

@@ -10,17 +10,17 @@ type Props = {
     titles: {
         name: string
         alpha: string
-        epsilonAt20: string
-        epsilon: string
-        sigmaAt20: string
-        sigma: string
+        epsilonAt20?: string
+        epsilon?: string
+        sigmaAt20?: string
+        sigma?: string
     }
     designation: {
         alpha: JSX.Element
-        epsilonAt20: JSX.Element
-        epsilon: JSX.Element
-        sigmaAt20: JSX.Element
-        sigma: JSX.Element
+        epsilonAt20?: JSX.Element
+        epsilon?: JSX.Element
+        sigmaAt20?: JSX.Element
+        sigma?: JSX.Element
     }
 }
 
@@ -48,61 +48,71 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                 </div>
             </div>
 
-            <div className={classes.line}>
-                <p>Модуль продольной упругости {titles.epsilonAt20} при температуре 20 &#8451;</p>
-                <p className={classes.designation}>{designation.epsilonAt20}</p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`${path}.epsilonAt20`}
-                        id={`${path}.epsilonAt20`}
-                        type='number'
-                        register={register}
-                        suffix='МПа'
-                    />
+            {titles.epsilonAt20 && designation.epsilonAt20 ? (
+                <div className={classes.line}>
+                    <p>
+                        Модуль продольной упругости {titles.epsilonAt20} при температуре 20 &#8451;
+                    </p>
+                    <p className={classes.designation}>{designation.epsilonAt20}</p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`${path}.epsilonAt20`}
+                            id={`${path}.epsilonAt20`}
+                            type='number'
+                            register={register}
+                            suffix='МПа'
+                        />
+                    </div>
                 </div>
-            </div>
+            ) : null}
 
-            <div className={classes.line}>
-                <p>Модуль продольной упругости {titles.epsilon} при расчетной температуре</p>
-                <p className={classes.designation}>{designation.epsilon}</p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`${path}.epsilon`}
-                        id={`${path}.epsilon`}
-                        type='number'
-                        register={register}
-                        suffix='МПа'
-                    />
+            {titles.epsilon && designation.epsilon ? (
+                <div className={classes.line}>
+                    <p>Модуль продольной упругости {titles.epsilon} при расчетной температуре</p>
+                    <p className={classes.designation}>{designation.epsilon}</p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`${path}.epsilon`}
+                            id={`${path}.epsilon`}
+                            type='number'
+                            register={register}
+                            suffix='МПа'
+                        />
+                    </div>
                 </div>
-            </div>
+            ) : null}
 
-            <div className={classes.line}>
-                <p>Допускаемое напряжение для {titles.sigmaAt20}</p>
-                <p className={classes.designation}>{designation.sigmaAt20}</p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`${path}.sigmaAt20`}
-                        id={`${path}.sigmaAt20`}
-                        type='number'
-                        register={register}
-                        suffix='МПа'
-                    />
+            {titles.sigmaAt20 && designation.sigmaAt20 ? (
+                <div className={classes.line}>
+                    <p>Допускаемое напряжение для {titles.sigmaAt20}</p>
+                    <p className={classes.designation}>{designation.sigmaAt20}</p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`${path}.sigmaAt20`}
+                            id={`${path}.sigmaAt20`}
+                            type='number'
+                            register={register}
+                            suffix='МПа'
+                        />
+                    </div>
                 </div>
-            </div>
+            ) : null}
 
-            <div className={classes.line}>
-                <p>Допускаемое напряжение для {titles.sigma}</p>
-                <p className={classes.designation}>{designation.sigma}</p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`${path}.sigma`}
-                        id={`${path}.sigma`}
-                        type='number'
-                        register={register}
-                        suffix='МПа'
-                    />
+            {titles.sigma && designation.sigma ? (
+                <div className={classes.line}>
+                    <p>Допускаемое напряжение для {titles.sigma}</p>
+                    <p className={classes.designation}>{designation.sigma}</p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`${path}.sigma`}
+                            id={`${path}.sigma`}
+                            type='number'
+                            register={register}
+                            suffix='МПа'
+                        />
+                    </div>
                 </div>
-            </div>
+            ) : null}
         </>
     )
 }

@@ -1,4 +1,5 @@
-import React, { FC, memo, useEffect } from "react"
+import React, { FC, memo, useEffect, useState } from "react"
+import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
@@ -6,22 +7,12 @@ import { Container } from "../../../components/Container/Container"
 import { IFormCalculate, IMaterial, IStandart, ITypeFlange } from "../../../types/flange"
 import { MaterialData } from "./MaterialData"
 import { FlangeSize } from "./FlangeSize"
-import classes from "../../styles/page.module.scss"
-import useSWR from "swr"
+import { Temp } from "./Temp"
 import ReadService from "../../../service/read"
+import classes from "../../styles/page.module.scss"
+import { FlangeDefSize } from "./FlangeDefSize"
 
 const { Option } = Select
-
-const types = {
-    "1": "welded",
-    2: "flat",
-    3: "free",
-}
-const typeIds = {
-    welded: 1,
-    flat: 2,
-    free: 3,
-}
 
 const matTitles = {
     name: "материала фланца",
@@ -30,6 +21,15 @@ const matTitles = {
     epsilon: "материала фланца",
     sigmaAt20: "материала фланца или бурта свободного фланца при температуре 20 ℃",
     sigma: "материала фланца или бурта свободного фланца при расчетной температуре",
+}
+
+const ringMatTitles = {
+    name: "материала кольца свободного фланца",
+    alpha: "материала свободного кольца",
+    epsilonAt20: "материала свободного кольца",
+    epsilon: "материала свободного кольца",
+    sigmaAt20: "материала кольца свободного фланца при температуре 20 ℃",
+    sigma: "материала кольца свободного фланца при расчетной температуре",
 }
 
 const matDesignation = {
@@ -52,6 +52,36 @@ const matDesignation = {
     sigma: (
         <>
             [<i>&sigma;</i>]
+        </>
+    ),
+}
+
+const ringMatDesignation = {
+    alpha: (
+        <i>
+            &alpha;<sub>к</sub>
+        </i>
+    ),
+    epsilonAt20: (
+        <i>
+            E<sup>20</sup>
+            <sub>к</sub>
+        </i>
+    ),
+    epsilon: (
+        <i>
+            E<sub>к</sub>
+        </i>
+    ),
+    sigmaAt20: (
+        <>
+            [<i>&sigma;</i>]<sup>20</sup>
+            <sub>к</sub>
+        </>
+    ),
+    sigma: (
+        <>
+            [<i>&sigma;</i>]<sub>к</sub>
         </>
     ),
 }
@@ -83,14 +113,17 @@ const Flange: FC<Props> = ({
         control,
         name: `flangesData.${id}.standartId`,
     })
-    const dn = useWatch({
-        control,
-        name: `flangesData.${id}.dy`,
-    })
+
     const markId = useWatch({
         control,
         name: `flangesData.${id}.markId`,
     })
+    const ringMarkId = useWatch({
+        control,
+        name: `flangesData.${id}.ringMarkId`,
+    })
+
+    const [stands, setStands] = useState(standarts)
 
     useEffect(() => {
         setValue(`flangesData.${id}.type`, "welded")
@@ -98,41 +131,45 @@ const Flange: FC<Props> = ({
         setValue(`flangesData.${id}.markId`, materials[0].id)
         setValue(`flangesData.${id}.dy`, standarts[0].sizes.sizeRow1[0].dn)
         setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0])
-        setValue(`flangesData.${id}.corrosion`, 2)
+        setValue(`flangesData.${id}.corrosion`, "2")
     }, [setValue, id, standarts, materials])
 
-    useEffect(() => {
-        const curSt = standarts.find(s => s.id === standartId)
-        const curDn = curSt?.sizes.sizeRow1.find(s => s.dn === dn)
-        if (curSt && !curDn) {
-            setValue(`flangesData.${id}.dy`, curSt.sizes.sizeRow1[0].dn)
-            setValue(`flangesData.${id}.py`, curSt.sizes.sizeRow1[0].pn[0])
-        } else if (curDn) {
-            setValue(`flangesData.${id}.py`, curDn.pn[0])
-        } else {
-            setValue(`flangesData.${id}.dy`, 0)
-            setValue(`flangesData.${id}.py`, 0)
-        }
-    }, [setValue, id, standartId, standarts, dn])
+    // useEffect(() => {
+    //     const curSt = standarts.find(s => s.id === standartId)
+    //     const curDn = curSt?.sizes.sizeRow1.find(s => s.dn === dn)
+    //     if (curSt && !curDn) {
+    //         setValue(`flangesData.${id}.dy`, curSt.sizes.sizeRow1[0].dn)
+    //         setValue(`flangesData.${id}.py`, curSt.sizes.sizeRow1[0].pn[0])
+    //     } else if (curDn) {
+    //         setValue(`flangesData.${id}.py`, curDn.pn[0])
+    //     } else {
+    //         setValue(`flangesData.${id}.dy`, 0)
+    //         setValue(`flangesData.${id}.py`, 0)
+    //     }
+    // }, [setValue, id, standartId, standarts, dn])
 
-    //TODO дописать получение данных на сервере
+    const condition = typeFlange.find(tf => tf.id === stands[0]?.typeId)?.label !== type && type
     // условная выборка
-    const { data } = useSWR(
-        types[standarts[0].typeId as "1"] !== type && type
-            ? `/sealur-moment/standarts/size/?typeId=${typeIds[type]}`
+    const { data } = useSWR<{ data: IStandart[] }>(
+        condition
+            ? `/sealur-moment/standarts/size?typeId=${typeFlange.find(tf => tf.label === type)?.id}`
             : null,
-        ReadService.getStandarts
+        ReadService.getData
     )
-    console.log(data)
 
     useEffect(() => {
-        if (types[standarts[0].typeId as "1"] !== type && type) {
-            if (data) {
+        if (condition) {
+            if (data && data.data) {
+                setStands(data.data)
+                setValue(`flangesData.${id}.standartId`, data.data[0].id)
+            } else if (data && !data.data) {
+                setStands([])
+                setValue(`flangesData.${id}.standartId`, "another")
             } else {
                 setValue(`flangesData.${id}.standartId`, "another")
             }
         }
-    }, [data, id, setValue, standarts, type])
+    }, [data, id, setValue, condition])
 
     if (!typeFlange || !standarts || !materials) return null
 
@@ -147,7 +184,7 @@ const Flange: FC<Props> = ({
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
                                 {typeFlange.map(tf => (
-                                    <Option key={tf.id} value={types[tf.id as "1"]}>
+                                    <Option key={tf.id} value={tf.label}>
                                         {tf.title}
                                     </Option>
                                 ))}
@@ -165,7 +202,7 @@ const Flange: FC<Props> = ({
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
-                                {standarts.map(s => (
+                                {stands.map(s => (
                                     <Option key={s.id} value={s.id}>
                                         {s.title}
                                     </Option>
@@ -197,64 +234,25 @@ const Flange: FC<Props> = ({
                 </div>
             </div>
 
-            {standartId === "another" ? (
-                <FlangeSize id={id} type={type} register={register} />
-            ) : (
-                <>
-                    <div className={classes.line}>
-                        {/* //TODO заголовок тут меняется в зависимости от стандарта (и похоже не только заголовок меняется) 
-                        Надо бы это в отделный компонент выкинуть
-                        */}
-                        <p>Внутренний диаметр аппарата</p>
-                        <p className={classes.designation}>
-                            <i>D</i>
-                        </p>
-                        <div className={classes["line-field"]}>
-                            <Controller
-                                name={`flangesData.${id}.dy`}
-                                control={control}
-                                render={({ field }) => (
-                                    <Select value={field.value} onChange={field.onChange}>
-                                        {standarts
-                                            .find(s => s.id === standartId)
-                                            ?.sizes.sizeRow1.map(s => (
-                                                <Option key={s.dn} value={s.dn}>
-                                                    {s.dn.toLocaleString("ru-RU")}
-                                                </Option>
-                                            ))}
-                                    </Select>
-                                )}
-                            />
-                        </div>
-                    </div>
+            <Temp
+                register={register}
+                control={control}
+                title='фланца'
+                letter='ф'
+                path={`flangesData.${id}`}
+            />
 
-                    <div className={classes.line}>
-                        <p>Давление условное (МПа)</p>
-                        <p className={classes.designation}>
-                            <i>
-                                P<sub>у</sub>
-                            </i>
-                        </p>
-                        <div className={classes["line-field"]}>
-                            <Controller
-                                name={`flangesData.${id}.py`}
-                                control={control}
-                                render={({ field }) => (
-                                    <Select value={field.value} onChange={field.onChange}>
-                                        {standarts
-                                            .find(s => s.id === standartId)
-                                            ?.sizes.sizeRow1.find(s => s.dn === dn)
-                                            ?.pn.map(s => (
-                                                <Option key={s} value={s}>
-                                                    {s.toLocaleString("ru-RU")}
-                                                </Option>
-                                            ))}
-                                    </Select>
-                                )}
-                            />
-                        </div>
-                    </div>
-                </>
+            {standartId === "another" ? (
+                <FlangeSize
+                    id={id}
+                    type={type}
+                    materials={materials}
+                    register={register}
+                    control={control}
+                    setValue={setValue}
+                />
+            ) : (
+                <FlangeDefSize id={id} standarts={stands} control={control} setValue={setValue} />
             )}
 
             <div className={classes.line}>
@@ -279,6 +277,14 @@ const Flange: FC<Props> = ({
                     register={register}
                     titles={matTitles}
                     designation={matDesignation}
+                />
+            )}
+            {ringMarkId === "another" && (
+                <MaterialData
+                    path={`flangesData.${id}.ringMaterial`}
+                    register={register}
+                    titles={ringMatTitles}
+                    designation={ringMatDesignation}
                 />
             )}
         </Container>

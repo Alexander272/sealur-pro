@@ -1,8 +1,12 @@
+type TypeFlange = "welded" | "flat" | "free"
+type TypeGasket = "Soft" | "Oval" | "Metal"
+
 export interface IFormCalculate {
-    pressure: number
-    axialForce: number
-    bendingMoment: number
-    temp: number
+    //TODO поменять number на string там где ипользуются input
+    pressure: string
+    axialForce: string
+    bendingMoment: string
+    temp: string
     isWork: boolean
     flanges: "isolated" | "nonIsolated" | "manually"
     isSameFlange: boolean
@@ -14,54 +18,78 @@ export interface IFormCalculate {
         gasketId: string
         envId: string
         thickness: number
-        d_out: number
-        d_in: number
+        d_out: string
+        d_in: string
+        data: {
+            title: string
+            type: TypeGasket
+            qo: string
+            m: string
+            compression: string
+            epsilon: string
+            permissiblePres: string
+        }
     }
     bolts: {
         markId: string
-        diameter: number
-        count: number
+        title: string
+        name: string
+        diameter: string
+        area: string
+        count: string
+        temp: string
+        material: IMaterialData
     }
     embed: {
         markId: string
-        thickness: number
+        thickness: string
+        material: IMaterialData
     }
     flangesData: {
         first: IFlanges
         second: IFlanges
+    }
+    isUseWasher: boolean
+    washer: {
+        markId: string
+        thickness: string
+        material: IMaterialData
     }
 
     isNeedFormulas: boolean
 }
 
 interface IFlanges {
-    type: "welded" | "flat" | "free"
+    type: TypeFlange
     standartId: string
     markId: string
     dy: number
     py: number
-    corrosion: number
+    corrosion: string
+    temp: string
     size: IFlangeSize
-    material: IFlangeMaterial
+    material: IMaterialData
+    ringMarkId: string
+    ringMaterial: IMaterialData
 }
 
 interface IFlangeSize {
-    dOut: number
-    d: number
-    h: number
-    s0: number
-    s1: number
-    l: number
-    d6: number
+    dOut: string
+    d: string
+    h: string
+    s0: string
+    s1: string
+    l: string
+    d6: string
 }
 
-interface IFlangeMaterial {
+interface IMaterialData {
     title: string
-    alphaF: number
-    epsilonAt20: number
-    epsilon: number
-    sigmaAt20: number
-    sigma: number
+    alphaF: string
+    epsilonAt20: string
+    epsilon: string
+    sigmaAt20: string
+    sigma: string
 }
 
 export interface IFlangeData {
@@ -77,12 +105,17 @@ export interface IFlangeData {
 export interface ITypeFlange {
     id: string
     title: string
+    label: TypeFlange
 }
 
 export interface IStandart {
     id: string
     title: string
     typeId: string
+    titleDn: string
+    titlePn: string
+    isNeedRow: boolean
+    rows: string[]
     sizes: {
         sizeRow1: ISize[]
         sizeRow2?: ISize[]
@@ -108,4 +141,17 @@ export interface IEnv {
 export interface ISize {
     dn: number
     pn: number[]
+}
+
+export interface ITypeGasket {
+    id: string
+    title: string
+    label: TypeGasket
+}
+
+export interface IBolt {
+    id: string
+    title: string
+    diameter: number
+    area: number
 }

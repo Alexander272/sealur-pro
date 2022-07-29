@@ -1,11 +1,15 @@
 import React, { FC, memo, useEffect } from "react"
+import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
 import { Container } from "../../../components/Container/Container"
-import { IFormCalculate, IMaterial } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { IBolt, IFormCalculate, IMaterial } from "../../../types/flange"
 import { MaterialData } from "./MaterialData"
+import { Temp } from "./Temp"
+import ReadService from "../../../service/read"
+import classes from "../../styles/page.module.scss"
+import { BoltData } from "./BoltData"
 
 const { Option } = Select
 
@@ -62,10 +66,23 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
         control,
         name: `bolts.markId`,
     })
+    const name = useWatch({
+        control,
+        name: `bolts.name`,
+    })
 
     useEffect(() => {
         setValue("bolts.markId", materials[0].id)
     }, [setValue, materials])
+
+    const { data } = useSWR<{ data: IBolt[] }>(
+        isFull ? "/sealur-moment/bolts" : null,
+        ReadService.getData
+    )
+
+    useEffect(() => {
+        if (data) setValue("bolts.name", data.data[0].title)
+    }, [setValue, data])
 
     return (
         <Container title='Исходные данные для болт/шпилька'>
@@ -89,15 +106,33 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                 </div>
             </div>
 
-            {isFull && (
+            <Temp
+                register={register}
+                control={control}
+                title='болта (шпильки)'
+                letter='б'
+                path='bolts'
+            />
+
+            {isFull && data ? (
                 <>
                     <div className={classes.line}>
                         <p>Наружный диаметр болта (шпильки)</p>
                         <div className={classes["line-field"]}>
-                            <Select value='true' onChange={() => {}}>
-                                <Option value='true'>Рабочие условия</Option>
-                                <Option value='false'>Условия испытаний</Option>
-                            </Select>
+                            <Controller
+                                name='bolts.name'
+                                control={control}
+                                render={({ field }) => (
+                                    <Select value={field.value} onChange={field.onChange}>
+                                        {data?.data.map(b => (
+                                            <Option key={b.id} value={b.title}>
+                                                {b.diameter}
+                                            </Option>
+                                        ))}
+                                        <Option value={"another"}>Другое ...</Option>
+                                    </Select>
+                                )}
+                            />
                         </div>
                     </div>
 
@@ -115,8 +150,10 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                             />
                         </div>
                     </div>
+
+                    {name === "another" && <BoltData register={register} />}
                 </>
-            )}
+            ) : null}
 
             {markId === "another" && (
                 <MaterialData

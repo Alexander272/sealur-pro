@@ -11,9 +11,10 @@ const { Option } = Select
 type Props = {
     register: UseFormRegister<IFormCalculate>
     control: Control<IFormCalculate, any>
+    errors: any
 }
 
-const Calc: FC<Props> = ({ register, control }) => {
+const Calc: FC<Props> = ({ register, control, errors }) => {
     return (
         <Container title='Исходные данные для расчета'>
             <div className={classes.line}>
@@ -25,6 +26,8 @@ const Calc: FC<Props> = ({ register, control }) => {
                         type='number'
                         register={register}
                         suffix='МПа'
+                        rule={{ required: true }}
+                        error={errors.pressure}
                     />
                 </div>
             </div>
@@ -40,6 +43,8 @@ const Calc: FC<Props> = ({ register, control }) => {
                         type='number'
                         register={register}
                         suffix='Н'
+                        rule={{ required: true }}
+                        error={errors.axialForce}
                     />
                 </div>
             </div>
@@ -53,6 +58,8 @@ const Calc: FC<Props> = ({ register, control }) => {
                         type='number'
                         register={register}
                         suffix='Н*мм'
+                        rule={{ required: true }}
+                        error={errors.bendingMoment}
                     />
                 </div>
             </div>
@@ -66,6 +73,8 @@ const Calc: FC<Props> = ({ register, control }) => {
                         type='number'
                         register={register}
                         suffix='&#8451;'
+                        rule={{ required: true }}
+                        error={errors.temp}
                     />
                 </div>
             </div>
@@ -96,7 +105,8 @@ const Calc: FC<Props> = ({ register, control }) => {
                             <Select value={field.value} onChange={field.onChange}>
                                 <Option value='isolated'>Изолированные фланцы</Option>
                                 <Option value='nonIsolated'>Неизолированные фланцы</Option>
-                                {/*//TODO сервер это еще не обрабатывает <Option value='manually'>Задается вручную</Option> */}
+                                {/* //TODO сервер это еще не обрабатывает */}
+                                <Option value='manually'>Задается вручную</Option>
                             </Select>
                         )}
                     />
@@ -104,7 +114,7 @@ const Calc: FC<Props> = ({ register, control }) => {
             </div>
 
             <div className={classes.line}>
-                <p>Одинаковые фланца</p>
+                <p>Одинаковые фланцы</p>
                 <div className={classes["line-field"]}>
                     <Controller
                         name='isSameFlange'

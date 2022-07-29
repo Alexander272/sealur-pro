@@ -1,8 +1,11 @@
-import React, { FC } from "react"
-import { UseFormRegister } from "react-hook-form"
+import React, { FC, useEffect } from "react"
+import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import { Input } from "../../../../components/UI/Input/Input"
-import { IFormCalculate } from "../../../types/flange"
+import { Select } from "../../../../components/UI/Select/Select"
+import { IFormCalculate, IMaterial } from "../../../types/flange"
 import classes from "../../styles/page.module.scss"
+
+const { Option } = Select
 
 const imgs = {
     welded: "/image/moment/flange/welded.webp",
@@ -13,12 +16,39 @@ const imgs = {
 type Props = {
     id: "first" | "second"
     type: "welded" | "flat" | "free"
+    materials: IMaterial[]
     register: UseFormRegister<IFormCalculate>
+    control: Control<IFormCalculate, any>
+    setValue: UseFormSetValue<IFormCalculate>
 }
 
-export const FlangeSize: FC<Props> = ({ id, type, register }) => {
+export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, setValue }) => {
+    useEffect(() => {
+        setValue(`flangesData.${id}.ringMarkId`, materials[0].id)
+    }, [setValue, materials, id])
+
     return (
         <>
+            <div className={classes.line}>
+                <p>Материал кольца свободного фланца</p>
+                <div className={classes["line-field"]}>
+                    <Controller
+                        name={`flangesData.${id}.ringMarkId`}
+                        control={control}
+                        render={({ field }) => (
+                            <Select value={field.value} onChange={field.onChange}>
+                                {materials.map(m => (
+                                    <Option key={m.id} value={m.id}>
+                                        {m.title}
+                                    </Option>
+                                ))}
+                                <Option value={"another"}>Другое ...</Option>
+                            </Select>
+                        )}
+                    />
+                </div>
+            </div>
+
             <div className={classes["line-image"]}>
                 <img src={imgs[type]} alt={type} />
             </div>

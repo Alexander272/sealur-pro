@@ -1,12 +1,26 @@
 import React, { FC, memo, useEffect } from "react"
-import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
+import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../components/UI/Input/Input"
 import { Select } from "../../../../components/UI/Select/Select"
 import { Container } from "../../../components/Container/Container"
 import { IFormCalculate, IMaterial } from "../../../types/flange"
 import classes from "../../styles/page.module.scss"
+import { MaterialData } from "./MaterialData"
 
 const { Option } = Select
+
+const embedTitles = {
+    name: "материала трубной решетки или иной закладной детали, зажатой между фланцами",
+    alpha: "материала трубной решетки или иной закладной детали, зажатой между фланцами",
+}
+
+const embedDesignation = {
+    alpha: (
+        <i>
+            &alpha;<sub>р</sub>
+        </i>
+    ),
+}
 
 type Props = {
     materials: IMaterial[]
@@ -16,6 +30,11 @@ type Props = {
 }
 
 const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
+    const markId = useWatch({
+        control,
+        name: `embed.markId`,
+    })
+
     useEffect(() => {
         setValue("embed.markId", materials[0].id)
     }, [setValue, materials])
@@ -35,6 +54,7 @@ const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
                                         {m.title}
                                     </Option>
                                 ))}
+                                <Option value={"another"}>Другое ...</Option>
                             </Select>
                         )}
                     />
@@ -58,6 +78,15 @@ const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
                     />
                 </div>
             </div>
+
+            {markId === "another" && (
+                <MaterialData
+                    path='embed'
+                    register={register}
+                    titles={embedTitles}
+                    designation={embedDesignation}
+                />
+            )}
         </Container>
     )
 }

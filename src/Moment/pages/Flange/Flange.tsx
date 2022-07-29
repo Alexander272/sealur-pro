@@ -5,22 +5,30 @@ import { InitDataForCalc } from "./components/InitDataForCalc"
 import { InitDataForFlange } from "./components/InitDataForFlange"
 import { InitDataForBolt } from "./components/InitDataForBolt"
 import { InitDataForGasket } from "./components/InitDataForGasket"
+import { EmbedData } from "./components/EmbedData"
+import { InitDataForWasher } from "./components/InitDataForWasher"
 import { Button } from "../../../components/UI/Button/Button"
 import { Loader } from "../../../components/UI/Loader/Loader"
+import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
 import ServerError from "../../../Error/ServerError"
 import ReadService from "../../service/read"
 import { IFlangeData, IFormCalculate } from "../../types/flange"
 import classes from "../styles/page.module.scss"
-import { EmbedData } from "./components/EmbedData"
-import { Checkbox } from "../../../components/UI/Checkbox/Checkbox"
 
 export default function Flange() {
     const { data, error } = useSWR<IFlangeData>(
         "/sealur-moment/default/flange",
-        ReadService.getFlangeData
+        ReadService.getData
     )
 
-    const { register, control, handleSubmit, setValue, watch } = useForm<IFormCalculate>()
+    const {
+        register,
+        control,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<IFormCalculate>()
 
     useEffect(() => {
         setValue("isWork", true)
@@ -35,6 +43,9 @@ export default function Flange() {
 
     const watchIsSameFlange = watch("isSameFlange", true)
     const watchIsEmbedded = watch("isEmbedded", false)
+
+    const watchFType1 = watch("flangesData.first.type")
+    const watchFType2 = watch("flangesData.second.type")
 
     if (!data)
         return (
@@ -52,7 +63,7 @@ export default function Flange() {
     return (
         <div className={classes.wrapper}>
             <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
-                <InitDataForCalc register={register} control={control} />
+                <InitDataForCalc register={register} control={control} errors={errors} />
                 <InitDataForFlange
                     id='first'
                     typeFlange={data.data.typeFlange}
@@ -75,6 +86,16 @@ export default function Flange() {
                 )}
 
                 <InitDataForBolt
+                    isFull={
+                        (watchIsSameFlange && watchFType1 === "free") ||
+                        (!watchIsSameFlange && watchFType1 === "free" && watchFType2 === "free")
+                    }
+                    materials={data.data.materials}
+                    register={register}
+                    control={control}
+                    setValue={setValue}
+                />
+                <InitDataForWasher
                     materials={data.data.materials}
                     register={register}
                     control={control}
