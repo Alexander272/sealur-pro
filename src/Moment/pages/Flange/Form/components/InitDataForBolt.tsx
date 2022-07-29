@@ -1,15 +1,15 @@
 import React, { FC, memo, useEffect } from "react"
 import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { Container } from "../../../components/Container/Container"
-import { IBolt, IFormCalculate, IMaterial } from "../../../types/flange"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { Container } from "../../../../components/Container/Container"
+import { IBolt, IFormFlangeCalc, IMaterial } from "../../../../types/flange"
 import { MaterialData } from "./MaterialData"
 import { Temp } from "./Temp"
-import ReadService from "../../../service/read"
-import classes from "../../styles/page.module.scss"
 import { BoltData } from "./BoltData"
+import ReadService from "../../../../service/read"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
@@ -56,9 +56,9 @@ const boltDesignation = {
 type Props = {
     isFull?: boolean
     materials: IMaterial[]
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => {

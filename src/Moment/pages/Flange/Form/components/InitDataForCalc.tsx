@@ -1,16 +1,16 @@
 import React, { FC, memo } from "react"
 import { Control, Controller, UseFormRegister } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { Container } from "../../../components/Container/Container"
-import { IFormCalculate } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { Container } from "../../../../components/Container/Container"
+import { IFormFlangeCalc } from "../../../../types/flange"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
 type Props = {
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
     errors: any
 }
 

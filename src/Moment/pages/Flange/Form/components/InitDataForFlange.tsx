@@ -1,16 +1,16 @@
 import React, { FC, memo, useEffect, useState } from "react"
 import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { Container } from "../../../components/Container/Container"
-import { IFormCalculate, IMaterial, IStandart, ITypeFlange } from "../../../types/flange"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { Container } from "../../../../components/Container/Container"
+import { IFormFlangeCalc, IMaterial, IStandart, ITypeFlange } from "../../../../types/flange"
 import { MaterialData } from "./MaterialData"
 import { FlangeSize } from "./FlangeSize"
 import { Temp } from "./Temp"
-import ReadService from "../../../service/read"
-import classes from "../../styles/page.module.scss"
 import { FlangeDefSize } from "./FlangeDefSize"
+import ReadService from "../../../../service/read"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
@@ -91,9 +91,9 @@ type Props = {
     typeFlange: ITypeFlange[]
     standarts: IStandart[]
     materials: IMaterial[]
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 const Flange: FC<Props> = ({

@@ -4,7 +4,8 @@ import { MomentUrl } from "../../../components/routes"
 import classes from "./header.module.scss"
 
 const titles = {
-    [MomentUrl + "/flange"]: "соединения фланец-фланец",
+    [MomentUrl + "/flange"]: "Расчет соединения фланец-фланец",
+    [MomentUrl + "/flange/calc"]: "Результат расчета соединения фланец-фланец",
 }
 
 export const Header = () => {
@@ -22,7 +23,7 @@ export const Header = () => {
             />
             <div className={classes.info}>
                 <p className={classes.company}>ООО "СИЛУР"</p>
-                <p className={classes.name}>Расчет {titles[location.pathname]}</p>
+                <p className={classes.name}>{titles[location.pathname]}</p>
             </div>
         </header>
     )

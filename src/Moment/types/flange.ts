@@ -1,8 +1,7 @@
 type TypeFlange = "welded" | "flat" | "free"
 type TypeGasket = "Soft" | "Oval" | "Metal"
 
-export interface IFormCalculate {
-    //TODO поменять number на string там где ипользуются input
+export interface IFormFlangeCalc {
     pressure: string
     axialForce: string
     bendingMoment: string
@@ -17,7 +16,7 @@ export interface IFormCalculate {
     gasket: {
         gasketId: string
         envId: string
-        thickness: number
+        thickness: string
         d_out: string
         d_in: string
         data: {
@@ -51,9 +50,15 @@ export interface IFormCalculate {
     }
     isUseWasher: boolean
     washer: {
-        markId: string
+        first: {
+            markId: string
+            material: IMaterialData
+        }
+        second: {
+            markId: string
+            material: IMaterialData
+        }
         thickness: string
-        material: IMaterialData
     }
 
     isNeedFormulas: boolean
@@ -93,13 +98,11 @@ interface IMaterialData {
 }
 
 export interface IFlangeData {
-    data: {
-        typeFlange: ITypeFlange[]
-        standarts: IStandart[]
-        gaskets: IGasket[]
-        env: IEnv[]
-        materials: IMaterial[]
-    }
+    typeFlange: ITypeFlange[]
+    standarts: IStandart[]
+    gaskets: IGasket[]
+    env: IEnv[]
+    materials: IMaterial[]
 }
 
 export interface ITypeFlange {

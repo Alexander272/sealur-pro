@@ -1,18 +1,18 @@
 import React, { FC, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import useSWR from "swr"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import ReadService from "../../../service/read"
-import { IFormCalculate, ITypeGasket } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import ReadService from "../../../../service/read"
+import { IFormFlangeCalc, ITypeGasket } from "../../../../types/flange"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
 type Props = {
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 export const GasketData: FC<Props> = ({ register, control, setValue }) => {

@@ -1,11 +1,11 @@
 import React, { FC } from "react"
 import { UseFormRegister } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { IFormCalculate } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { IFormFlangeCalc } from "../../../../types/flange"
+import classes from "../../../styles/page.module.scss"
 
 type Props = {
-    register: UseFormRegister<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
 }
 
 export const BoltData: FC<Props> = ({ register }) => {

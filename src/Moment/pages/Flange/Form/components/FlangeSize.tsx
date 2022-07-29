@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { IFormCalculate, IMaterial } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { IFormFlangeCalc, IMaterial } from "../../../../types/flange"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
@@ -17,9 +17,9 @@ type Props = {
     id: "first" | "second"
     type: "welded" | "flat" | "free"
     materials: IMaterial[]
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, setValue }) => {

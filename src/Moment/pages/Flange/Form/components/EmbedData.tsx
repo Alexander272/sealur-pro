@@ -1,11 +1,11 @@
 import React, { FC, memo, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { Container } from "../../../components/Container/Container"
-import { IFormCalculate, IMaterial } from "../../../types/flange"
-import classes from "../../styles/page.module.scss"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { Container } from "../../../../components/Container/Container"
+import { IFormFlangeCalc, IMaterial } from "../../../../types/flange"
 import { MaterialData } from "./MaterialData"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
@@ -24,9 +24,9 @@ const embedDesignation = {
 
 type Props = {
     materials: IMaterial[]
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 const Embed: FC<Props> = ({ materials, register, control, setValue }) => {

@@ -1,20 +1,20 @@
 import React, { FC, memo, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
-import { Input } from "../../../../components/UI/Input/Input"
-import { Select } from "../../../../components/UI/Select/Select"
-import { Container } from "../../../components/Container/Container"
-import { IEnv, IFormCalculate, IGasket } from "../../../types/flange"
+import { Input } from "../../../../../components/UI/Input/Input"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { Container } from "../../../../components/Container/Container"
+import { IEnv, IFormFlangeCalc, IGasket } from "../../../../types/flange"
 import { GasketData } from "./GasketData"
-import classes from "../../styles/page.module.scss"
+import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
 type Props = {
     gasket: IGasket[]
     env: IEnv[]
-    register: UseFormRegister<IFormCalculate>
-    control: Control<IFormCalculate, any>
-    setValue: UseFormSetValue<IFormCalculate>
+    register: UseFormRegister<IFormFlangeCalc>
+    control: Control<IFormFlangeCalc, any>
+    setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
 const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
@@ -24,11 +24,14 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
     useEffect(() => {
         setValue("gasket.gasketId", gasket[0].id)
         setValue("gasket.envId", env[0].id)
-        setValue("gasket.thickness", gasket[0].thickness[0])
+        setValue("gasket.thickness", gasket[0].thickness[0].toString())
     }, [setValue, gasket, env])
 
     useEffect(() => {
-        setValue("gasket.thickness", gasket.find(g => g.id === gasketId)?.thickness[0] || 3)
+        setValue(
+            "gasket.thickness",
+            gasket.find(g => g.id === gasketId)?.thickness[0].toString() || "3"
+        )
     }, [setValue, gasketId, gasket])
 
     return (
@@ -84,7 +87,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                                     {gasket
                                         .find(g => g.id === gasketId)
                                         ?.thickness.map(t => (
-                                            <Option key={t} value={t}>
+                                            <Option key={t} value={t.toString()}>
                                                 {t.toLocaleString("ru-RU")}
                                             </Option>
                                         ))}
