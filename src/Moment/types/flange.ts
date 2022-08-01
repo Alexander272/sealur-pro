@@ -86,6 +86,11 @@ interface IFlangeSize {
     s1: string
     l: string
     d6: string
+    dnk: string
+    dk: string
+    ds: string
+    h0: string
+    hk: string
 }
 
 interface IMaterialData {

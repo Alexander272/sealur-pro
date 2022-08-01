@@ -5,12 +5,13 @@ import { toast } from "react-toastify"
 import { AxiosError } from "axios"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import { IFlangeData, IFormFlangeCalc } from "../../types/flange"
+import { IResFlange } from "../../types/res_flange"
 import ServerError from "../../../Error/ServerError"
 import { Calc } from "./Clac/Calc"
+import { Form } from "./Form/Form"
 import ReadService from "../../service/read"
 import CalcService from "../../service/calc"
 import classes from "../styles/page.module.scss"
-import { Form } from "./Form/Form"
 
 export default function Flange() {
     const { data, error } = useSWR<{ data: IFlangeData }>(
@@ -19,7 +20,7 @@ export default function Flange() {
     )
 
     const [isLoading, setLoading] = useState(false)
-    const [result, setResult] = useState<any | null>(null)
+    const [result, setResult] = useState<IResFlange | null>(null)
 
     const {
         register,
@@ -79,6 +80,7 @@ export default function Flange() {
                 <Calc result={result} clearResult={clearResultHandler} />
             ) : (
                 <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
+                    {/* //TODO добавить валидацию к полям */}
                     <Form
                         data={data.data}
                         register={register}

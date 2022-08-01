@@ -87,6 +87,62 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                 </div>
             </div>
 
+            {type === "free" && (
+                <>
+                    <div className={classes.line}>
+                        <p>Наружный диаметр кольца свободного фланца</p>
+                        <p className={classes.designation}>
+                            <i>
+                                D<sub>н.к</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangesData.${id}.size.dnk`}
+                                id={`flangesData.${id}.size.dnk`}
+                                type='number'
+                                register={register}
+                                suffix='мм'
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.line}>
+                        <p>Внутренний диаметр кольца свободного фланца</p>
+                        <p className={classes.designation}>
+                            <i>
+                                D<sub>к</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangesData.${id}.size.dk`}
+                                id={`flangesData.${id}.size.dk`}
+                                type='number'
+                                register={register}
+                                suffix='мм'
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.line}>
+                        <p>Наружный диаметр контакта бурта и кольца свободного фланца</p>
+                        <p className={classes.designation}>
+                            <i>
+                                D<sub>s</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangesData.${id}.size.ds`}
+                                id={`flangesData.${id}.size.ds`}
+                                type='number'
+                                register={register}
+                                suffix='мм'
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
+
             <div className={classes.line}>
                 <p>Толщина тарелки фланца</p>
                 <p className={classes.designation}>
@@ -102,24 +158,67 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                     />
                 </div>
             </div>
+            {type === "free" && (
+                <>
+                    <div className={classes.line}>
+                        <p>
+                            Расстояние от наружной поверхности обечайки до внутренней окружности
+                            контакта бурта и кольца свободного фланца
+                        </p>
+                        <p className={classes.designation}>
+                            <i>
+                                h<sub>0</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangesData.${id}.size.h0`}
+                                id={`flangesData.${id}.size.h0`}
+                                type='number'
+                                register={register}
+                                suffix='мм'
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.line}>
+                        <p>Толщина кольца свободного фланца</p>
+                        <p className={classes.designation}>
+                            <i>
+                                h<sub>к</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangesData.${id}.size.hk`}
+                                id={`flangesData.${id}.size.hk`}
+                                type='number'
+                                register={register}
+                                suffix='мм'
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
 
-            <div className={classes.line}>
-                <p>Толщина втулки приварного встык фланца в месте присоединения к тарелке</p>
-                <p className={classes.designation}>
-                    <i>
-                        S<sub>1</sub>
-                    </i>
-                </p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`flangesData.${id}.size.s1`}
-                        id={`flangesData.${id}.size.s1`}
-                        type='number'
-                        register={register}
-                        suffix='мм'
-                    />
+            {type === "welded" && (
+                <div className={classes.line}>
+                    <p>Толщина втулки приварного встык фланца в месте присоединения к тарелке</p>
+                    <p className={classes.designation}>
+                        <i>
+                            S<sub>1</sub>
+                        </i>
+                    </p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`flangesData.${id}.size.s1`}
+                            id={`flangesData.${id}.size.s1`}
+                            type='number'
+                            register={register}
+                            suffix='мм'
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className={classes.line}>
                 <p>
@@ -142,21 +241,23 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                 </div>
             </div>
 
-            <div className={classes.line}>
-                <p>Длина конической втулки приварного встык фланца</p>
-                <p className={classes.designation}>
-                    <i>l</i>
-                </p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`flangesData.${id}.size.l`}
-                        id={`flangesData.${id}.size.l`}
-                        type='number'
-                        register={register}
-                        suffix='мм'
-                    />
+            {type === "welded" && (
+                <div className={classes.line}>
+                    <p>Длина конической втулки приварного встык фланца</p>
+                    <p className={classes.designation}>
+                        <i>l</i>
+                    </p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`flangesData.${id}.size.l`}
+                            id={`flangesData.${id}.size.l`}
+                            type='number'
+                            register={register}
+                            suffix='мм'
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className={classes.line}>
                 <p>Диаметр окружности расположения болтов (шпилек)</p>

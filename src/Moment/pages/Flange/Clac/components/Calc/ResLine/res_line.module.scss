@@ -1,0 +1,25 @@
+.container {
+    flex-basis: 100%;
+    margin-bottom: 20px;
+}
+
+.title {
+    // margin: 10px;
+    padding: 0px 10px
+}
+
+.result {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 8.5fr 3fr 0.5fr;
+}
+
+.formula {
+    text-align: center;
+    // padding: 10px;
+    font-weight: 500;
+}
+
+.image {
+    justify-items: center;
+}

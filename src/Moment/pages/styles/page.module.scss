@@ -92,7 +92,22 @@
         grid-column-end: 5;
     }
 
+    & .line-full {
+        grid-column-start: 2;
+        grid-column-end: 5;
+    }
+
     // & .units {
     //     grid-column-start: 5;
     // }
+}
+
+.dif-line {
+    margin-bottom: 0px;
+    padding: 7px 10px;
+    border-radius: 8px;
+
+    &:nth-child(2n-1) {
+        background-color: #f7f7f7;
+    }
 }
