@@ -8,6 +8,8 @@ import classes from "../../styles/page.module.scss"
 import { Data } from "./components/Data"
 import { Deformation } from "./components/Calc/Deformation"
 import { ForcesInBolts } from "./components/Calc/ForcesInBolts"
+import { Embed } from "./components/Embed"
+import { BoltStrength } from "./components/Calc/BoltStrength"
 
 type Props = {
     //TODO добавить тип
@@ -27,9 +29,21 @@ export const Calc: FC<Props> = ({ result, clearResult }) => {
 
             <Bolt data={result.bolt} />
             <Gasket data={result.gasket} />
+            {result.embed && <Embed data={result.embed} />}
 
             <Deformation data={result.calc} formulas={result.formulas} />
             <ForcesInBolts data={result.calc} formulas={result.formulas} />
+            <BoltStrength
+                data={result.calc}
+                res={result.gasket}
+                formulas={result.formulas}
+                pathBasis='basis'
+                pathSigmaB1='sigmaB1'
+                pathSigmaB2='sigmaB2'
+                pathDSigmaM='dSigmaM'
+                pathDSigmaR='dSigmaR'
+                pathQ='q'
+            />
 
             <div className={classes["form-button"]}>
                 <Button fullWidth onClick={clearResult}>

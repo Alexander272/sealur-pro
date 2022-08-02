@@ -14,7 +14,7 @@ export const Deformation: FC<Props> = ({ data, formulas }) => {
         <Container title='Усилия, необходимые для смятия прокладки и обеспечения герметичности фланцевого соединения'>
             <ResLine
                 title='Эффективная ширина прокладки'
-                imgUrl=''
+                imgUrl='/image/moment/formulas/b0.svg'
                 formula={{
                     designation: (
                         <>
@@ -28,7 +28,7 @@ export const Deformation: FC<Props> = ({ data, formulas }) => {
             />
             <ResLine
                 title='Расчетный диаметр прокладки'
-                imgUrl=''
+                imgUrl='/image/moment/formulas/Dcp.svg'
                 formula={{
                     designation: (
                         <>
@@ -42,7 +42,7 @@ export const Deformation: FC<Props> = ({ data, formulas }) => {
             />
             <ResLine
                 title='Усилие необходимое для смятия прокладки при затяжке'
-                imgUrl=''
+                imgUrl='/image/moment/formulas/Po.svg'
                 formula={{
                     designation: (
                         <>
@@ -56,7 +56,7 @@ export const Deformation: FC<Props> = ({ data, formulas }) => {
             />
             <ResLine
                 title='Усилие на прокладке в рабочих условиях необходимое для обеспечения герметичности фланцевого соединения'
-                imgUrl=''
+                imgUrl='/image/moment/formulas/Rp.svg'
                 formula={{
                     designation: (
                         <>

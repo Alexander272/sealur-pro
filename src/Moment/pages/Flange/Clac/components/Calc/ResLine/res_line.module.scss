@@ -12,6 +12,7 @@
     display: grid;
     gap: 10px;
     grid-template-columns: 8.5fr 3fr 0.5fr;
+    align-items: center;
 }
 
 .formula {
@@ -21,5 +22,5 @@
 }
 
 .image {
-    justify-items: center;
+    justify-self: center;
 }

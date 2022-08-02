@@ -2,11 +2,11 @@ import React, { FC } from "react"
 import classes from "./res_line.module.scss"
 
 type Props = {
-    title: string
+    title?: string
     imgUrl: string
     result: string | JSX.Element
     formula?: {
-        designation: JSX.Element
+        designation?: JSX.Element
         value: string | undefined
     }
     units?: string
@@ -15,13 +15,16 @@ type Props = {
 export const ResLine: FC<Props> = ({ title, imgUrl, result, formula, units }) => {
     return (
         <div className={classes.container}>
-            <p className={classes.title}>{title}</p>
+            {title && <p className={classes.title}>{title}</p>}
 
-            {formula?.value && (
-                <p className={classes.formula}>
-                    {formula.designation}={formula.value}
-                </p>
-            )}
+            {formula?.value &&
+                (formula.designation ? (
+                    <p className={classes.formula}>
+                        {formula.designation}={formula.value}
+                    </p>
+                ) : (
+                    <p className={classes.formula}>{formula.value}</p>
+                ))}
             <div className={classes.result}>
                 <img src={imgUrl} className={classes.image} alt='' />
                 <p>{result}</p>
