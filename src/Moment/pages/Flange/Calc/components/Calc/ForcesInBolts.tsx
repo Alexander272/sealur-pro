@@ -2,23 +2,54 @@ import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ICalculate, IFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
-import { ResLine } from "./ResLine/ResLine"
+import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 const alphaMLink = {
-    true: "/image/moment/formulas/alphaM.svg",
+    "true-welded": "/image/moment/formulas/alphaM.svg",
+    "true-flat": "/image/moment/formulas/alphaM.svg",
     "true-free": "/image/moment/formulas/alphaM-full.svg",
-    false: "/image/moment/formulas/alphaM.svg",
-    "false-first": "/image/moment/formulas/alphaM-part1.svg",
-    "false-second": "/image/moment/formulas/alphaM-part2.svg",
-    "false-free": "/image/moment/formulas/alphaM-full.svg",
+    "false-flat-flat": "/image/moment/formulas/alphaM.svg",
+    "false-welded-flat": "/image/moment/formulas/alphaM.svg",
+    "false-flat-welded": "/image/moment/formulas/alphaM.svg",
+    "false-welded-welded": "/image/moment/formulas/alphaM.svg",
+    "false-free-flat": "/image/moment/formulas/alphaM-part1.svg",
+    "false-free-welded": "/image/moment/formulas/alphaM-part1.svg",
+    "false-flat-free": "/image/moment/formulas/alphaM-part2.svg",
+    "false-welded-free": "/image/moment/formulas/alphaM-part2.svg",
+    "false-free-free": "/image/moment/formulas/alphaM-full.svg",
+}
+
+const QtLink = {
+    "Qt-any": "/image/moment/formulas/Qt.svg",
+    "Qt-free": "/image/moment/formulas/Qt-free.svg",
+    "Qt-free-any": "/image/moment/formulas/Qt-first.svg",
+    "Qt-any-free": "/image/moment/formulas/Qt-second.svg",
+    "Qt-free-free": "/image/moment/formulas/Qt-free.svg",
+    "Qt-any-embed": "/image/moment/formulas/Qt-embed.svg",
+    "Qt-free-embed": "/image/moment/formulas/Qt-free-embed.svg",
+    "Qt-free-any-embed": "/image/moment/formulas/Qt-first-embed.svg",
+    "Qt-any-free-embed": "/image/moment/formulas/Qt-second-embed.svg",
+    "Qt-free-free-embed": "/image/moment/formulas/Qt-free-embed.svg",
+    "Qt-washer-any": "/image/moment/formulas/Qt-washer.svg",
+    "Qt-washer-free": "/image/moment/formulas/Qt-washer-free.svg",
+    "Qt-washer-free-any": "/image/moment/formulas/Qt-washer-first.svg",
+    "Qt-washer-any-free": "/image/moment/formulas/Qt-washer-second.svg",
+    "Qt-washer-free-free": "/image/moment/formulas/Qt-washer-free.svg",
+    "Qt-washer-any-embed": "/image/moment/formulas/Qt-washer-embed.svg",
+    "Qt-washer-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
+    "Qt-washer-free-any-embed": "/image/moment/formulas/Qt-washer-first-embed.svg",
+    "Qt-washer-any-free-embed": "/image/moment/formulas/Qt-washer-second-embed.svg",
+    "Qt-washer-free-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
 }
 
 type Props = {
     data: ICalculate
     formulas: IFormulas | undefined
+    typeAlpha: string
+    typeQt: string
 }
 
-export const ForcesInBolts: FC<Props> = ({ data, formulas }) => {
+export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) => {
     return (
         <Container title='Усилия в болтах (шпильках) фланцевого соединения при затяжке и в рабочих условиях'>
             <ResLine
@@ -63,10 +94,10 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas }) => {
                 result={formatNumber(data.Qfm)}
                 units='H'
             />
-            {/* //TODO как-то надо проверять какую формулу вставлять сюда (6 вариантов формул (с шайбой, без нее, с заклодной деталью)) */}
+
             <ResLine
                 title='Нагрузка вызванная стесненностью температурных деформаций'
-                imgUrl=''
+                imgUrl={QtLink[typeQt as "Qt-any"]}
                 formula={{
                     designation: (
                         <>
@@ -102,10 +133,10 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas }) => {
                 }}
                 result={formatNumber(data.alpha)}
             />
-            {/* //TODO надо менять формулу в зависимости от типа фланцев */}
+
             <ResLine
                 title='Коэффициент жесткости фланцевого соединения нагруженного внешним изгибающим моментом'
-                imgUrl={alphaMLink["true"]}
+                imgUrl={alphaMLink[typeAlpha as "true-flat"]}
                 formula={{
                     designation: (
                         <>
@@ -130,16 +161,13 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas }) => {
                 result={formatNumber(data.basis.Pb1)}
                 units='H'
             />
-            {/*//TODO тут результат на клиенте считается возможно лучше считать на сервере (я и значения для расчетов не передаю) */}
-            {/* <ResLine
+
+            <ResLine
                 title='Минимальное начальное натяжение болтов (шпилек)'
-                imgUrl=''
-                formula={{
-                    value: formulas?.basis.Pb1,
-                }}
-                result={formatNumber(0.4 * data.A * data.basis.s)}
+                imgUrl='/image/moment/formulas/minB.svg'
+                result={formatNumber(data.basis.minB)}
                 units='H'
-            /> */}
+            />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения обжатия прокладки и минимального начального натяжения болтов/шпилек'
                 imgUrl='/image/moment/formulas/Pb2.svg'

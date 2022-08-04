@@ -94,6 +94,7 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
 const Flange: FC<Props> = ({
@@ -104,6 +105,7 @@ const Flange: FC<Props> = ({
     register,
     control,
     setValue,
+    errors,
 }) => {
     const type = useWatch({
         control,
@@ -133,20 +135,6 @@ const Flange: FC<Props> = ({
         setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0])
         setValue(`flangesData.${id}.corrosion`, "2")
     }, [setValue, id, standarts, materials])
-
-    // useEffect(() => {
-    //     const curSt = standarts.find(s => s.id === standartId)
-    //     const curDn = curSt?.sizes.sizeRow1.find(s => s.dn === dn)
-    //     if (curSt && !curDn) {
-    //         setValue(`flangesData.${id}.dy`, curSt.sizes.sizeRow1[0].dn)
-    //         setValue(`flangesData.${id}.py`, curSt.sizes.sizeRow1[0].pn[0])
-    //     } else if (curDn) {
-    //         setValue(`flangesData.${id}.py`, curDn.pn[0])
-    //     } else {
-    //         setValue(`flangesData.${id}.dy`, 0)
-    //         setValue(`flangesData.${id}.py`, 0)
-    //     }
-    // }, [setValue, id, standartId, standarts, dn])
 
     const condition = typeFlange.find(tf => tf.id === stands[0]?.typeId)?.label !== type && type
     // условная выборка
@@ -237,6 +225,7 @@ const Flange: FC<Props> = ({
             <Temp
                 register={register}
                 control={control}
+                errors={errors}
                 title='фланца'
                 letter='ф'
                 path={`flangesData.${id}`}
@@ -250,6 +239,7 @@ const Flange: FC<Props> = ({
                     register={register}
                     control={control}
                     setValue={setValue}
+                    errors={errors}
                 />
             ) : (
                 <FlangeDefSize id={id} standarts={stands} control={control} setValue={setValue} />
@@ -277,6 +267,7 @@ const Flange: FC<Props> = ({
                     register={register}
                     titles={matTitles}
                     designation={matDesignation}
+                    errors={errors}
                 />
             )}
             {ringMarkId === "another" && (
@@ -285,6 +276,7 @@ const Flange: FC<Props> = ({
                     register={register}
                     titles={ringMatTitles}
                     designation={ringMatDesignation}
+                    errors={errors}
                 />
             )}
         </Container>

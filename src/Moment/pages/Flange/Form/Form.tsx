@@ -37,6 +37,7 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
                 register={register}
                 control={control}
                 setValue={setValue}
+                errors={errors}
             />
             {!isSameFlange && (
                 <InitDataForFlange
@@ -47,6 +48,7 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
                     register={register}
                     control={control}
                     setValue={setValue}
+                    errors={errors}
                 />
             )}
 
@@ -59,12 +61,14 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
                 register={register}
                 control={control}
                 setValue={setValue}
+                errors={errors}
             />
             <InitDataForWasher
                 materials={data.materials}
                 register={register}
                 control={control}
                 setValue={setValue}
+                errors={errors}
             />
             <InitDataForGasket
                 gasket={data.gaskets}
@@ -72,6 +76,7 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
                 register={register}
                 control={control}
                 setValue={setValue}
+                errors={errors}
             />
 
             {isEmbedded && (
@@ -80,6 +85,7 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
                     register={register}
                     control={control}
                     setValue={setValue}
+                    errors={errors}
                 />
             )}
 

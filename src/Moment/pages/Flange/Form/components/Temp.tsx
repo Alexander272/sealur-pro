@@ -7,12 +7,13 @@ import classes from "../../../styles/page.module.scss"
 type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
+    errors: any
     title: string
     letter: string
     path: string
 }
 
-export const Temp: FC<Props> = ({ register, control, title, letter, path }) => {
+export const Temp: FC<Props> = ({ register, control, errors, title, letter, path }) => {
     const flanges = useWatch({
         control,
         name: "flanges",
@@ -35,6 +36,8 @@ export const Temp: FC<Props> = ({ register, control, title, letter, path }) => {
                     type='number'
                     register={register}
                     suffix='&#8451;'
+                    rule={{ required: true }}
+                    error={errors[`${path}?.temp`]}
                 />
             </div>
         </div>

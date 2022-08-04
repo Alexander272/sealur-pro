@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { FC, memo, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../../../../components/UI/Input/Input"
@@ -28,9 +28,10 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-export const InitDataForWasher: FC<Props> = ({ materials, register, control, setValue }) => {
+const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) => {
     const isUseWasher = useWatch({ control, name: "isUseWasher" })
     const isSameFlange = useWatch({ control, name: "isSameFlange" })
     const markId1 = useWatch({
@@ -78,6 +79,7 @@ export const InitDataForWasher: FC<Props> = ({ materials, register, control, set
                         register={register}
                         titles={washerTitles}
                         designation={washerDesignation}
+                        errors={errors}
                     />
                 )}
             </>
@@ -115,6 +117,8 @@ export const InitDataForWasher: FC<Props> = ({ materials, register, control, set
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors.washer?.thickness}
                             />
                         </div>
                     </div>
@@ -123,3 +127,5 @@ export const InitDataForWasher: FC<Props> = ({ materials, register, control, set
         </Container>
     )
 }
+
+export const InitDataForWasher = memo(Washer)

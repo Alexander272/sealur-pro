@@ -5,6 +5,7 @@ export interface IResFlange {
     bolt: IBoltResult
     gasket: IGasketResult
     embed: IEmbedResult
+    washers: IWasherResult[]
     calc: ICalculate
     formulas?: IFormulas
 }
@@ -54,6 +55,7 @@ export interface IFlangeResult {
     sigmaRAt20: number
     material: string
     ringMaterial: string
+    type: string
 }
 
 export interface IBoltResult {
@@ -91,6 +93,13 @@ export interface IEmbedResult {
     temp: number
 }
 
+export interface IWasherResult {
+    material: string
+    thickness: number
+    alpfa: number
+    temp: number
+}
+
 export interface ICalculate {
     b0: number
     Dsp: number
@@ -122,6 +131,7 @@ export interface ICalculate {
         sDSigmaR: number
         sQ: number
         qP: number
+        minB: number
         Mkp: number
         Mkp1: number
         Mrek: number
@@ -147,6 +157,7 @@ export interface ICalculate {
         dSigmaM: number
         dSigmaR: number
         q: number
+        minB: number
         qP: number
         Mkp: number
         Mkp1: number
@@ -154,8 +165,8 @@ export interface ICalculate {
         Qrek: number
         Mmax: number
         Qmax: number
-        VSigmaB1: boolean
-        VSigmaB2: boolean
+        vSigmaB1: boolean
+        vSigmaB2: boolean
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, memo, useEffect, useState } from "react"
 import { Control, Controller, UseFormSetValue, useWatch } from "react-hook-form"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { IFormFlangeCalc, IStandart } from "../../../../types/flange"
@@ -13,7 +13,7 @@ type Props = {
     setValue: UseFormSetValue<IFormFlangeCalc>
 }
 
-export const FlangeDefSize: FC<Props> = ({ id, standarts, control, setValue }) => {
+const Size: FC<Props> = ({ id, standarts, control, setValue }) => {
     const standartId = useWatch({
         control,
         name: `flangesData.${id}.standartId`,
@@ -100,3 +100,5 @@ export const FlangeDefSize: FC<Props> = ({ id, standarts, control, setValue }) =
         </>
     )
 }
+
+export const FlangeDefSize = memo(Size)

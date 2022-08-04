@@ -27,9 +27,10 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
+const Embed: FC<Props> = ({ materials, register, control, setValue, errors }) => {
     const markId = useWatch({
         control,
         name: `embed.markId`,
@@ -75,6 +76,8 @@ const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors.embed?.thickness}
                     />
                 </div>
             </div>
@@ -85,6 +88,7 @@ const Embed: FC<Props> = ({ materials, register, control, setValue }) => {
                     register={register}
                     titles={embedTitles}
                     designation={embedDesignation}
+                    errors={errors}
                 />
             )}
         </Container>

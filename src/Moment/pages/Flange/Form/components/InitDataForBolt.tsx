@@ -59,9 +59,10 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => {
+const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, errors }) => {
     const markId = useWatch({
         control,
         name: `bolts.markId`,
@@ -109,6 +110,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
             <Temp
                 register={register}
                 control={control}
+                errors={errors}
                 title='болта (шпильки)'
                 letter='б'
                 path='bolts'
@@ -147,6 +149,8 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                                 id='bolts.count'
                                 type='number'
                                 register={register}
+                                rule={{ required: true }}
+                                error={errors.bolts?.count}
                             />
                         </div>
                     </div>
@@ -161,6 +165,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue }) => 
                     register={register}
                     titles={boltTitles}
                     designation={boltDesignation}
+                    errors={errors}
                 />
             )}
         </Container>

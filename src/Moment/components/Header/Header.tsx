@@ -5,7 +5,7 @@ import classes from "./header.module.scss"
 
 const titles = {
     [MomentUrl + "/flange"]: "Расчет соединения фланец-фланец",
-    [MomentUrl + "/flange/calc"]: "Результат расчета соединения фланец-фланец",
+    [MomentUrl + "/flange/result"]: "Результат расчета соединения фланец-фланец",
 }
 
 export const Header = () => {

@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ICalculate, IFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
-import { ResLine } from "./ResLine/ResLine"
+import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 type Props = {
     data: ICalculate

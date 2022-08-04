@@ -13,9 +13,10 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-export const GasketData: FC<Props> = ({ register, control, setValue }) => {
+export const GasketData: FC<Props> = ({ register, control, setValue, errors }) => {
     const { data } = useSWR<{ data: ITypeGasket[] }>(
         "/sealur-moment/type-gasket",
         ReadService.getData
@@ -30,7 +31,13 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
             <div className={classes.line}>
                 <p>Тип прокладки</p>
                 <div className={classes["line-field"]}>
-                    <Input name='gasket.data.title' id='gasket.data.title' register={register} />
+                    <Input
+                        name='gasket.data.title'
+                        id='gasket.data.title'
+                        register={register}
+                        rule={{ required: true }}
+                        error={errors.gasket?.d_in}
+                    />
                 </div>
             </div>
 
@@ -67,6 +74,8 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
                         type='number'
                         register={register}
                         suffix='МПа'
+                        rule={{ required: true }}
+                        error={errors.gasket?.data?.qo}
                     />
                 </div>
             </div>
@@ -82,6 +91,8 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
                         id='gasket.data.m'
                         type='number'
                         register={register}
+                        rule={{ required: true }}
+                        error={errors.gasket?.data?.m}
                     />
                 </div>
             </div>
@@ -99,6 +110,8 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
                         id='gasket.data.compression'
                         type='number'
                         register={register}
+                        rule={{ required: true }}
+                        error={errors.gasket?.data?.compression}
                     />
                 </div>
             </div>
@@ -117,6 +130,8 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
                         type='number'
                         register={register}
                         suffix='МПа'
+                        rule={{ required: true }}
+                        error={errors.gasket?.data?.epsilon}
                     />
                 </div>
             </div>
@@ -133,6 +148,8 @@ export const GasketData: FC<Props> = ({ register, control, setValue }) => {
                         type='number'
                         register={register}
                         suffix='МПа'
+                        rule={{ required: true }}
+                        error={errors.gasket?.data?.permissiblePres}
                     />
                 </div>
             </div>

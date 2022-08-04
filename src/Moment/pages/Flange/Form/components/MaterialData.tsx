@@ -7,6 +7,7 @@ import classes from "../../../styles/page.module.scss"
 type Props = {
     path: string
     register: UseFormRegister<IFormFlangeCalc>
+    errors: any
     titles: {
         name: string
         alpha: string
@@ -24,13 +25,19 @@ type Props = {
     }
 }
 
-export const MaterialData: FC<Props> = ({ path, register, titles, designation }) => {
+export const MaterialData: FC<Props> = ({ path, register, titles, designation, errors }) => {
     return (
         <>
             <div className={classes.line}>
                 <p>Название {titles.name}</p>
                 <div className={classes["line-field"]}>
-                    <Input name={`${path}.title`} id={`${path}.title`} register={register} />
+                    <Input
+                        name={`${path}.title`}
+                        id={`${path}.title`}
+                        register={register}
+                        rule={{ required: true }}
+                        error={errors[`${path}?.title`]}
+                    />
                 </div>
             </div>
 
@@ -44,6 +51,8 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                         type='number'
                         register={register}
                         suffix='1/&#8451;'
+                        rule={{ required: true }}
+                        error={errors[`${path}?.alphaF`]}
                     />
                 </div>
             </div>
@@ -61,6 +70,8 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                             type='number'
                             register={register}
                             suffix='МПа'
+                            rule={{ required: true }}
+                            error={errors[`${path}?.epsilonAt20`]}
                         />
                     </div>
                 </div>
@@ -77,6 +88,8 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                             type='number'
                             register={register}
                             suffix='МПа'
+                            rule={{ required: true }}
+                            error={errors[`${path}?.epsilon`]}
                         />
                     </div>
                 </div>
@@ -93,6 +106,8 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                             type='number'
                             register={register}
                             suffix='МПа'
+                            rule={{ required: true }}
+                            error={errors[`${path}?.sigmaAt20`]}
                         />
                     </div>
                 </div>
@@ -109,6 +124,8 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation })
                             type='number'
                             register={register}
                             suffix='МПа'
+                            rule={{ required: true }}
+                            error={errors[`${path}?.sigma`]}
                         />
                     </div>
                 </div>

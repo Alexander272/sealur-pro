@@ -20,9 +20,18 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, setValue }) => {
+export const FlangeSize: FC<Props> = ({
+    id,
+    type,
+    materials,
+    register,
+    control,
+    setValue,
+    errors,
+}) => {
     useEffect(() => {
         setValue(`flangesData.${id}.ringMarkId`, materials[0].id)
     }, [setValue, materials, id])
@@ -67,6 +76,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors[`flangesData?.${id}?.size?.dOut`]}
                     />
                 </div>
             </div>
@@ -83,6 +94,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors[`flangesData?.${id}?.size?.d`]}
                     />
                 </div>
             </div>
@@ -103,6 +116,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangesData?.${id}?.size?.dnk`]}
                             />
                         </div>
                     </div>
@@ -120,6 +135,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangesData?.${id}?.size?.dk`]}
                             />
                         </div>
                     </div>
@@ -137,6 +154,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangesData?.${id}?.size?.ds`]}
                             />
                         </div>
                     </div>
@@ -155,6 +174,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors[`flangesData?.${id}?.size?.h`]}
                     />
                 </div>
             </div>
@@ -177,6 +198,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangesData?.${id}?.size?.h0`]}
                             />
                         </div>
                     </div>
@@ -194,6 +217,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                                 type='number'
                                 register={register}
                                 suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangesData?.${id}?.size?.hk`]}
                             />
                         </div>
                     </div>
@@ -215,6 +240,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                             type='number'
                             register={register}
                             suffix='мм'
+                            rule={{ required: true }}
+                            error={errors[`flangesData?.${id}?.size?.s1`]}
                         />
                     </div>
                 </div>
@@ -237,6 +264,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors[`flangesData?.${id}?.size?.s0`]}
                     />
                 </div>
             </div>
@@ -254,6 +283,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                             type='number'
                             register={register}
                             suffix='мм'
+                            rule={{ required: true }}
+                            error={errors[`flangesData?.${id}?.size?.l`]}
                         />
                     </div>
                 </div>
@@ -273,6 +304,8 @@ export const FlangeSize: FC<Props> = ({ id, type, materials, register, control, 
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors[`flangesData?.${id}?.size?.d6`]}
                     />
                 </div>
             </div>

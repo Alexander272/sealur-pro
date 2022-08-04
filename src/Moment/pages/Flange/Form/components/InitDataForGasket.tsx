@@ -15,9 +15,10 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
     control: Control<IFormFlangeCalc, any>
     setValue: UseFormSetValue<IFormFlangeCalc>
+    errors: any
 }
 
-const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
+const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors }) => {
     //TODO gasketId. нужно проверить все ли правильно работает
     const gasketId = useWatch({ control, name: "gasket.gasketId" })
 
@@ -101,6 +102,8 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                             type='number'
                             register={register}
                             suffix='мм'
+                            rule={{ required: true }}
+                            error={errors.gasket?.thickness}
                         />
                     )}
                 </div>
@@ -120,6 +123,8 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors.gasket?.d_out}
                     />
                 </div>
             </div>
@@ -138,12 +143,19 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue }) => {
                         type='number'
                         register={register}
                         suffix='мм'
+                        rule={{ required: true }}
+                        error={errors.gasket?.d_in}
                     />
                 </div>
             </div>
 
             {gasketId === "another" && (
-                <GasketData register={register} control={control} setValue={setValue} />
+                <GasketData
+                    register={register}
+                    control={control}
+                    setValue={setValue}
+                    errors={errors}
+                />
             )}
         </Container>
     )
