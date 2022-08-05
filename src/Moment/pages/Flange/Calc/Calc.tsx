@@ -77,8 +77,14 @@ const ResCalc: FC<Props> = ({ result }) => {
                 pathDSigmaR='dSigmaR'
                 pathQ='q'
             />
-            <Conclusions data={result.calc} gasket={result.gasket} pathBasis='basis' pathQ='q' />
-            <Moment />
+            <Conclusions
+                data={result.calc}
+                gasket={result.gasket}
+                temp={result.data.temp}
+                pathBasis='basis'
+                pathQ='q'
+            />
+            <Moment data={result.calc} formulas={result.formulas} gasket={result.gasket} />
         </>
     )
 }

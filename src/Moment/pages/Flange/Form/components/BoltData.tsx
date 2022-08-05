@@ -21,6 +21,7 @@ export const BoltData: FC<Props> = ({ register }) => {
                         name='bolts.diamter'
                         id='bolts.diamter'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='мм'
                     />
@@ -39,6 +40,7 @@ export const BoltData: FC<Props> = ({ register }) => {
                         name='bolts.area'
                         id='bolts.area'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='мм&#178;'
                     />

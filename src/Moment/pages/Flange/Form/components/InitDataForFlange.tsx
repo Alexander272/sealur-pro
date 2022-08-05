@@ -128,13 +128,15 @@ const Flange: FC<Props> = ({
     const [stands, setStands] = useState(standarts)
 
     useEffect(() => {
-        setValue(`flangesData.${id}.type`, "welded")
-        setValue(`flangesData.${id}.standartId`, standarts[0].id)
-        setValue(`flangesData.${id}.markId`, materials[0].id)
-        setValue(`flangesData.${id}.dy`, standarts[0].sizes.sizeRow1[0].dn)
-        setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0])
-        setValue(`flangesData.${id}.corrosion`, "2")
-    }, [setValue, id, standarts, materials])
+        if (!standartId) {
+            setValue(`flangesData.${id}.type`, "welded")
+            setValue(`flangesData.${id}.standartId`, standarts[0].id)
+            setValue(`flangesData.${id}.markId`, materials[0].id)
+            setValue(`flangesData.${id}.dy`, standarts[0].sizes.sizeRow1[0].dn)
+            setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0])
+            setValue(`flangesData.${id}.corrosion`, "2")
+        }
+    }, [setValue, id, standartId, standarts, materials])
 
     const condition = typeFlange.find(tf => tf.id === stands[0]?.typeId)?.label !== type && type
     // условная выборка
@@ -255,6 +257,7 @@ const Flange: FC<Props> = ({
                         name={`flangesData.${id}.corrosion`}
                         id={`flangesData.${id}.corrosion`}
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='мм'
                     />

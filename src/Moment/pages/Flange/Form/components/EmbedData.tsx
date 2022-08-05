@@ -74,6 +74,7 @@ const Embed: FC<Props> = ({ materials, register, control, setValue, errors }) =>
                         name='embed.thickness'
                         id='embed.thickness'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
@@ -84,7 +85,7 @@ const Embed: FC<Props> = ({ materials, register, control, setValue, errors }) =>
 
             {markId === "another" && (
                 <MaterialData
-                    path='embed'
+                    path='embed.material'
                     register={register}
                     titles={embedTitles}
                     designation={embedDesignation}

@@ -12,7 +12,7 @@ export const Gasket: FC<Props> = ({ data }) => {
     return (
         <Container title='Исходные данные прокладки'>
             <Line title='Тип прокладки' res={data.gasket} />
-            <Line title='Уплотняемая среда' res={data.env} />
+            {data.env && <Line title='Уплотняемая среда' res={data.env} />}
 
             <Line
                 title='Наружный диаметр прокладки'
@@ -60,7 +60,7 @@ export const Gasket: FC<Props> = ({ data }) => {
                 res={formatNumber(data.m)}
             />
 
-            {data.typeG === "Мягкая" && (
+            {data.type === "Мягкая" && (
                 <>
                     <Line
                         title='Коэффициент обжатия'

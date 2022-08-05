@@ -24,6 +24,7 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                         name='pressure'
                         id='pressure'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='МПа'
                         rule={{ required: true }}
@@ -41,6 +42,7 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                         name='axialForce'
                         id='axialForce'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='Н'
                         rule={{ required: true }}
@@ -56,6 +58,7 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                         name='bendingMoment'
                         id='bendingMoment'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='Н*мм'
                         rule={{ required: true }}
@@ -71,6 +74,7 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                         name='temp'
                         id='temp'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='&#8451;'
                         rule={{ required: true }}

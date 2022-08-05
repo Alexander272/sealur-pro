@@ -23,10 +23,12 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
     const gasketId = useWatch({ control, name: "gasket.gasketId" })
 
     useEffect(() => {
-        setValue("gasket.gasketId", gasket[0].id)
-        setValue("gasket.envId", env[0].id)
-        setValue("gasket.thickness", gasket[0].thickness[0].toString())
-    }, [setValue, gasket, env])
+        if (!gasketId) {
+            setValue("gasket.gasketId", gasket[0].id)
+            setValue("gasket.envId", env[0].id)
+            setValue("gasket.thickness", gasket[0].thickness[0].toString())
+        }
+    }, [setValue, gasket, gasketId, env])
 
     useEffect(() => {
         setValue(
@@ -100,6 +102,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
                             name='gasket.thickness'
                             id='gasket.thickness'
                             type='number'
+                            step={0.001}
                             register={register}
                             suffix='мм'
                             rule={{ required: true }}
@@ -121,6 +124,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
                         name='gasket.d_out'
                         id='gasket.d_out'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
@@ -143,6 +147,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
                         type='number'
                         register={register}
                         suffix='мм'
+                        step={0.001}
                         rule={{ required: true }}
                         error={errors.gasket?.d_in}
                     />

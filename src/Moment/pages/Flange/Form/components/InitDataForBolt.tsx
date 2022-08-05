@@ -161,7 +161,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
 
             {markId === "another" && (
                 <MaterialData
-                    path='bolts'
+                    path='bolts.material'
                     register={register}
                     titles={boltTitles}
                     designation={boltDesignation}

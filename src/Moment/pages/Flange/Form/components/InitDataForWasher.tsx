@@ -75,7 +75,7 @@ const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) =
                 </div>
                 {markId === "another" && (
                     <MaterialData
-                        path={`washer.${id}`}
+                        path={`washer.${id}.material`}
                         register={register}
                         titles={washerTitles}
                         designation={washerDesignation}
@@ -115,6 +115,7 @@ const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) =
                                 name='washer.thickness'
                                 id='washer.thickness'
                                 type='number'
+                                step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}

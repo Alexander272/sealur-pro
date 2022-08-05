@@ -124,8 +124,9 @@ export const MyRoutes = () => {
                 >
                     <Route index element={<MomentHome />} />
                     <Route path='' element={<MomentMain />}>
-                        <Route path='flange' element={<MomentFlange />} />
-                        <Route path='flange/result' element={<MomentFlangeResult />} />
+                        <Route path='flange' element={<MomentFlange />}>
+                            <Route path='result' element={<MomentFlangeResult />} />
+                        </Route>
                     </Route>
                 </Route>
 

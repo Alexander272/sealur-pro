@@ -21,16 +21,16 @@ export default function Result() {
     }
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.form}>
-                {result && <Calc result={result} />}
+        // <div className={classes.wrapper}>
+        <div className={classes.form}>
+            {result && <Calc result={result} />}
 
-                <div className={classes["form-button"]}>
-                    <Button fullWidth onClick={goBackHandler}>
-                        Новый расчет
-                    </Button>
-                </div>
+            <div className={classes["form-button"]}>
+                <Button fullWidth onClick={goBackHandler}>
+                    Новый расчет
+                </Button>
             </div>
         </div>
+        // </div>
     )
 }

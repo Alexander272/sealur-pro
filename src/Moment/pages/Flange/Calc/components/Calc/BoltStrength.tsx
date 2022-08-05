@@ -117,21 +117,21 @@ export const BoltStrength: FC<Props> = ({
                     <>
                         {formatNumber(data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"])}
                         {data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"] <=
-                        data[pathBasis as "basis"]["Qmax"] ? (
+                        data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"] ? (
                             <> &le; </>
                         ) : (
                             " > "
                         )}
-                        {formatNumber(data[pathBasis as "basis"]["Qmax"])}
+                        {formatNumber(data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"])}
                     </>
                 }
             />
 
-            {res.typeG === "Мягкая" && (
+            {res.type === "Мягкая" && (
                 <>
                     <ResLine
                         title='Условие прочности прокладки (проверяется для мягких прокладок)'
-                        imgUrl=''
+                        imgUrl='/image/moment/formulas/qF.svg'
                         formula={{
                             designation: <>q</>,
                             value: formulas && formulas[pathBasis as "basis"][pathQ as "sigmaB2"],

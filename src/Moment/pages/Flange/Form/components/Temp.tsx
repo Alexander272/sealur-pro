@@ -34,6 +34,7 @@ export const Temp: FC<Props> = ({ register, control, errors, title, letter, path
                     name={`${path}.temp`}
                     id={`${path}.temp`}
                     type='number'
+                    step={0.001}
                     register={register}
                     suffix='&#8451;'
                     rule={{ required: true }}

@@ -1,16 +1,20 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ICalculate, IGasketResult } from "../../../../../types/res_flange"
+import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     data: ICalculate
     gasket: IGasketResult
+    temp: number
     pathBasis: "basis" | "strength"
     pathQ: "q" | "fQ" | "sQ"
 }
 
-export const Conclusions: FC<Props> = ({ data, gasket, pathBasis, pathQ }) => {
+export const Conclusions: FC<Props> = ({ data, gasket, temp, pathBasis, pathQ }) => {
+    console.log(gasket)
+
     return (
         <Container title='Выводы о прочности фланцевого соединения'>
             <p className={classes.text}>
@@ -22,15 +26,15 @@ export const Conclusions: FC<Props> = ({ data, gasket, pathBasis, pathQ }) => {
                 </b>
             </p>
             <p className={classes.text}>
-                - при рабочей температуре 80 &#8451;, т.е. в условиях эксплуатации, фланцевое
-                соединение{" "}
+                - при рабочей температуре {formatNumber(temp)} &#8451;, т.е. в условиях
+                эксплуатации, фланцевое соединение{" "}
                 <b>
                     {data[pathBasis as "basis"]["vSigmaB2"]
                         ? "выдерживает нагрузки"
                         : "не выдерживает нагрузки"}
                 </b>
             </p>
-            {gasket.typeG === "Мягкая" && (
+            {gasket.type === "Мягкая" && (
                 <p className={classes.text}>
                     - условие прочности прокладки{" "}
                     <b>

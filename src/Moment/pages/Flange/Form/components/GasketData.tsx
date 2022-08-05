@@ -72,6 +72,7 @@ export const GasketData: FC<Props> = ({ register, control, setValue, errors }) =
                         name='gasket.data.qo'
                         id='gasket.data.qo'
                         type='number'
+                        step={0.001}
                         register={register}
                         suffix='МПа'
                         rule={{ required: true }}
@@ -90,6 +91,7 @@ export const GasketData: FC<Props> = ({ register, control, setValue, errors }) =
                         name='gasket.data.m'
                         id='gasket.data.m'
                         type='number'
+                        step={0.001}
                         register={register}
                         rule={{ required: true }}
                         error={errors.gasket?.data?.m}
@@ -109,6 +111,7 @@ export const GasketData: FC<Props> = ({ register, control, setValue, errors }) =
                         name='gasket.data.compression'
                         id='gasket.data.compression'
                         type='number'
+                        step={0.001}
                         register={register}
                         rule={{ required: true }}
                         error={errors.gasket?.data?.compression}
@@ -130,6 +133,7 @@ export const GasketData: FC<Props> = ({ register, control, setValue, errors }) =
                         type='number'
                         register={register}
                         suffix='МПа'
+                        step={0.001}
                         rule={{ required: true }}
                         error={errors.gasket?.data?.epsilon}
                     />
@@ -148,6 +152,7 @@ export const GasketData: FC<Props> = ({ register, control, setValue, errors }) =
                         type='number'
                         register={register}
                         suffix='МПа'
+                        step={0.001}
                         rule={{ required: true }}
                         error={errors.gasket?.data?.permissiblePres}
                     />

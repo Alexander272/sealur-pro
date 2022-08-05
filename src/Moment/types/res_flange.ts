@@ -75,7 +75,7 @@ export interface IBoltResult {
 export interface IGasketResult {
     gasket: string
     env: string
-    typeG: "Мягкая" | "Восьмигранная" | "Металлическая"
+    type: "Мягкая" | "Восьмигранная" | "Металлическая"
     thickness: number
     d_out: number
     width: number

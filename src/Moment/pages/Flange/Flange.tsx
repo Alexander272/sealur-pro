@@ -1,13 +1,12 @@
 import { useState } from "react"
 import useSWR from "swr"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
 import { Loader } from "../../../components/UI/Loader/Loader"
 import { MomentUrl } from "../../../components/routes"
 import { IFlangeData, IFormFlangeCalc } from "../../types/flange"
-import { IResFlange } from "../../types/res_flange"
 import ServerError from "../../../Error/ServerError"
 import ReadService from "../../service/read"
 import CalcService from "../../service/calc"
@@ -36,9 +35,6 @@ export default function Flange() {
     const navigate = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
-    // const [result, setResult] = useState<IResFlange | null>(null)
-
-    console.log(location.state)
 
     const {
         register,
@@ -47,23 +43,8 @@ export default function Flange() {
         setValue,
         formState: { errors },
     } = useForm<IFormFlangeCalc>({
-        defaultValues:
-            (location.state as { form: IFormFlangeCalc; result: IResFlange })?.form ||
-            initFormValue,
+        defaultValues: (location.state as { form: IFormFlangeCalc })?.form || initFormValue,
     })
-
-    // useEffect(() => {
-    //     setValue("isWork", true)
-    //     setValue("isSameFlange", true)
-    //     setValue("isEmbedded", false)
-    //     setValue("flanges", "nonIsolated")
-    //     setValue("type", "pin")
-    //     setValue("condition", "controllable")
-    //     setValue("calculation", "basis")
-    //     setValue("isNeedFormulas", true)
-    // }, [setValue])
-
-    // const clearResultHandler = useCallback(() => setResult(null), [])
 
     if (!data)
         return (
@@ -76,22 +57,23 @@ export default function Flange() {
 
     const calculateHandler: SubmitHandler<IFormFlangeCalc> = async data => {
         setLoading(true)
-        navigate("", { state: { form: data } })
+        // navigate(".", { state: { form: data } })
         try {
             const res = await CalcService.CalculateFlange("/sealur-moment/calc/flange", data)
-            // setResult(res.data)
-
             navigate(MomentUrl + "/flange/result", { state: { result: res.data } })
         } catch (error) {
             const err = error as AxiosError
 
             if (err.response?.status === 500) {
                 toast.error(
-                    "На сервере произошла ошибка. Код ошибки: " + err.response?.data.code || "F000",
+                    "На сервере произошла ошибка. Код ошибки: " +
+                        (err.response?.data?.code || "F000"),
                     { autoClose: false }
                 )
-            } else {
+            } else if (err.response?.status === 400) {
                 toast.error("Проверьте правильность заполнения полей")
+            } else {
+                toast.error("Произошла ошибка")
             }
         } finally {
             setLoading(false)
@@ -101,20 +83,18 @@ export default function Flange() {
     return (
         <div className={classes.wrapper}>
             {isLoading && <Loader background='fill' />}
-            {/* {result !== null ? (
-                <Calc result={result} clearResult={clearResultHandler} />
-            ) : ( */}
-            <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
-                {/* //TODO добавить валидацию к полям */}
-                <Form
-                    data={data.data}
-                    register={register}
-                    control={control}
-                    setValue={setValue}
-                    errors={errors}
-                />
-            </form>
-            {/* )} */}
+            {!location.pathname.includes("result") && (
+                <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
+                    <Form
+                        data={data.data}
+                        register={register}
+                        control={control}
+                        setValue={setValue}
+                        errors={errors}
+                    />
+                </form>
+            )}
+            <Outlet />
         </div>
     )
 }
