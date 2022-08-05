@@ -13,8 +13,6 @@ type Props = {
 }
 
 export const Conclusions: FC<Props> = ({ data, gasket, temp, pathBasis, pathQ }) => {
-    console.log(gasket)
-
     return (
         <Container title='Выводы о прочности фланцевого соединения'>
             <p className={classes.text}>

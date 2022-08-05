@@ -73,8 +73,8 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
     })
 
     useEffect(() => {
-        setValue("bolts.markId", materials[0].id)
-    }, [setValue, materials])
+        if (!markId) setValue("bolts.markId", materials[0].id)
+    }, [setValue, markId, materials])
 
     const { data } = useSWR<{ data: IBolt[] }>(
         isFull ? "/sealur-moment/bolts" : null,

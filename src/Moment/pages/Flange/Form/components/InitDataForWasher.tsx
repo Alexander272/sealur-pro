@@ -44,9 +44,11 @@ const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) =
     })
 
     useEffect(() => {
-        setValue("washer.first.markId", materials[0].id)
-        setValue("washer.second.markId", materials[0].id)
-    }, [setValue, materials])
+        if (!markId1 || !markId2) {
+            setValue("washer.first.markId", materials[0].id)
+            setValue("washer.second.markId", materials[0].id)
+        }
+    }, [setValue, materials, markId1, markId2])
 
     const renderMaterial = (id: "first" | "second", markId: string) => {
         return (

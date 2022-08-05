@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, memo } from "react"
 import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Button } from "../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
@@ -19,7 +19,7 @@ type Props = {
     errors: any
 }
 
-export const Form: FC<Props> = ({ data, register, control, setValue, errors }) => {
+const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) => {
     const isSameFlange = useWatch({ control, name: "isSameFlange" })
     const isEmbedded = useWatch({ control, name: "isEmbedded" })
 
@@ -104,3 +104,5 @@ export const Form: FC<Props> = ({ data, register, control, setValue, errors }) =
         </>
     )
 }
+
+export const Form = memo(FormFields)

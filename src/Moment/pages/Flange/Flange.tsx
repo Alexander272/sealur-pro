@@ -36,6 +36,15 @@ export default function Flange() {
 
     const [isLoading, setLoading] = useState(false)
 
+    // const {
+    //     register,
+    //     control,
+    //     handleSubmit,
+    //     setValue,
+    //     formState: { errors },
+    // } = useForm<IFormFlangeCalc>({
+    //     defaultValues: (location.state as { form: IFormFlangeCalc })?.form || initFormValue,
+    // })
     const {
         register,
         control,
@@ -43,7 +52,7 @@ export default function Flange() {
         setValue,
         formState: { errors },
     } = useForm<IFormFlangeCalc>({
-        defaultValues: (location.state as { form: IFormFlangeCalc })?.form || initFormValue,
+        defaultValues: initFormValue,
     })
 
     if (!data)

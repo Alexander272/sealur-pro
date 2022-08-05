@@ -1,20 +1,25 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas } from "../../../../../types/res_flange"
+import { ICalculate, IFormulas, IGasketResult } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 type Props = {
     data: ICalculate
+    gasket: IGasketResult
     formulas: IFormulas | undefined
 }
 
-export const Deformation: FC<Props> = ({ data, formulas }) => {
+export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
     return (
         <Container title='Усилия, необходимые для смятия прокладки и обеспечения герметичности фланцевого соединения'>
             <ResLine
                 title='Эффективная ширина прокладки'
-                imgUrl='/image/moment/formulas/b0.svg'
+                imgUrl={
+                    gasket.type === "Восьмигранная"
+                        ? "/image/moment/formulas/b0-oval.svg"
+                        : "/image/moment/formulas/b0.svg"
+                }
                 formula={{
                     designation: (
                         <>
@@ -28,7 +33,11 @@ export const Deformation: FC<Props> = ({ data, formulas }) => {
             />
             <ResLine
                 title='Расчетный диаметр прокладки'
-                imgUrl='/image/moment/formulas/Dcp.svg'
+                imgUrl={
+                    gasket.type === "Восьмигранная"
+                        ? "/image/moment/formulas/Dcp-oval.svg"
+                        : "/image/moment/formulas/Dcp.svg"
+                }
                 formula={{
                     designation: (
                         <>

@@ -59,7 +59,7 @@ const ResCalc: FC<Props> = ({ result }) => {
             <Gasket data={result.gasket} />
             {result.embed && <Embed data={result.embed} />}
 
-            <Deformation data={result.calc} formulas={result.formulas} />
+            <Deformation data={result.calc} gasket={result.gasket} formulas={result.formulas} />
             <ForcesInBolts
                 data={result.calc}
                 formulas={result.formulas}
