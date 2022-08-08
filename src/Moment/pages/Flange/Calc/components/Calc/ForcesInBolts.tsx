@@ -4,7 +4,7 @@ import { ICalculate, IFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
-const alphaMLink = {
+export const alphaMLink = {
     "true-welded": "/image/moment/formulas/alphaM.svg",
     "true-flat": "/image/moment/formulas/alphaM.svg",
     "true-free": "/image/moment/formulas/alphaM-full.svg",
@@ -19,7 +19,7 @@ const alphaMLink = {
     "false-free-free": "/image/moment/formulas/alphaM-full.svg",
 }
 
-const QtLink = {
+export const QtLink = {
     "Qt-any": "/image/moment/formulas/Qt.svg",
     "Qt-free": "/image/moment/formulas/Qt-free.svg",
     "Qt-free-any": "/image/moment/formulas/Qt-first.svg",

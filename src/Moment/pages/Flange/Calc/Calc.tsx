@@ -11,6 +11,7 @@ import { ForcesInBolts } from "./components/Calc/ForcesInBolts"
 import { BoltStrength } from "./components/Calc/BoltStrength"
 import { Conclusions } from "./components/Calc/Conclusions"
 import { Moment } from "./components/Calc/Moment"
+import { Auxiliary } from "./components/Calc/Auxiliary"
 
 type Props = {
     result: IResFlange
@@ -59,32 +60,53 @@ const ResCalc: FC<Props> = ({ result }) => {
             <Gasket data={result.gasket} />
             {result.embed && <Embed data={result.embed} />}
 
-            <Deformation data={result.calc} gasket={result.gasket} formulas={result.formulas} />
-            <ForcesInBolts
-                data={result.calc}
-                formulas={result.formulas}
-                typeAlpha={getTypeAlpha()}
-                typeQt={getTypeQt()}
-            />
-            <BoltStrength
-                data={result.calc}
-                res={result.gasket}
-                formulas={result.formulas}
-                pathBasis='basis'
-                pathSigmaB1='sigmaB1'
-                pathSigmaB2='sigmaB2'
-                pathDSigmaM='dSigmaM'
-                pathDSigmaR='dSigmaR'
-                pathQ='q'
-            />
-            <Conclusions
-                data={result.calc}
-                gasket={result.gasket}
-                temp={result.data.temp}
-                pathBasis='basis'
-                pathQ='q'
-            />
-            <Moment data={result.calc} formulas={result.formulas} gasket={result.gasket} />
+            {result.calc.basis?.Pb && (
+                <>
+                    <Deformation
+                        data={result.calc}
+                        gasket={result.gasket}
+                        formulas={result.formulas}
+                    />
+                    <ForcesInBolts
+                        data={result.calc}
+                        formulas={result.formulas}
+                        typeAlpha={getTypeAlpha()}
+                        typeQt={getTypeQt()}
+                    />
+                    <BoltStrength
+                        data={result.calc}
+                        res={result.gasket}
+                        formulas={result.formulas}
+                        pathBasis='basis'
+                        pathSigmaB1='sigmaB1'
+                        pathSigmaB2='sigmaB2'
+                        pathDSigmaM='dSigmaM'
+                        pathDSigmaR='dSigmaR'
+                        pathQ='q'
+                    />
+                    <Conclusions
+                        data={result.calc}
+                        gasket={result.gasket}
+                        temp={result.data.temp}
+                        pathBasis='basis'
+                        pathQ='q'
+                    />
+                    <Moment data={result.calc} formulas={result.formulas} gasket={result.gasket} />
+                </>
+            )}
+            {result.calc.strength?.fPb && (
+                <>
+                    <Auxiliary
+                        data={result.calc}
+                        basis={result.data}
+                        gasket={result.gasket}
+                        flanges={result.flanges}
+                        bolt={result.bolt}
+                        formulas={result.formulas}
+                        typeAlpha={getTypeAlpha()}
+                    />
+                </>
+            )}
         </>
     )
 }
