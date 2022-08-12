@@ -79,10 +79,9 @@ export const Auxiliary: FC<Props> = ({
                             y<sub>п</sub>
                         </>
                     ),
-                    //TODO
-                    value: formulas?.Dcp,
+                    value: formulas?.strength?.yp,
                 }}
-                result={formatNumber(data.Dsp)}
+                result={formatNumber(data.strength.yp)}
                 units='мм/Н'
             />
             <ResLine
@@ -104,10 +103,9 @@ export const Auxiliary: FC<Props> = ({
                             y<sub>б</sub>
                         </>
                     ),
-                    //TODO
-                    value: formulas?.Dcp,
+                    value: formulas?.strength?.yb,
                 }}
-                result={formatNumber(data.Dsp)}
+                result={formatNumber(data.strength.yb)}
                 units='мм/Н'
             />
             <ResLine
@@ -123,10 +121,9 @@ export const Auxiliary: FC<Props> = ({
                             L<sub>б</sub>
                         </>
                     ),
-                    //TODO
-                    value: formulas?.Dcp,
+                    value: formulas?.strength.Lb,
                 }}
-                result={formatNumber(data.Dsp)}
+                result={formatNumber(data.strength.Lb)}
                 units='мм'
             />
             <ResLine
@@ -144,9 +141,19 @@ export const Auxiliary: FC<Props> = ({
                 units='мм&#178;'
             />
 
-            {<FlangeData title='- для первого фланца' data={flanges[0]} formulas={formulas} />}
+            {
+                <FlangeData
+                    title='- для первого фланца'
+                    data={flanges[0]}
+                    formulas={formulas?.strength?.flange[0]}
+                />
+            }
             {flanges.length > 1 && (
-                <FlangeData title='- для второго фланца' data={flanges[1]} formulas={formulas} />
+                <FlangeData
+                    title='- для второго фланца'
+                    data={flanges[1]}
+                    formulas={formulas?.strength?.flange[1]}
+                />
             )}
 
             <ResLine
@@ -154,10 +161,9 @@ export const Auxiliary: FC<Props> = ({
                 imgUrl='/image/moment/formulas/gamma.svg'
                 formula={{
                     designation: <>&gamma;</>,
-                    value: formulas?.A,
+                    value: formulas?.strength.gamma,
                 }}
-                //TODO
-                result={formatNumber(data.A)}
+                result={formatNumber(data.strength.gamma)}
                 units='H/мм'
             />
 

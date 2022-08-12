@@ -14,12 +14,12 @@ type Props = {
 export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
     return (
         <Container title='Расчет момента затяжки'>
-            {data.basis.Mkp ? (
+            {data.basis?.Mkp ? (
                 <>
                     <ResLine
                         title='Крутящий момент при затяжке болтов/шпилек'
                         imgUrl='/image/moment/formulas/Mkp.svg'
-                        result={formatNumber(data.basis.Mkp)}
+                        result={formatNumber(data.basis?.Mkp)}
                         formula={{
                             designation: (
                                 <>
@@ -38,7 +38,7 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 M<sub>кр</sub>=0,75*M<sub>кр</sub>
                             </>
                         }
-                        result={formatNumber(data.basis.Mkp1)}
+                        result={formatNumber(data.basis?.Mkp1)}
                         formula={{
                             designation: (
                                 <>
@@ -56,7 +56,7 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 M<sub>рек</sub>
                             </>
                         }
-                        result={formatNumber(data.basis.Mrek)}
+                        result={formatNumber(data.basis?.Mrek)}
                         formula={{
                             designation: (
                                 <>
@@ -75,7 +75,7 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 q<sub>рек</sub>
                             </>
                         }
-                        result={formatNumber(data.basis.Qrek)}
+                        result={formatNumber(data.basis?.Qrek)}
                         formula={{
                             designation: (
                                 <>
@@ -90,7 +90,7 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                     <p className={classes.text}>
                         Максимальный крутящий момент определяется из{" "}
                         <b>
-                            {gasket.type === "Мягкая" && data.basis.Qmax > gasket.permissiblePres
+                            {gasket.type === "Мягкая" && data.basis!.Qmax > gasket.permissiblePres
                                 ? "условия прочности прокладки"
                                 : "условия прочности болта"}
                         </b>
@@ -102,7 +102,15 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 M<sub>кр</sub> <sub>max</sub>
                             </>
                         }
-                        result={formatNumber(data.basis.Mmax)}
+                        formula={{
+                            designation: (
+                                <>
+                                    M<sub>кр</sub> <sub>max</sub>
+                                </>
+                            ),
+                            value: formulas?.basis.Mmax,
+                        }}
+                        result={formatNumber(data.basis?.Mmax)}
                         units='H*м'
                         resBold
                     />
@@ -113,7 +121,15 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 q<sub>max</sub>
                             </>
                         }
-                        result={formatNumber(data.basis.Qmax)}
+                        formula={{
+                            designation: (
+                                <>
+                                    q<sub>max</sub>
+                                </>
+                            ),
+                            value: formulas?.basis.Qmax,
+                        }}
+                        result={formatNumber(data.basis?.Qmax)}
                         units='МПа'
                         resBold
                     />

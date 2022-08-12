@@ -42,13 +42,13 @@ const boltDesignation = {
     sigmaAt20: (
         <>
             [<i>&sigma;</i>]<sup>б</sup>
-            <sub>м</sub>
+            <sub>н</sub>
         </>
     ),
     sigma: (
         <>
             [<i>&sigma;</i>]<sup>б</sup>
-            <sub>р</sub>
+            <sub>н</sub>
         </>
     ),
 }

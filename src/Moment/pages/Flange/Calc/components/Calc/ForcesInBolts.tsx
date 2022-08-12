@@ -121,7 +121,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                     ),
                     value: formulas?.basis.Pb,
                 }}
-                result={formatNumber(data.basis.Pb)}
+                result={formatNumber(data.basis?.Pb)}
                 units='H'
             />
             <ResLine
@@ -158,14 +158,14 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                     ),
                     value: formulas?.basis.Pb1,
                 }}
-                result={formatNumber(data.basis.Pb1)}
+                result={formatNumber(data.basis?.Pb1)}
                 units='H'
             />
 
             <ResLine
                 title='Минимальное начальное натяжение болтов (шпилек)'
                 imgUrl='/image/moment/formulas/minB.svg'
-                result={formatNumber(data.basis.minB)}
+                result={formatNumber(data.basis?.minB)}
                 units='H'
             />
             <ResLine
@@ -179,7 +179,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                     ),
                     value: formulas?.basis.Pb2,
                 }}
-                result={formatNumber(data.basis.Pb2)}
+                result={formatNumber(data.basis?.Pb2)}
                 units='H'
             />
             <ResLine
@@ -194,7 +194,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                     ),
                     value: formulas?.basis.Pbr,
                 }}
-                result={formatNumber(data.basis.Pbr)}
+                result={formatNumber(data.basis?.Pbr)}
                 units='H'
             />
         </Container>

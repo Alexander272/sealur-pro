@@ -1,13 +1,13 @@
 import React, { FC } from "react"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
-import { IFlangeResult, IFormulas } from "../../../../../types/res_flange"
+import { IFlangeResult, IStrengthFormulas_Flange } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     title: string
     data: IFlangeResult
-    formulas: IFormulas | undefined
+    formulas: IStrengthFormulas_Flange | undefined
 }
 
 export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
@@ -19,10 +19,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 imgUrl='/image/moment/formulas/b.svg'
                 formula={{
                     designation: <>b</>,
-                    value: formulas?.A,
+                    value: formulas?.b,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.b)}
                 units='мм'
             />
             <ResLine
@@ -30,10 +29,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 imgUrl='/image/moment/formulas/e.svg'
                 formula={{
                     designation: <>e</>,
-                    value: formulas?.A,
+                    value: formulas?.e,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.e)}
                 units='мм'
             />
             <ResLine
@@ -45,10 +43,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                             S<sub>э</sub>
                         </>
                     ),
-                    value: formulas?.A,
+                    value: formulas?.Se,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.Se)}
                 units='мм'
             />
             {data.type === "welded" && (
@@ -58,29 +55,26 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                         imgUrl='/image/moment/formulas/xi.svg'
                         formula={{
                             designation: <>&xi;</>,
-                            value: formulas?.A,
+                            value: formulas?.xi,
                         }}
-                        //TODO
-                        result={formatNumber(data.c)}
+                        result={formatNumber(data.xi)}
                     />
                     <ResLine
                         title='где'
                         imgUrl='/image/moment/formulas/beta.svg'
                         formula={{
                             designation: <>&beta;</>,
-                            value: formulas?.A,
+                            value: formulas?.beta,
                         }}
-                        //TODO
-                        result={formatNumber(data.c)}
+                        result={formatNumber(data.beta)}
                     />
                     <ResLine
                         imgUrl='/image/moment/formulas/x.svg'
                         formula={{
                             designation: <>x</>,
-                            value: formulas?.A,
+                            value: formulas?.x,
                         }}
-                        //TODO
-                        result={formatNumber(data.c)}
+                        result={formatNumber(data.x)}
                     />
                 </>
             )}
@@ -93,10 +87,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                             l<sub>0</sub>
                         </>
                     ),
-                    value: formulas?.A,
+                    value: formulas?.l0,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.l0)}
                 units='мм'
             />
             <ResLine
@@ -104,41 +97,23 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 imgUrl='/image/moment/formulas/K.svg'
                 formula={{
                     designation: <>K</>,
-                    value: formulas?.A,
+                    value: formulas?.k,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.k)}
             />
 
             <p className={classes.text}>Расчетные коэффициенты</p>
-            <ResLine
-                imgUrl='/image/moment/formulas/betaT.svg'
-                //TODO
-                result={formatNumber(data.c)}
-            />
-            <ResLine
-                imgUrl='/image/moment/formulas/betaU.svg'
-                //TODO
-                result={formatNumber(data.c)}
-            />
-            <ResLine
-                imgUrl='/image/moment/formulas/betaY.svg'
-                //TODO
-                result={formatNumber(data.c)}
-            />
-            <ResLine
-                imgUrl='/image/moment/formulas/betaZ.svg'
-                //TODO
-                result={formatNumber(data.c)}
-            />
+            <ResLine imgUrl='/image/moment/formulas/betaT.svg' result={formatNumber(data.betaT)} />
+            <ResLine imgUrl='/image/moment/formulas/betaU.svg' result={formatNumber(data.betaU)} />
+            <ResLine imgUrl='/image/moment/formulas/betaY.svg' result={formatNumber(data.betaY)} />
+            <ResLine imgUrl='/image/moment/formulas/betaZ.svg' result={formatNumber(data.betaZ)} />
             <ResLine
                 imgText={
                     <>
                         &beta;<sub>F</sub>
                     </>
                 }
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.betaF)}
             />
             <ResLine
                 imgText={
@@ -146,24 +121,18 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                         &beta;<sub>V</sub>
                     </>
                 }
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.betaV)}
             />
-            <ResLine
-                imgText={<>f</>}
-                //TODO
-                result={formatNumber(data.c)}
-            />
+            <ResLine imgText={<>f</>} result={formatNumber(data.f)} />
 
             <ResLine
                 title='Коэффициент'
                 imgUrl='/image/moment/formulas/lambda.svg'
                 formula={{
                     designation: <>&lambda;</>,
-                    value: formulas?.A,
+                    value: formulas?.lymda,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.lymda)}
             />
             <ResLine
                 title='Угловая податливость фланца при затяжке'
@@ -174,10 +143,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                             y<sub>ф</sub>
                         </>
                     ),
-                    value: formulas?.A,
+                    value: formulas?.yf,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.yf)}
                 units='1/(H*мм)'
             />
 
@@ -192,13 +160,24 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                                     y<sub>к</sub>
                                 </>
                             ),
-                            value: formulas?.A,
+                            value: formulas?.yk,
                         }}
-                        //TODO
-                        result={formatNumber(data.c)}
+                        result={formatNumber(data.yk)}
                         units='1/(H*мм)'
                     />
-                    {/* //TODO тут еще одна формула дожна быть */}
+                    <ResLine
+                        title='где'
+                        imgUrl='/image/moment/formulas/psi.svg'
+                        formula={{
+                            designation: (
+                                <>
+                                    &psi;<sub>к</sub>
+                                </>
+                            ),
+                            value: formulas?.psik,
+                        }}
+                        result={formatNumber(data.psik)}
+                    />
                 </>
             )}
 
@@ -218,10 +197,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                             y<sub>ф.н</sub>
                         </>
                     ),
-                    value: formulas?.A,
+                    value: formulas?.yfn,
                 }}
-                //TODO
-                result={formatNumber(data.c)}
+                result={formatNumber(data.yfn)}
                 units='1/(H*мм)'
             />
             {data.type === "free" && (
@@ -234,10 +212,9 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                                 y<sub>ф.с</sub>
                             </>
                         ),
-                        value: formulas?.A,
+                        value: formulas?.yfc,
                     }}
-                    //TODO
-                    result={formatNumber(data.c)}
+                    result={formatNumber(data.yfc)}
                     units='1/(H*мм)'
                 />
             )}

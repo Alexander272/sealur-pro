@@ -49,9 +49,9 @@ export const MaterialData: FC<Props> = ({ path, register, titles, designation, e
                         name={`${path}.alphaF`}
                         id={`${path}.alphaF`}
                         type='number'
-                        step={0.000000001}
+                        step={0.001}
                         register={register}
-                        suffix='1/&#8451;'
+                        suffix='*10^-6 1/&#8451;'
                         rule={{ required: true }}
                         error={errors[`${path}?.alphaF`]}
                     />

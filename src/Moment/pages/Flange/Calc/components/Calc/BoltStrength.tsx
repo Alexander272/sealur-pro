@@ -99,13 +99,14 @@ export const BoltStrength: FC<Props> = ({
                 imgUrl='/image/moment/formulas/vSigmaB1.svg'
                 result={
                     <>
-                        {formatNumber(data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"])}
+                        {formatNumber(data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"])}&nbsp;
                         {data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"] <=
                         data[pathBasis as "basis"][pathDSigmaM as "sigmaB1"] ? (
                             <> &le; </>
                         ) : (
                             " > "
                         )}
+                        &nbsp;
                         {formatNumber(data[pathBasis as "basis"][pathDSigmaM as "sigmaB1"])}
                     </>
                 }
@@ -115,13 +116,14 @@ export const BoltStrength: FC<Props> = ({
                 imgUrl='/image/moment/formulas/vSigmaB2.svg'
                 result={
                     <>
-                        {formatNumber(data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"])}
+                        {formatNumber(data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"])}&nbsp;
                         {data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"] <=
                         data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"] ? (
                             <> &le; </>
                         ) : (
                             " > "
                         )}
+                        &nbsp;
                         {formatNumber(data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"])}
                     </>
                 }
@@ -143,13 +145,14 @@ export const BoltStrength: FC<Props> = ({
                         imgUrl='/image/moment/formulas/q.svg'
                         result={
                             <>
-                                {formatNumber(data[pathBasis as "basis"][pathQ as "sigmaB1"])}
+                                {formatNumber(data[pathBasis as "basis"][pathQ as "sigmaB1"])}&nbsp;
                                 {data[pathBasis as "basis"][pathQ as "sigmaB1"] <=
                                 res.permissiblePres ? (
                                     <> &le; </>
                                 ) : (
                                     " > "
                                 )}
+                                &nbsp;
                                 {formatNumber(res.permissiblePres)}
                             </>
                         }

@@ -12,6 +12,11 @@ import { BoltStrength } from "./components/Calc/BoltStrength"
 import { Conclusions } from "./components/Calc/Conclusions"
 import { Moment } from "./components/Calc/Moment"
 import { Auxiliary } from "./components/Calc/Auxiliary"
+import { Tightness } from "./components/Calc/Tightness"
+import { StrengthMoment } from "./components/Calc/StrengthMoment"
+import { StaticResistance } from "./components/Calc/StaticResistance"
+import { TightnessLoad } from "./components/Calc/TightnessLoad"
+import classes from "../../styles/page.module.scss"
 
 type Props = {
     result: IResFlange
@@ -60,7 +65,7 @@ const ResCalc: FC<Props> = ({ result }) => {
             <Gasket data={result.gasket} />
             {result.embed && <Embed data={result.embed} />}
 
-            {result.calc.basis?.Pb && (
+            {result.calc.basis && (
                 <>
                     <Deformation
                         data={result.calc}
@@ -94,7 +99,7 @@ const ResCalc: FC<Props> = ({ result }) => {
                     <Moment data={result.calc} formulas={result.formulas} gasket={result.gasket} />
                 </>
             )}
-            {result.calc.strength?.fPb && (
+            {result.calc.strength && (
                 <>
                     <Auxiliary
                         data={result.calc}
@@ -104,6 +109,68 @@ const ResCalc: FC<Props> = ({ result }) => {
                         bolt={result.bolt}
                         formulas={result.formulas}
                         typeAlpha={getTypeAlpha()}
+                    />
+                    <Tightness data={result.calc} formulas={result.formulas} />
+                    <BoltStrength
+                        data={result.calc}
+                        res={result.gasket}
+                        formulas={result.formulas}
+                        pathBasis='strength'
+                        pathSigmaB1='fSigmaB1'
+                        pathSigmaB2='fSigmaB2'
+                        pathDSigmaM='fDSigmaM'
+                        pathDSigmaR='fDSigmaR'
+                        pathQ='fQ'
+                    />
+                    <StrengthMoment
+                        data={result.calc.strength}
+                        formulas={result.formulas}
+                        mkp='fMkp'
+                        mkp1='fMkp1'
+                    />
+                    <StaticResistance
+                        data={result.calc.strength.strength}
+                        flanges={result.flanges}
+                        isSameFlange={result.isSameFlange}
+                        index={0}
+                        title='Расчет фланца на статическую прочность'
+                        formulas={result.formulas}
+                    />
+                    <TightnessLoad
+                        data={result.calc}
+                        typeQt={getTypeQt()}
+                        formulas={result.formulas}
+                    />
+                    <BoltStrength
+                        data={result.calc}
+                        res={result.gasket}
+                        formulas={result.formulas}
+                        pathBasis='strength'
+                        pathSigmaB1='sSigmaB1'
+                        pathSigmaB2='sSigmaB2'
+                        pathDSigmaM='sDSigmaM'
+                        pathDSigmaR='sDSigmaR'
+                        pathQ='sQ'
+                    />
+                    <StrengthMoment
+                        data={result.calc.strength}
+                        formulas={result.formulas}
+                        mkp='sMkp'
+                        mkp1='sMkp1'
+                    />
+                    <StaticResistance
+                        data={result.calc.strength.strength}
+                        flanges={result.flanges}
+                        isSameFlange={result.isSameFlange}
+                        index={1}
+                        title='Расчет фланца на статическую прочность c учетом температурных деформаций'
+                        formulas={result.formulas}
+                    />
+                    <h5 className={classes.title}>Анализ результатов расчета</h5>
+                    <Deformation
+                        data={result.calc}
+                        gasket={result.gasket}
+                        formulas={result.formulas}
                     />
                 </>
             )}

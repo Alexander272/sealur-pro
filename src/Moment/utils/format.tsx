@@ -1,4 +1,4 @@
-export const formatNumber = (num: number): string | JSX.Element => {
+export const formatNumber = (num: number | undefined): string | JSX.Element => {
     if (!num) return "0"
 
     if (Math.abs(num) < 0.0001) {
