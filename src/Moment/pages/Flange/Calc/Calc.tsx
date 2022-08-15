@@ -16,6 +16,8 @@ import { Tightness } from "./components/Calc/Tightness"
 import { StrengthMoment } from "./components/Calc/StrengthMoment"
 import { StaticResistance } from "./components/Calc/StaticResistance"
 import { TightnessLoad } from "./components/Calc/TightnessLoad"
+import { SealingCondition } from "./components/Calc/SealingCondition"
+import { SealingConclusions } from "./components/Calc/SealingConclusions"
 import classes from "../../styles/page.module.scss"
 
 type Props = {
@@ -31,7 +33,7 @@ const ResCalc: FC<Props> = ({ result }) => {
             res = result.flanges[0].type + "-" + result.flanges[1].type
         }
 
-        return result.isSameFlange + "-" + res
+        return (result.isSameFlange || false) + "-" + res
     }
 
     const getTypeQt = () => {
@@ -77,17 +79,22 @@ const ResCalc: FC<Props> = ({ result }) => {
                         formulas={result.formulas}
                         typeAlpha={getTypeAlpha()}
                         typeQt={getTypeQt()}
+                        path='basis'
+                        pb='Pb'
+                        pb1='Pb1'
+                        pb2='Pb2'
+                        pbr='Pbr'
                     />
                     <BoltStrength
                         data={result.calc}
                         res={result.gasket}
                         formulas={result.formulas}
-                        pathBasis='basis'
-                        pathSigmaB1='sigmaB1'
-                        pathSigmaB2='sigmaB2'
-                        pathDSigmaM='dSigmaM'
-                        pathDSigmaR='dSigmaR'
-                        pathQ='q'
+                        path='basis'
+                        sigmaB1='sigmaB1'
+                        sigmaB2='sigmaB2'
+                        dSigmaM='dSigmaM'
+                        dSigmaR='dSigmaR'
+                        q='q'
                     />
                     <Conclusions
                         data={result.calc}
@@ -96,7 +103,14 @@ const ResCalc: FC<Props> = ({ result }) => {
                         pathBasis='basis'
                         pathQ='q'
                     />
-                    <Moment data={result.calc} formulas={result.formulas} gasket={result.gasket} />
+                    <Moment
+                        data={result.calc}
+                        formulas={result.formulas}
+                        gasket={result.gasket}
+                        path='basis'
+                        mkp='Mkp'
+                        mkp1='Mkp1'
+                    />
                 </>
             )}
             {result.calc.strength && (
@@ -115,12 +129,12 @@ const ResCalc: FC<Props> = ({ result }) => {
                         data={result.calc}
                         res={result.gasket}
                         formulas={result.formulas}
-                        pathBasis='strength'
-                        pathSigmaB1='fSigmaB1'
-                        pathSigmaB2='fSigmaB2'
-                        pathDSigmaM='fDSigmaM'
-                        pathDSigmaR='fDSigmaR'
-                        pathQ='fQ'
+                        path='strength'
+                        sigmaB1='fSigmaB1'
+                        sigmaB2='fSigmaB2'
+                        dSigmaM='fDSigmaM'
+                        dSigmaR='fDSigmaR'
+                        q='fQ'
                     />
                     <StrengthMoment
                         data={result.calc.strength}
@@ -145,12 +159,12 @@ const ResCalc: FC<Props> = ({ result }) => {
                         data={result.calc}
                         res={result.gasket}
                         formulas={result.formulas}
-                        pathBasis='strength'
-                        pathSigmaB1='sSigmaB1'
-                        pathSigmaB2='sSigmaB2'
-                        pathDSigmaM='sDSigmaM'
-                        pathDSigmaR='sDSigmaR'
-                        pathQ='sQ'
+                        path='strength'
+                        sigmaB1='sSigmaB1'
+                        sigmaB2='sSigmaB2'
+                        dSigmaM='sDSigmaM'
+                        dSigmaR='sDSigmaR'
+                        q='sQ'
                     />
                     <StrengthMoment
                         data={result.calc.strength}
@@ -171,6 +185,49 @@ const ResCalc: FC<Props> = ({ result }) => {
                         data={result.calc}
                         gasket={result.gasket}
                         formulas={result.formulas}
+                    />
+                    <ForcesInBolts
+                        data={result.calc}
+                        formulas={result.formulas}
+                        typeAlpha={getTypeAlpha()}
+                        typeQt={getTypeQt()}
+                        path='strength'
+                        pb='sPb'
+                        pb1='sPb1'
+                        pb2='sPb2'
+                        pbr='sPbr'
+                    />
+                    <BoltStrength
+                        data={result.calc}
+                        res={result.gasket}
+                        formulas={result.formulas}
+                        path='strength'
+                        sigmaB1='sSigmaB1'
+                        sigmaB2='sSigmaB2'
+                        dSigmaM='sDSigmaM'
+                        dSigmaR='sDSigmaR'
+                        q='sQ'
+                    />
+                    <Conclusions
+                        data={result.calc}
+                        gasket={result.gasket}
+                        temp={result.data.temp}
+                        pathBasis='strength'
+                        pathQ='sQ'
+                    />
+                    <SealingCondition
+                        data={result.calc.strength}
+                        flanges={result.flanges}
+                        formulas={result.formulas?.strength}
+                    />
+                    <SealingConclusions data={result.calc.strength} flanges={result.flanges} />
+                    <Moment
+                        data={result.calc}
+                        formulas={result.formulas}
+                        gasket={result.gasket}
+                        path='strength'
+                        mkp='sMkp'
+                        mkp1='sMkp1'
                     />
                 </>
             )}

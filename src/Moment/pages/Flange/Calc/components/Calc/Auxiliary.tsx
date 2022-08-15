@@ -121,7 +121,7 @@ export const Auxiliary: FC<Props> = ({
                             L<sub>б</sub>
                         </>
                     ),
-                    value: formulas?.strength.Lb,
+                    value: formulas && formulas?.strength.Lb,
                 }}
                 result={formatNumber(data.strength.Lb)}
                 units='мм'

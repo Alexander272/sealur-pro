@@ -34,11 +34,13 @@ export const QtLink = {
     "Qt-washer-free": "/image/moment/formulas/Qt-washer-free.svg",
     "Qt-washer-free-any": "/image/moment/formulas/Qt-washer-first.svg",
     "Qt-washer-any-free": "/image/moment/formulas/Qt-washer-second.svg",
+    "Qt-washer-any-any": "/image/moment/formulas/Qt-washer.svg",
     "Qt-washer-free-free": "/image/moment/formulas/Qt-washer-free.svg",
     "Qt-washer-any-embed": "/image/moment/formulas/Qt-washer-embed.svg",
     "Qt-washer-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
     "Qt-washer-free-any-embed": "/image/moment/formulas/Qt-washer-first-embed.svg",
     "Qt-washer-any-free-embed": "/image/moment/formulas/Qt-washer-second-embed.svg",
+    "Qt-washer-any-any-embed": "/image/moment/formulas/Qt-washer-embed.svg",
     "Qt-washer-free-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
 }
 
@@ -47,9 +49,24 @@ type Props = {
     formulas: IFormulas | undefined
     typeAlpha: string
     typeQt: string
+    path: "basis" | "strength"
+    pb: "Pb" | "sPb"
+    pb1: "Pb1" | "sPb1"
+    pb2: "Pb2" | "sPb2"
+    pbr: "Pbr" | "sPbr"
 }
 
-export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) => {
+export const ForcesInBolts: FC<Props> = ({
+    data,
+    formulas,
+    typeAlpha,
+    typeQt,
+    path,
+    pb,
+    pb1,
+    pb2,
+    pbr,
+}) => {
     return (
         <Container title='Усилия в болтах (шпильках) фланцевого соединения при затяжке и в рабочих условиях'>
             <ResLine
@@ -119,9 +136,9 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                             <sup>м</sup>
                         </>
                     ),
-                    value: formulas?.basis.Pb,
+                    value: formulas && formulas[`${path as "basis"}`][`${pb as "Pb"}`],
                 }}
-                result={formatNumber(data.basis?.Pb)}
+                result={formatNumber(data[`${path as "basis"}`][`${pb as "Pb"}`])}
                 units='H'
             />
             <ResLine
@@ -156,16 +173,16 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                             P<sub>б1</sub>
                         </>
                     ),
-                    value: formulas?.basis.Pb1,
+                    value: formulas && formulas[`${path as "basis"}`][`${pb1 as "Pb"}`],
                 }}
-                result={formatNumber(data.basis?.Pb1)}
+                result={formatNumber(data[`${path as "basis"}`][`${pb1 as "Pb"}`])}
                 units='H'
             />
 
             <ResLine
                 title='Минимальное начальное натяжение болтов (шпилек)'
                 imgUrl='/image/moment/formulas/minB.svg'
-                result={formatNumber(data.basis?.minB)}
+                result={formatNumber(data[`${path as "basis"}`]?.minB)}
                 units='H'
             />
             <ResLine
@@ -177,9 +194,9 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                             P<sub>б2</sub>
                         </>
                     ),
-                    value: formulas?.basis.Pb2,
+                    value: formulas && formulas[`${path as "basis"}`][`${pb2 as "Pb"}`],
                 }}
-                result={formatNumber(data.basis?.Pb2)}
+                result={formatNumber(data[`${path as "basis"}`][`${pb2 as "Pb"}`])}
                 units='H'
             />
             <ResLine
@@ -192,9 +209,9 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) 
                             <sup>р</sup>
                         </>
                     ),
-                    value: formulas?.basis.Pbr,
+                    value: formulas && formulas[`${path as "basis"}`][`${pbr as "Pb"}`],
                 }}
-                result={formatNumber(data.basis?.Pbr)}
+                result={formatNumber(data[`${path as "basis"}`][`${pbr as "Pb"}`])}
                 units='H'
             />
         </Container>

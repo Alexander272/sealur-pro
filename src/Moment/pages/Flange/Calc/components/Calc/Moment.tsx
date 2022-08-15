@@ -9,24 +9,27 @@ type Props = {
     data: ICalculate
     formulas: IFormulas | undefined
     gasket: IGasketResult
+    path: "basis" | "strength"
+    mkp: "Mkp" | "sMkp"
+    mkp1: "Mkp1" | "sMkp1"
 }
 
-export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
+export const Moment: FC<Props> = ({ data, formulas, gasket, path, mkp, mkp1 }) => {
     return (
         <Container title='Расчет момента затяжки'>
-            {data.basis?.Mkp ? (
+            {data[`${path as "basis"}`][`${mkp as "Mkp"}`] && data[`${path as "basis"}`]?.Mrek ? (
                 <>
                     <ResLine
                         title='Крутящий момент при затяжке болтов/шпилек'
                         imgUrl='/image/moment/formulas/Mkp.svg'
-                        result={formatNumber(data.basis?.Mkp)}
+                        result={formatNumber(data[`${path as "basis"}`][`${mkp as "Mkp"}`])}
                         formula={{
                             designation: (
                                 <>
                                     M<sub>кр</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Mkp,
+                            value: formulas && formulas[`${path as "basis"}`][`${mkp as "Mkp"}`],
                         }}
                         units='H*м'
                         resBold
@@ -38,14 +41,14 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 M<sub>кр</sub>=0,75*M<sub>кр</sub>
                             </>
                         }
-                        result={formatNumber(data.basis?.Mkp1)}
+                        result={formatNumber(data[`${path as "basis"}`][`${mkp1 as "Mkp1"}`])}
                         formula={{
                             designation: (
                                 <>
                                     M<sub>кр</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Mkp1,
+                            value: formulas && formulas[`${path as "basis"}`][`${mkp1 as "Mkp"}`],
                         }}
                         units='H*м'
                     />
@@ -56,14 +59,14 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 M<sub>рек</sub>
                             </>
                         }
-                        result={formatNumber(data.basis?.Mrek)}
+                        result={formatNumber(data[`${path as "basis"}`]?.Mrek)}
                         formula={{
                             designation: (
                                 <>
                                     M<sub>рек</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Mrek,
+                            value: formulas && formulas[`${path as "basis"}`].Mrek,
                         }}
                         units='H*м'
                         resBold
@@ -75,14 +78,14 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                 q<sub>рек</sub>
                             </>
                         }
-                        result={formatNumber(data.basis?.Qrek)}
+                        result={formatNumber(data[`${path as "basis"}`]?.Qrek)}
                         formula={{
                             designation: (
                                 <>
                                     q<sub>рек</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Qrek,
+                            value: formulas && formulas[`${path as "basis"}`].Qrek,
                         }}
                         units='МПа'
                         resBold
@@ -90,7 +93,8 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                     <p className={classes.text}>
                         Максимальный крутящий момент определяется из{" "}
                         <b>
-                            {gasket.type === "Мягкая" && data.basis!.Qmax > gasket.permissiblePres
+                            {gasket.type === "Мягкая" &&
+                            data[`${path as "basis"}`].Qmax > gasket.permissiblePres
                                 ? "условия прочности прокладки"
                                 : "условия прочности болта"}
                         </b>
@@ -108,9 +112,9 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                     M<sub>кр</sub> <sub>max</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Mmax,
+                            value: formulas && formulas[`${path as "basis"}`].Mmax,
                         }}
-                        result={formatNumber(data.basis?.Mmax)}
+                        result={formatNumber(data[`${path as "basis"}`]?.Mmax)}
                         units='H*м'
                         resBold
                     />
@@ -127,9 +131,9 @@ export const Moment: FC<Props> = ({ data, formulas, gasket }) => {
                                     q<sub>max</sub>
                                 </>
                             ),
-                            value: formulas?.basis.Qmax,
+                            value: formulas && formulas[`${path as "basis"}`].Qmax,
                         }}
-                        result={formatNumber(data.basis?.Qmax)}
+                        result={formatNumber(data[`${path as "basis"}`]?.Qmax)}
                         units='МПа'
                         resBold
                     />

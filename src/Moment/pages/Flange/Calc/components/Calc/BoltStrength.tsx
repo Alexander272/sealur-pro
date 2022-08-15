@@ -10,24 +10,24 @@ type Props = {
     data: ICalculate
     res: IGasketResult
     formulas: IFormulas | undefined
-    pathBasis: "basis" | "strength"
-    pathSigmaB1: "sigmaB1" | "fSigmaB1" | "sSigmaB1"
-    pathSigmaB2: "sigmaB2" | "fSigmaB2" | "sSigmaB2"
-    pathDSigmaM: "dSigmaM" | "fDSigmaM" | "sDSigmaM"
-    pathDSigmaR: "dSigmaR" | "fDSigmaR" | "sDSigmaR"
-    pathQ: "q" | "fQ" | "sQ"
+    path: "basis" | "strength"
+    sigmaB1: "sigmaB1" | "fSigmaB1" | "sSigmaB1"
+    sigmaB2: "sigmaB2" | "fSigmaB2" | "sSigmaB2"
+    dSigmaM: "dSigmaM" | "fDSigmaM" | "sDSigmaM"
+    dSigmaR: "dSigmaR" | "fDSigmaR" | "sDSigmaR"
+    q: "q" | "fQ" | "sQ"
 }
 
 export const BoltStrength: FC<Props> = ({
     data,
     res,
     formulas,
-    pathBasis,
-    pathSigmaB1,
-    pathSigmaB2,
-    pathDSigmaM,
-    pathDSigmaR,
-    pathQ,
+    path,
+    sigmaB1,
+    sigmaB2,
+    dSigmaM,
+    dSigmaR,
+    q,
 }) => {
     return (
         <Container title='Проверка прочности болтов (шпилек) и прокладки'>
@@ -41,9 +41,9 @@ export const BoltStrength: FC<Props> = ({
                             &sigma;<sub>б1</sub>
                         </>
                     ),
-                    value: formulas && formulas[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"],
+                    value: formulas && formulas[path as "basis"][sigmaB1 as "sigmaB1"],
                 }}
-                result={formatNumber(data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"])}
+                result={formatNumber(data[path as "basis"][sigmaB1 as "sigmaB1"])}
                 units='МПа'
             />
             <ResLine
@@ -55,9 +55,9 @@ export const BoltStrength: FC<Props> = ({
                             &sigma;<sub>б2</sub>
                         </>
                     ),
-                    value: formulas && formulas[pathBasis as "basis"][pathSigmaB2 as "sigmaB2"],
+                    value: formulas && formulas[path as "basis"][sigmaB2 as "sigmaB2"],
                 }}
-                result={formatNumber(data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"])}
+                result={formatNumber(data[path as "basis"][sigmaB2 as "sigmaB1"])}
                 units='МПа'
             />
 
@@ -72,9 +72,9 @@ export const BoltStrength: FC<Props> = ({
                             <sup>б</sup>
                         </>
                     ),
-                    value: formulas && formulas[pathBasis as "basis"][pathDSigmaM as "sigmaB2"],
+                    value: formulas && formulas[path as "basis"][dSigmaM as "sigmaB2"],
                 }}
-                result={formatNumber(data[pathBasis as "basis"][pathDSigmaM as "sigmaB1"])}
+                result={formatNumber(data[path as "basis"][dSigmaM as "sigmaB1"])}
                 units='МПа'
             />
             <ResLine
@@ -87,9 +87,9 @@ export const BoltStrength: FC<Props> = ({
                             <sup>б</sup>
                         </>
                     ),
-                    value: formulas && formulas[pathBasis as "basis"][pathDSigmaR as "sigmaB2"],
+                    value: formulas && formulas[path as "basis"][dSigmaR as "sigmaB2"],
                 }}
-                result={formatNumber(data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"])}
+                result={formatNumber(data[path as "basis"][dSigmaR as "sigmaB1"])}
                 units='МПа'
             />
 
@@ -99,15 +99,15 @@ export const BoltStrength: FC<Props> = ({
                 imgUrl='/image/moment/formulas/vSigmaB1.svg'
                 result={
                     <>
-                        {formatNumber(data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"])}&nbsp;
-                        {data[pathBasis as "basis"][pathSigmaB1 as "sigmaB1"] <=
-                        data[pathBasis as "basis"][pathDSigmaM as "sigmaB1"] ? (
+                        {formatNumber(data[path as "basis"][sigmaB1 as "sigmaB1"])}&nbsp;
+                        {data[path as "basis"][sigmaB1 as "sigmaB1"] <=
+                        data[path as "basis"][dSigmaM as "sigmaB1"] ? (
                             <> &le; </>
                         ) : (
                             " > "
                         )}
                         &nbsp;
-                        {formatNumber(data[pathBasis as "basis"][pathDSigmaM as "sigmaB1"])}
+                        {formatNumber(data[path as "basis"][dSigmaM as "sigmaB1"])}
                     </>
                 }
             />
@@ -116,15 +116,15 @@ export const BoltStrength: FC<Props> = ({
                 imgUrl='/image/moment/formulas/vSigmaB2.svg'
                 result={
                     <>
-                        {formatNumber(data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"])}&nbsp;
-                        {data[pathBasis as "basis"][pathSigmaB2 as "sigmaB1"] <=
-                        data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"] ? (
+                        {formatNumber(data[path as "basis"][sigmaB2 as "sigmaB1"])}&nbsp;
+                        {data[path as "basis"][sigmaB2 as "sigmaB1"] <=
+                        data[path as "basis"][dSigmaR as "sigmaB1"] ? (
                             <> &le; </>
                         ) : (
                             " > "
                         )}
                         &nbsp;
-                        {formatNumber(data[pathBasis as "basis"][pathDSigmaR as "sigmaB1"])}
+                        {formatNumber(data[path as "basis"][dSigmaR as "sigmaB1"])}
                     </>
                 }
             />
@@ -136,18 +136,17 @@ export const BoltStrength: FC<Props> = ({
                         imgUrl='/image/moment/formulas/qF.svg'
                         formula={{
                             designation: <>q</>,
-                            value: formulas && formulas[pathBasis as "basis"][pathQ as "sigmaB2"],
+                            value: formulas && formulas[path as "basis"][q as "sigmaB2"],
                         }}
-                        result={formatNumber(data[pathBasis as "basis"][pathQ as "sigmaB1"])}
+                        result={formatNumber(data[path as "basis"][q as "sigmaB1"])}
                         units='МПа'
                     />
                     <ConditionLine
                         imgUrl='/image/moment/formulas/q.svg'
                         result={
                             <>
-                                {formatNumber(data[pathBasis as "basis"][pathQ as "sigmaB1"])}&nbsp;
-                                {data[pathBasis as "basis"][pathQ as "sigmaB1"] <=
-                                res.permissiblePres ? (
+                                {formatNumber(data[path as "basis"][q as "sigmaB1"])}&nbsp;
+                                {data[path as "basis"][q as "sigmaB1"] <= res.permissiblePres ? (
                                     <> &le; </>
                                 ) : (
                                     " > "
