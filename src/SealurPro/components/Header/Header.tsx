@@ -56,6 +56,17 @@ export const Header: FC = () => {
                             <p>Редактировать</p>
                         </Link>
                     ) : null}
+                    <div className={classes.profile}>
+                        <Link to='/'>
+                            <img
+                                src='/image/home-icon.svg'
+                                alt='home'
+                                width='37'
+                                height='40'
+                                className={classes["home-icon"]}
+                            />
+                        </Link>
+                    </div>
                     {state.user.isAuth && <Profile />}
                 </div>
             </div>

@@ -29,7 +29,7 @@ export const ResLine: FC<Props> = ({ title, imgUrl, imgText, result, resBold, fo
                 ))}
             <div className={classes.result}>
                 {imgUrl ? (
-                    <img src={imgUrl} className={classes.image} alt='' />
+                    <img src={imgUrl} className={classes.image} loading='lazy' alt='' />
                 ) : (
                     <p className={classes.image}>{imgText}</p>
                 )}

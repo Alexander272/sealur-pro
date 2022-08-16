@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
@@ -23,7 +23,7 @@ type Props = {
     errors: any
 }
 
-export const FlangeSize: FC<Props> = ({
+export default function FlangeSize({
     id,
     type,
     materials,
@@ -31,7 +31,7 @@ export const FlangeSize: FC<Props> = ({
     control,
     setValue,
     errors,
-}) => {
+}: Props) {
     useEffect(() => {
         setValue(`flangesData.${id}.ringMarkId`, materials[0].id)
     }, [setValue, materials, id])

@@ -1,11 +1,13 @@
-import React, { FC, memo, useEffect } from "react"
+import React, { FC, lazy, memo, Suspense, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Container } from "../../../../components/Container/Container"
 import { IFormFlangeCalc, IMaterial } from "../../../../types/flange"
-import { MaterialData } from "./MaterialData"
+import { Loader } from "../../../../../components/UI/Loader/Loader"
 import classes from "../../../styles/page.module.scss"
+
+const MaterialData = lazy(() => import("./MaterialData"))
 
 const { Option } = Select
 
@@ -84,16 +86,18 @@ const Embed: FC<Props> = ({ materials, register, control, setValue, errors }) =>
             </div>
 
             {markId === "another" && (
-                <MaterialData
-                    path='embed.material'
-                    register={register}
-                    titles={embedTitles}
-                    designation={embedDesignation}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <MaterialData
+                        path='embed.material'
+                        register={register}
+                        titles={embedTitles}
+                        designation={embedDesignation}
+                        errors={errors}
+                    />
+                </Suspense>
             )}
         </Container>
     )
 }
 
-export const EmbedData = memo(Embed)
+export default memo(Embed)

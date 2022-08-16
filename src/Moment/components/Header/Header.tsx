@@ -17,7 +17,7 @@ export const Header = () => {
                 className={classes.logo}
                 width='192'
                 height='192'
-                loading='lazy'
+                // loading='lazy'
                 src='/logo192.webp'
                 alt='logo'
             />

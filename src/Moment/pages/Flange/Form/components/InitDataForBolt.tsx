@@ -1,15 +1,17 @@
-import React, { FC, memo, useEffect } from "react"
+import React, { FC, lazy, memo, Suspense, useEffect } from "react"
 import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Container } from "../../../../components/Container/Container"
+import { Loader } from "../../../../../components/UI/Loader/Loader"
 import { IBolt, IFormFlangeCalc, IMaterial } from "../../../../types/flange"
-import { MaterialData } from "./MaterialData"
 import { Temp } from "./Temp"
-import { BoltData } from "./BoltData"
 import ReadService from "../../../../service/read"
 import classes from "../../../styles/page.module.scss"
+
+const MaterialData = lazy(() => import("./MaterialData"))
+const BoltData = lazy(() => import("./BoltData"))
 
 const { Option } = Select
 
@@ -155,18 +157,24 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
                         </div>
                     </div>
 
-                    {name === "another" && <BoltData register={register} />}
+                    {name === "another" && (
+                        <Suspense fallback={<Loader />}>
+                            <BoltData register={register} />
+                        </Suspense>
+                    )}
                 </>
             ) : null}
 
             {markId === "another" && (
-                <MaterialData
-                    path='bolts.material'
-                    register={register}
-                    titles={boltTitles}
-                    designation={boltDesignation}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <MaterialData
+                        path='bolts.material'
+                        register={register}
+                        titles={boltTitles}
+                        designation={boltDesignation}
+                        errors={errors}
+                    />
+                </Suspense>
             )}
         </Container>
     )

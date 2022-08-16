@@ -1,16 +1,18 @@
-import React, { FC, memo, useEffect, useState } from "react"
+import React, { FC, lazy, memo, Suspense, useEffect, useState } from "react"
 import useSWR from "swr"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Container } from "../../../../components/Container/Container"
 import { IFormFlangeCalc, IMaterial, IStandart, ITypeFlange } from "../../../../types/flange"
-import { MaterialData } from "./MaterialData"
-import { FlangeSize } from "./FlangeSize"
 import { Temp } from "./Temp"
 import { FlangeDefSize } from "./FlangeDefSize"
 import ReadService from "../../../../service/read"
 import classes from "../../../styles/page.module.scss"
+import { Loader } from "../../../../../components/UI/Loader/Loader"
+
+const FlangeSize = lazy(() => import("./FlangeSize"))
+const MaterialData = lazy(() => import("./MaterialData"))
 
 const { Option } = Select
 
@@ -234,15 +236,17 @@ const Flange: FC<Props> = ({
             />
 
             {standartId === "another" ? (
-                <FlangeSize
-                    id={id}
-                    type={type}
-                    materials={materials}
-                    register={register}
-                    control={control}
-                    setValue={setValue}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <FlangeSize
+                        id={id}
+                        type={type}
+                        materials={materials}
+                        register={register}
+                        control={control}
+                        setValue={setValue}
+                        errors={errors}
+                    />
+                </Suspense>
             ) : (
                 <FlangeDefSize id={id} standarts={stands} control={control} setValue={setValue} />
             )}
@@ -265,22 +269,26 @@ const Flange: FC<Props> = ({
             </div>
 
             {markId === "another" && (
-                <MaterialData
-                    path={`flangesData.${id}.material`}
-                    register={register}
-                    titles={matTitles}
-                    designation={matDesignation}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <MaterialData
+                        path={`flangesData.${id}.material`}
+                        register={register}
+                        titles={matTitles}
+                        designation={matDesignation}
+                        errors={errors}
+                    />
+                </Suspense>
             )}
             {ringMarkId === "another" && (
-                <MaterialData
-                    path={`flangesData.${id}.ringMaterial`}
-                    register={register}
-                    titles={ringMatTitles}
-                    designation={ringMatDesignation}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <MaterialData
+                        path={`flangesData.${id}.ringMaterial`}
+                        register={register}
+                        titles={ringMatTitles}
+                        designation={ringMatDesignation}
+                        errors={errors}
+                    />
+                </Suspense>
             )}
         </Container>
     )

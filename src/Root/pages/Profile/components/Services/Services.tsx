@@ -1,7 +1,8 @@
 import React, { FC } from "react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { RootState } from "../../../../../store/store"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Dispatch, RootState } from "../../../../../store/store"
 import classes from "./services.module.scss"
 
 const servicesData = {
@@ -18,8 +19,14 @@ type Props = {}
 
 export const Services: FC<Props> = () => {
     const roles = useSelector((state: RootState) => state.user.roles)
+    const navigate = useNavigate()
+    const { user } = useDispatch<Dispatch>()
 
-    if (!roles.length) return null
+    const logoutHandler = async () => {
+        await user.singOut()
+        navigate("/auth")
+    }
+    // if (!roles.length) return null
 
     return (
         <div className={classes.services}>
@@ -36,6 +43,11 @@ export const Services: FC<Props> = () => {
                     </div>
                 )
             })}
+            <div className={classes.btn}>
+                <Button onClick={logoutHandler} variant='grayPrimary' fullWidth>
+                    Выйти
+                </Button>
+            </div>
         </div>
     )
 }

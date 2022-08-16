@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import useSWR from "swr"
 import { Input } from "../../../../../components/UI/Input/Input"
@@ -16,7 +16,7 @@ type Props = {
     errors: any
 }
 
-export const GasketData: FC<Props> = ({ register, control, setValue, errors }) => {
+export default function GasketData({ register, control, setValue, errors }: Props) {
     const { data } = useSWR<{ data: ITypeGasket[] }>(
         "/sealur-moment/type-gasket",
         ReadService.getData

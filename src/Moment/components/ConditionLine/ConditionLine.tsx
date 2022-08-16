@@ -24,7 +24,7 @@ export const ConditionLine: FC<Props> = ({ title, imgUrl, result, formula }) => 
                     <p className={classes.formula}>{formula.value}</p>
                 ))}
             {/* <div className={classes.result}> */}
-            <img src={imgUrl} className={classes.image} alt='' />
+            <img src={imgUrl} className={classes.image} loading='lazy' alt='' />
             <p className={classes.result}>{result}</p>
             {/* </div> */}
         </div>

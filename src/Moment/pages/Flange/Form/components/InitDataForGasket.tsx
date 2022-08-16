@@ -1,11 +1,13 @@
-import React, { FC, memo, useEffect } from "react"
+import React, { FC, lazy, memo, Suspense, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
+import { Loader } from "../../../../../components/UI/Loader/Loader"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Container } from "../../../../components/Container/Container"
 import { IEnv, IFormFlangeCalc, IGasket } from "../../../../types/flange"
-import { GasketData } from "./GasketData"
 import classes from "../../../styles/page.module.scss"
+
+const GasketData = lazy(() => import("./GasketData"))
 
 const { Option } = Select
 
@@ -155,12 +157,14 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
             </div>
 
             {gasketId === "another" && (
-                <GasketData
-                    register={register}
-                    control={control}
-                    setValue={setValue}
-                    errors={errors}
-                />
+                <Suspense fallback={<Loader />}>
+                    <GasketData
+                        register={register}
+                        control={control}
+                        setValue={setValue}
+                        errors={errors}
+                    />
+                </Suspense>
             )}
         </Container>
     )

@@ -1,4 +1,3 @@
-import React, { FC } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { IFormFlangeCalc } from "../../../../types/flange"
@@ -8,7 +7,7 @@ type Props = {
     register: UseFormRegister<IFormFlangeCalc>
 }
 
-export const BoltData: FC<Props> = ({ register }) => {
+export default function BoltData({ register }: Props) {
     return (
         <>
             <div className={classes.line}>

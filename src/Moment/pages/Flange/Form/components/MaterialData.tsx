@@ -1,4 +1,3 @@
-import React, { FC } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { IFormFlangeCalc } from "../../../../types/flange"
@@ -25,7 +24,7 @@ type Props = {
     }
 }
 
-export const MaterialData: FC<Props> = ({ path, register, titles, designation, errors }) => {
+export default function MaterialData({ path, register, titles, designation, errors }: Props) {
     return (
         <>
             <div className={classes.line}>
