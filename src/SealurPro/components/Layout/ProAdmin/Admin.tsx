@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { Dispatch, ProState } from "../../../store/store"
 import { GrapForm } from "../../../pages/Admin/components/AdditForms/GrapForm"
 import { MatForm } from "../../../pages/Admin/components/AdditForms/MatForm"
@@ -14,6 +14,7 @@ import { Tabs } from "../../../../components/Tabs/Tabs"
 import { List } from "../../../../components/UI/List/List"
 import { Loader } from "../../../../components/UI/Loader/Loader"
 import { ICoating, IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
+import { store } from "../../../../store/store"
 import classes from "./admin.module.scss"
 
 const initTabs: any = {
@@ -34,7 +35,10 @@ const initTabs: any = {
 const { Item } = List
 
 export default function AdminLayout() {
+    const state = store.getState()
     const addit = useSelector((state: ProState) => state.addit.addit)
+
+    const navigate = useNavigate()
 
     const dispatch = useDispatch<Dispatch>()
 
@@ -54,6 +58,12 @@ export default function AdminLayout() {
         if (!addit) dispatch.addit.getAddit()
         if (addit) setLoading(false)
     }, [addit, dispatch.addit])
+
+    useEffect(() => {
+        if (!state.user.roles.some(r => r.service === "pro" && r.role === "admin")) {
+            navigate("/pro")
+        }
+    }, [state.user.roles, navigate])
 
     const openFormHandler = (formType: string) => () => {
         setData(null)

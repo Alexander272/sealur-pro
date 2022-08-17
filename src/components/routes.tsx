@@ -36,6 +36,9 @@ const MomentMain = lazy(() => import("../Moment/components/layout/Main"))
 const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
 const MomentFlangeResult = lazy(() => import("../Moment/pages/Flange/Result"))
 
+const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
+const MomentAdminMaterials = lazy(() => import("../Moment/pages/Admin/Materials/Materials"))
+
 //* Urls
 export const ProAdminUrl = "/pro/admin"
 export const ProUrl = "/pro"
@@ -127,6 +130,10 @@ export const MyRoutes = () => {
                         <Route path='flange' element={<MomentFlange />}>
                             <Route path='result' element={<MomentFlangeResult />} />
                         </Route>
+                    </Route>
+
+                    <Route path='admin' element={<MomentAdmin />}>
+                        <Route path='edit/materials' element={<MomentAdminMaterials />} />
                     </Route>
                 </Route>
 

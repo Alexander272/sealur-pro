@@ -157,7 +157,7 @@ const Gasket: FC<Props> = ({ gasket, env, control, register, setValue, errors })
             </div>
 
             {gasketId === "another" && (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <GasketData
                         register={register}
                         control={control}

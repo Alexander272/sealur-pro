@@ -86,7 +86,7 @@ const Embed: FC<Props> = ({ materials, register, control, setValue, errors }) =>
             </div>
 
             {markId === "another" && (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
                         path='embed.material'
                         register={register}

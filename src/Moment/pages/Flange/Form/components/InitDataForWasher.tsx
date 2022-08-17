@@ -78,7 +78,7 @@ const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) =
                     </div>
                 </div>
                 {markId === "another" && (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<Loader background='fill' />}>
                         <MaterialData
                             path={`washer.${id}.material`}
                             register={register}

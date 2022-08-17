@@ -158,7 +158,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
                     </div>
 
                     {name === "another" && (
-                        <Suspense fallback={<Loader />}>
+                        <Suspense fallback={<Loader background='fill' />}>
                             <BoltData register={register} />
                         </Suspense>
                     )}
@@ -166,7 +166,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
             ) : null}
 
             {markId === "another" && (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
                         path='bolts.material'
                         register={register}

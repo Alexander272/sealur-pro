@@ -8,10 +8,10 @@ import { Filler } from "./components/Filler/Filler"
 import { Material } from "./components/Materials/Materials"
 import { Addit } from "./components/Addit/Addit"
 import { Size } from "./components/Size/Size"
-import classes from "../pages.module.scss"
 import { toast } from "react-toastify"
 import { ISNPDTO } from "../../../types/snp"
 import SNPService from "../../../service/snp"
+import classes from "../pages.module.scss"
 
 export default function SNP() {
     const loading = useSelector((state: ProState) => state.addit.loading)

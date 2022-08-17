@@ -236,7 +236,7 @@ const Flange: FC<Props> = ({
             />
 
             {standartId === "another" ? (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <FlangeSize
                         id={id}
                         type={type}
@@ -269,7 +269,7 @@ const Flange: FC<Props> = ({
             </div>
 
             {markId === "another" && (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
                         path={`flangesData.${id}.material`}
                         register={register}
@@ -280,7 +280,7 @@ const Flange: FC<Props> = ({
                 </Suspense>
             )}
             {ringMarkId === "another" && (
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
                         path={`flangesData.${id}.ringMaterial`}
                         register={register}
