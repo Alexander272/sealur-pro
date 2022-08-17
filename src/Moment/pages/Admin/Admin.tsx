@@ -45,7 +45,7 @@ export default function Admin() {
                             classes.link,
                             location.pathname.includes("materials") ? classes.active : null,
                         ].join(" ")}
-                        to='/edit/materials'
+                        to='edit/materials'
                     >
                         Материалы
                     </Link>
@@ -54,7 +54,7 @@ export default function Admin() {
                             classes.link,
                             location.pathname.includes("standarts") ? classes.active : null,
                         ].join(" ")}
-                        to='/edit/standarts'
+                        to='edit/standarts'
                     >
                         Стандарты
                     </Link>
@@ -63,7 +63,7 @@ export default function Admin() {
                             classes.link,
                             location.pathname.includes("gaskets") ? classes.active : null,
                         ].join(" ")}
-                        to='/edit/gaskets'
+                        to='edit/gaskets'
                     >
                         Прокладки
                     </Link>

@@ -10,11 +10,29 @@
 }
 
 .list {
-    flex-basis: 20%;
+    flex-basis: 24%;
     flex-grow: 1;
-    max-height: 750px;
-    overflow: auto;
+    // max-height: 750px;
+    // overflow: auto;
     border-right: 1px solid var(--button-color);
+
+    &-title {
+        color: var(--button-color);
+        font-size: 1.1rem;
+        margin: 0;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    &-button {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    &-content {
+        overflow: auto;
+        max-height: 700px;
+    }
 
     &-item {
         padding: 3px 14px;
@@ -27,6 +45,22 @@
         &--active {
             border-left-color: var(--button-color);
         }
+    }
+
+    & .edit-icon {
+        color: var(--button-color);
+        font-size: 20px;
+        line-height: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        margin-left: auto;
+    }
+
+    & .warn-icon+.edit-icon {
+        margin-left: 10px;
     }
 
     & .warn-icon {
@@ -45,7 +79,7 @@
 
 .tables {
     flex-grow: 1;
-    flex-basis: 80%;
+    flex-basis: 76%;
     max-height: 750px;
     overflow: auto;
 
@@ -60,12 +94,14 @@
         flex-wrap: wrap;
         gap: 15px;
         margin-top: 20px;
+        padding-right: 10px;
     }
 }
 
 .table {
     flex-grow: 1;
-    max-width: 450px;
+    flex-basis: 45%;
+    // max-width: 450px;
     margin-right: 36px;
 
     &-header,
@@ -108,8 +144,7 @@
         }
 
         .icon-delete {
-            background-color: var(--danger-color);
-            color: #fff;
+            color: var(--danger-color);
             font-size: 20px;
         }
     }
@@ -120,5 +155,13 @@
         justify-content: center;
         gap: 10px;
         flex-wrap: wrap;
+    }
+}
+
+.modal {
+    &-btns {
+        flex-grow: 1;
+        display: flex;
+        gap: 10px;
     }
 }

@@ -3,7 +3,7 @@ import { MyLink } from "./Link"
 
 type Props = {
     children?: React.ReactNode
-    onClick?: () => void
+    onClick?: (event: React.MouseEvent) => void
     fullWidth?: boolean
     variant?: "primary" | "danger" | "ghost" | "grayPrimary" | "grayDanger"
     size?: "small" | "smallMiddle" | "middle" | "large"
