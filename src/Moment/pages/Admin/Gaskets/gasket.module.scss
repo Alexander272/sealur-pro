@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     gap: 10px;
+    min-height: 400px;
 }
 
 .list {
@@ -25,6 +26,11 @@
     &-button {
         margin-bottom: 10px;
         margin-right: 10px;
+    }
+
+    &-content {
+        overflow: auto;
+        max-height: 700px;
     }
 
     &-item {
@@ -57,8 +63,6 @@
     flex-grow: 1;
     flex-basis: 76%;
     max-height: 750px;
-    min-height: 400px;
-    padding-right: 10px;
     overflow: auto;
 
     &-title {
@@ -68,85 +72,88 @@
         margin-bottom: 15px;
     }
 
-    &-data {
+    &-main {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 25px;
+        padding-right: 10px;
+    }
 
-        & .inputs {
+    &-data {
+        flex-grow: 1;
+
+        &__type {
             display: flex;
             gap: 10px;
-
-            &>div {
-                flex-grow: 1;
-            }
+            align-items: center;
+            margin-bottom: 15px;
         }
     }
 
-    .table {
-        margin-top: 20px;
-        flex-grow: 1;
-        // max-width: 450px;
+    &-table {
         margin-right: 36px;
 
-        &-header,
-        &-row {
+        &__header {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            position: relative;
-
-            &>.column,
-            &>.column-select {
-                padding: 4px 6px;
-                display: flex;
-                flex-grow: 1;
-                justify-content: center;
-                align-items: center;
-                border: 1px solid var(--button-bg-color);
-                text-align: center;
-                width: 100%;
-
-                &:focus {
-                    outline-color: var(--button-color);
-                }
-
-            }
-
-            &>.column-select {
-                background-color: #fff;
-            }
-
-            .icon,
-            .icon-delete {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 30px;
-                height: 28px;
-                cursor: pointer;
-                background-color: var(--button-bg-color);
-                border-radius: 6px;
-                padding: 6px;
-                margin: 3px;
-                outline: none;
-                border: none;
-                position: absolute;
-                right: -36px;
-            }
-
-            .icon-delete {
-                color: var(--danger-color);
-                font-size: 20px;
-            }
         }
 
-        & .btn {
+        &__row {
+            display: grid;
+            position: relative;
+        }
+
+        &__column {
+            padding: 4px 6px;
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--button-bg-color);
+            text-align: center;
+
+            &:focus {
+                outline-color: var(--button-color);
+            }
+
+        }
+
+        .icon,
+        .icon-delete {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 28px;
+            cursor: pointer;
+            background-color: var(--button-bg-color);
+            border-radius: 6px;
+            padding: 6px;
+            margin: 3px;
+            outline: none;
+            border: none;
+            position: absolute;
+            right: -36px;
+        }
+
+        .icon-delete {
+            color: var(--danger-color);
+            font-size: 20px;
+        }
+
+        .btn {
             margin-top: 10px;
             display: flex;
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
         }
+    }
+}
+
+.modal {
+    &-btns {
+        flex-grow: 1;
+        display: flex;
+        gap: 10px;
     }
 }

@@ -130,7 +130,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
                                     <Select value={field.value} onChange={field.onChange}>
                                         {data?.data.map(b => (
                                             <Option key={b.id} value={b.title}>
-                                                {b.diameter}
+                                                {b.title}
                                             </Option>
                                         ))}
                                         <Option value={"another"}>Другое ...</Option>

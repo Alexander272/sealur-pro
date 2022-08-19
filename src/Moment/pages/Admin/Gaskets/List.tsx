@@ -8,32 +8,32 @@ import { Modal } from "../../../../components/Modal/Modal"
 import { Button } from "../../../../components/UI/Button/Button"
 import { Input } from "../../../../components/UI/Input/Input"
 import AdminService from "../../../service/admin"
-import { IFullMaterial } from "../../../types/materials"
-import classes from "./materials.module.scss"
+import { IGasket } from "../../../types/flange"
+import classes from "./gasket.module.scss"
 
 type Props = {
-    materials: IFullMaterial[] | undefined
-    material: IFullMaterial
-    onClick: (material: IFullMaterial) => void
+    gaskets: IGasket[] | undefined
+    gasket: IGasket
+    onClick: (gasket: IGasket) => void
 }
 
-export const List: FC<Props> = ({ materials, material, onClick }) => {
+export const List: FC<Props> = ({ gaskets, gasket, onClick }) => {
     const { toggle, isOpen } = useModal()
     const { toggle: toggleConfirm, isOpen: isOpenConfirm } = useModal()
-    const { register, handleSubmit, setValue, watch } = useForm<IFullMaterial>()
+    const { register, handleSubmit, setValue, watch } = useForm<IGasket>()
     const { mutate } = useSWRConfig()
 
-    if (!materials) return null
+    if (!gaskets) return null
 
     const watchId = watch("id")
 
-    const selectHandler = (material: IFullMaterial) => () => onClick(material)
+    const selectHandler = (gasket: IGasket) => () => onClick(gasket)
 
-    const openModalHandler = (material: IFullMaterial | null) => (event: React.MouseEvent) => {
+    const openModalHandler = (gasket: IGasket | null) => (event: React.MouseEvent) => {
         event.stopPropagation()
-        if (material) {
-            setValue("title", material.title)
-            setValue("id", material.id)
+        if (gasket) {
+            setValue("title", gasket.title)
+            setValue("id", gasket.id)
         } else {
             setValue("title", "")
             setValue("id", "")
@@ -41,14 +41,14 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
         toggle()
     }
 
-    const saveHandler = async (data: IFullMaterial) => {
+    const saveHandler = async (data: IGasket) => {
         try {
             if (data.id) {
-                await AdminService.update(`/sealur-moment/materials/${data.id}`, data)
+                await AdminService.update(`/sealur-moment/gasket/${data.id}`, data)
             } else {
-                await AdminService.create(`/sealur-moment/materials`, data)
+                await AdminService.create(`/sealur-moment/gasket`, data)
             }
-            mutate("/sealur-moment/materials/empty")
+            mutate("/sealur-moment/gasket/")
         } catch (error) {
             toast.error("Произошла ошибка")
         } finally {
@@ -58,8 +58,8 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
 
     const deleteHandler = async () => {
         try {
-            await AdminService.delete(`/sealur-moment/materials/${watchId}`)
-            mutate("/sealur-moment/materials/empty")
+            await AdminService.delete(`/sealur-moment/gasket/${watchId}`)
+            mutate("/sealur-moment/gasket/")
             toggle()
         } catch (error) {
             toast.error("Произошла ошибка")
@@ -71,7 +71,7 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
     return (
         <div className={classes.list}>
             <ConfirmModal
-                title='Удалить метриал?'
+                title='Удалить прокладку?'
                 isOpen={isOpenConfirm}
                 toggle={toggleConfirm}
                 cancelHandler={toggleConfirm}
@@ -79,7 +79,7 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
             />
             <Modal isOpen={isOpen} toggle={toggle}>
                 <Modal.Header
-                    title={watchId === "" ? "Добавить материал" : "Редактировать материал"}
+                    title={watchId === "" ? "Добавить прокладку" : "Редактировать прокладку"}
                 />
                 <Modal.Content>
                     <Input
@@ -106,7 +106,7 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
                 </Modal.Footer>
             </Modal>
 
-            <h3 className={classes["list-title"]}>Материалы</h3>
+            <h3 className={classes["list-title"]}>Прокладки</h3>
 
             <div className={classes["list-button"]}>
                 <Button variant='grayPrimary' onClick={openModalHandler(null)} fullWidth>
@@ -115,19 +115,16 @@ export const List: FC<Props> = ({ materials, material, onClick }) => {
             </div>
 
             <div className={`${classes["list-content"]} scroll`}>
-                {materials.map(m => (
+                {gaskets.map(m => (
                     <p
                         key={m.id}
                         className={[
                             classes["list-item"],
-                            material.id === m.id ? classes["list-item--active"] : "",
+                            gasket.id === m.id ? classes["list-item--active"] : "",
                         ].join(" ")}
                         onClick={selectHandler(m)}
                     >
                         {m.title}
-                        {m.IsEmptyAlpha || m.IsEmptyElasticity || m.IsEmptyVoltage ? (
-                            <span className={classes["warn-icon"]}>&#10069;</span>
-                        ) : null}
                         <span className={classes["edit-icon"]} onClick={openModalHandler(m)}>
                             &#9998;
                         </span>

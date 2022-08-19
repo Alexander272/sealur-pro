@@ -4,46 +4,47 @@ import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
 import { Button } from "../../../../../components/UI/Button/Button"
 import AdminService from "../../../../service/admin"
-import classes from "../materials.module.scss"
-
-type Row = {
-    id: string
-    temperature: number
-    field: number
-}
+import classes from "../gasket.module.scss"
 
 type Props = {
-    field: "alpha" | "elasticity" | "voltage"
-    materialId: string
+    scheme: {
+        key: string
+        title: string
+    }[]
+    style: any
+    gasketId: string
+    typeId: string
 }
 
-export const NewTableRows: FC<Props> = ({ field, materialId }) => {
-    const { register, reset, handleSubmit } = useForm<Row[]>()
+export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
+    const { register, reset, handleSubmit } = useForm()
     const { mutate } = useSWRConfig()
 
     const [newRowCount, setNewRowCount] = useState(0)
 
     useEffect(() => {
         setNewRowCount(0)
-    }, [materialId])
+    }, [gasketId])
 
-    const saveHandler = async (data: Row[]) => {
+    const saveHandler = async (data: any) => {
         let arr = []
         for (let i = 0; i < newRowCount; i++) {
-            arr.push({
-                temperature: +data[i].temperature,
-                [field]: +data[i].field,
+            let newobj: any = {}
+            scheme.forEach(s => {
+                newobj[s.key] = +data[i][s.key]
             })
+            arr.push(newobj)
         }
 
         const newData = {
-            markId: materialId,
-            [field]: arr,
+            gasketId,
+            typeId,
+            data: arr,
         }
 
         try {
-            await AdminService.create(`/sealur-moment/materials/${field}`, newData)
-            mutate(`/sealur-moment/materials/${materialId}`)
+            await AdminService.create(`/sealur-moment/gasket-data/many`, newData)
+            mutate(`/sealur-moment/gasket/full-data?gasketId=${gasketId}`)
             resetHandler()
         } catch (error) {
             toast.error("Произошла ошибка")
@@ -62,23 +63,18 @@ export const NewTableRows: FC<Props> = ({ field, materialId }) => {
 
         for (let i = 0; i < newRowCount; i++) {
             rows.push(
-                <div key={"row" + i} className={classes["table-row"]}>
-                    <input
-                        className={classes.column}
-                        type='number'
-                        step={0.001}
-                        {...register(`${i}.temperature`, {
-                            required: true,
-                        })}
-                    />
-                    <input
-                        className={classes.column}
-                        type='number'
-                        step={0.001}
-                        {...register(`${i}.field`, {
-                            required: true,
-                        })}
-                    />
+                <div key={"row" + i} className={classes["content-table__row"]} style={style}>
+                    {scheme.map(k => (
+                        <input
+                            key={"row" + i + k.key}
+                            className={classes["content-table__column"]}
+                            type='number'
+                            step={0.001}
+                            {...register(`${i}.${k.key}`, {
+                                required: true,
+                            })}
+                        />
+                    ))}
                 </div>
             )
         }
