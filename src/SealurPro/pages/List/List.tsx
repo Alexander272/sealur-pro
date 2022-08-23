@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -30,7 +30,7 @@ export default function List() {
 
     const [windowSize, setWindwoSize] = useState<"small" | "normal">("normal")
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!isOrderCreated) list.getPositions(store.getState().user.userId)
     }, [isOrderCreated, list])
 
@@ -57,6 +57,8 @@ export default function List() {
             link.click()
             document.body.removeChild(link)
             list.setList([])
+            list.setIsOrderCreated(false)
+            list.setOrderId("")
         } catch (error: any) {
             console.log(error)
             toast.error(error.message)
@@ -68,6 +70,8 @@ export default function List() {
             await OrderService.send(orderId)
             toast.success("Заказ отправлен")
             list.setList([])
+            list.setIsOrderCreated(false)
+            list.setOrderId("")
         } catch (error: any) {
             console.log(error)
             toast.error(error.message)

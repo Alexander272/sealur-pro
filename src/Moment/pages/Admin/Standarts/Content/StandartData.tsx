@@ -27,8 +27,12 @@ export const StandartData: FC<Props> = ({ standart, setIsNeedRow }) => {
         setIsNeedRow(isNeedRow)
     }, [isNeedRow, setIsNeedRow])
 
+    const saveHandler = async (data: IStandart) => {
+        console.log(data)
+    }
+
     return (
-        <form className={classes["content-data"]}>
+        <form className={classes["content-data"]} onSubmit={handleSubmit(saveHandler)}>
             <div className={classes.inputs}>
                 <Input
                     name='titleDn'

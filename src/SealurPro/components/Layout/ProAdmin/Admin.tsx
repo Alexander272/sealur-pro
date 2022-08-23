@@ -16,6 +16,7 @@ import { Loader } from "../../../../components/UI/Loader/Loader"
 import { ICoating, IGrap, IMat, IMod, IMoun, ITemp } from "../../../types/addit"
 import { store } from "../../../../store/store"
 import classes from "./admin.module.scss"
+import { Button } from "../../../../components/UI/Button/Button"
 
 const initTabs: any = {
     admin: {
@@ -114,6 +115,8 @@ export default function AdminLayout() {
 
     const sendHandler = () => setSending(prev => !prev)
 
+    const backHandler = () => navigate(location.pathname.replaceAll("/admin", ""))
+
     if (loading) {
         return <Loader />
     }
@@ -147,41 +150,47 @@ export default function AdminLayout() {
                 )}
             </Modal>
             <div className={classes.main}>
-                <Tabs
-                    initWidth={initTabs[path[path.length - 1] || "admin"].width}
-                    initPos={initTabs[path[path.length - 1] || "admin"].position}
-                    type='nav'
-                >
-                    <Link
-                        className={[
-                            classes.link,
-                            path[path.length - 1] === "admin" || path[path.length - 1] === ""
-                                ? classes.active
-                                : null,
-                        ].join(" ")}
-                        to=''
+                <div className={classes.header}>
+                    <Tabs
+                        initWidth={initTabs[path[path.length - 1] || "admin"].width}
+                        initPos={initTabs[path[path.length - 1] || "admin"].position}
+                        type='nav'
                     >
-                        СНП
-                    </Link>
-                    <Link
-                        className={[
-                            classes.link,
-                            path[path.length - 1] === "putg" ? classes.active : null,
-                        ].join(" ")}
-                        to='putg'
-                    >
-                        ПУТГ
-                    </Link>
-                    <Link
-                        className={[
-                            classes.link,
-                            path[path.length - 1] === "putgm" ? classes.active : null,
-                        ].join(" ")}
-                        to='putgm'
-                    >
-                        ПУТГм
-                    </Link>
-                </Tabs>
+                        <Link
+                            className={[
+                                classes.link,
+                                path[path.length - 1] === "admin" || path[path.length - 1] === ""
+                                    ? classes.active
+                                    : null,
+                            ].join(" ")}
+                            to=''
+                        >
+                            СНП
+                        </Link>
+                        <Link
+                            className={[
+                                classes.link,
+                                path[path.length - 1] === "putg" ? classes.active : null,
+                            ].join(" ")}
+                            to='putg'
+                        >
+                            ПУТГ
+                        </Link>
+                        <Link
+                            className={[
+                                classes.link,
+                                path[path.length - 1] === "putgm" ? classes.active : null,
+                            ].join(" ")}
+                            to='putgm'
+                        >
+                            ПУТГм
+                        </Link>
+                    </Tabs>
+
+                    <Button rounded='round' onClick={backHandler}>
+                        Вернуться
+                    </Button>
+                </div>
 
                 <Suspense fallback={<Loader />}>
                     <Outlet />

@@ -40,6 +40,7 @@ const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
 const MomentAdminMaterials = lazy(() => import("../Moment/pages/Admin/Materials/Materials"))
 const MomentAdminGaskets = lazy(() => import("../Moment/pages/Admin/Gaskets/Gaskets"))
 const MomentAdminStandarts = lazy(() => import("../Moment/pages/Admin/Standarts/Standarts"))
+const MomentAdminBolts = lazy(() => import("../Moment/pages/Admin/Bolts/Bolts"))
 
 //* Urls
 export const ProAdminUrl = "/pro/admin"
@@ -138,6 +139,7 @@ export const MyRoutes = () => {
                         <Route path='edit/materials' element={<MomentAdminMaterials />} />
                         <Route path='edit/gaskets' element={<MomentAdminGaskets />} />
                         <Route path='edit/standarts' element={<MomentAdminStandarts />} />
+                        <Route path='edit/bolts' element={<MomentAdminBolts />} />
                     </Route>
                 </Route>
 

@@ -94,7 +94,11 @@ export const TableRow: FC<Props> = ({ scheme, data, style, gasketId }) => {
                         <img src='/image/save-icon.svg' alt='save' />
                     </button>
                 ) : (
-                    <button className={classes["icon-delete"]} onClick={openModalHandler}>
+                    <button
+                        className={classes["icon-delete"]}
+                        type='button'
+                        onClick={openModalHandler}
+                    >
                         &times;
                     </button>
                 )}

@@ -3,4 +3,5 @@ export interface IBolt {
     title: string
     diameter: number
     area: number
+    isInch: boolean
 }

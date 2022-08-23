@@ -69,6 +69,10 @@ export const user = createModel<RootModel>()({
                         toast.error("Введены неверные данные для входа")
                     else if (error.message === "something went wrong")
                         toast.error("Произошла ошибка")
+                    else if (error.message === "too many request")
+                        toast.error("Слишком много попыток. Повторите попытку через 30м", {
+                            autoClose: false,
+                        })
                     else toast.error(error.message)
                 } finally {
                     user.setLoading(false)

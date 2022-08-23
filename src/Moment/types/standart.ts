@@ -5,5 +5,6 @@ export interface IStandart {
     titleDn: string
     titlePn: string
     isNeedRow: boolean
+    isInch: boolean
     rows: string[]
 }

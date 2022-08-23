@@ -20,12 +20,16 @@ export const Table: FC<Props> = ({ sizes, bolts }) => {
                 </p>
                 <p className={classes.column}>D</p>
                 <p className={classes.column}>
-                    D<sub>6</sub>
+                    D<sub>б</sub>
                 </p>
                 <p className={classes.column}>h</p>
                 <p className={classes.column}>l</p>
-                <p className={classes.column}>S0</p>
-                <p className={classes.column}>S1</p>
+                <p className={classes.column}>
+                    S<sub>0</sub>
+                </p>
+                <p className={classes.column}>
+                    S<sub>1</sub>
+                </p>
                 <p className={classes.column}>количество</p>
                 <p className={classes.column}>диаметр</p>
             </div>

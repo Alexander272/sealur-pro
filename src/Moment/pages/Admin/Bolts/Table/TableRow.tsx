@@ -5,42 +5,39 @@ import { useSWRConfig } from "swr"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
 import AdminService from "../../../../service/admin"
-import classes from "../materials.module.scss"
-
-type Row = {
-    id: string
-    temperature: number
-    field: number
-}
+import { IBolt } from "../../../../types/bolts"
+import classes from "../bolts.module.scss"
 
 type Props = {
-    field: "alpha" | "elasticity" | "voltage"
-    data: Row
-    materialId: string
+    bolt: IBolt
+    isInch: boolean
 }
 
-export const TableRow: FC<Props> = ({ field, data, materialId }) => {
+export const TableRow: FC<Props> = ({ bolt, isInch }) => {
     const {
         register,
         handleSubmit,
         reset,
         formState: { dirtyFields },
-    } = useForm<Row>({
-        defaultValues: data,
+    } = useForm<IBolt>({
+        defaultValues: bolt,
     })
     const { mutate } = useSWRConfig()
     const { toggle, isOpen } = useModal()
 
-    const saveHandler = async (row: Row) => {
-        const newData = {
-            markId: materialId,
-            temperature: +row.temperature,
-            [field]: +row.field,
+    const saveHandler = async (row: IBolt) => {
+        let newData: IBolt = {
+            id: bolt.id,
+            title: row.title,
+            diameter: +row.diameter,
+            area: +row.area,
+            isInch: isInch,
         }
+
         try {
-            await AdminService.update(`/sealur-moment/materials/${field}/${data.id}`, newData)
-            mutate(`/sealur-moment/materials/${materialId}`)
+            await AdminService.update(`/sealur-moment/bolts/${bolt.id}`, newData)
             reset({}, { keepDirty: false })
+            mutate(`/sealur-moment/bolts?isInch=${isInch}`)
         } catch (error) {
             toast.error("Произошла ошибка")
         }
@@ -48,9 +45,9 @@ export const TableRow: FC<Props> = ({ field, data, materialId }) => {
 
     const deleteHandler = async () => {
         try {
-            await AdminService.delete(`/sealur-moment/materials/${field}/${data.id}`)
-            mutate(`/sealur-moment/materials/${materialId}`)
+            await AdminService.delete(`/sealur-moment/bolts/${bolt.id}`)
             reset({}, { keepDirty: false })
+            mutate(`/sealur-moment/bolts?isInch=${isInch}`)
         } catch (error) {
             toast.error("Произошла ошибка")
         } finally {
@@ -59,6 +56,7 @@ export const TableRow: FC<Props> = ({ field, data, materialId }) => {
     }
 
     const openModalHandler = (event: React.MouseEvent) => {
+        event.preventDefault()
         event.stopPropagation()
         toggle()
     }
@@ -75,9 +73,7 @@ export const TableRow: FC<Props> = ({ field, data, materialId }) => {
             <form className={classes["table-row"]} onSubmit={handleSubmit(saveHandler)}>
                 <input
                     className={classes.column}
-                    type='number'
-                    step={0.001}
-                    {...register("temperature", {
+                    {...register("title", {
                         required: true,
                     })}
                 />
@@ -85,11 +81,19 @@ export const TableRow: FC<Props> = ({ field, data, materialId }) => {
                     className={classes.column}
                     type='number'
                     step={0.001}
-                    {...register("field", {
+                    {...register("diameter", {
                         required: true,
                     })}
                 />
-                {dirtyFields.temperature || dirtyFields.field ? (
+                <input
+                    className={classes.column}
+                    type='number'
+                    step={0.001}
+                    {...register("area", {
+                        required: true,
+                    })}
+                />
+                {Object.keys(dirtyFields).length !== 0 ? (
                     <button type='submit' className={classes.icon}>
                         <img src='/image/save-icon.svg' alt='save' />
                     </button>

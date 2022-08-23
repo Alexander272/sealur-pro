@@ -43,6 +43,7 @@ export default function Orders() {
     }
 
     const listHandler = () => {
+        list.getPositions(store.getState().user.userId)
         navigate("/pro/list")
     }
 

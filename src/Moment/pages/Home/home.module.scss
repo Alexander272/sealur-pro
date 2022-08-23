@@ -40,4 +40,14 @@
     &:hover {
         border-color: var(--button-color);
     }
+
+    &-admin {
+        flex-basis: 100%;
+        border: 1px solid #8099d6;
+        border-radius: 12px;
+        padding: 8px 14px;
+        color: var(--button-color);
+        transition: border-color .3s ease-in-out;
+        text-align: center;
+    }
 }
