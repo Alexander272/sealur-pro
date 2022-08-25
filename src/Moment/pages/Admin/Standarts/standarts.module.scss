@@ -146,8 +146,25 @@
             }
         }
 
+        .new-row {
+            margin-bottom: 10px;
+        }
+
+        .paste {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+
+            &-input {
+                flex-basis: 50%;
+                border: none;
+                outline: none;
+                border-bottom: 1px solid var(--button-bg-color);
+                padding: 2px 18px;
+            }
+        }
+
         & .btn {
-            margin-top: 10px;
             display: flex;
             justify-content: center;
             gap: 10px;

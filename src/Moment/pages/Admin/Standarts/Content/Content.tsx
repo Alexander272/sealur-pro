@@ -43,7 +43,12 @@ export const Content: FC<Props> = ({ typeId, standart }) => {
             )}
 
             {sizes ? (
-                <Sizes isNeedRow={hasRows} sizes={sizes.data} bolts={bolts?.data} />
+                <Sizes
+                    isNeedRow={hasRows}
+                    sizes={sizes.data}
+                    bolts={bolts?.data}
+                    standartId={standart?.id || ""}
+                />
             ) : (
                 <Loader />
             )}

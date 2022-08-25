@@ -16,4 +16,5 @@ export interface IFullSize {
     s1: number
     count: number
     boltId: string
+    row: number
 }

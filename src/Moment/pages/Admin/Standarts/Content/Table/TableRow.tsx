@@ -12,9 +12,11 @@ import classes from "../../standarts.module.scss"
 type Props = {
     size: IFullSize
     bolts: IBolt[]
+    standartId: string
+    row: 0 | 1
 }
 
-export const TableRow: FC<Props> = ({ size, bolts }) => {
+export const TableRow: FC<Props> = ({ size, bolts, standartId, row }) => {
     const {
         register,
         handleSubmit,
@@ -26,31 +28,42 @@ export const TableRow: FC<Props> = ({ size, bolts }) => {
     const { mutate } = useSWRConfig()
     const { toggle, isOpen } = useModal()
 
-    const saveHandler = async (row: IFullSize) => {
-        // const newData = {
-        //     markId: materialId,
-        //     temperature: +row.temperature,
-        //     [field]: +row.field,
-        // }
-        // try {
-        //     await AdminService.update(`/sealur-moment/materials/${field}/${data.id}`, newData)
-        //     mutate(`/sealur-moment/materials/${materialId}`)
-        //     reset({}, { keepDirty: false })
-        // } catch (error) {
-        //     toast.error("Произошла ошибка")
-        // }
+    const saveHandler = async (data: IFullSize) => {
+        const newData: IFullSize = {
+            id: data.id,
+            standId: data.standId,
+            d: +data.d,
+            d6: +data.d6,
+            dOut: +data.dOut,
+            h: +data.h,
+            length: +data.length,
+            pn: +data.pn,
+            s0: +data.s0,
+            s1: +data.s1,
+            count: +data.count,
+            boltId: data.boltId,
+            row: row,
+        }
+
+        try {
+            await AdminService.update(`/sealur-moment/flange-sizes/${size.id}`, newData)
+            mutate(`/sealur-moment/flange-sizes?standartId=${standartId}`)
+            reset({}, { keepDirty: false })
+        } catch (error) {
+            toast.error("Произошла ошибка")
+        }
     }
 
     const deleteHandler = async () => {
-        // try {
-        //     await AdminService.delete(`/sealur-moment/materials/${field}/${data.id}`)
-        //     mutate(`/sealur-moment/materials/${materialId}`)
-        //     reset({}, { keepDirty: false })
-        // } catch (error) {
-        //     toast.error("Произошла ошибка")
-        // } finally {
-        //     toggle()
-        // }
+        try {
+            await AdminService.delete(`/sealur-moment/flange-sizes/${size.id}`)
+            mutate(`/sealur-moment/flange-sizes?standartId=${standartId}`)
+            reset({}, { keepDirty: false })
+        } catch (error) {
+            toast.error("Произошла ошибка")
+        } finally {
+            toggle()
+        }
     }
 
     const openModalHandler = (event: React.MouseEvent) => {
@@ -135,7 +148,6 @@ export const TableRow: FC<Props> = ({ size, bolts }) => {
                 <input
                     className={classes.column}
                     type='number'
-                    step={0.001}
                     {...register("count", {
                         required: true,
                     })}

@@ -4,13 +4,16 @@ import { IFullSize } from "../../../../../types/sizes"
 import { TableRow } from "./TableRow"
 import { IBolt } from "../../../../../types/bolts"
 import classes from "../../standarts.module.scss"
+import { NewTableRow } from "./NewTableRow"
 
 type Props = {
     sizes: IFullSize[] | undefined
     bolts: IBolt[]
+    standartId: string
+    row: 0 | 1
 }
 
-export const Table: FC<Props> = ({ sizes, bolts }) => {
+export const Table: FC<Props> = ({ sizes, bolts, standartId, row }) => {
     return (
         <div className={classes.table}>
             <div className={classes["table-header"]}>
@@ -33,8 +36,11 @@ export const Table: FC<Props> = ({ sizes, bolts }) => {
                 <p className={classes.column}>количество</p>
                 <p className={classes.column}>диаметр</p>
             </div>
-            {sizes && sizes.map(s => <TableRow key={s.id} size={s} bolts={bolts} />)}
-            {/* <NewTableRows field={field} materialId={materialId} /> */}
+            {sizes &&
+                sizes.map(s => (
+                    <TableRow key={s.id} size={s} bolts={bolts} standartId={standartId} row={row} />
+                ))}
+            <NewTableRow bolts={bolts} standartId={standartId} row={row} />
         </div>
     )
 }
