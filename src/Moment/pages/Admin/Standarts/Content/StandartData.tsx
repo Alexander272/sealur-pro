@@ -1,16 +1,29 @@
 import React, { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
+import { useSWRConfig } from "swr"
+import { Button } from "../../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../../components/UI/Checkbox/Checkbox"
 import { Input } from "../../../../../components/UI/Input/Input"
+import AdminService from "../../../../service/admin"
 import { IStandart } from "../../../../types/standart"
 import classes from "../standarts.module.scss"
 
 type Props = {
+    typeId: string
     standart: IStandart
+    hasEmptySise: boolean
     setIsNeedRow: (isNeedRow: boolean) => void
+    setIsInch: (isInch: boolean) => void
 }
 
-export const StandartData: FC<Props> = ({ standart, setIsNeedRow }) => {
+export const StandartData: FC<Props> = ({
+    typeId,
+    standart,
+    hasEmptySise,
+    setIsNeedRow,
+    setIsInch,
+}) => {
     const {
         register,
         handleSubmit,
@@ -20,15 +33,36 @@ export const StandartData: FC<Props> = ({ standart, setIsNeedRow }) => {
     } = useForm<IStandart>({
         defaultValues: standart,
     })
+    const { mutate } = useSWRConfig()
 
     const isNeedRow = watch("isNeedRow")
+    const isInch = watch("isInch")
 
     useEffect(() => {
         setIsNeedRow(isNeedRow)
     }, [isNeedRow, setIsNeedRow])
 
+    useEffect(() => {
+        setIsInch(isInch)
+    }, [isInch, setIsInch])
+
+    useEffect(() => {
+        reset(standart, { keepDirty: false })
+    }, [reset, standart])
+
     const saveHandler = async (data: IStandart) => {
-        console.log(data)
+        data.rows = data.isNeedRow ? data.rows : []
+        data.id = standart.id
+        data.title = standart.title
+        data.typeId = standart.typeId
+
+        try {
+            await AdminService.update(`/sealur-moment/standarts/${standart.id}`, data)
+            reset({}, { keepDirty: false })
+            mutate(`/sealur-moment/standarts/?typeId=${typeId}`)
+        } catch (error) {
+            toast.error("Произошла ошибка")
+        }
     }
 
     return (
@@ -47,7 +81,12 @@ export const StandartData: FC<Props> = ({ standart, setIsNeedRow }) => {
                     register={register}
                 />
             </div>
-            <Checkbox label='Есть ряды?' id='isNeedRow' name='isNeedRow' register={register} />
+
+            {hasEmptySise && (
+                <Checkbox label='Дюймовые болты' id='isInch' name='isInch' register={register} />
+            )}
+            <Checkbox label='Есть ряды' id='isNeedRow' name='isNeedRow' register={register} />
+
             {isNeedRow && (
                 <div className={classes.inputs}>
                     <Input
@@ -64,6 +103,14 @@ export const StandartData: FC<Props> = ({ standart, setIsNeedRow }) => {
                     />
                 </div>
             )}
+
+            {Object.keys(dirtyFields).length !== 0 ? (
+                <div className={classes.button}>
+                    <Button type='submit' variant='grayPrimary' fullWidth>
+                        Сохранить
+                    </Button>
+                </div>
+            ) : null}
         </form>
     )
 }

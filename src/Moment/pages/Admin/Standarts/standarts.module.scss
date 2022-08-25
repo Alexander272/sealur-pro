@@ -84,26 +84,9 @@
         }
     }
 
-    .tabs {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .tab {
-        display: block;
-        position: relative;
-        z-index: 5;
-        padding: 4px 18px;
-        color: var(--button-color);
-        border-radius: 40px;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-
-        &-active {
-            pointer-events: none;
-            color: #fff;
-        }
+    .button {
+        width: 30%;
+        align-self: center;
     }
 
     .table {
@@ -170,5 +153,13 @@
             gap: 10px;
             flex-wrap: wrap;
         }
+    }
+}
+
+.modal {
+    &-btns {
+        flex-grow: 1;
+        display: flex;
+        gap: 10px;
     }
 }

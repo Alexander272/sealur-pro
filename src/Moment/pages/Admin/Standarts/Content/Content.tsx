@@ -10,57 +10,43 @@ import { Sizes } from "./Sizes"
 import classes from "../standarts.module.scss"
 
 type Props = {
+    typeId: string
     standart: IStandart | null
 }
 
-export const Content: FC<Props> = ({ standart }) => {
+export const Content: FC<Props> = ({ typeId, standart }) => {
     const [hasRows, setHasRows] = useState(standart?.isNeedRow || false)
     const changeHasRowsHandler = useCallback((hasRows: boolean) => setHasRows(hasRows), [])
-    // const [isInch, setIsInch] = useState(standart?.isInch || false)
-    // const changeIsIncgHandler = useCallback((isInch: boolean) => setIsInch(isInch), [])
-
-    // const [openTab, setOpenTab] = useState<"size" | "bolt">("size")
-    // const changeTabHandler = (type: string) => setOpenTab(type as "size")
+    const [isInch, setIsInch] = useState(standart?.isInch || false)
+    const changeIsInchHandler = useCallback((isInch: boolean) => setIsInch(isInch), [])
 
     const { data: sizes } = useSWR<{ data: ISizeResponse }>(
         standart?.id ? `/sealur-moment/flange-sizes?standartId=${standart?.id}` : null,
         ReadService.getData
     )
-    const { data: bolts } = useSWR<{ data: IBolt[] }>(`/sealur-moment/bolts`, ReadService.getData)
+    const { data: bolts } = useSWR<{ data: IBolt[] }>(
+        `/sealur-moment/bolts?isInch=${isInch || false}`,
+        ReadService.getData
+    )
 
     return (
         <div className={`${classes.content} scroll`}>
             <p className={classes["content-title"]}>{standart?.title}</p>
-            {standart && <StandartData standart={standart} setIsNeedRow={changeHasRowsHandler} />}
+            {standart && (
+                <StandartData
+                    typeId={typeId}
+                    standart={standart}
+                    hasEmptySise={!sizes?.data.sizeRow1}
+                    setIsNeedRow={changeHasRowsHandler}
+                    setIsInch={changeIsInchHandler}
+                />
+            )}
 
-            {/* <div className={classes.tabs}>
-                <Tabs initWidth={97} onClick={changeTabHandler}>
-                    <p
-                        className={`${classes.tab} ${
-                            openTab === "size" ? classes["tab-active"] : ""
-                        }`}
-                        data-type='size'
-                    >
-                        Размеры
-                    </p>
-                    <p
-                        className={`${classes.tab} ${
-                            openTab === "bolt" ? classes["tab-active"] : ""
-                        }`}
-                        data-type='bolt'
-                    >
-                        Болты
-                    </p>
-                </Tabs>
-            </div> */}
-
-            {/* {openTab === "size" ? ( */}
             {sizes ? (
                 <Sizes isNeedRow={hasRows} sizes={sizes.data} bolts={bolts?.data} />
             ) : (
                 <Loader />
             )}
-            {/* ) : null} */}
         </div>
     )
 }

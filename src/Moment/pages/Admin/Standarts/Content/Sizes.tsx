@@ -3,6 +3,7 @@ import { Select } from "../../../../../components/UI/Select/Select"
 import { ISizeResponse } from "../../../../types/sizes"
 import { Table } from "./Table/Table"
 import { IBolt } from "../../../../types/bolts"
+import classes from "../standarts.module.scss"
 
 type Props = {
     isNeedRow?: boolean
@@ -18,7 +19,7 @@ export const Sizes: FC<Props> = ({ isNeedRow, sizes, bolts }) => {
 
     return (
         <div>
-            {/* <p className={classes["content-title"]}>Размеры</p> */}
+            <p className={classes["content-title"]}>Размеры</p>
             {isNeedRow && (
                 <Select value={row} onChange={changeRowHandler}>
                     <Select.Option value={"1"}>Ряд 1</Select.Option>

@@ -33,6 +33,7 @@ export default function Standarts() {
     if (!types) return <div className={classes.container}></div>
 
     const changeTypeHandler = (id: string) => setTypeId(id)
+    const changeStandartHandler = (standart: IStandart) => setStandart(standart)
 
     return (
         <div className={classes.container}>
@@ -42,8 +43,9 @@ export default function Standarts() {
                 chageType={changeTypeHandler}
                 standarts={standarts?.data}
                 standart={standart}
+                onClick={changeStandartHandler}
             />
-            <Content standart={standart} />
+            <Content typeId={typeId || ""} standart={standart} />
         </div>
     )
 }
