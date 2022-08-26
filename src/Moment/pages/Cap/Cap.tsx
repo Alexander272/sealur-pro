@@ -1,21 +1,19 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import useSWR from "swr"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { AxiosError } from "axios"
+import { toast } from "react-toastify"
 import { Loader } from "../../../components/UI/Loader/Loader"
-import { MomentUrl } from "../../../components/routes"
-import { IDetail, IFlangeData, IFormFlangeCalc, IPersonData } from "../../types/flange"
 import ServerError from "../../../Error/ServerError"
 import ReadService from "../../service/read"
-import CalcService from "../../service/calc"
+import { IFormCapCalc } from "../../types/cap"
 import { Form } from "./Form/Form"
+import { IDetail, IFlangeData, IPersonData } from "../../types/flange"
 import classes from "../styles/page.module.scss"
 
 const initFormValue = {
     isWork: true,
-    isSameFlange: true,
     isEmbedded: false,
     flanges: "nonIsolated" as "nonIsolated",
     type: "pin" as "pin",
@@ -31,7 +29,7 @@ const initFormValue = {
     },
 }
 
-export default function Flange() {
+export default function Cap() {
     const { data, error } = useSWR<{ data: IFlangeData }>(
         "/sealur-moment/default/flange",
         ReadService.getData
@@ -42,22 +40,13 @@ export default function Flange() {
 
     const [isLoading, setLoading] = useState(false)
 
-    // const {
-    //     register,
-    //     control,
-    //     handleSubmit,
-    //     setValue,
-    //     formState: { errors },
-    // } = useForm<IFormFlangeCalc>({
-    //     defaultValues: (location.state as { form: IFormFlangeCalc })?.form || initFormValue,
-    // })
     const {
         register,
         control,
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<IFormFlangeCalc>({
+    } = useForm<IFormCapCalc>({
         defaultValues: initFormValue,
     })
 
@@ -70,20 +59,17 @@ export default function Flange() {
 
     if (error) return <ServerError />
 
-    const calculateHandler: SubmitHandler<IFormFlangeCalc> = async data => {
+    const calculateHandler: SubmitHandler<IFormCapCalc> = async data => {
         setLoading(true)
-        // navigate(".", { state: { form: data } })
         const person = data.personData.hasPerson ? data.personData : null
         data.personData = {} as IPersonData
         const detail = data.detailData.hasDetail ? data.detailData : null
         data.detailData = {} as IDetail
-
         try {
-            const res = await CalcService.CalculateFlange("/sealur-moment/calc/flange", data)
-            navigate(MomentUrl + "/flange/result", { state: { result: res.data, person, detail } })
+            //         const res = await CalcService.CalculateFlange("/sealur-moment/calc/flange", data)
+            //         navigate(MomentUrl + "/cap/result", { state: { result: res.data, person, detail } })
         } catch (error) {
             const err = error as AxiosError
-
             if (err.response?.status === 500) {
                 toast.error(
                     "На сервере произошла ошибка. Код ошибки: " +

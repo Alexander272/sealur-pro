@@ -6,6 +6,8 @@
     width: 100%;
     align-items: center;
     margin-top: 20px;
+    height: 130px;
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -24,4 +26,20 @@
 
 .name {
     text-align: center;
+}
+
+.title {
+    flex-basis: 100%;
+}
+
+.confirm {
+    align-self: center;
+    display: flex;
+    max-width: 980px;
+    padding: 0 10px;
+    width: 100%;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }

@@ -35,6 +35,7 @@ const MomentHome = lazy(() => import("../Moment/pages/Home/Home"))
 const MomentMain = lazy(() => import("../Moment/components/layout/Main"))
 const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
 const MomentFlangeResult = lazy(() => import("../Moment/pages/Flange/Result"))
+const MomentCap = lazy(() => import("../Moment/pages/Cap/Cap"))
 
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
 const MomentAdminMaterials = lazy(() => import("../Moment/pages/Admin/Materials/Materials"))
@@ -133,6 +134,7 @@ export const MyRoutes = () => {
                         <Route path='flange' element={<MomentFlange />}>
                             <Route path='result' element={<MomentFlangeResult />} />
                         </Route>
+                        <Route path='cap' element={<MomentCap />}></Route>
                     </Route>
 
                     <Route path='admin' element={<MomentAdmin />}>

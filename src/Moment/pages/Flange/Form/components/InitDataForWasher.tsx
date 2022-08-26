@@ -94,7 +94,7 @@ const Washer: FC<Props> = ({ materials, register, control, setValue, errors }) =
 
     return (
         <Container title='Исходные данные для шайбы'>
-            <div className={classes.line}>
+            <div className={classes["line-checkbox"]}>
                 <Checkbox
                     id='isUseWasher'
                     name='isUseWasher'

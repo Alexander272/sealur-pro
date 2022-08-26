@@ -44,7 +44,7 @@ const Select = ({ children, value, disabled, onChange, onOpen }: PropsWithChildr
                 className={[classes.selected, disabled && classes.disabled].join(" ")}
                 onClick={openHandler}
             >
-                {title}
+                {title || "Select..."}
                 {!disabled && <span className={classes.icon}>&#9660;</span>}
             </p>
             {isOpen && <div className={classes.dropdown} onClick={openHandler}></div>}

@@ -62,9 +62,32 @@ export interface IFormFlangeCalc {
     }
 
     isNeedFormulas: boolean
+
+    personData: IPersonData
+    detailData: IDetail
 }
 
-interface IFlanges {
+export interface IPersonData {
+    hasPerson: boolean
+    supervisor: {
+        position: string
+        name: string
+    }
+    performer: {
+        position: string
+        name: string
+    }
+}
+
+export interface IDetail {
+    hasDetail: boolean
+    organization: string
+    facility: string
+    equipment: string
+    node: string
+}
+
+export interface IFlanges {
     type: TypeFlange
     standartId: string
     markId: string
@@ -93,7 +116,7 @@ interface IFlangeSize {
     hk: string
 }
 
-interface IMaterialData {
+export interface IMaterialData {
     title: string
     alphaF: string
     epsilonAt20: string

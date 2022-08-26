@@ -3,14 +3,14 @@ import { Control, Controller, UseFormRegister } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { Container } from "../../../../components/Container/Container"
-import { IFormFlangeCalc } from "../../../../types/flange"
+import { IFormCapCalc } from "../../../../types/cap"
 import classes from "../../../styles/page.module.scss"
 
 const { Option } = Select
 
 type Props = {
-    register: UseFormRegister<IFormFlangeCalc>
-    control: Control<IFormFlangeCalc, any>
+    register: UseFormRegister<IFormCapCalc>
+    control: Control<IFormCapCalc, any>
     errors: any
 }
 
@@ -47,22 +47,6 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                         suffix='Н'
                         rule={{ required: true }}
                         error={errors.axialForce}
-                    />
-                </div>
-            </div>
-
-            <div className={classes.line}>
-                <p>Внешний изгибающий момент</p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name='bendingMoment'
-                        id='bendingMoment'
-                        type='number'
-                        step={0.001}
-                        register={register}
-                        suffix='Н*мм'
-                        rule={{ required: true }}
-                        error={errors.bendingMoment}
                     />
                 </div>
             </div>
@@ -110,22 +94,6 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
                                 <Option value='isolated'>Изолированные фланцы</Option>
                                 <Option value='nonIsolated'>Неизолированные фланцы</Option>
                                 <Option value='manually'>Задается вручную</Option>
-                            </Select>
-                        )}
-                    />
-                </div>
-            </div>
-
-            <div className={classes.line}>
-                <p>Одинаковые фланцы</p>
-                <div className={classes["line-field"]}>
-                    <Controller
-                        name='isSameFlange'
-                        control={control}
-                        render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
-                                <Option value={true}>Да</Option>
-                                <Option value={false}>Нет</Option>
                             </Select>
                         )}
                     />

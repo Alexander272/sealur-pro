@@ -1,0 +1,30 @@
+.container {
+    margin-bottom: 10px;
+
+    .line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &-field {
+            flex-basis: 29%;
+        }
+    }
+}
+
+@media (max-width: 710px) {
+    .container {
+        .line {
+            flex-wrap: wrap;
+
+            &-field {
+                flex-basis: 100%;
+            }
+        }
+    }
+}

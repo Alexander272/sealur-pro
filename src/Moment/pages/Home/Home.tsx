@@ -33,6 +33,9 @@ export default function Home() {
                 <Link to={MomentUrl + "/flange"} className={classes.link}>
                     Расчет соединения фланец-фланец
                 </Link>
+                <Link to={MomentUrl + "/cap"} className={classes.link}>
+                    Расчет соединения фланец-крышка
+                </Link>
             </main>
         </div>
     )

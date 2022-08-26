@@ -84,7 +84,6 @@ export const Bolt: FC<Props> = ({ data }) => {
                 res={formatNumber(data.epsilon)}
                 units='МПа'
             />
-            {/* //TODO эти определения возможно неправильные */}
             <Line
                 title='Допускаемое напряжение для болтов (шпилек) при затяжке'
                 designation={
