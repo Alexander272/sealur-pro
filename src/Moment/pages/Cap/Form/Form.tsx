@@ -13,6 +13,8 @@ import { InitDataForGasket } from "./components/InitDataForGasket"
 import { InitDataForFlange } from "./components/InitDataForFlange"
 import EmbedData from "./components/EmbedData"
 import classes from "../../styles/page.module.scss"
+import { InitDataForWasher } from "./components/InitDataForWasher"
+import { InitDataForCap } from "./components/InitDataForCap"
 
 type Props = {
     data: IFlangeData
@@ -38,6 +40,13 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
                 setValue={setValue}
                 errors={errors}
             />
+            <InitDataForCap
+                materials={data.materials}
+                register={register}
+                control={control}
+                setValue={setValue}
+                errors={errors}
+            />
 
             <InitDataForBolt
                 isFull={FStandId === "another"}
@@ -47,13 +56,13 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
                 setValue={setValue}
                 errors={errors}
             />
-            {/* <InitDataForWasher
+            <InitDataForWasher
                 materials={data.materials}
                 register={register}
                 control={control}
                 setValue={setValue}
                 errors={errors}
-            /> */}
+            />
             <InitDataForGasket
                 gasket={data.gaskets}
                 env={data.env}

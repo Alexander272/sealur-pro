@@ -1,7 +1,7 @@
 import { IDetail, IFlanges, IMaterialData, IPersonData } from "./flange"
 
-type TypeFlange = "welded" | "flat" | "free"
 type TypeGasket = "Soft" | "Oval" | "Metal"
+type TypeCap = "flat" | "sphere"
 
 export interface IFormCapCalc {
     pressure: string
@@ -45,9 +45,31 @@ export interface IFormCapCalc {
         material: IMaterialData
     }
     flangesData: IFlanges
+    capData: ICap
+    isUseWasher: boolean
+    washer: {
+        first: {
+            markId: string
+            material: IMaterialData
+        }
+        second: {
+            markId: string
+            material: IMaterialData
+        }
+        thickness: string
+    }
 
     isNeedFormulas: boolean
 
     personData: IPersonData
     detailData: IDetail
+}
+
+export interface ICap {
+    type: TypeCap
+    h: string
+    radius: string
+    delta: string
+    markId: string
+    material: IMaterialData
 }

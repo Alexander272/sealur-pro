@@ -21,6 +21,9 @@ const initFormValue = {
     calculation: "basis" as "basis",
     isNeedFormulas: true,
     isUseWasher: false,
+    capData: {
+        type: "flat" as "flat",
+    },
     personData: {
         hasPerson: false,
     },
