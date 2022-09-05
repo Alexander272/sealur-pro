@@ -110,32 +110,32 @@ const Flange: FC<Props> = ({
 }) => {
     const type = useWatch({
         control,
-        name: `flangesData.type`,
+        name: `flangeData.type`,
     })
     const standartId = useWatch({
         control,
-        name: `flangesData.standartId`,
+        name: `flangeData.standartId`,
     })
 
     const markId = useWatch({
         control,
-        name: `flangesData.markId`,
+        name: `flangeData.markId`,
     })
     const ringMarkId = useWatch({
         control,
-        name: `flangesData.ringMarkId`,
+        name: `flangeData.ringMarkId`,
     })
 
     const [stands, setStands] = useState(standarts)
 
     useEffect(() => {
         if (!standartId) {
-            setValue(`flangesData.type`, "welded")
-            setValue(`flangesData.standartId`, standarts[0].id)
-            setValue(`flangesData.markId`, materials[0].id)
-            setValue(`flangesData.dy`, standarts[0].sizes.sizeRow1[0].dn)
-            setValue(`flangesData.py`, standarts[0].sizes.sizeRow1[0].pn[0])
-            setValue(`flangesData.corrosion`, "2")
+            setValue(`flangeData.type`, "welded")
+            setValue(`flangeData.standartId`, standarts[0].id)
+            setValue(`flangeData.markId`, materials[0].id)
+            setValue(`flangeData.dy`, standarts[0].sizes.sizeRow1[0].dn)
+            setValue(`flangeData.py`, standarts[0].sizes.sizeRow1[0].pn[0])
+            setValue(`flangeData.corrosion`, "2")
         }
     }, [setValue, standartId, standarts, materials])
 
@@ -152,12 +152,12 @@ const Flange: FC<Props> = ({
         if (condition) {
             if (data && data.data) {
                 setStands(data.data)
-                setValue(`flangesData.standartId`, data.data[0].id)
+                setValue(`flangeData.standartId`, data.data[0].id)
             } else if (data && !data.data) {
                 setStands([])
-                setValue(`flangesData.standartId`, "another")
+                setValue(`flangeData.standartId`, "another")
             } else {
-                setValue(`flangesData.standartId`, "another")
+                setValue(`flangeData.standartId`, "another")
             }
         }
     }, [data, setValue, condition])
@@ -170,7 +170,7 @@ const Flange: FC<Props> = ({
                 <p>Тип фланца</p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.type`}
+                        name={`flangeData.type`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
@@ -189,7 +189,7 @@ const Flange: FC<Props> = ({
                 <p>Параметры фланца</p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.standartId`}
+                        name={`flangeData.standartId`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
@@ -209,7 +209,7 @@ const Flange: FC<Props> = ({
                 <p>Материал фланца</p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.markId`}
+                        name={`flangeData.markId`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
@@ -231,7 +231,7 @@ const Flange: FC<Props> = ({
                 errors={errors}
                 title='фланца'
                 letter='ф'
-                path={`flangesData`}
+                path={`flangeData`}
             />
 
             {standartId === "another" ? (
@@ -256,8 +256,8 @@ const Flange: FC<Props> = ({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.corrosion`}
-                        id={`flangesData.corrosion`}
+                        name={`flangeData.corrosion`}
+                        id={`flangeData.corrosion`}
                         type='number'
                         step={0.001}
                         register={register}
@@ -269,7 +269,7 @@ const Flange: FC<Props> = ({
             {markId === "another" && (
                 <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
-                        path={`flangesData.material`}
+                        path={`flangeData.material`}
                         register={register}
                         titles={matTitles}
                         designation={matDesignation}
@@ -280,7 +280,7 @@ const Flange: FC<Props> = ({
             {ringMarkId === "another" && (
                 <Suspense fallback={<Loader background='fill' />}>
                     <MaterialData
-                        path={`flangesData.ringMaterial`}
+                        path={`flangeData.ringMaterial`}
                         register={register}
                         titles={ringMatTitles}
                         designation={ringMatDesignation}

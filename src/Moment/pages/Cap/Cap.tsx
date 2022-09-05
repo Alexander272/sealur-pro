@@ -11,6 +11,8 @@ import { IFormCapCalc } from "../../types/cap"
 import { Form } from "./Form/Form"
 import { IDetail, IFlangeData, IPersonData } from "../../types/flange"
 import classes from "../styles/page.module.scss"
+import CalcService from "../../service/calc"
+import { MomentUrl } from "../../../components/routes"
 
 const initFormValue = {
     isWork: true,
@@ -69,8 +71,8 @@ export default function Cap() {
         const detail = data.detailData.hasDetail ? data.detailData : null
         data.detailData = {} as IDetail
         try {
-            //         const res = await CalcService.CalculateFlange("/sealur-moment/calc/flange", data)
-            //         navigate(MomentUrl + "/cap/result", { state: { result: res.data, person, detail } })
+            const res = await CalcService.CalculateCap(data)
+            navigate(MomentUrl + "/cap/result", { state: { result: res.data, person, detail } })
         } catch (error) {
             const err = error as AxiosError
             if (err.response?.status === 500) {

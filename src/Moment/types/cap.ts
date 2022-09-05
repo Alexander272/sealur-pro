@@ -44,7 +44,7 @@ export interface IFormCapCalc {
         thickness: string
         material: IMaterialData
     }
-    flangesData: IFlanges
+    flangeData: IFlanges
     capData: ICap
     isUseWasher: boolean
     washer: {

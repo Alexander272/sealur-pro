@@ -32,7 +32,7 @@ export default function FlangeSize({
     errors,
 }: Props) {
     useEffect(() => {
-        setValue(`flangesData.ringMarkId`, materials[0].id)
+        setValue(`flangeData.ringMarkId`, materials[0].id)
     }, [setValue, materials])
 
     return (
@@ -41,7 +41,7 @@ export default function FlangeSize({
                 <p>Материал кольца свободного фланца</p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.ringMarkId`}
+                        name={`flangeData.ringMarkId`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
@@ -70,8 +70,8 @@ export default function FlangeSize({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.size.dOut`}
-                        id={`flangesData.size.dOut`}
+                        name={`flangeData.size.dOut`}
+                        id={`flangeData.size.dOut`}
                         type='number'
                         step={0.001}
                         register={register}
@@ -89,14 +89,14 @@ export default function FlangeSize({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.size.d`}
-                        id={`flangesData.size.d`}
+                        name={`flangeData.size.d`}
+                        id={`flangeData.size.d`}
                         type='number'
                         step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
-                        error={errors[`flangesData?.size?.d`]}
+                        error={errors[`flangeData?.size?.d`]}
                     />
                 </div>
             </div>
@@ -112,14 +112,14 @@ export default function FlangeSize({
                         </p>
                         <div className={classes["line-field"]}>
                             <Input
-                                name={`flangesData.size.dnk`}
-                                id={`flangesData.size.dnk`}
+                                name={`flangeData.size.dnk`}
+                                id={`flangeData.size.dnk`}
                                 type='number'
                                 step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}
-                                error={errors[`flangesData?.size?.dnk`]}
+                                error={errors[`flangeData?.size?.dnk`]}
                             />
                         </div>
                     </div>
@@ -132,14 +132,14 @@ export default function FlangeSize({
                         </p>
                         <div className={classes["line-field"]}>
                             <Input
-                                name={`flangesData.size.dk`}
-                                id={`flangesData.size.dk`}
+                                name={`flangeData.size.dk`}
+                                id={`flangeData.size.dk`}
                                 type='number'
                                 step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}
-                                error={errors[`flangesData?.size?.dk`]}
+                                error={errors[`flangeData?.size?.dk`]}
                             />
                         </div>
                     </div>
@@ -152,14 +152,14 @@ export default function FlangeSize({
                         </p>
                         <div className={classes["line-field"]}>
                             <Input
-                                name={`flangesData.size.ds`}
-                                id={`flangesData.size.ds`}
+                                name={`flangeData.size.ds`}
+                                id={`flangeData.size.ds`}
                                 type='number'
                                 step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}
-                                error={errors[`flangesData?.size?.ds`]}
+                                error={errors[`flangeData?.size?.ds`]}
                             />
                         </div>
                     </div>
@@ -173,14 +173,14 @@ export default function FlangeSize({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.size.h`}
-                        id={`flangesData.size.h`}
+                        name={`flangeData.size.h`}
+                        id={`flangeData.size.h`}
                         type='number'
                         step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
-                        error={errors[`flangesData?.size?.h`]}
+                        error={errors[`flangeData?.size?.h`]}
                     />
                 </div>
             </div>
@@ -198,14 +198,14 @@ export default function FlangeSize({
                         </p>
                         <div className={classes["line-field"]}>
                             <Input
-                                name={`flangesData.size.h0`}
-                                id={`flangesData.size.h0`}
+                                name={`flangeData.size.h0`}
+                                id={`flangeData.size.h0`}
                                 type='number'
                                 step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}
-                                error={errors[`flangesData?.size?.h0`]}
+                                error={errors[`flangeData?.size?.h0`]}
                             />
                         </div>
                     </div>
@@ -218,14 +218,14 @@ export default function FlangeSize({
                         </p>
                         <div className={classes["line-field"]}>
                             <Input
-                                name={`flangesData.size.hk`}
-                                id={`flangesData.size.hk`}
+                                name={`flangeData.size.hk`}
+                                id={`flangeData.size.hk`}
                                 type='number'
                                 step={0.001}
                                 register={register}
                                 suffix='мм'
                                 rule={{ required: true }}
-                                error={errors[`flangesData?.size?.hk`]}
+                                error={errors[`flangeData?.size?.hk`]}
                             />
                         </div>
                     </div>
@@ -242,14 +242,14 @@ export default function FlangeSize({
                     </p>
                     <div className={classes["line-field"]}>
                         <Input
-                            name={`flangesData.size.s1`}
-                            id={`flangesData.size.s1`}
+                            name={`flangeData.size.s1`}
+                            id={`flangeData.size.s1`}
                             type='number'
                             step={0.001}
                             register={register}
                             suffix='мм'
                             rule={{ required: true }}
-                            error={errors[`flangesData?.size?.s1`]}
+                            error={errors[`flangeData?.size?.s1`]}
                         />
                     </div>
                 </div>
@@ -267,14 +267,14 @@ export default function FlangeSize({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.size.s0`}
-                        id={`flangesData.size.s0`}
+                        name={`flangeData.size.s0`}
+                        id={`flangeData.size.s0`}
                         type='number'
                         step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
-                        error={errors[`flangesData?.size?.s0`]}
+                        error={errors[`flangeData?.size?.s0`]}
                     />
                 </div>
             </div>
@@ -287,14 +287,14 @@ export default function FlangeSize({
                     </p>
                     <div className={classes["line-field"]}>
                         <Input
-                            name={`flangesData.size.l`}
-                            id={`flangesData.size.l`}
+                            name={`flangeData.size.l`}
+                            id={`flangeData.size.l`}
                             type='number'
                             step={0.001}
                             register={register}
                             suffix='мм'
                             rule={{ required: true }}
-                            error={errors[`flangesData?.size?.l`]}
+                            error={errors[`flangeData?.size?.l`]}
                         />
                     </div>
                 </div>
@@ -309,14 +309,14 @@ export default function FlangeSize({
                 </p>
                 <div className={classes["line-field"]}>
                     <Input
-                        name={`flangesData.size.d6`}
-                        id={`flangesData.size.d6`}
+                        name={`flangeData.size.d6`}
+                        id={`flangeData.size.d6`}
                         type='number'
                         step={0.001}
                         register={register}
                         suffix='мм'
                         rule={{ required: true }}
-                        error={errors[`flangesData?.size?.d6`]}
+                        error={errors[`flangeData?.size?.d6`]}
                     />
                 </div>
             </div>

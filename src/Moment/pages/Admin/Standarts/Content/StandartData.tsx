@@ -28,11 +28,10 @@ export const StandartData: FC<Props> = ({
         register,
         handleSubmit,
         reset,
+        setValue,
         watch,
         formState: { dirtyFields },
-    } = useForm<IStandart>({
-        defaultValues: standart,
-    })
+    } = useForm<IStandart>()
     const { mutate } = useSWRConfig()
 
     const isNeedRow = watch("isNeedRow")
@@ -47,8 +46,15 @@ export const StandartData: FC<Props> = ({
     }, [isInch, setIsInch])
 
     useEffect(() => {
-        reset(standart, { keepDirty: false })
-    }, [reset, standart])
+        setValue("id", standart.id)
+        setValue("isInch", standart.isInch || false)
+        setValue("isNeedRow", standart.isNeedRow || false)
+        setValue("rows", standart.rows || [])
+        setValue("title", standart.title)
+        setValue("titleDn", standart.titleDn)
+        setValue("titlePn", standart.titlePn)
+        setValue("typeId", standart.typeId)
+    }, [setValue, standart])
 
     const saveHandler = async (data: IStandart) => {
         data.rows = data.isNeedRow ? data.rows : []

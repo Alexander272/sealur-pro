@@ -117,6 +117,7 @@ const Cap: FC<Props> = ({ materials, register, control, setValue, errors }) => {
                     />
                 </div>
             </div>
+
             {type === "flat" ? (
                 <div className={classes.line}>
                     <p>Толщина фланцевой части крышки</p>

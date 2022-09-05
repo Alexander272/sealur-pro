@@ -16,11 +16,11 @@ type Props = {
 const Size: FC<Props> = ({ standarts, control, setValue }) => {
     const standartId = useWatch({
         control,
-        name: `flangesData.standartId`,
+        name: `flangeData.standartId`,
     })
     const dn = useWatch({
         control,
-        name: `flangesData.dy`,
+        name: `flangeData.dy`,
     })
 
     const [curSt, setCurSt] = useState<IStandart>()
@@ -34,13 +34,13 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
         if (curSt?.sizes.sizeRow1) {
             const curDn = curSt?.sizes.sizeRow1.find(s => s.dn === dn)
             if (curSt && !curDn) {
-                setValue(`flangesData.dy`, curSt.sizes.sizeRow1[0].dn)
-                setValue(`flangesData.py`, curSt.sizes.sizeRow1[0].pn[0])
+                setValue(`flangeData.dy`, curSt.sizes.sizeRow1[0].dn)
+                setValue(`flangeData.py`, curSt.sizes.sizeRow1[0].pn[0])
             } else if (curDn) {
-                setValue(`flangesData.py`, curDn.pn[0])
+                setValue(`flangeData.py`, curDn.pn[0])
             } else {
-                setValue(`flangesData.dy`, 0)
-                setValue(`flangesData.py`, 0)
+                setValue(`flangeData.dy`, 0)
+                setValue(`flangeData.py`, 0)
             }
         }
     }, [setValue, curSt, standarts, dn])
@@ -56,7 +56,7 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
                 </p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.dy`}
+                        name={`flangeData.dy`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
@@ -80,7 +80,7 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
                 </p>
                 <div className={classes["line-field"]}>
                     <Controller
-                        name={`flangesData.py`}
+                        name={`flangeData.py`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>

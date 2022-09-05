@@ -36,12 +36,19 @@ const MomentMain = lazy(() => import("../Moment/components/layout/Main"))
 const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
 const MomentFlangeResult = lazy(() => import("../Moment/pages/Flange/Result"))
 const MomentCap = lazy(() => import("../Moment/pages/Cap/Cap"))
+const MomentCapResult = lazy(() => import("../Moment/pages/Cap/Result"))
 
+//* Moment service Admin
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
 const MomentAdminMaterials = lazy(() => import("../Moment/pages/Admin/Materials/Materials"))
 const MomentAdminGaskets = lazy(() => import("../Moment/pages/Admin/Gaskets/Gaskets"))
 const MomentAdminStandarts = lazy(() => import("../Moment/pages/Admin/Standarts/Standarts"))
 const MomentAdminBolts = lazy(() => import("../Moment/pages/Admin/Bolts/Bolts"))
+
+//* New Pro service
+const NewProApp = lazy(() => import("../NewPro/App"))
+
+const NewProMain = lazy(() => import("../NewPro/pages/Main/Main"))
 
 //* Urls
 export const ProAdminUrl = "/pro/admin"
@@ -68,6 +75,10 @@ export const MyRoutes = () => {
                 {/* section pro  */}
                 <Route path='/pro' element={<ProApp />}>
                     <Route path='' element={<Main />}>
+                        <Route path='new' element={<NewProApp />}>
+                            <Route index element={<NewProMain />} />
+                        </Route>
+
                         <Route
                             path=''
                             element={
@@ -134,7 +145,9 @@ export const MyRoutes = () => {
                         <Route path='flange' element={<MomentFlange />}>
                             <Route path='result' element={<MomentFlangeResult />} />
                         </Route>
-                        <Route path='cap' element={<MomentCap />}></Route>
+                        <Route path='cap' element={<MomentCap />}>
+                            <Route path='result' element={<MomentCapResult />} />
+                        </Route>
                     </Route>
 
                     <Route path='admin' element={<MomentAdmin />}>

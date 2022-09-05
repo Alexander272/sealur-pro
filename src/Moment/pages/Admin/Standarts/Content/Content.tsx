@@ -42,7 +42,7 @@ export const Content: FC<Props> = ({ typeId, standart }) => {
                 />
             )}
 
-            {sizes ? (
+            {sizes !== undefined ? (
                 <Sizes
                     isNeedRow={hasRows}
                     sizes={sizes.data}

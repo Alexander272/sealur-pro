@@ -12,9 +12,9 @@ import { InitDataForBolt } from "./components/InitDataForBolt"
 import { InitDataForGasket } from "./components/InitDataForGasket"
 import { InitDataForFlange } from "./components/InitDataForFlange"
 import EmbedData from "./components/EmbedData"
-import classes from "../../styles/page.module.scss"
 import { InitDataForWasher } from "./components/InitDataForWasher"
 import { InitDataForCap } from "./components/InitDataForCap"
+import classes from "../../styles/page.module.scss"
 
 type Props = {
     data: IFlangeData
@@ -26,7 +26,7 @@ type Props = {
 
 const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) => {
     const isEmbedded = useWatch({ control, name: "isEmbedded" })
-    const FStandId = useWatch({ control, name: "flangesData.standartId" })
+    const FStandId = useWatch({ control, name: "flangeData.standartId" })
 
     return (
         <>
