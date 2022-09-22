@@ -1,5 +1,5 @@
 import React from "react"
-import { Form } from "./components/Form/Form"
+import { StepperForm } from "./components/StepperForm/StepperForm"
 import classes from "./main.module.scss"
 
 // const testSteps = {
@@ -115,7 +115,7 @@ const testStep = {
 export default function Main() {
     return (
         <div className={classes.container}>
-            <Form />
+            <StepperForm />
             {/* <pre>{JSON.stringify(testSteps, null, 4)}</pre> */}
             <pre>{JSON.stringify(testStep, null, 4)}</pre>
         </div>

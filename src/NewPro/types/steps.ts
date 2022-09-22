@@ -1,8 +1,20 @@
+import { ElementVariant } from "./elements"
+
 export interface IStep {
     id: string
     title: string
+    elements: ElementVariant[]
     navigation: IStepNavigation[]
 }
+
+//TODO type возможно надо заменить на перечисление возможный элементов
+// export interface IElement {
+//     id: string
+//     type: string
+//     label: string
+//     defaultValue?: string
+//     data: any[]
+// }
 
 export type StepNavigationType = "prev" | "next" | "finish"
 export interface IStepNavigation {
