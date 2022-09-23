@@ -1,16 +1,17 @@
 import { useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { IResCap } from "../../types/res_cap"
+import { IDetail, IPersonData } from "../../types/flange"
 import { Button } from "../../../components/UI/Button/Button"
 import { MomentUrl } from "../../../components/routes"
-import { IResFlange } from "../../types/res_flange"
-import { IDetail, IPersonData } from "../../types/flange"
+import { Calc } from "./Calc/Calc"
 import classes from "../styles/page.module.scss"
 
 export default function Result() {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const result = (location.state as { result: IResFlange })?.result
+    const result = (location.state as { result: IResCap })?.result
     const person = (location.state as { person: IPersonData })?.person
     const detail = (location.state as { detail: IDetail })?.detail
 
@@ -35,7 +36,7 @@ export default function Result() {
                 </div>
             )}
 
-            {/* {result && <Calc result={result} />} */}
+            {result && <Calc result={result} />}
 
             {person && (
                 <div>

@@ -1,0 +1,223 @@
+import React, { FC } from "react"
+import { ResLine } from "../../../../../components/ResLine/ResLine"
+import { IFlangeResult, IStrengthFormulas_Flange } from "../../../../../types/res_flange"
+import { formatNumber } from "../../../../../utils/format"
+import classes from "../../../../styles/page.module.scss"
+
+type Props = {
+    title: string
+    data: IFlangeResult
+    formulas: IStrengthFormulas_Flange | undefined
+}
+
+export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
+    return (
+        <>
+            <p className={classes.text}>{title}</p>
+            <ResLine
+                title='Плечи действия усилий в болтах/шпильках'
+                imgUrl='/image/moment/formulas/b.svg'
+                formula={{
+                    designation: <>b</>,
+                    value: formulas?.b,
+                }}
+                result={formatNumber(data.b)}
+                units='мм'
+            />
+            <ResLine
+                title='Плечо усилия от действия давления на фланец'
+                imgUrl='/image/moment/formulas/e.svg'
+                formula={{
+                    designation: <>e</>,
+                    value: formulas?.e,
+                }}
+                result={formatNumber(data.e)}
+                units='мм'
+            />
+            <ResLine
+                title='Эквивалентная толщина втулки'
+                imgUrl='/image/moment/formulas/S.svg'
+                formula={{
+                    designation: (
+                        <>
+                            S<sub>э</sub>
+                        </>
+                    ),
+                    value: formulas?.Se,
+                }}
+                result={formatNumber(data.Se)}
+                units='мм'
+            />
+            {data.type === "welded" && (
+                <>
+                    <ResLine
+                        title='Коэффициент зависящий от соотношения размеров конической втулки фланца'
+                        imgUrl='/image/moment/formulas/xi.svg'
+                        formula={{
+                            designation: <>&xi;</>,
+                            value: formulas?.xi,
+                        }}
+                        result={formatNumber(data.xi)}
+                    />
+                    <ResLine
+                        title='где'
+                        imgUrl='/image/moment/formulas/beta.svg'
+                        formula={{
+                            designation: <>&beta;</>,
+                            value: formulas?.beta,
+                        }}
+                        result={formatNumber(data.beta)}
+                    />
+                    <ResLine
+                        imgUrl='/image/moment/formulas/x.svg'
+                        formula={{
+                            designation: <>x</>,
+                            value: formulas?.x,
+                        }}
+                        result={formatNumber(data.x)}
+                    />
+                </>
+            )}
+            <ResLine
+                title='где'
+                imgUrl='/image/moment/formulas/l0.svg'
+                formula={{
+                    designation: (
+                        <>
+                            l<sub>0</sub>
+                        </>
+                    ),
+                    value: formulas?.l0,
+                }}
+                result={formatNumber(data.l0)}
+                units='мм'
+            />
+            <ResLine
+                title='Отношение наружного диаметра тарелки фланца к внутреннему диаметру'
+                imgUrl='/image/moment/formulas/K.svg'
+                formula={{
+                    designation: <>K</>,
+                    value: formulas?.k,
+                }}
+                result={formatNumber(data.k)}
+            />
+
+            <p className={classes.text}>Расчетные коэффициенты</p>
+            <ResLine imgUrl='/image/moment/formulas/betaT.svg' result={formatNumber(data.betaT)} />
+            <ResLine imgUrl='/image/moment/formulas/betaU.svg' result={formatNumber(data.betaU)} />
+            <ResLine imgUrl='/image/moment/formulas/betaY.svg' result={formatNumber(data.betaY)} />
+            <ResLine imgUrl='/image/moment/formulas/betaZ.svg' result={formatNumber(data.betaZ)} />
+            <ResLine
+                imgText={
+                    <>
+                        &beta;<sub>F</sub>
+                    </>
+                }
+                result={formatNumber(data.betaF)}
+            />
+            <ResLine
+                imgText={
+                    <>
+                        &beta;<sub>V</sub>
+                    </>
+                }
+                result={formatNumber(data.betaV)}
+            />
+            <ResLine imgText={<>f</>} result={formatNumber(data.f)} />
+
+            <ResLine
+                title='Коэффициент'
+                imgUrl='/image/moment/formulas/lambda.svg'
+                formula={{
+                    designation: <>&lambda;</>,
+                    value: formulas?.lymda,
+                }}
+                result={formatNumber(data.lymda)}
+            />
+            <ResLine
+                title='Угловая податливость фланца при затяжке'
+                imgUrl='/image/moment/formulas/yf.svg'
+                formula={{
+                    designation: (
+                        <>
+                            y<sub>ф</sub>
+                        </>
+                    ),
+                    value: formulas?.yf,
+                }}
+                result={formatNumber(data.yf)}
+                units='1/(H*мм)'
+            />
+
+            {data.type === "free" && (
+                <>
+                    <ResLine
+                        title='Угловая податливость кольца свободного фланца при затяжке'
+                        imgUrl='/image/moment/formulas/yk.svg'
+                        formula={{
+                            designation: (
+                                <>
+                                    y<sub>к</sub>
+                                </>
+                            ),
+                            value: formulas?.yk,
+                        }}
+                        result={formatNumber(data.yk)}
+                        units='1/(H*мм)'
+                    />
+                    <ResLine
+                        title='где'
+                        imgUrl='/image/moment/formulas/psi.svg'
+                        formula={{
+                            designation: (
+                                <>
+                                    &psi;<sub>к</sub>
+                                </>
+                            ),
+                            value: formulas?.psik,
+                        }}
+                        result={formatNumber(data.psik)}
+                    />
+                </>
+            )}
+
+            <p className={classes.text}>
+                Угловая податливость фланца нагруженного внешним изгибающим моментом
+            </p>
+            <ResLine
+                title={`${
+                    data.type !== "free"
+                        ? "для фланцев приварных встык и плоских"
+                        : "для бурта свободного фланца"
+                }`}
+                imgUrl='/image/moment/formulas/yfn.svg'
+                formula={{
+                    designation: (
+                        <>
+                            y<sub>ф.н</sub>
+                        </>
+                    ),
+                    value: formulas?.yfn,
+                }}
+                result={formatNumber(data.yfn)}
+                units='1/(H*мм)'
+            />
+            {data.type === "free" && (
+                <ResLine
+                    title='для свободного фланца'
+                    imgUrl='/image/moment/formulas/yfc.svg'
+                    formula={{
+                        designation: (
+                            <>
+                                y<sub>ф.с</sub>
+                            </>
+                        ),
+                        value: formulas?.yfc,
+                    }}
+                    result={formatNumber(data.yfc)}
+                    units='1/(H*мм)'
+                />
+            )}
+        </>
+    )
+}

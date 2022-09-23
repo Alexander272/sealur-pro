@@ -1,6 +1,7 @@
 import api from "../../service/api"
 import { IFormCapCalc } from "../types/cap"
 import { IFormFlangeCalc } from "../types/flange"
+import { IResCap } from "../types/res_cap"
 import { IResFlange } from "../types/res_flange"
 
 export default class CalcService {
@@ -12,7 +13,7 @@ export default class CalcService {
         return res.data
     }
 
-    static async CalculateCap(data: IFormCapCalc): Promise<{ data: IResFlange }> {
+    static async CalculateCap(data: IFormCapCalc): Promise<{ data: IResCap }> {
         const res = await api.post("/sealur-moment/calc/cap", data)
         return res.data
     }
