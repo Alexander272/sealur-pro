@@ -1,10 +1,10 @@
 import React, { FC } from "react"
 import { Button } from "../../../../../../components/UI/Button/Button"
-import { IStepNavigation } from "../../../../../types/steps"
+import { IStepNavigation, StepNavigationType } from "../../../../../types/steps"
 
 type Props = {
     nav: IStepNavigation
-    onNavigation: (stepId: string) => void
+    onNavigation: (stepId: string, type: StepNavigationType) => void
 }
 
 export const NavItem: FC<Props> = ({ nav, onNavigation }) => {
@@ -13,7 +13,7 @@ export const NavItem: FC<Props> = ({ nav, onNavigation }) => {
             //TODO дописать проверку условий
             // только надо сначало придумать как это сделать
         } else {
-            onNavigation(nav.options[0].stepId)
+            onNavigation(nav.options[0].stepId, nav.type)
         }
     }
 
@@ -22,7 +22,7 @@ export const NavItem: FC<Props> = ({ nav, onNavigation }) => {
             key={nav.id}
             variant={nav.type === "prev" ? "grayPrimary" : "primary"}
             type={nav.type === "finish" ? "submit" : "button"}
-            onClick={nav.type !== "finish" ? navigationHandler : () => {}}
+            onClick={navigationHandler}
         >
             {nav.text}
         </Button>

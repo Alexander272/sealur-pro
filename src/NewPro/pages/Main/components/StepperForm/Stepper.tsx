@@ -1,17 +1,25 @@
-import React, { FC } from "react"
-import { IStep } from "../../../../types/steps"
+import React, { FC, useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import { IStep, StepNavigationType } from "../../../../types/steps"
 import { Navigation } from "./Navigation/Navigation"
-import classes from "./form.module.scss"
 import { StepElement } from "./StepElement"
+import classes from "./form.module.scss"
 
 type Props = {
     step: IStep | undefined
-    navigationHandler: (stepId: string) => void
+    navigationHandler: (stepId: string, type: StepNavigationType) => void
 }
 
 export const Stepper: FC<Props> = ({ step, navigationHandler }) => {
-    if (!step) return null
+    const { setValue, getValues } = useFormContext()
 
+    useEffect(() => {
+        step?.elements.forEach(e => {
+            if (!getValues(e.name)) setValue(e.name, e.defaultValue)
+        })
+    }, [step?.elements, setValue, getValues])
+
+    if (!step) return null
     return (
         <>
             <p className={classes.title}>{step.title}</p>

@@ -17,6 +17,7 @@ export const StepElement: FC<Props> = ({ element }) => {
                 <div className={classes.element}>
                     {element.label && <p className={classes["element-title"]}>{element.label}</p>}
                     <Controller
+                        key={element.name}
                         control={control}
                         name={element.name}
                         render={({ field }) => (

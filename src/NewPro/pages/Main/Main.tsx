@@ -65,6 +65,30 @@ import classes from "./main.module.scss"
 const testStep = {
     id: "1",
     title: "test step",
+    // можно добавить скрытые элементы и условия появления каждого из них (надо это все доделать)
+    /*
+     elements: [
+        {
+            condition: [
+                {
+                    fieldName: "field",
+                    fieldValue: "value2",
+                },
+            ],
+            type: "Select",
+            label: "label",
+            data: [
+               
+                {
+                    id: "1",
+                    title: "title",
+                    stepId: "1",
+                },
+            ],
+            defaultValue: "value1", // можно конечно использовать первый элемент массива
+        },
+    ],
+    */
     elements: [
         {
             type: "Select",
@@ -116,7 +140,7 @@ export default function Main() {
     return (
         <div className={classes.container}>
             <StepperForm />
-            {/* <pre>{JSON.stringify(testSteps, null, 4)}</pre> */}
+
             <pre>{JSON.stringify(testStep, null, 4)}</pre>
         </div>
     )

@@ -1,11 +1,11 @@
 import React, { FC } from "react"
-import { IStepNavigation } from "../../../../../types/steps"
+import { IStepNavigation, StepNavigationType } from "../../../../../types/steps"
 import { NavItem } from "./NavItem"
 import classes from "../form.module.scss"
 
 type Props = {
     navigation: IStepNavigation[]
-    onNavigation: (stepId: string) => void
+    onNavigation: (stepId: string, type: StepNavigationType) => void
 }
 
 export const Navigation: FC<Props> = ({ navigation, onNavigation }) => {

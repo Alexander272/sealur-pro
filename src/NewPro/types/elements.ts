@@ -12,12 +12,15 @@ export type ElementBase<ExtraProps> = {
     id: string
     type: ElementType
     name: string
+    defaultValue?: string
 } & ExtraProps
 
 interface IElementSelect {
     label?: string
-    defaultValue?: string
-    data: any[]
+    data: {
+        id: string
+        title: string
+    }[]
 }
 
 interface IElementInput {

@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import useSWR from "swr"
 import ServerError from "../../../../../Error/ServerError"
 import ReadService from "../../../../service/read"
-import { IStepTitle } from "../../../../types/steps"
+import { IStepTitle, StepNavigationType } from "../../../../types/steps"
 import { Loader } from "../../../../../components/UI/Loader/Loader"
 import { Steps } from "./Steps"
 import { Stepper } from "./Stepper"
@@ -31,16 +31,19 @@ export const StepperForm: FC<Props> = () => {
     }, [data, steps])
 
     const changeStepHandler = (idx: number) => {
-        setStepIdx(idx)
-        setStepId(steps[idx].id)
+        if (idx < stepIdx) {
+            setStepIdx(idx)
+            setStepId(steps[idx].id)
+        }
     }
 
-    const goStepHandler = (stepId: string) => {
-        if (!setStepId) return
-        setStepId(stepId)
-        if (stepIdx !== steps.length - 1) {
-            setSteps(prev => prev.slice(0, stepIdx - 1))
+    const goToStepHandler = (stepId: string, type: StepNavigationType) => {
+        if (!stepId || type === "finish") return
+
+        if (stepIdx !== steps.length - 1 && type === "next") {
+            setSteps(prev => prev.slice(0, stepIdx + 1))
         }
+        setStepId(stepId)
     }
 
     const submitHundler = (data: any) => {
@@ -62,7 +65,7 @@ export const StepperForm: FC<Props> = () => {
 
             <FormProvider {...form}>
                 <form className={classes.form} onSubmit={form.handleSubmit(submitHundler)}>
-                    <Stepper step={data.data} navigationHandler={goStepHandler} />
+                    <Stepper step={data.data} navigationHandler={goToStepHandler} />
                 </form>
             </FormProvider>
         </div>

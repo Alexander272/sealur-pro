@@ -29,7 +29,7 @@ const testSteps: IStep[] = [
                         title: "ASME B 16.20 / ASME B 16.5",
                     },
                 ],
-                defaultValue: "value1",
+                defaultValue: "1",
             },
         ],
         navigation: [
@@ -60,7 +60,7 @@ const testSteps: IStep[] = [
                         title: "title",
                     },
                 ],
-                defaultValue: "value1",
+                defaultValue: "1",
             },
         ],
         navigation: [
@@ -76,11 +76,102 @@ const testSteps: IStep[] = [
             },
             {
                 id: "2",
-                type: "finish",
+                type: "next",
                 text: "Далее",
                 options: [
                     {
                         stepId: "2",
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "2",
+        title: "step 3",
+        elements: [
+            {
+                id: "1",
+                type: "Select",
+                name: "test1",
+                label: "test 1",
+                data: [
+                    {
+                        id: "1",
+                        title: "test",
+                    },
+                    {
+                        id: "2",
+                        title: "test2",
+                    },
+                ],
+                defaultValue: "1",
+            },
+        ],
+        navigation: [
+            {
+                id: "1",
+                type: "prev",
+                text: "Назад",
+                options: [
+                    {
+                        stepId: "1",
+                    },
+                ],
+            },
+            {
+                id: "2",
+                type: "next",
+                text: "Далее",
+                options: [
+                    {
+                        stepId: "3",
+                    },
+                ],
+            },
+        ],
+    },
+
+    {
+        id: "3",
+        title: "step 4",
+        elements: [
+            {
+                id: "1",
+                type: "Select",
+                name: "test2",
+                label: "test 2",
+                data: [
+                    {
+                        id: "5",
+                        title: "test",
+                    },
+                    {
+                        id: "6",
+                        title: "test2",
+                    },
+                ],
+                defaultValue: "5",
+            },
+        ],
+        navigation: [
+            {
+                id: "1",
+                type: "prev",
+                text: "Назад",
+                options: [
+                    {
+                        stepId: "2",
+                    },
+                ],
+            },
+            {
+                id: "2",
+                type: "finish",
+                text: "Далее",
+                options: [
+                    {
+                        stepId: "4",
                     },
                 ],
             },
@@ -93,9 +184,8 @@ export default class ReadService {
         // const res = await api.get(url)
         // return res.data
 
-        console.log(id)
-
         //TODO
+        // console.log(id)
         if (id === "init") return { data: testSteps[0] }
         else {
             const step = testSteps.find(s => s.id === id) || ({} as IStep)
