@@ -6,20 +6,15 @@ import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     data: IStrength
-    flanges: IFlangeResult[]
+    flange: IFlangeResult
 }
 
-export const SealingConclusions: FC<Props> = ({ data, flanges }) => {
-    const renderConclusions = (
-        d: IStrengthResult,
-        index: 0 | 1,
-        vTeta: boolean,
-        vTetaK: boolean
-    ) => {
+export const SealingConclusions: FC<Props> = ({ data, flange }) => {
+    const renderConclusions = (d: IStrengthResult, vTeta: boolean, vTetaK: boolean) => {
         let cons = `полностью герметично так как, ϴ=${formatNumber(d.teta)} ≤ ${formatNumber(
             d.dTeta
         )}, т.е. выполняется условие герметичности фланцевого соединения`
-        if (flanges[index].type === "free") {
+        if (flange.type === "free") {
             if (!(vTeta && vTetaK)) {
                 let thetaK = ` и ϴₖ=${formatNumber(d.tetaK)} ${vTetaK ? "≤" : ">"} ${formatNumber(
                     d.dTetaK
@@ -43,7 +38,7 @@ export const SealingConclusions: FC<Props> = ({ data, flanges }) => {
 
         return (
             <>
-                <p className={classes.text}>- для {!index ? "первого" : "второго"} фланца</p>
+                <p className={classes.text}>- для фланца</p>
                 <p className={classes.text}>
                     Фланцевое соединение <b>{cons}</b>
                 </p>
@@ -53,14 +48,7 @@ export const SealingConclusions: FC<Props> = ({ data, flanges }) => {
 
     return (
         <Container title='Выводы о герметичности фланцевого соединения'>
-            {data.strength.length > 2 ? (
-                <>
-                    {renderConclusions(data.strength[2], 0, data.vTeta1, data.vTetaK1)}
-                    {renderConclusions(data.strength[3], 1, data.vTeta2, data.vTetaK2)}
-                </>
-            ) : (
-                renderConclusions(data.strength[1], 0, data.vTeta1, data.vTetaK1)
-            )}
+            {renderConclusions(data.strength[1], data.vTeta1, data.vTetaK1)}
         </Container>
     )
 }

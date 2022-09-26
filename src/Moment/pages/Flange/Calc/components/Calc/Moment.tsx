@@ -21,7 +21,7 @@ export const Moment: FC<Props> = ({ data, formulas, gasket, path, mkp, mkp1 }) =
                 <>
                     <ResLine
                         title='Крутящий момент при затяжке болтов/шпилек'
-                        imgUrl='/image/moment/formulas/Mkp.svg'
+                        imgUrl='/image/moment/formulas/flange/Mkp.svg'
                         result={formatNumber(data[`${path as "basis"}`][`${mkp as "Mkp"}`])}
                         formula={{
                             designation: (

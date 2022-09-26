@@ -30,7 +30,7 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления на прокладку достаточного для герметизации фланцевого соединения'
-                imgUrl='/image/moment/formulas/Pb1.svg'
+                imgUrl='/image/moment/formulas/flange/Pb1.svg'
                 formula={{
                     designation: (
                         <>
@@ -44,7 +44,7 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки фланцевых соединений'
-                imgUrl='/image/moment/formulas/Pb.svg'
+                imgUrl='/image/moment/formulas/flange/Pb.svg'
                 formula={{
                     designation: (
                         <>
@@ -59,7 +59,7 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки фланцевых соединений в рабочих условиях'
-                imgUrl='/image/moment/formulas/Pbr.svg'
+                imgUrl='/image/moment/formulas/flange/Pbr.svg'
                 formula={{
                     designation: (
                         <>

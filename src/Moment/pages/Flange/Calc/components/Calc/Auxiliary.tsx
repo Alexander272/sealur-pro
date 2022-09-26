@@ -38,8 +38,8 @@ export const Auxiliary: FC<Props> = ({
                 title='Эффективная ширина прокладки'
                 imgUrl={
                     gasket.type === "Восьмигранная"
-                        ? "/image/moment/formulas/b0-oval.svg"
-                        : "/image/moment/formulas/b0.svg"
+                        ? "/image/moment/formulas/flange/b0-oval.svg"
+                        : "/image/moment/formulas/flange/b0.svg"
                 }
                 formula={{
                     designation: (
@@ -56,8 +56,8 @@ export const Auxiliary: FC<Props> = ({
                 title='Расчетный диаметр прокладки'
                 imgUrl={
                     gasket.type === "Восьмигранная"
-                        ? "/image/moment/formulas/Dcp-oval.svg"
-                        : "/image/moment/formulas/Dcp.svg"
+                        ? "/image/moment/formulas/flange/Dcp-oval.svg"
+                        : "/image/moment/formulas/flange/Dcp.svg"
                 }
                 formula={{
                     designation: (
@@ -72,7 +72,7 @@ export const Auxiliary: FC<Props> = ({
             />
             <ResLine
                 title='Податливость прокладки'
-                imgUrl={"/image/moment/formulas/yp.svg"}
+                imgUrl={"/image/moment/formulas/flange/yp.svg"}
                 formula={{
                     designation: (
                         <>
@@ -96,7 +96,7 @@ export const Auxiliary: FC<Props> = ({
             />
             <ResLine
                 title='Податливость болтов/шпилек'
-                imgUrl={"/image/moment/formulas/yb.svg"}
+                imgUrl={"/image/moment/formulas/flange/yb.svg"}
                 formula={{
                     designation: (
                         <>
@@ -112,8 +112,8 @@ export const Auxiliary: FC<Props> = ({
                 title='где'
                 imgUrl={
                     basis.type === "Шпилька"
-                        ? "/image/moment/formulas/Lb1.svg"
-                        : "/image/moment/formulas/Lb2.svg"
+                        ? "/image/moment/formulas/flange/Lb1.svg"
+                        : "/image/moment/formulas/flange/Lb2.svg"
                 }
                 formula={{
                     designation: (
@@ -128,7 +128,7 @@ export const Auxiliary: FC<Props> = ({
             />
             <ResLine
                 title='Суммарная площадь сечения болтов/шпилек по внутреннему диаметру резьбы или нагруженному сечению наименьшего диаметра'
-                imgUrl='/image/moment/formulas/a.svg'
+                imgUrl='/image/moment/formulas/flange/a.svg'
                 formula={{
                     designation: (
                         <>
@@ -141,13 +141,11 @@ export const Auxiliary: FC<Props> = ({
                 units='мм&#178;'
             />
 
-            {
-                <FlangeData
-                    title='- для первого фланца'
-                    data={flanges[0]}
-                    formulas={formulas?.strength?.flange[0]}
-                />
-            }
+            <FlangeData
+                title='- для первого фланца'
+                data={flanges[0]}
+                formulas={formulas?.strength?.flange[0]}
+            />
             {flanges.length > 1 && (
                 <FlangeData
                     title='- для второго фланца'
@@ -158,7 +156,7 @@ export const Auxiliary: FC<Props> = ({
 
             <ResLine
                 title='Жесткость фланцевого соединения'
-                imgUrl='/image/moment/formulas/gamma.svg'
+                imgUrl='/image/moment/formulas/flange/gamma.svg'
                 formula={{
                     designation: <>&gamma;</>,
                     value: formulas?.strength.gamma,
@@ -169,7 +167,7 @@ export const Auxiliary: FC<Props> = ({
 
             <ResLine
                 title='Коэффициент жесткости фланцевого соединения нагруженного внутренним давлением или внешней осевой силой'
-                imgUrl='/image/moment/formulas/alpha1.svg'
+                imgUrl='/image/moment/formulas/flange/alpha1.svg'
                 formula={{
                     designation: <>&alpha;</>,
                     value: formulas?.alpha,

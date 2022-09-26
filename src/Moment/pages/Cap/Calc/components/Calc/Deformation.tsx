@@ -18,8 +18,8 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
                 title='Эффективная ширина прокладки'
                 imgUrl={
                     gasket.type === "Восьмигранная"
-                        ? "/image/moment/formulas/b0-oval.svg"
-                        : "/image/moment/formulas/b0.svg"
+                        ? "/image/moment/formulas/flange/b0-oval.svg"
+                        : "/image/moment/formulas/flange/b0.svg"
                 }
                 formula={{
                     designation: (
@@ -36,8 +36,8 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
                 title='Расчетный диаметр прокладки'
                 imgUrl={
                     gasket.type === "Восьмигранная"
-                        ? "/image/moment/formulas/Dcp-oval.svg"
-                        : "/image/moment/formulas/Dcp.svg"
+                        ? "/image/moment/formulas/flange/Dcp-oval.svg"
+                        : "/image/moment/formulas/flange/Dcp.svg"
                 }
                 formula={{
                     designation: (
@@ -52,7 +52,7 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
             />
             <ResLine
                 title='Усилие необходимое для смятия прокладки при затяжке'
-                imgUrl='/image/moment/formulas/Po.svg'
+                imgUrl='/image/moment/formulas/flange/Po.svg'
                 formula={{
                     designation: (
                         <>
@@ -66,7 +66,7 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
             />
             <ResLine
                 title='Усилие на прокладке в рабочих условиях необходимое для обеспечения герметичности фланцевого соединения'
-                imgUrl='/image/moment/formulas/Rp.svg'
+                imgUrl='/image/moment/formulas/flange/Rp.svg'
                 formula={{
                     designation: (
                         <>

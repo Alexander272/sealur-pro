@@ -34,7 +34,7 @@ export const BoltStrength: FC<Props> = ({
             <p className={classes.text}>Расчетное напряжение в болтах/шпильках</p>
             <ResLine
                 title='- при затяжке'
-                imgUrl='/image/moment/formulas/sigmaB1.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaB1.svg'
                 formula={{
                     designation: (
                         <>
@@ -48,7 +48,7 @@ export const BoltStrength: FC<Props> = ({
             />
             <ResLine
                 title='- в рабочих условиях'
-                imgUrl='/image/moment/formulas/sigmaB2.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaB2.svg'
                 formula={{
                     designation: (
                         <>
@@ -64,7 +64,7 @@ export const BoltStrength: FC<Props> = ({
             <p className={classes.text}>Допускаемое напряжение для болтов шпилек</p>
             <ResLine
                 title='- при затяжке'
-                imgUrl='/image/moment/formulas/dSigmaM.svg'
+                imgUrl='/image/moment/formulas/flange/dSigmaM.svg'
                 formula={{
                     designation: (
                         <>
@@ -79,7 +79,7 @@ export const BoltStrength: FC<Props> = ({
             />
             <ResLine
                 title='- допускаемое напряжение для болтов шпилек в рабочих условиях и при расчете на условия испытания'
-                imgUrl='/image/moment/formulas/dSigmaR.svg'
+                imgUrl='/image/moment/formulas/flange/dSigmaR.svg'
                 formula={{
                     designation: (
                         <>
@@ -96,7 +96,7 @@ export const BoltStrength: FC<Props> = ({
             <p className={classes.text}>Условия прочности болтов шпилек</p>
             <ConditionLine
                 title='- при затяжке'
-                imgUrl='/image/moment/formulas/vSigmaB1.svg'
+                imgUrl='/image/moment/formulas/flange/vSigmaB1.svg'
                 result={
                     <>
                         {formatNumber(data[path as "basis"][sigmaB1 as "sigmaB1"])}&nbsp;
@@ -113,7 +113,7 @@ export const BoltStrength: FC<Props> = ({
             />
             <ConditionLine
                 title='- в рабочих условиях'
-                imgUrl='/image/moment/formulas/vSigmaB2.svg'
+                imgUrl='/image/moment/formulas/flange/vSigmaB2.svg'
                 result={
                     <>
                         {formatNumber(data[path as "basis"][sigmaB2 as "sigmaB1"])}&nbsp;
@@ -133,7 +133,7 @@ export const BoltStrength: FC<Props> = ({
                 <>
                     <ResLine
                         title='Условие прочности прокладки (проверяется для мягких прокладок)'
-                        imgUrl='/image/moment/formulas/qF.svg'
+                        imgUrl='/image/moment/formulas/flange/qF.svg'
                         formula={{
                             designation: <>q</>,
                             value: formulas && formulas[path as "basis"][q as "sigmaB2"],
@@ -142,7 +142,7 @@ export const BoltStrength: FC<Props> = ({
                         units='МПа'
                     />
                     <ConditionLine
-                        imgUrl='/image/moment/formulas/q.svg'
+                        imgUrl='/image/moment/formulas/flange/q.svg'
                         result={
                             <>
                                 {formatNumber(data[path as "basis"][q as "sigmaB1"])}&nbsp;

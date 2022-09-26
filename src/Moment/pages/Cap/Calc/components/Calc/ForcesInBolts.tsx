@@ -1,37 +1,24 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas } from "../../../../../types/res_flange"
+import { IFormulas } from "../../../../../types/res_flange"
+import { ICalculateCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 //TODO нужно исправить ссылки
 export const CapQtLink = {
-    "Qt-any": "/image/moment/formulas/Qt.svg",
-    "Qt-free": "/image/moment/formulas/Qt-free.svg",
-    "Qt-free-any": "/image/moment/formulas/Qt-first.svg",
-    "Qt-any-free": "/image/moment/formulas/Qt-second.svg",
-    "Qt-free-free": "/image/moment/formulas/Qt-free.svg",
-    "Qt-any-embed": "/image/moment/formulas/Qt-embed.svg",
-    "Qt-free-embed": "/image/moment/formulas/Qt-free-embed.svg",
-    "Qt-free-any-embed": "/image/moment/formulas/Qt-first-embed.svg",
-    "Qt-any-free-embed": "/image/moment/formulas/Qt-second-embed.svg",
-    "Qt-free-free-embed": "/image/moment/formulas/Qt-free-embed.svg",
-    "Qt-washer-any": "/image/moment/formulas/Qt-washer.svg",
-    "Qt-washer-free": "/image/moment/formulas/Qt-washer-free.svg",
-    "Qt-washer-free-any": "/image/moment/formulas/Qt-washer-first.svg",
-    "Qt-washer-any-free": "/image/moment/formulas/Qt-washer-second.svg",
-    "Qt-washer-any-any": "/image/moment/formulas/Qt-washer.svg",
-    "Qt-washer-free-free": "/image/moment/formulas/Qt-washer-free.svg",
-    "Qt-washer-any-embed": "/image/moment/formulas/Qt-washer-embed.svg",
-    "Qt-washer-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
-    "Qt-washer-free-any-embed": "/image/moment/formulas/Qt-washer-first-embed.svg",
-    "Qt-washer-any-free-embed": "/image/moment/formulas/Qt-washer-second-embed.svg",
-    "Qt-washer-any-any-embed": "/image/moment/formulas/Qt-washer-embed.svg",
-    "Qt-washer-free-free-embed": "/image/moment/formulas/Qt-washer-free-embed.svg",
+    "Qt-any": "/image/moment/formulas/cap/Qt.svg",
+    "Qt-free": "/image/moment/formulas/cap/Qt-free.svg",
+    "Qt-any-embed": "/image/moment/formulas/cap/Qt-embed.svg",
+    "Qt-free-embed": "/image/moment/formulas/cap/Qt-free-embed.svg",
+    "Qt-washer-any": "/image/moment/formulas/cap/Qt-washer.svg",
+    "Qt-washer-free": "/image/moment/formulas/cap/Qt-washer-free.svg",
+    "Qt-washer-any-embed": "/image/moment/formulas/cap/Qt-washer-embed.svg",
+    "Qt-washer-free-embed": "/image/moment/formulas/cap/Qt-washer-free-embed.svg",
 }
 
 type Props = {
-    data: ICalculate
+    data: ICalculateCap
     formulas: IFormulas | undefined
     typeQt: string
     path: "basis" | "strength"
@@ -46,7 +33,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
         <Container title='Усилия в болтах (шпильках) фланцевого соединения при затяжке и в рабочих условиях'>
             <ResLine
                 title='Суммарная площадь сечения болтов/шпилек по внутреннему диаметру резьбы или нагруженному сечению наименьшего диаметра'
-                imgUrl='/image/moment/formulas/a.svg'
+                imgUrl='/image/moment/formulas/flange/a.svg'
                 formula={{
                     designation: (
                         <>
@@ -60,7 +47,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Равнодействующая нагрузка от давления'
-                imgUrl='/image/moment/formulas/Qd.svg'
+                imgUrl='/image/moment/formulas/flange/Qd.svg'
                 formula={{
                     designation: (
                         <>
@@ -74,7 +61,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Приведенная нагрузка, вызванная воздействием внешней силы и изгибающего момента'
-                imgUrl='/image/moment/formulas/Qfm.svg'
+                imgUrl='/image/moment/formulas/flange/Qfm.svg'
                 formula={{
                     designation: (
                         <>
@@ -103,7 +90,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки фланцевых соединений'
-                imgUrl='/image/moment/formulas/Pb.svg'
+                imgUrl='/image/moment/formulas/flange/Pb.svg'
                 formula={{
                     designation: (
                         <>
@@ -118,7 +105,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Коэффициент жесткости фланцевого соединения нагруженного внутренним давлением или внешней осевой силой'
-                imgUrl='/image/moment/formulas/alpha1.svg'
+                imgUrl='/image/moment/formulas/flange/alpha1.svg'
                 formula={{
                     designation: <>&alpha;</>,
                     value: formulas?.alpha,
@@ -128,7 +115,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
 
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления на прокладку достаточного для герметизации фланцевого соединения'
-                imgUrl='/image/moment/formulas/Pb1.svg'
+                imgUrl='/image/moment/formulas/cap/Pb1.svg'
                 formula={{
                     designation: (
                         <>
@@ -143,13 +130,13 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
 
             <ResLine
                 title='Минимальное начальное натяжение болтов (шпилек)'
-                imgUrl='/image/moment/formulas/minB.svg'
+                imgUrl='/image/moment/formulas/flange/minB.svg'
                 result={formatNumber(data[`${path as "basis"}`]?.minB)}
                 units='H'
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения обжатия прокладки и минимального начального натяжения болтов/шпилек'
-                imgUrl='/image/moment/formulas/Pb2.svg'
+                imgUrl='/image/moment/formulas/flange/Pb2.svg'
                 formula={{
                     designation: (
                         <>
@@ -163,7 +150,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Расчетная нагрузка на болты/шпильки фланцевых соединений в рабочих условиях'
-                imgUrl='/image/moment/formulas/Pbr.svg'
+                imgUrl='/image/moment/formulas/cap/Pbr.svg'
                 formula={{
                     designation: (
                         <>

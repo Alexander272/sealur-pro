@@ -26,7 +26,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     </p>
                     <ConditionLine
                         title='- при затяжке'
-                        imgUrl='/image/moment/formulas/max1.svg'
+                        imgUrl='/image/moment/formulas/flange/max1.svg'
                         formula={{ value: formulas?.Max1 }}
                         result={
                             <>
@@ -39,7 +39,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
-                        imgUrl='/image/moment/formulas/max2.svg'
+                        imgUrl='/image/moment/formulas/flange/max2.svg'
                         formula={{ value: formulas?.Max2 }}
                         result={
                             <>
@@ -56,7 +56,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     </p>
                     <ConditionLine
                         title='- при затяжке'
-                        imgUrl='/image/moment/formulas/max3.svg'
+                        imgUrl='/image/moment/formulas/flange/max3.svg'
                         formula={{ value: formulas?.Max3 }}
                         result={
                             <>
@@ -68,7 +68,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
-                        imgUrl='/image/moment/formulas/max4.svg'
+                        imgUrl='/image/moment/formulas/flange/max4.svg'
                         formula={{ value: formulas?.Max4 }}
                         result={
                             <>
@@ -87,7 +87,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     </p>
                     <ConditionLine
                         title='- при затяжке'
-                        imgUrl='/image/moment/formulas/max1_0.svg'
+                        imgUrl='/image/moment/formulas/flange/max1_0.svg'
                         formula={{ value: formulas?.Max5 }}
                         result={
                             <>
@@ -99,7 +99,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
-                        imgUrl='/image/moment/formulas/max2_0.svg'
+                        imgUrl='/image/moment/formulas/flange/max2_0.svg'
                         formula={{ value: formulas?.Max6 }}
                         result={
                             <>
@@ -114,7 +114,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
 
             <ConditionLine
                 title='Для фланцев всех типов в сечении S&#8320; должно выполняться условие'
-                imgUrl='/image/moment/formulas/max5.svg'
+                imgUrl='/image/moment/formulas/flange/max5.svg'
                 formula={{ value: formulas?.Max7 }}
                 result={
                     <>
@@ -131,7 +131,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
             </p>
             <ConditionLine
                 title='- при затяжке'
-                imgUrl='/image/moment/formulas/max6.svg'
+                imgUrl='/image/moment/formulas/flange/max6.svg'
                 formula={{ value: formulas?.Max8 }}
                 result={
                     <>
@@ -143,7 +143,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
             />
             <ConditionLine
                 title='- в рабочих условиях'
-                imgUrl='/image/moment/formulas/max7.svg'
+                imgUrl='/image/moment/formulas/flange/max7.svg'
                 formula={{ value: formulas?.Max9 }}
                 result={
                     <>
@@ -162,7 +162,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     </p>
                     <ConditionLine
                         title='- при затяжке'
-                        imgUrl='/image/moment/formulas/max8.svg'
+                        imgUrl='/image/moment/formulas/flange/max8.svg'
                         formula={{ value: formulas?.Max10 }}
                         result={
                             <>
@@ -174,7 +174,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
-                        imgUrl='/image/moment/formulas/max9.svg'
+                        imgUrl='/image/moment/formulas/flange/max9.svg'
                         formula={{ value: formulas?.Max11 }}
                         result={
                             <>
@@ -189,7 +189,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
 
             <ResLine
                 title='Угол поворота приварного встык фланца и бурта свободного фланца в рабочих условия'
-                imgUrl='/image/moment/formulas/theta.svg'
+                imgUrl='/image/moment/formulas/flange/theta.svg'
                 formula={{
                     designation: <>&theta;</>,
                     value: formulas?.teta,
@@ -198,7 +198,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                 units='рад'
             />
             <ConditionLine
-                imgUrl='/image/moment/formulas/thetaCond.svg'
+                imgUrl='/image/moment/formulas/flange/thetaCond.svg'
                 result={
                     <>
                         {formatNumber(data.teta)}&nbsp;
@@ -212,7 +212,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                 <>
                     <ResLine
                         title='Угол поворота кольца свободного фланца в рабочих условиях'
-                        imgUrl='/image/moment/formulas/thetaK.svg'
+                        imgUrl='/image/moment/formulas/flange/thetaK.svg'
                         formula={{
                             designation: (
                                 <>
@@ -225,7 +225,7 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                         units='рад'
                     />
                     <ConditionLine
-                        imgUrl='/image/moment/formulas/thetaCondK.svg'
+                        imgUrl='/image/moment/formulas/flange/thetaCondK.svg'
                         result={
                             <>
                                 {formatNumber(data.tetaK)}&nbsp;

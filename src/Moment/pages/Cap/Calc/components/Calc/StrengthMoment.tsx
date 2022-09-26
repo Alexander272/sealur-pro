@@ -16,7 +16,7 @@ export const StrengthMoment: FC<Props> = ({ data, formulas, mkp, mkp1 }) => {
         <Container title='Расчет момента затяжки'>
             <ResLine
                 title='Крутящий момент при затяжке болтов/шпилек'
-                imgUrl='/image/moment/formulas/Mkp.svg'
+                imgUrl='/image/moment/formulas/flange/Mkp.svg'
                 result={formatNumber(data[mkp])}
                 formula={{
                     designation: (

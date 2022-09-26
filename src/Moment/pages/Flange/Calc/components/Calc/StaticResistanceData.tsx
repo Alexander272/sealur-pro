@@ -21,7 +21,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             <p className={classes.text}>{title}</p>
             <ResLine
                 title='Коэффициент учитывающий изгиб тарелки фланца между болтами шпильками'
-                imgUrl='/image/moment/formulas/Cf.svg'
+                imgUrl='/image/moment/formulas/flange/Cf.svg'
                 formula={{
                     designation: (
                         <>
@@ -35,14 +35,14 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {flange.type === "welded" ? (
                 <ResLine
                     title='Приведенный диаметр приварного встык фланца с конической или	прямой втулкой'
-                    imgUrl='/image/moment/formulas/D.svg'
+                    imgUrl='/image/moment/formulas/flange/D.svg'
                     result={formatNumber(data.Dzv)}
                     units='мм'
                 />
             ) : (
                 <ResLine
                     title='Приведенный диаметр плоского фланца'
-                    imgUrl='/image/moment/formulas/D_0.svg'
+                    imgUrl='/image/moment/formulas/flange/D_0.svg'
                     result={formatNumber(data.Dzv)}
                     units='мм'
                 />
@@ -53,7 +53,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             </p>
             <ResLine
                 title='- для приварного встык фланца плоского и бурта свободного фланца'
-                imgUrl='/image/moment/formulas/mm.svg'
+                imgUrl='/image/moment/formulas/flange/mm.svg'
                 result={formatNumber(data.MM)}
                 formula={{
                     designation: (
@@ -68,7 +68,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {flange.type === "free" && (
                 <ResLine
                     title='- для кольца свободного фланца'
-                    imgUrl='/image/moment/formulas/mmk.svg'
+                    imgUrl='/image/moment/formulas/flange/mmk.svg'
                     result={formatNumber(data.MMk)}
                     formula={{
                         designation: (
@@ -88,7 +88,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             </p>
             <ResLine
                 title='- для приварного встык фланца плоского и бурта свободного фланца'
-                imgUrl='/image/moment/formulas/Mp.svg'
+                imgUrl='/image/moment/formulas/flange/Mp.svg'
                 result={formatNumber(data.Mp)}
                 formula={{
                     designation: (
@@ -103,7 +103,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {flange.type === "free" && (
                 <ResLine
                     title='- для кольца свободного фланца'
-                    imgUrl='/image/moment/formulas/Mpk.svg'
+                    imgUrl='/image/moment/formulas/flange/Mpk.svg'
                     result={formatNumber(data.Mpk)}
                     formula={{
                         designation: (
@@ -126,7 +126,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 <>
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
-                        imgUrl='/image/moment/formulas/sigmaM1.svg'
+                        imgUrl='/image/moment/formulas/flange/sigmaM1.svg'
                         result={formatNumber(data.sigmaM1)}
                         formula={{
                             designation: (
@@ -141,7 +141,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                     />
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8320;'
-                        imgUrl='/image/moment/formulas/sigmaM0.svg'
+                        imgUrl='/image/moment/formulas/flange/sigmaM0.svg'
                         result={formatNumber(data.sigmaM0)}
                         formula={{
                             designation: (
@@ -158,7 +158,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             ) : (
                 <ResLine
                     title='- для приварных встык фланцев с прямой втулкой плоских фланцев и свободных фланцев'
-                    imgUrl='/image/moment/formulas/sigmaM0M1.svg'
+                    imgUrl='/image/moment/formulas/flange/sigmaM0M1.svg'
                     result={formatNumber(data.sigmaM0)}
                     formula={{
                         designation: (
@@ -175,7 +175,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
 
             <ResLine
                 title='Радиальное напряжение в тарелке приварного встык фланца плоского фланца и бурте свободного фланца в условиях затяжки'
-                imgUrl='/image/moment/formulas/sigmaMR.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaMR.svg'
                 result={formatNumber(data.sigmaR)}
                 formula={{
                     designation: (
@@ -190,7 +190,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             />
             <ResLine
                 title='Окружное напряжение в тарелке приварного встык фланца плоского фланца и бурте свободного фланца в условиях затяжки'
-                imgUrl='/image/moment/formulas/sigmaMT.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaMT.svg'
                 result={formatNumber(data.sigmaT)}
                 formula={{
                     designation: (
@@ -206,7 +206,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {flange.type === "free" && (
                 <ResLine
                     title='Окружное напряжение в кольце свободного фланца в условиях затяжки'
-                    imgUrl='/image/moment/formulas/sigmaMK.svg'
+                    imgUrl='/image/moment/formulas/flange/sigmaMK.svg'
                     result={formatNumber(data.sigmaK)}
                     formula={{
                         designation: (
@@ -229,7 +229,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 <>
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
-                        imgUrl='/image/moment/formulas/sigmaP1.svg'
+                        imgUrl='/image/moment/formulas/flange/sigmaP1.svg'
                         result={formatNumber(data.sigmaP1)}
                         formula={{
                             designation: (
@@ -244,7 +244,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                     />
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8320;'
-                        imgUrl='/image/moment/formulas/sigmaP0.svg'
+                        imgUrl='/image/moment/formulas/flange/sigmaP0.svg'
                         result={formatNumber(data.sigmaP0)}
                         formula={{
                             designation: (
@@ -261,7 +261,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             ) : (
                 <ResLine
                     title='- для приварных встык фланцев с прямой втулкой плоских фланцев и свободных фланцев'
-                    imgUrl='/image/moment/formulas/sigmaP0P1.svg'
+                    imgUrl='/image/moment/formulas/flange/sigmaP0P1.svg'
                     result={formatNumber(data.sigmaP0)}
                     formula={{
                         designation: (
@@ -283,7 +283,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {!data.isSameSigma && (
                 <ResLine
                     title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
-                    imgUrl='/image/moment/formulas/sigma1mmp.svg'
+                    imgUrl='/image/moment/formulas/flange/sigma1mmp.svg'
                     result={formatNumber(data.sigmaMp)}
                     formula={{
                         designation: (
@@ -299,7 +299,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             )}
             <ResLine
                 title='- для приварных встык фланцев с конической втулкой в сечении S&#8320; приварных фланцев с прямой втулкой плоских фланцев и свободных фланцев'
-                imgUrl='/image/moment/formulas/sigma0mmp.svg'
+                imgUrl='/image/moment/formulas/flange/sigma0mmp.svg'
                 result={formatNumber(data.sigmaMp0)}
                 formula={{
                     designation: (
@@ -317,7 +317,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 title='Окружные мембранные напряжения от действия давления во втулке приварного встык
                 фланца обечайке трубе плоского фланца или обечайке трубе бурта свободного фланца в
                 сечениии S&#8320;'
-                imgUrl='/image/moment/formulas/sigma0mop.svg'
+                imgUrl='/image/moment/formulas/flange/sigma0mop.svg'
                 result={formatNumber(data.sigmaMop)}
                 formula={{
                     designation: (
@@ -337,7 +337,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             </p>
             <ResLine
                 title='- радиальные напряжения'
-                imgUrl='/image/moment/formulas/sigmaPR.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaPR.svg'
                 result={formatNumber(data.sigmaRp)}
                 formula={{
                     designation: (
@@ -352,7 +352,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             />
             <ResLine
                 title='- окружное напряжения'
-                imgUrl='/image/moment/formulas/sigmaPT.svg'
+                imgUrl='/image/moment/formulas/flange/sigmaPT.svg'
                 result={formatNumber(data.sigmaTp)}
                 formula={{
                     designation: (
@@ -369,7 +369,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
             {flange.type === "free" && (
                 <ResLine
                     title='Окружное напряжение в кольце свободного фланца в рабочих условиях'
-                    imgUrl='/image/moment/formulas/sigmaPK.svg'
+                    imgUrl='/image/moment/formulas/flange/sigmaPK.svg'
                     result={formatNumber(data.sigmaKp)}
                     formula={{
                         designation: (

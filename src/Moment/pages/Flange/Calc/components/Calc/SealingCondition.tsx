@@ -29,13 +29,13 @@ export const SealingCondition: FC<Props> = ({ data, flanges, formulas }) => {
                 <p className={classes.text}>- для {!index ? "первого" : "второго"} фланца</p>
                 <ResLine
                     title='Угол поворота приварного встык фланца и бурта свободного фланца'
-                    imgUrl='/image/moment/formulas/theta.svg'
+                    imgUrl='/image/moment/formulas/flange/theta.svg'
                     formula={{ designation: <>&Theta;</>, value: f?.teta }}
                     result={formatNumber(d.teta)}
                     units='рад'
                 />
                 <ConditionLine
-                    imgUrl='/image/moment/formulas/thetaCond.svg'
+                    imgUrl='/image/moment/formulas/flange/thetaCond.svg'
                     result={
                         <>
                             {formatNumber(d.teta)}&nbsp;
@@ -49,12 +49,12 @@ export const SealingCondition: FC<Props> = ({ data, flanges, formulas }) => {
                     <>
                         <ResLine
                             title='Угол поворота кольца свободного фланца'
-                            imgUrl='/image/moment/formulas/thetaK.svg'
+                            imgUrl='/image/moment/formulas/flange/thetaK.svg'
                             result={formatNumber(d.tetaK)}
                             units='рад'
                         />
                         <ConditionLine
-                            imgUrl='/image/moment/formulas/thetaCondK.svg'
+                            imgUrl='/image/moment/formulas/flange/thetaCondK.svg'
                             result={
                                 <>
                                     {formatNumber(d.teta)}&nbsp;

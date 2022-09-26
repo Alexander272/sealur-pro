@@ -26,30 +26,17 @@ type Props = {
 }
 
 const ResCalc: FC<Props> = ({ result }) => {
-    // const getTypeAlpha = () => {
-    //     let res = result.flange.type
+    const getTypeQt = () => {
+        let washer = ""
+        if (result.washers) washer = "-washer"
 
-    //     return res
-    // }
+        let embed = ""
+        if (result.embed) embed = "-embed"
 
-    // const getTypeQt = () => {
-    //     let washer = ""
-    //     if (result.washers) washer = "-washer"
+        let flanges = result.flange.type === "free" ? "-free" : "-any"
 
-    //     let embed = ""
-    //     if (result.embed) embed = "-embed"
-
-    //     let flanges = ""
-    //     if (result.flanges.length === 1) {
-    //         flanges = result.flanges[0].type === "free" ? "-free" : "-any"
-    //     } else {
-    //         const t1 = result.flanges[0].type === "free" ? "-free" : "-any"
-    //         const t2 = result.flanges[0].type === "free" ? "-free" : "-any"
-    //         flanges = t1 + t2
-    //     }
-
-    //     return `Qt${washer}${flanges}${embed}`
-    // }
+        return `Qt${washer}${flanges}${embed}`
+    }
 
     return (
         <>
@@ -70,18 +57,16 @@ const ResCalc: FC<Props> = ({ result }) => {
                         gasket={result.gasket}
                         formulas={result.formulas}
                     />
-                    {/* //TODO */}
-                    {/* <ForcesInBolts
+                    <ForcesInBolts
                         data={result.calc}
                         formulas={result.formulas}
-                        typeAlpha={getTypeAlpha()}
                         typeQt={getTypeQt()}
                         path='basis'
                         pb='Pb'
                         pb1='Pb1'
                         pb2='Pb2'
                         pbr='Pbr'
-                    /> */}
+                    />
                     <BoltStrength
                         data={result.calc}
                         res={result.gasket}
@@ -112,16 +97,14 @@ const ResCalc: FC<Props> = ({ result }) => {
             )}
             {result.calc.strength && (
                 <>
-                    {/* //TODO */}
-                    {/* <Auxiliary
+                    <Auxiliary
                         data={result.calc}
                         basis={result.data}
                         gasket={result.gasket}
                         flange={result.flange}
                         bolt={result.bolt}
                         formulas={result.formulas}
-                        typeAlpha={getTypeAlpha()}
-                    /> */}
+                    />
                     <Tightness data={result.calc} formulas={result.formulas} />
                     <BoltStrength
                         data={result.calc}
@@ -140,20 +123,18 @@ const ResCalc: FC<Props> = ({ result }) => {
                         mkp='fMkp'
                         mkp1='fMkp1'
                     />
-                    {/* //TODO */}
-                    {/* <StaticResistance
+                    <StaticResistance
                         data={result.calc.strength.strength}
-                        flanges={result.flanges}
-                        isSameFlange={result.isSameFlange}
+                        flange={result.flange}
                         index={0}
                         title='Расчет фланца на статическую прочность'
                         formulas={result.formulas}
-                    /> */}
-                    {/* <TightnessLoad
+                    />
+                    <TightnessLoad
                         data={result.calc}
                         typeQt={getTypeQt()}
                         formulas={result.formulas}
-                    /> */}
+                    />
                     <BoltStrength
                         data={result.calc}
                         res={result.gasket}
@@ -171,33 +152,29 @@ const ResCalc: FC<Props> = ({ result }) => {
                         mkp='sMkp'
                         mkp1='sMkp1'
                     />
-                    {/* //TODO */}
-                    {/* <StaticResistance
+                    <StaticResistance
                         data={result.calc.strength.strength}
-                        flanges={result.flanges}
-                        isSameFlange={result.isSameFlange}
+                        flange={result.flange}
                         index={1}
                         title='Расчет фланца на статическую прочность c учетом температурных деформаций'
                         formulas={result.formulas}
-                    /> */}
+                    />
                     <h5 className={classes.title}>Анализ результатов расчета</h5>
                     <Deformation
                         data={result.calc}
                         gasket={result.gasket}
                         formulas={result.formulas}
                     />
-                    {/* //TODO */}
-                    {/* <ForcesInBolts
+                    <ForcesInBolts
                         data={result.calc}
                         formulas={result.formulas}
-                        typeAlpha={getTypeAlpha()}
                         typeQt={getTypeQt()}
                         path='strength'
                         pb='sPb'
                         pb1='sPb1'
                         pb2='sPb2'
                         pbr='sPbr'
-                    /> */}
+                    />
                     <BoltStrength
                         data={result.calc}
                         res={result.gasket}
@@ -216,13 +193,12 @@ const ResCalc: FC<Props> = ({ result }) => {
                         pathBasis='strength'
                         pathQ='sQ'
                     />
-                    {/* //TODO */}
-                    {/* <SealingCondition
+                    <SealingCondition
                         data={result.calc.strength}
-                        flanges={result.flanges}
+                        flange={result.flange}
                         formulas={result.formulas?.strength}
                     />
-                    <SealingConclusions data={result.calc.strength} flanges={result.flanges} /> */}
+                    <SealingConclusions data={result.calc.strength} flange={result.flange} />
                     <Moment
                         data={result.calc}
                         formulas={result.formulas}

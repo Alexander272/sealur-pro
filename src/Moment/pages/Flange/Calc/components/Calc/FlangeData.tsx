@@ -16,7 +16,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             <p className={classes.text}>{title}</p>
             <ResLine
                 title='Плечи действия усилий в болтах/шпильках'
-                imgUrl='/image/moment/formulas/b.svg'
+                imgUrl='/image/moment/formulas/flange/b.svg'
                 formula={{
                     designation: <>b</>,
                     value: formulas?.b,
@@ -26,7 +26,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             />
             <ResLine
                 title='Плечо усилия от действия давления на фланец'
-                imgUrl='/image/moment/formulas/e.svg'
+                imgUrl='/image/moment/formulas/flange/e.svg'
                 formula={{
                     designation: <>e</>,
                     value: formulas?.e,
@@ -36,7 +36,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             />
             <ResLine
                 title='Эквивалентная толщина втулки'
-                imgUrl='/image/moment/formulas/S.svg'
+                imgUrl='/image/moment/formulas/flange/S.svg'
                 formula={{
                     designation: (
                         <>
@@ -52,7 +52,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 <>
                     <ResLine
                         title='Коэффициент зависящий от соотношения размеров конической втулки фланца'
-                        imgUrl='/image/moment/formulas/xi.svg'
+                        imgUrl='/image/moment/formulas/flange/xi.svg'
                         formula={{
                             designation: <>&xi;</>,
                             value: formulas?.xi,
@@ -61,7 +61,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                     />
                     <ResLine
                         title='где'
-                        imgUrl='/image/moment/formulas/beta.svg'
+                        imgUrl='/image/moment/formulas/flange/beta.svg'
                         formula={{
                             designation: <>&beta;</>,
                             value: formulas?.beta,
@@ -69,7 +69,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                         result={formatNumber(data.beta)}
                     />
                     <ResLine
-                        imgUrl='/image/moment/formulas/x.svg'
+                        imgUrl='/image/moment/formulas/flange/x.svg'
                         formula={{
                             designation: <>x</>,
                             value: formulas?.x,
@@ -80,7 +80,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             )}
             <ResLine
                 title='где'
-                imgUrl='/image/moment/formulas/l0.svg'
+                imgUrl='/image/moment/formulas/flange/l0.svg'
                 formula={{
                     designation: (
                         <>
@@ -94,7 +94,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             />
             <ResLine
                 title='Отношение наружного диаметра тарелки фланца к внутреннему диаметру'
-                imgUrl='/image/moment/formulas/K.svg'
+                imgUrl='/image/moment/formulas/flange/K.svg'
                 formula={{
                     designation: <>K</>,
                     value: formulas?.k,
@@ -103,10 +103,22 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             />
 
             <p className={classes.text}>Расчетные коэффициенты</p>
-            <ResLine imgUrl='/image/moment/formulas/betaT.svg' result={formatNumber(data.betaT)} />
-            <ResLine imgUrl='/image/moment/formulas/betaU.svg' result={formatNumber(data.betaU)} />
-            <ResLine imgUrl='/image/moment/formulas/betaY.svg' result={formatNumber(data.betaY)} />
-            <ResLine imgUrl='/image/moment/formulas/betaZ.svg' result={formatNumber(data.betaZ)} />
+            <ResLine
+                imgUrl='/image/moment/formulas/flange/betaT.svg'
+                result={formatNumber(data.betaT)}
+            />
+            <ResLine
+                imgUrl='/image/moment/formulas/flange/betaU.svg'
+                result={formatNumber(data.betaU)}
+            />
+            <ResLine
+                imgUrl='/image/moment/formulas/flange/betaY.svg'
+                result={formatNumber(data.betaY)}
+            />
+            <ResLine
+                imgUrl='/image/moment/formulas/flange/betaZ.svg'
+                result={formatNumber(data.betaZ)}
+            />
             <ResLine
                 imgText={
                     <>
@@ -127,7 +139,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
 
             <ResLine
                 title='Коэффициент'
-                imgUrl='/image/moment/formulas/lambda.svg'
+                imgUrl='/image/moment/formulas/flange/lambda.svg'
                 formula={{
                     designation: <>&lambda;</>,
                     value: formulas?.lymda,
@@ -136,7 +148,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             />
             <ResLine
                 title='Угловая податливость фланца при затяжке'
-                imgUrl='/image/moment/formulas/yf.svg'
+                imgUrl='/image/moment/formulas/flange/yf.svg'
                 formula={{
                     designation: (
                         <>
@@ -153,7 +165,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 <>
                     <ResLine
                         title='Угловая податливость кольца свободного фланца при затяжке'
-                        imgUrl='/image/moment/formulas/yk.svg'
+                        imgUrl='/image/moment/formulas/flange/yk.svg'
                         formula={{
                             designation: (
                                 <>
@@ -167,7 +179,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                     />
                     <ResLine
                         title='где'
-                        imgUrl='/image/moment/formulas/psi.svg'
+                        imgUrl='/image/moment/formulas/flange/psi.svg'
                         formula={{
                             designation: (
                                 <>
@@ -190,7 +202,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                         ? "для фланцев приварных встык и плоских"
                         : "для бурта свободного фланца"
                 }`}
-                imgUrl='/image/moment/formulas/yfn.svg'
+                imgUrl='/image/moment/formulas/flange/yfn.svg'
                 formula={{
                     designation: (
                         <>
@@ -205,7 +217,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             {data.type === "free" && (
                 <ResLine
                     title='для свободного фланца'
-                    imgUrl='/image/moment/formulas/yfc.svg'
+                    imgUrl='/image/moment/formulas/flange/yfc.svg'
                     formula={{
                         designation: (
                             <>
