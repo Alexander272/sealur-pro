@@ -3,7 +3,7 @@ import useSWR from "swr"
 import ServerError from "../../../../Error/ServerError"
 import ReadService from "../../../service/read"
 import { IBolt } from "../../../types/bolts"
-import { Table } from "./Table/Table"
+import { BoltsTable } from "./BoltsTable"
 import classes from "./bolts.module.scss"
 
 export default function Bolts() {
@@ -20,8 +20,8 @@ export default function Bolts() {
 
     return (
         <div className={classes.container}>
-            <Table title='Болты' bolts={bolts?.data} isInch={false} />
-            <Table title='Дюймовые болты' bolts={inchBolts?.data} isInch={true} />
+            <BoltsTable title='Болты' bolts={bolts?.data} isInch={false} />
+            <BoltsTable title='Дюймовые болты' bolts={inchBolts?.data} isInch={true} />
         </div>
     )
 }

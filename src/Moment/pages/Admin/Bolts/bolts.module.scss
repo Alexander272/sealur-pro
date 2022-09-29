@@ -6,90 +6,68 @@
     flex-grow: 1;
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 20px;
 }
 
 .table {
     flex-grow: 1;
     flex-basis: 50%;
-    margin-right: 36px;
 
-    &-title {
-        font-weight: 500;
-        margin-bottom: 15px;
-        text-align: center;
+    .thead {
+        padding: 4px 6px;
     }
 
-    &-header,
-    &-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        position: relative;
+    &-new {
+        margin-top: 15px;
 
-        &>.column,
-        &>.column-select {
-            padding: 4px 6px;
-            flex-grow: 1;
-            border: 1px solid var(--button-bg-color);
-            text-align: center;
-            width: 100%;
-
-            &:focus {
-                outline-color: var(--button-color);
-            }
-
-        }
-
-        &>.column-select {
-            background-color: #fff;
-        }
-
-        .icon,
-        .icon-delete {
+        & .btn {
             display: flex;
             justify-content: center;
-            align-items: center;
-            width: 30px;
-            height: 28px;
-            cursor: pointer;
-            background-color: var(--button-bg-color);
-            border-radius: 6px;
-            padding: 6px;
-            margin: 3px;
-            outline: none;
-            border: none;
-            position: absolute;
-            right: -36px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+    }
+}
 
-        .icon-delete {
-            color: var(--danger-color);
-            font-size: 20px;
+.bolt-table {
+    margin-right: 36px;
+}
+
+.form {
+    position: relative;
+
+    .input {
+        width: 100%;
+        text-align: center;
+        border: none;
+        padding: 4px 6px;
+
+        &:focus {
+            outline-color: var(--button-color);
         }
     }
 
-    .new-row {
-        margin-bottom: 10px;
-    }
-
-    .paste {
-        margin-bottom: 10px;
+    .icon,
+    .icon-delete {
         display: flex;
         justify-content: center;
-
-        &-input {
-            flex-basis: 50%;
-            border: none;
-            outline: none;
-            border-bottom: 1px solid var(--button-bg-color);
-            padding: 2px 18px;
-        }
+        align-items: center;
+        width: 30px;
+        height: 28px;
+        cursor: pointer;
+        background-color: var(--button-bg-color);
+        border-radius: 6px;
+        padding: 6px;
+        margin: 3px;
+        outline: none;
+        border: none;
+        position: absolute;
+        right: -36px;
+        top: 0;
     }
 
-    & .btn {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
+    .icon-delete {
+        color: var(--danger-color);
+        font-size: 20px;
     }
 }

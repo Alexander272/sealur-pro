@@ -7,6 +7,8 @@ export interface IFullSize {
     id: string
     standId: string
     d: number
+    dn?: string
+    dmm?: number
     d6: number
     dOut: number
     h: number

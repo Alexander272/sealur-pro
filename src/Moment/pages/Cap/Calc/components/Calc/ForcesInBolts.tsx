@@ -5,7 +5,6 @@ import { ICalculateCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
-//TODO нужно исправить ссылки
 export const CapQtLink = {
     "Qt-any": "/image/moment/formulas/cap/Qt.svg",
     "Qt-free": "/image/moment/formulas/cap/Qt-free.svg",
@@ -105,7 +104,7 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
             <ResLine
                 title='Коэффициент жесткости фланцевого соединения нагруженного внутренним давлением или внешней осевой силой'
-                imgUrl='/image/moment/formulas/flange/alpha1.svg'
+                imgUrl='/image/moment/formulas/cap/alpha.svg'
                 formula={{
                     designation: <>&alpha;</>,
                     value: formulas?.alpha,
@@ -114,7 +113,8 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
             />
 
             <ResLine
-                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления на прокладку достаточного для герметизации фланцевого соединения'
+                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления 
+                    на прокладку достаточного для герметизации фланцевого соединения'
                 imgUrl='/image/moment/formulas/cap/Pb1.svg'
                 formula={{
                     designation: (
@@ -135,7 +135,8 @@ export const ForcesInBolts: FC<Props> = ({ data, formulas, typeQt, path, pb, pb1
                 units='H'
             />
             <ResLine
-                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения обжатия прокладки и минимального начального натяжения болтов/шпилек'
+                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения обжатия прокладки и 
+                    минимального начального натяжения болтов/шпилек'
                 imgUrl='/image/moment/formulas/flange/Pb2.svg'
                 formula={{
                     designation: (

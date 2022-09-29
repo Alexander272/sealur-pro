@@ -5,37 +5,38 @@ import { useSWRConfig } from "swr"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
 import AdminService from "../../../../service/admin"
+import { IGasketData } from "../../../../types/gasket"
+import { Table } from "../../components/Table/Table"
 import classes from "../gasket.module.scss"
 
 type Props = {
-    scheme: {
-        key: string
-        title: string
-    }[]
-    data: any
-    style: any
+    data: IGasketData
     gasketId: string
+    typeId: string
 }
 
-export const TableRow: FC<Props> = ({ scheme, data, style, gasketId }) => {
+export const GasketRow: FC<Props> = ({ data, gasketId, typeId }) => {
     const {
         register,
         handleSubmit,
         reset,
         formState: { dirtyFields },
-    } = useForm({
+    } = useForm<IGasketData>({
         defaultValues: data,
     })
     const { mutate } = useSWRConfig()
     const { toggle, isOpen } = useModal()
 
     const saveHandler = async (row: any) => {
-        let newData: any = {
+        let newData: IGasketData = {
             id: data.id,
+            gasketId: gasketId,
+            compression: row.compression,
+            epsilon: row.epsilon,
+            permissiblePres: row.permissiblePres,
+            thickness: row.thickness,
+            typeId: typeId,
         }
-        scheme.forEach(s => {
-            newData[s.key] = +row[s.key]
-        })
 
         try {
             await AdminService.update(`/sealur-moment/gasket-data/${data.id}`, newData)
@@ -74,21 +75,52 @@ export const TableRow: FC<Props> = ({ scheme, data, style, gasketId }) => {
             />
             <form
                 key={data.id}
-                className={classes["content-table__row"]}
-                style={style}
+                className={classes["content-form"]}
                 onSubmit={handleSubmit(saveHandler)}
             >
-                {scheme.map(k => (
-                    <input
-                        key={data.id + k.key}
-                        className={classes["content-table__column"]}
-                        type='number'
-                        step={0.001}
-                        {...register(k.key, {
-                            required: true,
-                        })}
-                    />
-                ))}
+                <Table.Row>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("compression", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("epsilon", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("permissiblePres", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("thickness", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                </Table.Row>
+
                 {Object.keys(dirtyFields).length !== 0 ? (
                     <button type='submit' className={classes.icon}>
                         <img src='/image/save-icon.svg' alt='save' />

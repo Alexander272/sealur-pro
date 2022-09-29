@@ -1,21 +1,14 @@
 import React, { FC, useEffect } from "react"
-import { Button } from "../../../../../components/UI/Button/Button"
-import { Select } from "../../../../../components/UI/Select/Select"
-import { IGasket } from "../../../../types/flange"
-import { IGasketData, IGasketType } from "../../../../types/gasket"
-import { Table } from "./Table"
-import classes from "../gasket.module.scss"
 import { Controller, useForm } from "react-hook-form"
-import AdminService from "../../../../service/admin"
 import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
-
-const scheme = [
-    { title: "Коэффициент обжатия", key: "compression" },
-    { title: "Условный модуль сжатия прокладки", key: "epsilon" },
-    { title: "Допускаемое удельное давление", key: "permissiblePres" },
-    { title: "Толщина прокладки", key: "thickness" },
-]
+import AdminService from "../../../../service/admin"
+import { IGasket } from "../../../../types/flange"
+import { IGasketData, IGasketType } from "../../../../types/gasket"
+import { Button } from "../../../../../components/UI/Button/Button"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { GasketTable } from "./GasketTable"
+import classes from "../gasket.module.scss"
 
 type Props = {
     data: IGasketData[] | undefined
@@ -86,7 +79,7 @@ export const GasketData: FC<Props> = ({ data, types, gasket }) => {
                     <Button variant='grayPrimary'>Сохранить</Button>
                 ) : null}
             </form>
-            <Table scheme={scheme} data={data} gasketId={gasket?.id || ""} typeId={typeId} />
+            <GasketTable data={data} gasketId={gasket?.id || ""} typeId={typeId} />
         </div>
     )
 }

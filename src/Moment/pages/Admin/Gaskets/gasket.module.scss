@@ -74,9 +74,10 @@
 
     &-main {
         display: flex;
-        flex-wrap: wrap;
+        // flex-wrap: wrap;
         gap: 25px;
         padding-right: 10px;
+        flex-direction: column;
     }
 
     &-data {
@@ -90,31 +91,22 @@
         }
     }
 
-    &-table {
-        margin-right: 36px;
+    .thead {
+        padding: 4px 6px;
+    }
 
-        &__header {
-            display: grid;
-        }
+    &-form {
+        position: relative;
 
-        &__row {
-            display: grid;
-            position: relative;
-        }
-
-        &__column {
-            padding: 4px 6px;
-            display: flex;
-            flex-grow: 1;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--button-bg-color);
+        .input {
+            width: 100%;
             text-align: center;
+            border: none;
+            padding: 4px 6px;
 
             &:focus {
                 outline-color: var(--button-color);
             }
-
         }
 
         .icon,
@@ -133,20 +125,29 @@
             border: none;
             position: absolute;
             right: -36px;
+            top: 0;
         }
 
         .icon-delete {
             color: var(--danger-color);
             font-size: 20px;
         }
+    }
 
-        .btn {
+    &-new {
+        margin-top: 15px;
+
+        & .btn {
             margin-top: 10px;
             display: flex;
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
         }
+    }
+
+    &-table {
+        margin-right: 36px;
     }
 }
 

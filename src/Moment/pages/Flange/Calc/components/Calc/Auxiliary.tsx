@@ -154,6 +154,7 @@ export const Auxiliary: FC<Props> = ({
                 />
             )}
 
+            {/* //TODO сделать разные формулы для гаммы */}
             <ResLine
                 title='Жесткость фланцевого соединения'
                 imgUrl='/image/moment/formulas/flange/gamma.svg'

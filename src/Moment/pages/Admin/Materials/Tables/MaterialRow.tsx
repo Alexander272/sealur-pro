@@ -4,6 +4,7 @@ import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
+import { Table } from "../../components/Table/Table"
 import AdminService from "../../../../service/admin"
 import classes from "../materials.module.scss"
 
@@ -19,7 +20,7 @@ type Props = {
     materialId: string
 }
 
-export const TableRow: FC<Props> = ({ field, data, materialId }) => {
+export const MaterialRow: FC<Props> = ({ field, data, materialId }) => {
     const {
         register,
         handleSubmit,
@@ -72,23 +73,30 @@ export const TableRow: FC<Props> = ({ field, data, materialId }) => {
                 cancelHandler={toggle}
                 confirmHandler={deleteHandler}
             />
-            <form className={classes["table-row"]} onSubmit={handleSubmit(saveHandler)}>
-                <input
-                    className={classes.column}
-                    type='number'
-                    step={0.001}
-                    {...register("temperature", {
-                        required: true,
-                    })}
-                />
-                <input
-                    className={classes.column}
-                    type='number'
-                    step={0.001}
-                    {...register("field", {
-                        required: true,
-                    })}
-                />
+            <form className={classes.form} onSubmit={handleSubmit(saveHandler)}>
+                <Table.Row>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("temperature", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("field", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                </Table.Row>
+
                 {dirtyFields.temperature || dirtyFields.field ? (
                     <button type='submit' className={classes.icon}>
                         <img src='/image/save-icon.svg' alt='save' />

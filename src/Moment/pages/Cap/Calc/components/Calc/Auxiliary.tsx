@@ -138,9 +138,10 @@ export const Auxiliary: FC<Props> = ({ data, basis, gasket, flange, bolt, formul
             />
             {/* //TODO здесь должна быть еще крышка */}
 
+            {/* //TODO сделать разные формулы для гаммы */}
             <ResLine
                 title='Жесткость фланцевого соединения'
-                imgUrl='/image/moment/formulas/flange/gamma.svg'
+                imgUrl='/image/moment/formulas/cap/gamma.svg'
                 formula={{
                     designation: <>&gamma;</>,
                     value: formulas?.strength.gamma,

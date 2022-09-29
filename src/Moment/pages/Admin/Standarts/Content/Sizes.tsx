@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react"
-import { Select } from "../../../../../components/UI/Select/Select"
 import { ISizeResponse } from "../../../../types/sizes"
-import { Table } from "./Table/Table"
 import { IBolt } from "../../../../types/bolts"
+import { Select } from "../../../../../components/UI/Select/Select"
+import { SizeTable } from "./Table/SizeTable"
 import classes from "../standarts.module.scss"
 
 type Props = {
@@ -10,9 +10,10 @@ type Props = {
     sizes: ISizeResponse | undefined
     bolts: IBolt[] | undefined
     standartId: string
+    isInch: boolean
 }
 
-export const Sizes: FC<Props> = ({ isNeedRow, sizes, bolts, standartId }) => {
+export const Sizes: FC<Props> = ({ isNeedRow, sizes, bolts, standartId, isInch }) => {
     const [row, setRow] = useState<0 | 1>(0)
     const changeRowHandler = (value: 0 | 1) => setRow(value)
 
@@ -25,21 +26,13 @@ export const Sizes: FC<Props> = ({ isNeedRow, sizes, bolts, standartId }) => {
                     <Select.Option value={1}>Ряд 2</Select.Option>
                 </Select>
             )}
-            {row === 0 ? (
-                <Table
-                    sizes={sizes?.sizeRow1}
-                    bolts={bolts || []}
-                    standartId={standartId}
-                    row={row}
-                />
-            ) : (
-                <Table
-                    sizes={sizes?.sizeRow2}
-                    bolts={bolts || []}
-                    standartId={standartId}
-                    row={row}
-                />
-            )}
+            <SizeTable
+                sizes={row === 0 ? sizes?.sizeRow1 : sizes?.sizeRow2}
+                bolts={bolts || []}
+                standartId={standartId}
+                row={row}
+                isInch={isInch}
+            />
         </div>
     )
 }

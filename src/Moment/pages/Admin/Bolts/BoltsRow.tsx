@@ -2,18 +2,19 @@ import React, { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
-import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
-import { useModal } from "../../../../../components/Modal/hooks/useModal"
-import AdminService from "../../../../service/admin"
-import { IBolt } from "../../../../types/bolts"
-import classes from "../bolts.module.scss"
+import AdminService from "../../../service/admin"
+import { IBolt } from "../../../types/bolts"
+import { ConfirmModal } from "../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../components/Modal/hooks/useModal"
+import { Table } from "../components/Table/Table"
+import classes from "./bolts.module.scss"
 
 type Props = {
     bolt: IBolt
     isInch: boolean
 }
 
-export const TableRow: FC<Props> = ({ bolt, isInch }) => {
+export const BoltsRow: FC<Props> = ({ bolt, isInch }) => {
     const {
         register,
         handleSubmit,
@@ -70,29 +71,38 @@ export const TableRow: FC<Props> = ({ bolt, isInch }) => {
                 cancelHandler={toggle}
                 confirmHandler={deleteHandler}
             />
-            <form className={classes["table-row"]} onSubmit={handleSubmit(saveHandler)}>
-                <input
-                    className={classes.column}
-                    {...register("title", {
-                        required: true,
-                    })}
-                />
-                <input
-                    className={classes.column}
-                    type='number'
-                    step={0.001}
-                    {...register("diameter", {
-                        required: true,
-                    })}
-                />
-                <input
-                    className={classes.column}
-                    type='number'
-                    step={0.001}
-                    {...register("area", {
-                        required: true,
-                    })}
-                />
+            <form className={classes.form} onSubmit={handleSubmit(saveHandler)}>
+                <Table.Row>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            {...register("title", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("diameter", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register("area", {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                </Table.Row>
+
                 {Object.keys(dirtyFields).length !== 0 ? (
                     <button type='submit' className={classes.icon}>
                         <img src='/image/save-icon.svg' alt='save' />

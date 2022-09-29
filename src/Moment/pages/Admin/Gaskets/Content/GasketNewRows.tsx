@@ -4,19 +4,15 @@ import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
 import { Button } from "../../../../../components/UI/Button/Button"
 import AdminService from "../../../../service/admin"
+import { Table } from "../../components/Table/Table"
 import classes from "../gasket.module.scss"
 
 type Props = {
-    scheme: {
-        key: string
-        title: string
-    }[]
-    style: any
     gasketId: string
     typeId: string
 }
 
-export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
+export const GasketNewRows: FC<Props> = ({ gasketId, typeId }) => {
     const { register, reset, handleSubmit } = useForm()
     const { mutate } = useSWRConfig()
 
@@ -29,11 +25,12 @@ export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
     const saveHandler = async (data: any) => {
         let arr = []
         for (let i = 0; i < newRowCount; i++) {
-            let newobj: any = {}
-            scheme.forEach(s => {
-                newobj[s.key] = +data[i][s.key]
+            arr.push({
+                compression: +data[i].compression,
+                epsilon: +data[i].epsilon,
+                permissiblePres: +data[i].permissiblePres,
+                thickness: +data[i].thickness,
             })
-            arr.push(newobj)
         }
 
         const newData = {
@@ -63,19 +60,48 @@ export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
 
         for (let i = 0; i < newRowCount; i++) {
             rows.push(
-                <div key={"row" + i} className={classes["content-table__row"]} style={style}>
-                    {scheme.map(k => (
+                <Table.Row key={"row" + i}>
+                    <Table.Ceil>
                         <input
-                            key={"row" + i + k.key}
-                            className={classes["content-table__column"]}
+                            className={classes.input}
                             type='number'
                             step={0.001}
-                            {...register(`${i}.${k.key}`, {
+                            {...register(`${i}.compression`, {
                                 required: true,
                             })}
                         />
-                    ))}
-                </div>
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register(`${i}.epsilon`, {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register(`${i}.permissiblePres`, {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                    <Table.Ceil>
+                        <input
+                            className={classes.input}
+                            type='number'
+                            step={0.001}
+                            {...register(`${i}.thickness`, {
+                                required: true,
+                            })}
+                        />
+                    </Table.Ceil>
+                </Table.Row>
             )
         }
 
@@ -83,8 +109,10 @@ export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
     }
 
     return (
-        <>
-            <form>{renderRows()}</form>
+        <div className={classes["content-new"]}>
+            <form className={classes["content-form"]}>
+                <div className={classes["content-table"]}>{renderRows()}</div>
+            </form>
             <div className={classes.btn}>
                 <Button variant='grayPrimary' onClick={addNewRow}>
                     Добавить
@@ -96,6 +124,6 @@ export const NewTableRow: FC<Props> = ({ scheme, style, gasketId, typeId }) => {
                 )}
                 {newRowCount > 0 && <Button onClick={handleSubmit(saveHandler)}>Сохранить</Button>}
             </div>
-        </>
+        </div>
     )
 }

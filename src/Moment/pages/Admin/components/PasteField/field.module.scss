@@ -1,0 +1,14 @@
+.paste {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+
+    &-field {
+        flex-basis: 50%;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid var(--button-bg-color);
+        padding: 2px 18px;
+        resize: none;
+    }
+}

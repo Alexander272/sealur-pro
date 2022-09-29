@@ -20,7 +20,7 @@ export const Content: FC<Props> = ({ typeId, standart }) => {
     const [isInch, setIsInch] = useState(standart?.isInch || false)
     const changeIsInchHandler = useCallback((isInch: boolean) => setIsInch(isInch), [])
 
-    const { data: sizes } = useSWR<{ data: ISizeResponse }>(
+    const { data: sizes, isValidating } = useSWR<{ data: ISizeResponse }>(
         standart?.id ? `/sealur-moment/flange-sizes?standartId=${standart?.id}` : null,
         ReadService.getData
     )
@@ -42,12 +42,13 @@ export const Content: FC<Props> = ({ typeId, standart }) => {
                 />
             )}
 
-            {sizes !== undefined ? (
+            {sizes !== undefined && !isValidating ? (
                 <Sizes
                     isNeedRow={hasRows}
                     sizes={sizes.data}
                     bolts={bolts?.data}
                     standartId={standart?.id || ""}
+                    isInch={isInch}
                 />
             ) : (
                 <Loader />

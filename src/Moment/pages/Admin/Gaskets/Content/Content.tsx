@@ -5,8 +5,8 @@ import ReadService from "../../../../service/read"
 import { IGasket } from "../../../../types/flange"
 import { FullData } from "../../../../types/gasket"
 import { GasketData } from "./GasketData"
-import classes from "../gasket.module.scss"
 import { EnvTable } from "./EnvTable"
+import classes from "../gasket.module.scss"
 
 type Props = {
     gasket: IGasket | null

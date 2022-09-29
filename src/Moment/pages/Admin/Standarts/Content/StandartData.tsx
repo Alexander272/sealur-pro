@@ -76,7 +76,7 @@ export const StandartData: FC<Props> = ({
             <div className={classes.inputs}>
                 <Input
                     name='titleDn'
-                    label='Название поля Dn'
+                    label='Название поля D'
                     orentation='horizontal'
                     register={register}
                 />

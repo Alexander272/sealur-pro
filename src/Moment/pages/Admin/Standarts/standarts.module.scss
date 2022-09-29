@@ -93,82 +93,143 @@
         margin-top: 20px;
         flex-grow: 1;
         // max-width: 450px;
-        margin-right: 36px;
+        // margin-right: 36px;
 
-        &-header,
-        &-row {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            position: relative;
+        .thead {
+            padding: 4px 6px;
+        }
 
-            &>.column,
-            &>.column-select {
-                padding: 4px 6px;
-                flex-grow: 1;
-                // display: flex;
-                // justify-content: center;
-                // align-items: center;
-                border: 1px solid var(--button-bg-color);
-                text-align: center;
-                width: 100%;
+        &-new {
+            margin-top: 15px;
 
-                &:focus {
-                    outline-color: var(--button-color);
-                }
-
-            }
-
-            &>.column-select {
-                background-color: #fff;
-            }
-
-            .icon,
-            .icon-delete {
+            & .btn {
                 display: flex;
                 justify-content: center;
-                align-items: center;
-                width: 30px;
-                height: 28px;
-                cursor: pointer;
-                background-color: var(--button-bg-color);
-                border-radius: 6px;
-                padding: 6px;
-                margin: 3px;
-                outline: none;
-                border: none;
-                position: absolute;
-                right: -36px;
-            }
-
-            .icon-delete {
-                color: var(--danger-color);
-                font-size: 20px;
+                gap: 10px;
+                flex-wrap: wrap;
             }
         }
 
-        .new-row {
-            margin-bottom: 10px;
+        // &-header,
+        // &-row {
+        //     display: grid;
+        //     // grid-template-columns: repeat(10, 1fr);
+        //     position: relative;
+
+        //     &>.column,
+        //     &>.column-select {
+        //         padding: 4px 6px;
+        //         flex-grow: 1;
+        //         border: 1px solid var(--button-bg-color);
+        //         text-align: center;
+        //         width: 100%;
+
+        //         &:focus {
+        //             outline-color: var(--button-color);
+        //         }
+
+        //     }
+
+        //     &>.column-select {
+        //         background-color: #fff;
+        //     }
+
+        //     .icon,
+        //     .icon-delete {
+        //         display: flex;
+        //         justify-content: center;
+        //         align-items: center;
+        //         width: 30px;
+        //         height: 28px;
+        //         cursor: pointer;
+        //         background-color: var(--button-bg-color);
+        //         border-radius: 6px;
+        //         padding: 6px;
+        //         margin: 3px;
+        //         outline: none;
+        //         border: none;
+        //         position: absolute;
+        //         right: -36px;
+        //     }
+
+        //     .icon-delete {
+        //         color: var(--danger-color);
+        //         font-size: 20px;
+        //     }
+        // }
+
+        // .new-row {
+        //     margin-bottom: 10px;
+        // }
+
+        // .paste {
+        //     margin-bottom: 10px;
+        //     display: flex;
+        //     justify-content: center;
+
+        //     &-input {
+        //         flex-basis: 50%;
+        //         border: none;
+        //         outline: none;
+        //         border-bottom: 1px solid var(--button-bg-color);
+        //         padding: 2px 18px;
+        //         resize: none;
+        //     }
+        // }
+
+        // & .btn {
+        //     display: flex;
+        //     justify-content: center;
+        //     gap: 10px;
+        //     flex-wrap: wrap;
+        // }
+    }
+
+    .sizes-table {
+        margin-right: 36px;
+    }
+
+    .form {
+        position: relative;
+
+        .select,
+        .input {
+            width: 100%;
+            text-align: center;
+            border: none;
+            padding: 4px 6px;
+
+            &:focus {
+                outline-color: var(--button-color);
+            }
         }
 
-        .paste {
-            margin-bottom: 10px;
+        .select {
+            background-color: #fff;
+        }
+
+        .icon,
+        .icon-delete {
             display: flex;
             justify-content: center;
-
-            &-input {
-                flex-basis: 50%;
-                border: none;
-                outline: none;
-                border-bottom: 1px solid var(--button-bg-color);
-                padding: 2px 18px;
-            }
+            align-items: center;
+            width: 30px;
+            height: 28px;
+            cursor: pointer;
+            background-color: var(--button-bg-color);
+            border-radius: 6px;
+            padding: 6px;
+            margin: 3px;
+            outline: none;
+            border: none;
+            position: absolute;
+            right: -36px;
+            top: 0;
         }
 
-        & .btn {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        .icon-delete {
+            color: var(--danger-color);
+            font-size: 20px;
         }
     }
 }

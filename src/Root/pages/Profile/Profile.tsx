@@ -21,7 +21,7 @@ export default function ProfilePage() {
             <Header />
             {roles.some(r => r.service === "sealur" && r.role === "superuser") && <Users />}
             <main className={classes.main}>
-                <Profile />
+                {/* <Profile /> */}
                 <Services />
             </main>
         </div>

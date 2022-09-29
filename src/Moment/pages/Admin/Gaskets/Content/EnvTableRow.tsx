@@ -4,6 +4,7 @@ import { toast } from "react-toastify"
 import { useSWRConfig } from "swr"
 import AdminService from "../../../../service/admin"
 import { IEnvType } from "../../../../types/env"
+import { Table } from "../../components/Table/Table"
 import classes from "../gasket.module.scss"
 
 type Env = {
@@ -13,14 +14,12 @@ type Env = {
 }
 
 type Props = {
-    isEnvData: boolean
-    style: any
     type: IEnvType
     gasketId: string
     data: Env | undefined
 }
 
-export const EnvTableRow: FC<Props> = ({ style, type, gasketId, data }) => {
+export const EnvTableRow: FC<Props> = ({ type, gasketId, data }) => {
     const {
         register,
         handleSubmit,
@@ -39,7 +38,6 @@ export const EnvTableRow: FC<Props> = ({ style, type, gasketId, data }) => {
             specificPres: +row.specificPres,
             m: +row.m,
         }
-        console.log(newData)
 
         try {
             if (data?.id) {
@@ -56,30 +54,33 @@ export const EnvTableRow: FC<Props> = ({ style, type, gasketId, data }) => {
     }
 
     return (
-        <form
-            className={classes["content-table__row"]}
-            style={style}
-            onSubmit={handleSubmit(saveRowHandler)}
-        >
-            <input
-                className={classes["content-table__column"]}
-                type='number'
-                step={0.001}
-                {...register("specificPres", {
-                    required: true,
-                })}
-            />
-            <input
-                className={classes["content-table__column"]}
-                type='number'
-                step={0.001}
-                {...register("m", {
-                    required: true,
-                })}
-            />
-            <p className={classes["content-table__column"]}>{type.title}</p>
+        <form className={classes["content-form"]} onSubmit={handleSubmit(saveRowHandler)}>
+            <Table.Row>
+                <Table.Ceil>
+                    <input
+                        className={classes.input}
+                        type='number'
+                        step={0.001}
+                        {...register("specificPres", {
+                            required: true,
+                        })}
+                    />
+                </Table.Ceil>
+                <Table.Ceil>
+                    <input
+                        className={classes.input}
+                        type='number'
+                        step={0.001}
+                        {...register("m", {
+                            required: true,
+                        })}
+                    />
+                </Table.Ceil>
+                <Table.Ceil>
+                    <p className={classes.thead}>{type.title}</p>
+                </Table.Ceil>
+            </Table.Row>
 
-            {/* {Object.keys(dirtyFields).length !== 0 && isEnvData ? ( */}
             {Object.keys(dirtyFields).length !== 0 ? (
                 <button type='submit' className={classes.icon}>
                     <img src='/image/save-icon.svg' alt='save' />
