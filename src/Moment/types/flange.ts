@@ -99,6 +99,8 @@ export interface IFlanges {
     material: IMaterialData
     ringMarkId: string
     ringMaterial: IMaterialData
+    row: 0 | 1
+    b: number
 }
 
 interface IFlangeSize {
@@ -146,6 +148,7 @@ export interface IStandart {
     titleDn: string
     titlePn: string
     isNeedRow: boolean
+    hasDesignation: boolean
     rows: string[]
     sizes: {
         sizeRow1: ISize[]
@@ -171,7 +174,12 @@ export interface IEnv {
 
 export interface ISize {
     dn: number
-    pn: number[]
+    pn: Pn[]
+}
+
+interface Pn {
+    pn: number
+    isEmptyD: boolean
 }
 
 export interface ITypeGasket {

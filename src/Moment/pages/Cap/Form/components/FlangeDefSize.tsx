@@ -35,9 +35,9 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
             const curDn = curSt?.sizes.sizeRow1.find(s => s.dn === dn)
             if (curSt && !curDn) {
                 setValue(`flangeData.dy`, curSt.sizes.sizeRow1[0].dn)
-                setValue(`flangeData.py`, curSt.sizes.sizeRow1[0].pn[0])
+                setValue(`flangeData.py`, curSt.sizes.sizeRow1[0].pn[0].pn)
             } else if (curDn) {
-                setValue(`flangeData.py`, curDn.pn[0])
+                setValue(`flangeData.py`, curDn.pn[0].pn)
             } else {
                 setValue(`flangeData.dy`, 0)
                 setValue(`flangeData.py`, 0)
@@ -51,9 +51,12 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
         <>
             <div className={classes.line}>
                 <p>{curSt?.titleDn}</p>
-                <p className={classes.designation}>
-                    <i>D</i>
-                </p>
+                {curSt.hasDesignation && (
+                    <p className={classes.designation}>
+                        <i>D</i>
+                    </p>
+                )}
+
                 <div className={classes["line-field"]}>
                     <Controller
                         name={`flangeData.dy`}
@@ -73,11 +76,13 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
 
             <div className={classes.line}>
                 <p>{curSt?.titlePn}</p>
-                <p className={classes.designation}>
-                    <i>
-                        P<sub>у</sub>
-                    </i>
-                </p>
+                {curSt.hasDesignation && (
+                    <p className={classes.designation}>
+                        <i>
+                            P<sub>у</sub>
+                        </i>
+                    </p>
+                )}
                 <div className={classes["line-field"]}>
                     <Controller
                         name={`flangeData.py`}
@@ -87,8 +92,8 @@ const Size: FC<Props> = ({ standarts, control, setValue }) => {
                                 {curSt?.sizes.sizeRow1
                                     .find(s => s.dn === dn)
                                     ?.pn.map(s => (
-                                        <Option key={s} value={s}>
-                                            {s.toLocaleString("ru-RU")}
+                                        <Option key={s.pn} value={s.pn}>
+                                            {s.pn.toLocaleString("ru-RU")}
                                         </Option>
                                     ))}
                             </Select>

@@ -6,5 +6,6 @@ export interface IStandart {
     titlePn: string
     isNeedRow: boolean
     isInch: boolean
+    hasDesignation: boolean
     rows: string[]
 }

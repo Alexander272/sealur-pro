@@ -135,8 +135,9 @@ const Flange: FC<Props> = ({
             setValue(`flangesData.${id}.standartId`, standarts[0].id)
             setValue(`flangesData.${id}.markId`, materials[0].id)
             setValue(`flangesData.${id}.dy`, standarts[0].sizes.sizeRow1[0].dn)
-            setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0])
+            setValue(`flangesData.${id}.py`, standarts[0].sizes.sizeRow1[0].pn[0].pn)
             setValue(`flangesData.${id}.corrosion`, "2")
+            setValue(`flangesData.${id}.row`, 0)
         }
     }, [setValue, id, standartId, standarts, materials])
 
@@ -248,7 +249,13 @@ const Flange: FC<Props> = ({
                     />
                 </Suspense>
             ) : (
-                <FlangeDefSize id={id} standarts={stands} control={control} setValue={setValue} />
+                <FlangeDefSize
+                    id={id}
+                    standarts={stands}
+                    register={register}
+                    control={control}
+                    setValue={setValue}
+                />
             )}
 
             <div className={classes.line}>

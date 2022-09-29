@@ -64,9 +64,6 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
             if (a === "") return
             let temp = a.split("\t")
 
-            let bolt = bolts.find(b => b.title === temp[9]?.trim())
-            if (!bolt) bolt = bolts[0]
-
             setValue(`${i}.standId`, standartId)
             setValue(`${i}.pn`, +temp[0]?.replaceAll(",", "."))
             let idx = 1
@@ -75,6 +72,9 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
                 setValue(`${i}.dmm`, +temp[2]?.replaceAll(",", "."))
                 idx = 3
             }
+            let bolt = bolts.find(b => b.title === temp[idx + 8]?.trim())
+            if (!bolt) bolt = bolts[0]
+
             setValue(`${i}.dOut`, +temp[idx]?.replaceAll(",", "."))
             setValue(`${i}.d`, +temp[idx + 1]?.replaceAll(",", "."))
             setValue(`${i}.d6`, +temp[idx + 2]?.replaceAll(",", "."))

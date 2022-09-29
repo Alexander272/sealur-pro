@@ -49,6 +49,7 @@ export const StandartData: FC<Props> = ({
         setValue("id", standart.id)
         setValue("isInch", standart.isInch || false)
         setValue("isNeedRow", standart.isNeedRow || false)
+        setValue("hasDesignation", standart.hasDesignation || false)
         setValue("rows", standart.rows || [])
         setValue("title", standart.title)
         setValue("titleDn", standart.titleDn)
@@ -88,10 +89,23 @@ export const StandartData: FC<Props> = ({
                 />
             </div>
 
-            {hasEmptySise && (
-                <Checkbox label='Дюймовые болты' id='isInch' name='isInch' register={register} />
-            )}
-            <Checkbox label='Есть ряды' id='isNeedRow' name='isNeedRow' register={register} />
+            <div className={classes.inputs}>
+                <Checkbox label='Есть ряды' id='isNeedRow' name='isNeedRow' register={register} />
+                <Checkbox
+                    label='Есть обозначение'
+                    id='hasDesignation'
+                    name='hasDesignation'
+                    register={register}
+                />
+                {hasEmptySise && (
+                    <Checkbox
+                        label='Дюймовые болты'
+                        id='isInch'
+                        name='isInch'
+                        register={register}
+                    />
+                )}
+            </div>
 
             {isNeedRow && (
                 <div className={classes.inputs}>
