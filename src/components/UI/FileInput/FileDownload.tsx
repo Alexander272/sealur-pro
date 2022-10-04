@@ -10,7 +10,7 @@ type Props = {
     onDelete?: (event: React.MouseEvent<HTMLInputElement>) => void
 }
 
-export const FileDownload: FC<Props> = ({ text, rounded, link, onSave, onDelete }) => {
+export const FileDownload: FC<Props> = ({ text, rounded = "rounded", link, onSave, onDelete }) => {
     return (
         <div className={classes.field}>
             {/* <p className={`${classes.label} ${classes[rounded || "rounded"]}`} onClick={onSave}>
@@ -19,18 +19,14 @@ export const FileDownload: FC<Props> = ({ text, rounded, link, onSave, onDelete 
                 </span>
                 {text}
             </p> */}
-            <a
-                href={link}
-                download={text}
-                className={`${classes.label} ${classes[rounded || "rounded"]}`}
-            >
+            <a href={link} download={text} className={`${classes.label} ${classes[rounded]}`}>
                 <span className={classes.icon}>
                     <img src='/image/download-file.svg' alt='upload' />
                 </span>
                 {text}
             </a>
             <p
-                className={`${classes.label} ${classes.danger} ${classes[rounded || "rounded"]}`}
+                className={`${classes.label} ${classes.danger} ${classes[rounded]}`}
                 onClick={onDelete}
             >
                 <span className={classes.icon}>

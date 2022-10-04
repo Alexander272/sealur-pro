@@ -38,25 +38,27 @@ export default function FlangeSize({
 
     return (
         <>
-            <div className={classes.line}>
-                <p>Материал кольца свободного фланца</p>
-                <div className={classes["line-field"]}>
-                    <Controller
-                        name={`flangesData.${id}.ringMarkId`}
-                        control={control}
-                        render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
-                                {materials.map(m => (
-                                    <Option key={m.id} value={m.id}>
-                                        {m.title}
-                                    </Option>
-                                ))}
-                                <Option value={"another"}>Другое ...</Option>
-                            </Select>
-                        )}
-                    />
+            {type === "free" && (
+                <div className={classes.line}>
+                    <p>Материал кольца свободного фланца</p>
+                    <div className={classes["line-field"]}>
+                        <Controller
+                            name={`flangesData.${id}.ringMarkId`}
+                            control={control}
+                            render={({ field }) => (
+                                <Select value={field.value} onChange={field.onChange}>
+                                    {materials.map(m => (
+                                        <Option key={m.id} value={m.id}>
+                                            {m.title}
+                                        </Option>
+                                    ))}
+                                    <Option value={"another"}>Другое ...</Option>
+                                </Select>
+                            )}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className={classes["line-image"]}>
                 <img src={imgs[type]} alt={type} />
@@ -305,7 +307,7 @@ export default function FlangeSize({
                 <p>Диаметр окружности расположения болтов (шпилек)</p>
                 <p className={classes.designation}>
                     <i>
-                        D<sub>6</sub>
+                        D<sub>б</sub>
                     </i>
                 </p>
                 <div className={classes["line-field"]}>

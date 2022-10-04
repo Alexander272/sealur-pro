@@ -141,6 +141,26 @@ export const SizeRow: FC<Props> = ({ size, bolts, standartId, row, isInch }) => 
                             })}
                         />
                     </Table.Ceil>
+                    {isInch && (
+                        <>
+                            <Table.Ceil>
+                                <input
+                                    className={classes.input}
+                                    type='number'
+                                    step={0.001}
+                                    {...register("x")}
+                                />
+                            </Table.Ceil>
+                            <Table.Ceil>
+                                <input
+                                    className={classes.input}
+                                    type='number'
+                                    step={0.001}
+                                    {...register("a")}
+                                />
+                            </Table.Ceil>
+                        </>
+                    )}
                     <Table.Ceil>
                         <input
                             className={classes.input}

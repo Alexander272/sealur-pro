@@ -11,6 +11,8 @@ export interface IFullSize {
     dmm?: number
     d6: number
     dOut: number
+    x?: number
+    a?: number
     h: number
     length: number
     pn: number

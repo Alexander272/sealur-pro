@@ -91,7 +91,7 @@ export interface IFlanges {
     type: TypeFlange
     standartId: string
     markId: string
-    dy: number
+    dy: string
     py: number
     corrosion: string
     temp: string
@@ -173,7 +173,7 @@ export interface IEnv {
 }
 
 export interface ISize {
-    dn: number
+    dn: string
     pn: Pn[]
 }
 

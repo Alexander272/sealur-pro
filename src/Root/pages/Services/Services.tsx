@@ -1,11 +1,10 @@
-import React, { FC } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
-import { Button } from "../../../../../components/UI/Button/Button"
-import { Dispatch, RootState } from "../../../../../store/store"
+import React from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { RootState } from "../../../store/store"
 import classes from "./services.module.scss"
 
-const servicesData = {
+export const servicesData = {
     pro: {
         title: "Sealur Pro",
         description: "Сервис для подбора и формирования заказа СНП, ПУТГ, ПУТГм.",
@@ -15,21 +14,12 @@ const servicesData = {
     },
 }
 
-type Props = {}
-
-export const Services: FC<Props> = () => {
+export default function Services() {
     const roles = useSelector((state: RootState) => state.user.roles)
-    const navigate = useNavigate()
-    const { user } = useDispatch<Dispatch>()
-
-    const logoutHandler = async () => {
-        await user.singOut()
-        navigate("/auth")
-    }
-    // if (!roles.length) return null
 
     return (
         <div className={classes.services}>
+            <h3 className={classes["main-title"]}>Сервисы</h3>
             {roles.map(r => {
                 if (r.service === "sealur") return null
                 return (
@@ -43,11 +33,6 @@ export const Services: FC<Props> = () => {
                     </div>
                 )
             })}
-            <div className={classes.btn}>
-                <Button onClick={logoutHandler} variant='grayPrimary' fullWidth>
-                    Выйти
-                </Button>
-            </div>
         </div>
     )
 }

@@ -13,10 +13,10 @@ type Props = {
 const Button = ({
     children,
     onClick,
-    variant,
+    variant = "primary",
     fullWidth,
-    size,
-    rounded,
+    size = "middle",
+    rounded = "medium",
     ...attr
 }: Props & React.ButtonHTMLAttributes<any>) => {
     return (
@@ -25,9 +25,9 @@ const Button = ({
             className={[
                 classes.button,
                 fullWidth ? classes.full : null,
-                classes[variant || "primary"],
-                classes[size || "middle"],
-                classes[rounded || "medium"],
+                classes[variant],
+                classes[size],
+                classes[rounded],
             ].join(" ")}
             {...attr}
         >

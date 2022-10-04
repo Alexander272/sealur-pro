@@ -1,4 +1,5 @@
 import React, { FC } from "react"
+import { Profile } from "./Profile"
 import classes from "./header.module.scss"
 
 type Props = {}
@@ -21,6 +22,10 @@ export const Header: FC<Props> = () => {
                     alt='logo'
                 />
             </a>
+
+            <div className={classes.nav}>
+                <Profile />
+            </div>
         </div>
     )
 }

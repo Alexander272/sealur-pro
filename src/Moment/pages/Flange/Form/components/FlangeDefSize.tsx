@@ -56,7 +56,7 @@ const Size: FC<Props> = ({ id, standarts, register, control, setValue }) => {
             } else if (curDn) {
                 setValue(`flangesData.${id}.py`, curDn.pn[0].pn)
             } else {
-                setValue(`flangesData.${id}.dy`, 0)
+                setValue(`flangesData.${id}.dy`, "0")
                 setValue(`flangesData.${id}.py`, 0)
             }
         }
@@ -73,18 +73,20 @@ const Size: FC<Props> = ({ id, standarts, register, control, setValue }) => {
         <>
             <div className={classes.line}>
                 <p>{curSt?.titleDn}</p>
-                <p className={classes.designation}>
-                    <i>D</i>
-                </p>
+                {curSt.hasDesignation && (
+                    <p className={classes.designation}>
+                        <i>D</i>
+                    </p>
+                )}
                 <div className={classes["line-field"]}>
                     <Controller
                         name={`flangesData.${id}.dy`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
-                                {curSt?.sizes.sizeRow1.map(s => (
+                                {curSt?.sizes[rows[row]]?.map(s => (
                                     <Option key={s.dn} value={s.dn}>
-                                        {s.dn.toLocaleString("ru-RU")}
+                                        {isNaN(+s.dn) ? s.dn : (+s.dn).toLocaleString("ru-RU")}
                                     </Option>
                                 ))}
                             </Select>
@@ -95,47 +97,49 @@ const Size: FC<Props> = ({ id, standarts, register, control, setValue }) => {
 
             <div className={classes.line}>
                 <p>{curSt?.titlePn}</p>
-                <p className={classes.designation}>
-                    <i>
-                        P<sub>у</sub>
-                    </i>
-                </p>
+                {curSt.hasDesignation && (
+                    <p className={classes.designation}>
+                        <i>
+                            P<sub>у</sub>
+                        </i>
+                    </p>
+                )}
                 <div className={classes["line-field"]}>
                     <Controller
                         name={`flangesData.${id}.py`}
                         control={control}
                         render={({ field }) => (
                             <Select value={field.value} onChange={field.onChange}>
-                                {curSt?.sizes.sizeRow1
-                                    .find(s => s.dn === dn)
-                                    ?.pn.map(s => (
-                                        <Option key={s.pn} value={s.pn}>
-                                            {s.pn.toLocaleString("ru-RU")}
-                                        </Option>
-                                    ))}
+                                {curDn?.pn.map(s => (
+                                    <Option key={s.pn} value={s.pn}>
+                                        {s.pn.toLocaleString("ru-RU")}
+                                    </Option>
+                                ))}
                             </Select>
                         )}
                     />
                 </div>
             </div>
 
-            <div className={classes.line}>
-                <p>Внутренний диаметр</p>
-                <p className={classes.designation}>
-                    <i>B</i>
-                </p>
-                <div className={classes["line-field"]}>
-                    <Input
-                        name={`flangesData.${id}.b`}
-                        id={`flangesData.${id}.b`}
-                        type='number'
-                        step={0.001}
-                        register={register}
-                        suffix='мм'
-                        rule={{ required: true }}
-                    />
+            {isEmptyD && (
+                <div className={classes.line}>
+                    <p>Внутренний диаметр</p>
+                    <p className={classes.designation}>
+                        <i>B</i>
+                    </p>
+                    <div className={classes["line-field"]}>
+                        <Input
+                            name={`flangesData.${id}.b`}
+                            id={`flangesData.${id}.b`}
+                            type='number'
+                            step={0.001}
+                            register={register}
+                            suffix='мм'
+                            rule={{ required: true }}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             {curSt.isNeedRow && (
                 <div className={classes.line}>

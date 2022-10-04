@@ -21,8 +21,8 @@ export const Input = ({
     label,
     name,
     value,
-    orentation,
-    rounded,
+    orentation = "vertical",
+    rounded = "rounded",
     onChange,
     suffix,
     register,
@@ -32,7 +32,7 @@ export const Input = ({
     ...attr
 }: Props & React.InputHTMLAttributes<HTMLInputElement>) => {
     return (
-        <div className={`${classes.field} ${classes[orentation || "vertical"]}`}>
+        <div className={`${classes.field} ${classes[orentation]}`}>
             {label && (
                 <label className={classes.label} htmlFor={id}>
                     {label}
@@ -43,7 +43,7 @@ export const Input = ({
             {register ? (
                 <input
                     className={`${classes.input} ${error ? classes.invalid : ""} ${
-                        classes[rounded || "rounded"]
+                        classes[rounded]
                     }`}
                     id={id}
                     {...attr}
@@ -51,7 +51,7 @@ export const Input = ({
                 />
             ) : (
                 <input
-                    className={`${classes.input} ${classes[rounded || "rounded"]}`}
+                    className={`${classes.input} ${classes[rounded]}`}
                     id={id}
                     name={name}
                     value={value}

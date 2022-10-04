@@ -7,26 +7,29 @@ import RequireAuth from "./RequireAuth/RequireAuth"
 
 import { Loader } from "./UI/Loader/Loader"
 const PageNotFound = lazy(() => import("../Error/PageNotFound"))
+const Main = lazy(() => import("../Root/components/Layout/Main"))
+const Home = lazy(() => import("../Root/pages/Home/Home"))
 const Profile = lazy(() => import("../Root/pages/Profile/Profile"))
+const Services = lazy(() => import("../Root/pages/Services/Services"))
 
 //* Pro service
 const ProApp = lazy(() => import("../SealurPro/App"))
 
-const Main = lazy(() => import("../SealurPro/components/Layout/ProMain/Main"))
-const Core = lazy(() => import("../SealurPro/pages/Core/Core"))
-const Snp = lazy(() => import("../SealurPro/pages/Snp/Snp"))
-const Putg = lazy(() => import("../SealurPro/pages/Putg/Putg"))
-const Putgm = lazy(() => import("../SealurPro/pages/Putgm/Putgm"))
-const Survey = lazy(() => import("../SealurPro/pages/Survey/Survey"))
-const List = lazy(() => import("../SealurPro/pages/List/List"))
-const Orders = lazy(() => import("../SealurPro/pages/Orders/Orders"))
+const ProMain = lazy(() => import("../SealurPro/components/Layout/ProMain/Main"))
+const ProCore = lazy(() => import("../SealurPro/pages/Core/Core"))
+const ProSnp = lazy(() => import("../SealurPro/pages/Snp/Snp"))
+const ProPutg = lazy(() => import("../SealurPro/pages/Putg/Putg"))
+const ProPutgm = lazy(() => import("../SealurPro/pages/Putgm/Putgm"))
+const ProSurvey = lazy(() => import("../SealurPro/pages/Survey/Survey"))
+const ProList = lazy(() => import("../SealurPro/pages/List/List"))
+const ProOrders = lazy(() => import("../SealurPro/pages/Orders/Orders"))
 
 //* Pro service Admin
-const Admin = lazy(() => import("../SealurPro/components/Layout/ProAdmin/Admin"))
-const AdminSnp = lazy(() => import("../SealurPro/pages/Admin/Snp/Snp"))
-const AdminPutg = lazy(() => import("../SealurPro/pages/Admin/Putg/Putg"))
-const AdminPutgm = lazy(() => import("../SealurPro/pages/Admin/Putgm/Putgm"))
-const AdminSurvey = lazy(() => import("../SealurPro/pages/Admin/Survey/Survey"))
+const ProAdmin = lazy(() => import("../SealurPro/components/Layout/ProAdmin/Admin"))
+const ProAdminSnp = lazy(() => import("../SealurPro/pages/Admin/Snp/Snp"))
+const ProAdminPutg = lazy(() => import("../SealurPro/pages/Admin/Putg/Putg"))
+const ProAdminPutgm = lazy(() => import("../SealurPro/pages/Admin/Putgm/Putgm"))
+const ProAdminSurvey = lazy(() => import("../SealurPro/pages/Admin/Survey/Survey"))
 
 //* Moment service
 const MomentApp = lazy(() => import("../Moment/App"))
@@ -53,7 +56,7 @@ const NewProMain = lazy(() => import("../NewPro/pages/Main/Main"))
 //* Urls
 export const ProAdminUrl = "/pro/admin"
 export const ProUrl = "/pro"
-export const ProfileUrl = "/"
+export const ProfileUrl = "/profile"
 export const OrderUrl = "/pro/orders"
 
 export const MomentUrl = "/moment"
@@ -67,14 +70,18 @@ export const MyRoutes = () => {
                     path='/'
                     element={
                         <RequireAuth>
-                            <Profile />
+                            <Main />
                         </RequireAuth>
                     }
-                />
+                >
+                    <Route index element={<Home />} />
+                    <Route path='services' element={<Services />} />
+                    <Route path='profile' element={<Profile />} />
+                </Route>
 
                 {/* section pro  */}
                 <Route path='/pro' element={<ProApp />}>
-                    <Route path='' element={<Main />}>
+                    <Route path='' element={<ProMain />}>
                         <Route path='new' element={<NewProApp />}>
                             <Route index element={<NewProMain />} />
                         </Route>
@@ -83,20 +90,20 @@ export const MyRoutes = () => {
                             path=''
                             element={
                                 <RequireAuth>
-                                    <Core />
+                                    <ProCore />
                                 </RequireAuth>
                             }
                         >
-                            <Route index element={<Snp />} />
-                            <Route path='putg' element={<Putg />} />
-                            <Route path='putgm' element={<Putgm />} />
+                            <Route index element={<ProSnp />} />
+                            <Route path='putg' element={<ProPutg />} />
+                            <Route path='putgm' element={<ProPutgm />} />
                         </Route>
-                        <Route path='survey' element={<Survey />} />
+                        <Route path='survey' element={<ProSurvey />} />
                         <Route
                             path='list'
                             element={
                                 <RequireAuth>
-                                    <List />
+                                    <ProList />
                                 </RequireAuth>
                             }
                         />
@@ -104,7 +111,7 @@ export const MyRoutes = () => {
                             path='orders'
                             element={
                                 <RequireAuth>
-                                    <Orders />
+                                    <ProOrders />
                                 </RequireAuth>
                             }
                         />
@@ -113,19 +120,19 @@ export const MyRoutes = () => {
                         path='admin'
                         element={
                             <RequireAuth>
-                                <Admin />
+                                <ProAdmin />
                             </RequireAuth>
                         }
                     >
-                        <Route index element={<AdminSnp />} />
-                        <Route path='putg' element={<AdminPutg />} />
-                        <Route path='putgm' element={<AdminPutgm />} />
+                        <Route index element={<ProAdminSnp />} />
+                        <Route path='putg' element={<ProAdminPutg />} />
+                        <Route path='putgm' element={<ProAdminPutgm />} />
                     </Route>
                     <Route
                         path='admin/survey'
                         element={
                             <RequireAuth>
-                                <AdminSurvey />
+                                <ProAdminSurvey />
                             </RequireAuth>
                         }
                     />

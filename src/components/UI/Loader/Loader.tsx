@@ -7,12 +7,10 @@ type Props = {
     isFull?: boolean
 }
 
-export const Loader: FC<Props> = ({ size, background, isFull }) => {
+export const Loader: FC<Props> = ({ size, background = "none", isFull }) => {
     return (
         <div
-            className={`${classes.container} ${classes[background || "none"]} ${
-                isFull ? classes.full : ""
-            }`}
+            className={`${classes.container} ${classes[background]} ${isFull ? classes.full : ""}`}
         >
             <div className={`${classes.loader} ${size ? classes[size] : ""}`}></div>
         </div>

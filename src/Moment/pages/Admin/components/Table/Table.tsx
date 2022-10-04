@@ -8,9 +8,10 @@ import classes from "./table.module.scss"
 
 type Props = {
     height?: number
+    width?: number | string
 }
 
-const Table = ({ children, height }: PropsWithChildren<Props>) => {
+const Table = ({ children, height, width }: PropsWithChildren<Props>) => {
     let caption
     let newChildren = Children.map(
         children as React.ReactElement[],
@@ -24,10 +25,11 @@ const Table = ({ children, height }: PropsWithChildren<Props>) => {
     )
 
     let style = {}
-    if (height) style = { maxHeight: height }
+    if (height) style = { ...style, maxHeight: height }
+    if (width) style = { ...style, width }
 
     return (
-        <div className={classes["table-container"]}>
+        <div className={`${classes["table-container"]} scroll`}>
             {caption && caption}
             <div className={`${classes.table} scroll`} style={style}>
                 {newChildren}

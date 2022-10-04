@@ -246,7 +246,12 @@ const Flange: FC<Props> = ({
                     />
                 </Suspense>
             ) : (
-                <FlangeDefSize standarts={stands} control={control} setValue={setValue} />
+                <FlangeDefSize
+                    standarts={stands}
+                    control={control}
+                    register={register}
+                    setValue={setValue}
+                />
             )}
 
             <div className={classes.line}>

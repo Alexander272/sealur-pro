@@ -21,7 +21,7 @@ export const Textarea = ({
     name,
     value,
     onChange,
-    orentation,
+    orentation = "vertical",
     register,
     rule,
     error,
@@ -29,7 +29,7 @@ export const Textarea = ({
     ...attr
 }: Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
     return (
-        <div className={`${classes.field} ${classes[orentation || "vertical"]}`}>
+        <div className={`${classes.field} ${classes[orentation]}`}>
             {label && (
                 <label className={classes.label} htmlFor={id}>
                     {label}

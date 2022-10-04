@@ -29,8 +29,10 @@ export default function Standarts() {
         if (standarts) setStandart(standarts.data ? standarts.data[0] : null)
     }, [standarts])
 
+    if (error) console.log(error.response)
+
     if (error) return <ServerError />
-    if (!types) return <div className={classes.container}></div>
+    if (!types) return <div className={classes.container} />
 
     const changeTypeHandler = (id: string) => setTypeId(id)
     const changeStandartHandler = (standart: IStandart) => setStandart(standart)

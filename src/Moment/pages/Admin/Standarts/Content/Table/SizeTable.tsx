@@ -17,7 +17,7 @@ type Props = {
 export const SizeTable: FC<Props> = ({ sizes, bolts, standartId, row, isInch }) => {
     return (
         <div className={classes.table}>
-            <Table height={450}>
+            <Table height={450} width={isInch ? 1400 : "auto"}>
                 <div className={classes["sizes-table"]}>
                     <Table.Head stickyHeader>
                         <Table.Row>
@@ -47,6 +47,16 @@ export const SizeTable: FC<Props> = ({ sizes, bolts, standartId, row, isInch }) 
                                     D<sub>б</sub>
                                 </p>
                             </Table.Ceil>
+                            {isInch && (
+                                <>
+                                    <Table.Ceil>
+                                        <p className={classes.thead}>Диаметр ступицы, Х</p>
+                                    </Table.Ceil>
+                                    <Table.Ceil>
+                                        <p className={classes.thead}>Диаметр ступицы. Сверху, А</p>
+                                    </Table.Ceil>
+                                </>
+                            )}
                             <Table.Ceil>
                                 <p className={classes.thead}>h</p>
                             </Table.Ceil>

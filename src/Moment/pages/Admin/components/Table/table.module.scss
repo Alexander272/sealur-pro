@@ -6,6 +6,7 @@
     &-container {
         display: flex;
         flex-direction: column;
+        overflow-x: auto;
     }
 
     &-caption {
@@ -86,8 +87,11 @@
     &-ceil {
         flex-grow: 1;
         border: 1px solid var(--button-bg-color);
-        text-align: center;
+        // text-align: center;
         width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .new-row {

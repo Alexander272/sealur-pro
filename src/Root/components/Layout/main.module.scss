@@ -1,0 +1,22 @@
+.page {
+    min-height: 100vh;
+    min-width: 360px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--body-bg-color);
+}
+
+.main {
+    max-width: 1580px;
+    width: 100%;
+    padding: 0 10px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 960px) {
+    .main {
+        flex-wrap: wrap;
+    }
+}

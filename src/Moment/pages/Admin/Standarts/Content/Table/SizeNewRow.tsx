@@ -33,6 +33,8 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
                 dmm: +(rows[i].dmm || 0),
                 d6: +rows[i].d6,
                 dOut: +rows[i].dOut,
+                x: +(rows[i].x || 0),
+                a: +(rows[i].a || 0),
                 h: +rows[i].h,
                 length: +rows[i].length,
                 pn: +rows[i].pn,
@@ -65,24 +67,27 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
             let temp = a.split("\t")
 
             setValue(`${i}.standId`, standartId)
-            setValue(`${i}.pn`, +temp[0]?.replaceAll(",", "."))
+            setValue(`${i}.pn`, +temp[0]?.replaceAll(" ", "").replaceAll(",", "."))
             let idx = 1
             if (isInch) {
-                setValue(`${i}.dn`, temp[1])
-                setValue(`${i}.dmm`, +temp[2]?.replaceAll(",", "."))
-                idx = 3
+                setValue(`${i}.dn`, temp[idx])
+                setValue(`${i}.dmm`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
             }
-            let bolt = bolts.find(b => b.title === temp[idx + 8]?.trim())
-            if (!bolt) bolt = bolts[0]
+            setValue(`${i}.dOut`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.d`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.d6`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            if (isInch) {
+                setValue(`${i}.x`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+                setValue(`${i}.a`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            }
+            setValue(`${i}.h`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.length`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.s0`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.s1`, +temp[++idx]?.replaceAll(" ", "").replaceAll(",", "."))
+            setValue(`${i}.count`, +temp[++idx])
 
-            setValue(`${i}.dOut`, +temp[idx]?.replaceAll(",", "."))
-            setValue(`${i}.d`, +temp[idx + 1]?.replaceAll(",", "."))
-            setValue(`${i}.d6`, +temp[idx + 2]?.replaceAll(",", "."))
-            setValue(`${i}.h`, +temp[idx + 3]?.replaceAll(",", "."))
-            setValue(`${i}.length`, +temp[idx + 4]?.replaceAll(",", "."))
-            setValue(`${i}.s0`, +temp[idx + 5]?.replaceAll(",", "."))
-            setValue(`${i}.s1`, +temp[idx + 6]?.replaceAll(",", "."))
-            setValue(`${i}.count`, +temp[idx + 7])
+            let bolt = bolts.find(b => b.title === temp[idx + 1]?.trim())
+            if (!bolt) bolt = bolts[0]
             setValue(`${i}.boltId`, bolt.id)
             setValue(`${i}.row`, row)
         })
@@ -153,6 +158,26 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
                             })}
                         />
                     </Table.Ceil>
+                    {isInch && (
+                        <>
+                            <Table.Ceil>
+                                <input
+                                    className={classes.input}
+                                    type='number'
+                                    step={0.001}
+                                    {...register(`${i}.x`)}
+                                />
+                            </Table.Ceil>
+                            <Table.Ceil>
+                                <input
+                                    className={classes.input}
+                                    type='number'
+                                    step={0.001}
+                                    {...register(`${i}.a`)}
+                                />
+                            </Table.Ceil>
+                        </>
+                    )}
                     <Table.Ceil>
                         <input
                             className={classes.input}
@@ -226,7 +251,7 @@ export const SizeNewRow: FC<Props> = ({ bolts, standartId, row, isInch }) => {
 
     return (
         <div className={classes["table-new"]}>
-            <Table>
+            <Table height={450} width={isInch ? 1400 : "auto"}>
                 <div className={classes["sizes-table"]}>
                     <form className={classes.form}>{renderRows()}</form>
                 </div>
