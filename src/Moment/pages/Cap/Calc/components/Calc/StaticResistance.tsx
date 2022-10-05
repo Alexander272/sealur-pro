@@ -1,6 +1,7 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IStrengthResult, IFormulas, IFlangeResult } from "../../../../../types/res_flange"
+import { IFormulasCap } from "../../../../../types/res_cap"
+import { IStrengthResult, IFlangeResult } from "../../../../../types/res_flange"
 import { StaticResistanceCond } from "./StaticResistanceCond"
 import { StaticResistanceData } from "./StaticResistanceData"
 
@@ -9,7 +10,7 @@ type Props = {
     flange: IFlangeResult
     title: string
     index: 0 | 1
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
 }
 
 export const StaticResistance: FC<Props> = ({ data, flange, index, title, formulas }) => {

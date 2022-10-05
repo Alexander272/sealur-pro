@@ -17,7 +17,7 @@ export const Header: FC = () => {
             <div className={classes.content}>
                 <a
                     className={classes.logoLink}
-                    href='https://sealur.ru/'
+                    href='https://pro.sealur.ru/'
                     target='_blank'
                     rel='noreferrer'
                 >

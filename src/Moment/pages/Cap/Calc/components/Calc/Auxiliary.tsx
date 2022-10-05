@@ -4,24 +4,40 @@ import {
     IBoltResult,
     IDataResult,
     IFlangeResult,
-    IFormulas,
     IGasketResult,
 } from "../../../../../types/res_flange"
-import { ICalculateCap } from "../../../../../types/res_cap"
+import { ICalculateCap, ICapResult, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { FlangeData } from "./FlangeData"
+import { CapData } from "./CapData"
 
 type Props = {
     data: ICalculateCap
     basis: IDataResult
     gasket: IGasketResult
     flange: IFlangeResult
+    cap: ICapResult
     bolt: IBoltResult
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
+    typeGamma: "Gamma-any" | "Gamma-free"
 }
 
-export const Auxiliary: FC<Props> = ({ data, basis, gasket, flange, bolt, formulas }) => {
+const GammaLinks = {
+    "Gamma-any": "/image/moment/formulas/cap/gamma.svg",
+    "Gamma-free": "/image/moment/formulas/cap/gamma-free.svg",
+}
+
+export const Auxiliary: FC<Props> = ({
+    data,
+    basis,
+    gasket,
+    flange,
+    cap,
+    bolt,
+    formulas,
+    typeGamma,
+}) => {
     return (
         <Container title='Расчет вспомогательных величин'>
             <ResLine
@@ -131,17 +147,12 @@ export const Auxiliary: FC<Props> = ({ data, basis, gasket, flange, bolt, formul
                 units='мм&#178;'
             />
 
-            <FlangeData
-                title='- для фланца'
-                data={flange}
-                formulas={formulas?.strength?.flange[0]}
-            />
-            {/* //TODO здесь должна быть еще крышка */}
+            <FlangeData title='- для фланца' data={flange} formulas={formulas?.strength?.flange} />
+            <CapData data={cap} formulas={formulas?.strength?.cap} />
 
-            {/* //TODO сделать разные формулы для гаммы */}
             <ResLine
                 title='Жесткость фланцевого соединения'
-                imgUrl='/image/moment/formulas/cap/gamma.svg'
+                imgUrl={GammaLinks[typeGamma]}
                 formula={{
                     designation: <>&gamma;</>,
                     value: formulas?.strength.gamma,

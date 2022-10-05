@@ -1,12 +1,13 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
-import { IStrength, IFormulas } from "../../../../../types/res_flange"
+import { IFormulasCap } from "../../../../../types/res_cap"
+import { IStrength } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 
 type Props = {
     data: IStrength
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
     mkp: "fMkp" | "sMkp"
     mkp1: "fMkp1" | "sMkp1"
 }

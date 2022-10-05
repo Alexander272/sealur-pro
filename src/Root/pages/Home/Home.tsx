@@ -10,8 +10,15 @@ export default function Home() {
 
     return (
         <div className={classes.home}>
-            {/* //TODO надо бы наверно пользователей куда-нибудь на отдельную страницу вынести */}
-            {roles.some(r => r.service === "sealur" && r.role === "superuser") && <Users />}
+            {/* //TODO надо бы наверно пользователей куда-нибудь на отдельную страницу вынести
+                плюсом можно жобавить пагинцию и сделать с выбором параметра поиска (поиск по предприятию, к примеру)
+            */}
+
+            {roles.some(r => r.service === "sealur" && r.role === "superuser") && (
+                <div className={classes.users}>
+                    <Users />
+                </div>
+            )}
 
             {/* //TODO после согласования того что будет на главной странице надо будет использовать компонент, а не страницу */}
             <Services />

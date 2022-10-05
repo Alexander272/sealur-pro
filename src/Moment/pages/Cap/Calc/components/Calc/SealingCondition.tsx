@@ -2,10 +2,10 @@ import React, { FC } from "react"
 import {
     IFlangeResult,
     IStrength,
-    IStrengthFormulas,
     IStrengthFormulas_St,
     IStrengthResult,
 } from "../../../../../types/res_flange"
+import { IStrengthFormulas } from "../../../../../types/res_cap"
 import { Container } from "../../../../../components/Container/Container"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"

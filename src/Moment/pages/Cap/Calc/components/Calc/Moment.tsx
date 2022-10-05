@@ -1,14 +1,14 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
-import { ICalculateCap } from "../../../../../types/res_cap"
-import { IFormulas, IGasketResult } from "../../../../../types/res_flange"
+import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
+import { IGasketResult } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     data: ICalculateCap
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
     gasket: IGasketResult
     path: "basis" | "strength"
     mkp: "Mkp" | "sMkp"

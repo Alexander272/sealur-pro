@@ -1,14 +1,14 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IFormulas, IGasketResult } from "../../../../../types/res_flange"
-import { ICalculateCap } from "../../../../../types/res_cap"
+import { IGasketResult } from "../../../../../types/res_flange"
+import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 type Props = {
     data: ICalculateCap
     gasket: IGasketResult
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
 }
 
 export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {

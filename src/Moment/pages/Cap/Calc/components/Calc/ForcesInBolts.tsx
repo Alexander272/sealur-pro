@@ -1,7 +1,6 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IFormulas } from "../../../../../types/res_flange"
-import { ICalculateCap } from "../../../../../types/res_cap"
+import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
@@ -18,7 +17,7 @@ export const CapQtLink = {
 
 type Props = {
     data: ICalculateCap
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
     typeQt: string
     path: "basis" | "strength"
     pb: "Pb" | "sPb"

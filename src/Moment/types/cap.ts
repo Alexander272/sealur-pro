@@ -1,7 +1,7 @@
 import { IDetail, IFlanges, IMaterialData, IPersonData } from "./flange"
 
 type TypeGasket = "Soft" | "Oval" | "Metal"
-type TypeCap = "flat" | "sphere"
+export type TypeCap = "flat" | "sphere"
 
 export interface IFormCapCalc {
     pressure: string

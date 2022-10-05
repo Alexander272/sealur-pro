@@ -136,6 +136,7 @@ const Flange: FC<Props> = ({
             setValue(`flangeData.dy`, standarts[0].sizes.sizeRow1[0].dn)
             setValue(`flangeData.py`, standarts[0].sizes.sizeRow1[0].pn[0].pn)
             setValue(`flangeData.corrosion`, "2")
+            setValue(`flangeData.row`, 0)
         }
     }, [setValue, standartId, standarts, materials])
 

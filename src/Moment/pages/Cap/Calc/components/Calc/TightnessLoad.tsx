@@ -1,7 +1,6 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IFormulas } from "../../../../../types/res_flange"
-import { ICalculateCap } from "../../../../../types/res_cap"
+import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { CapQtLink } from "./ForcesInBolts"
@@ -9,7 +8,7 @@ import { CapQtLink } from "./ForcesInBolts"
 type Props = {
     data: ICalculateCap
     typeQt: string
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
 }
 
 export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {

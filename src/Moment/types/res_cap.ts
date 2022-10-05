@@ -1,12 +1,15 @@
+import { TypeCap } from "./cap"
 import {
     IBasis,
+    IBasisFormulas,
     IBoltResult,
     IDataResult,
     IEmbedResult,
     IFlangeResult,
-    IFormulas,
     IGasketResult,
     IStrength,
+    IStrengthFormulas_Flange,
+    IStrengthFormulas_St,
     IWasherResult,
 } from "./res_flange"
 
@@ -19,7 +22,7 @@ export interface IResCap {
     embed: IEmbedResult
     washers: IWasherResult[]
     calc: ICalculateCap
-    formulas?: IFormulas
+    formulas?: IFormulasCap
 }
 
 export interface ICapResult {
@@ -34,6 +37,9 @@ export interface ICapResult {
     y: number
     k: number
     x: number
+    lambda: number
+    omega: number
+    type: TypeCap
 }
 
 export interface ICalculateCap {
@@ -48,4 +54,64 @@ export interface ICalculateCap {
     alpha: number
     strength: IStrength
     basis: IBasis
+}
+
+export interface IFormulasCap {
+    b0: string
+    Dcp: string
+    Po: string
+    Rp: string
+    A: string
+    Qd: string
+    Qfm: string
+    Qt: string
+    alpha: string
+    alphaM: string
+    basis: IBasisFormulas
+    strength: IStrengthFormulas
+}
+
+export interface IStrengthFormulas {
+    fPb: string
+    fPb1: string
+    fPb2: string
+    fPbr: string
+    fSigmaB1: string
+    fSigmaB2: string
+    fDSigmaM: string
+    fDSigmaR: string
+    fQ: string
+    fMkp: string
+    fMkp1: string
+    sPb: string
+    sPb1: string
+    sPb2: string
+    sPbr: string
+    sSigmaB1: string
+    sSigmaB2: string
+    sDSigmaM: string
+    sDSigmaR: string
+    sQ: string
+    qP: string
+    sMkp: string
+    sMkp1: string
+    Mrek: string
+    Qrek: string
+    Mmax: string
+    Qmax: string
+    yp: string
+    yb: string
+    Lb: string
+    gamma: string
+    flange: IStrengthFormulas_Flange
+    cap: IStrengthFormulas_Cap
+    strength: IStrengthFormulas_St[]
+}
+
+export interface IStrengthFormulas_Cap {
+    x: string
+    y: string
+    k: string
+    lambda: string
+    omega: string
 }

@@ -21,6 +21,15 @@ type Props = {
     bolt: IBoltResult
     formulas: IFormulas | undefined
     typeAlpha: string
+    typeGamma: string
+}
+
+const GammaLinks = {
+    "Gamma-any": "/image/moment/formulas/flange/gamma.svg",
+    "Gamma-free": "/image/moment/formulas/flange/gamma-free.svg",
+    "Gamma-free-any": "/image/moment/formulas/flange/gamma-first.svg",
+    "Gamma-any-free": "/image/moment/formulas/flange/gamma-second.svg",
+    "Gamma-free-free": "/image/moment/formulas/flange/gamma-free.svg",
 }
 
 export const Auxiliary: FC<Props> = ({
@@ -31,6 +40,7 @@ export const Auxiliary: FC<Props> = ({
     bolt,
     formulas,
     typeAlpha,
+    typeGamma,
 }) => {
     return (
         <Container title='Расчет вспомогательных величин'>
@@ -154,10 +164,9 @@ export const Auxiliary: FC<Props> = ({
                 />
             )}
 
-            {/* //TODO сделать разные формулы для гаммы */}
             <ResLine
                 title='Жесткость фланцевого соединения'
-                imgUrl='/image/moment/formulas/flange/gamma.svg'
+                imgUrl={GammaLinks[typeGamma as "Gamma-any"]}
                 formula={{
                     designation: <>&gamma;</>,
                     value: formulas?.strength.gamma,

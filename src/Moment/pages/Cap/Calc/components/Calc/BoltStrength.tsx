@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IFormulas, IGasketResult } from "../../../../../types/res_flange"
-import { ICalculateCap } from "../../../../../types/res_cap"
+import { IGasketResult } from "../../../../../types/res_flange"
+import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { ConditionLine } from "../../../../../components/ConditionLine/ConditionLine"
@@ -10,7 +10,7 @@ import classes from "../../../../styles/page.module.scss"
 type Props = {
     data: ICalculateCap
     res: IGasketResult
-    formulas: IFormulas | undefined
+    formulas: IFormulasCap | undefined
     path: "basis" | "strength"
     sigmaB1: "sigmaB1" | "fSigmaB1" | "sSigmaB1"
     sigmaB2: "sigmaB2" | "fSigmaB2" | "sSigmaB2"

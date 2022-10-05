@@ -33,9 +33,14 @@ const ResCalc: FC<Props> = ({ result }) => {
         let embed = ""
         if (result.embed) embed = "-embed"
 
-        let flanges = result.flange.type === "free" ? "-free" : "-any"
+        let flange = result.flange.type === "free" ? "-free" : "-any"
 
-        return `Qt${washer}${flanges}${embed}`
+        return `Qt${washer}${flange}${embed}`
+    }
+
+    const getTypeGamma = () => {
+        let flange = result.flange.type === "free" ? "-free" : "-any"
+        return `Gamma${flange}` as "Gamma-any"
     }
 
     return (
@@ -102,8 +107,10 @@ const ResCalc: FC<Props> = ({ result }) => {
                         basis={result.data}
                         gasket={result.gasket}
                         flange={result.flange}
+                        cap={result.cap}
                         bolt={result.bolt}
                         formulas={result.formulas}
+                        typeGamma={getTypeGamma()}
                     />
                     <Tightness data={result.calc} formulas={result.formulas} />
                     <BoltStrength
