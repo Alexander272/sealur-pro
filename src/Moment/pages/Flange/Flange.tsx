@@ -12,6 +12,7 @@ import ReadService from "../../service/read"
 import CalcService from "../../service/calc"
 import { Form } from "./Form/Form"
 import classes from "../styles/page.module.scss"
+import { IResFlange } from "../../types/res_flange"
 
 const initFormValue = {
     isWork: true,
@@ -33,7 +34,7 @@ const initFormValue = {
 
 export default function Flange() {
     const { data, error } = useSWR<{ data: IFlangeData }>(
-        "/sealur-moment/default/flange",
+        "/sealur-moment/data/flange",
         ReadService.getData
     )
 
@@ -79,7 +80,10 @@ export default function Flange() {
         data.detailData = {} as IDetail
 
         try {
-            const res = await CalcService.CalculateFlange("/sealur-moment/calc/flange", data)
+            const res = await CalcService.Calculate<IFormFlangeCalc, IResFlange>(
+                "/sealur-moment/calc/flange",
+                data
+            )
             navigate(MomentUrl + "/flange/result", { state: { result: res.data, person, detail } })
         } catch (error) {
             const err = error as AxiosError

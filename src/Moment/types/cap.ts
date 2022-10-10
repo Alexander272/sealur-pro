@@ -13,26 +13,11 @@ export interface IFormCapCalc {
     type: "bolt" | "pin"
     condition: "uncontrollable" | "controllable" | "controllablePin"
     calculation: "basis" | "strength"
-    gasket: {
-        gasketId: string
-        envId: string
-        thickness: string
-        d_out: string
-        d_in: string
-        data: {
-            title: string
-            type: TypeGasket
-            qo: string
-            m: string
-            compression: string
-            epsilon: string
-            permissiblePres: string
-        }
-    }
+    gasket: IGasket
     bolts: {
         markId: string
         title: string
-        name: string
+        boltId: string
         diameter: string
         area: string
         count: string
@@ -63,6 +48,23 @@ export interface IFormCapCalc {
 
     personData: IPersonData
     detailData: IDetail
+}
+
+export interface IGasket {
+    gasketId: string
+    envId: string
+    thickness: string
+    d_out: string
+    d_in: string
+    data: {
+        title: string
+        type: TypeGasket
+        qo: string
+        m: string
+        compression: string
+        epsilon: string
+        permissiblePres: string
+    }
 }
 
 export interface ICap {

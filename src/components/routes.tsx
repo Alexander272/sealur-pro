@@ -40,6 +40,8 @@ const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
 const MomentFlangeResult = lazy(() => import("../Moment/pages/Flange/Result"))
 const MomentCap = lazy(() => import("../Moment/pages/Cap/Cap"))
 const MomentCapResult = lazy(() => import("../Moment/pages/Cap/Result"))
+const MomentFloatingHead = lazy(() => import("../Moment/pages/FloatingHead/FloatingHead"))
+const MomentFloatingHeadResult = lazy(() => import("../Moment/pages/FloatingHead/Result"))
 
 //* Moment service Admin
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
@@ -154,6 +156,9 @@ export const MyRoutes = () => {
                         </Route>
                         <Route path='cap' element={<MomentCap />}>
                             <Route path='result' element={<MomentCapResult />} />
+                        </Route>
+                        <Route path='floating-head' element={<MomentFloatingHead />}>
+                            <Route path='result' element={<MomentFloatingHeadResult />} />
                         </Route>
                     </Route>
 

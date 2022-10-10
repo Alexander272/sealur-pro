@@ -1,4 +1,4 @@
-import React, { FC, memo, Suspense, useEffect } from "react"
+import React, { FC, lazy, memo, Suspense, useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form"
 import { Input } from "../../../../../components/UI/Input/Input"
 import { Select } from "../../../../../components/UI/Select/Select"
@@ -7,7 +7,8 @@ import { Loader } from "../../../../../components/UI/Loader/Loader"
 import { IMaterial } from "../../../../types/flange"
 import { IFormCapCalc } from "../../../../types/cap"
 import classes from "../../../styles/page.module.scss"
-import MaterialData from "./MaterialData"
+
+const MaterialData = lazy(() => import("./MaterialData"))
 
 const { Option } = Select
 

@@ -70,9 +70,9 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
         control,
         name: `bolts.markId`,
     })
-    const name = useWatch({
+    const boltId = useWatch({
         control,
-        name: `bolts.name`,
+        name: `bolts.boltId`,
     })
 
     useEffect(() => {
@@ -85,7 +85,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
     )
 
     useEffect(() => {
-        if (data) setValue("bolts.name", data.data[0].title)
+        if (data) setValue("bolts.boltId", data.data[0].id)
     }, [setValue, data])
 
     return (
@@ -125,12 +125,12 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
                         <p>Наружный диаметр болта (шпильки)</p>
                         <div className={classes["line-field"]}>
                             <Controller
-                                name='bolts.name'
+                                name='bolts.boltId'
                                 control={control}
                                 render={({ field }) => (
                                     <Select value={field.value} onChange={field.onChange}>
                                         {data?.data.map(b => (
-                                            <Option key={b.id} value={b.title}>
+                                            <Option key={b.id} value={b.id}>
                                                 {b.title}
                                             </Option>
                                         ))}
@@ -158,7 +158,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
                         </div>
                     </div>
 
-                    {name === "another" && (
+                    {boltId === "another" && (
                         <Suspense fallback={<Loader background='fill' />}>
                             <BoltData register={register} />
                         </Suspense>

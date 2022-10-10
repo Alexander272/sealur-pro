@@ -1,32 +1,25 @@
-import React, { useState } from "react"
-import useSWR from "swr"
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
-import { SubmitHandler, useForm } from "react-hook-form"
 import { AxiosError } from "axios"
+import React, { useState } from "react"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { Loader } from "../../../components/UI/Loader/Loader"
+import useSWR from "swr"
 import { MomentUrl } from "../../../components/routes"
+import { Loader } from "../../../components/UI/Loader/Loader"
 import ServerError from "../../../Error/ServerError"
-import ReadService from "../../service/read"
 import CalcService from "../../service/calc"
-import { IFormCapCalc } from "../../types/cap"
-import { IDetail, IFlangeData, IPersonData } from "../../types/flange"
+import ReadService from "../../service/read"
+import { IFloatData, IFormFloatingHead } from "../../types/floatingHead"
 import { Form } from "./Form/Form"
 import classes from "../styles/page.module.scss"
-import { IResCap } from "../../types/res_cap"
+import { IResFloat } from "../../types/res_float"
 
 const initFormValue = {
     isWork: true,
-    isEmbedded: false,
-    flanges: "nonIsolated" as "nonIsolated",
+    hasThorn: false,
     type: "pin" as "pin",
     condition: "controllable" as "controllable",
-    calculation: "basis" as "basis",
     isNeedFormulas: true,
-    isUseWasher: false,
-    capData: {
-        type: "flat" as "flat",
-    },
     personData: {
         hasPerson: false,
     },
@@ -35,16 +28,11 @@ const initFormValue = {
     },
 }
 
-export default function Cap() {
-    const { data, error } = useSWR<{ data: IFlangeData }>(
-        "/sealur-moment/data/flange",
+export default function FloatingHead() {
+    const { data, error, isValidating } = useSWR<{ data: IFloatData }>(
+        "/sealur-moment/data/float",
         ReadService.getData
     )
-
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    const [isLoading, setLoading] = useState(false)
 
     const {
         register,
@@ -52,33 +40,34 @@ export default function Cap() {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<IFormCapCalc>({
+    } = useForm<IFormFloatingHead>({
         defaultValues: initFormValue,
     })
 
-    if (!data)
-        return (
-            <div className={classes.wrapper}>
-                <Loader isFull />
-            </div>
-        )
+    const location = useLocation()
+    const navigate = useNavigate()
 
-    if (error) return <ServerError />
+    const [isLoading, setLoading] = useState(false)
 
-    const calculateHandler: SubmitHandler<IFormCapCalc> = async data => {
+    const calculateHandler: SubmitHandler<IFormFloatingHead> = async data => {
         setLoading(true)
-        const person = data.personData.hasPerson ? data.personData : null
-        data.personData = {} as IPersonData
-        const detail = data.detailData.hasDetail ? data.detailData : null
-        data.detailData = {} as IDetail
+
+        const person = data.personData?.hasPerson ? data.personData : null
+        const detail = data.detailData?.hasDetail ? data.detailData : null
+        data.personData = undefined
+        data.detailData = undefined
+
         try {
-            const res = await CalcService.Calculate<IFormCapCalc, IResCap>(
-                "/sealur-moment/calc/cap",
+            const res = await CalcService.Calculate<IFormFloatingHead, IResFloat>(
+                "/sealur-moment/calc/float",
                 data
             )
-            navigate(MomentUrl + "/cap/result", { state: { result: res.data, person, detail } })
+            navigate(MomentUrl + "/floating-head/result", {
+                state: { result: res.data, person, detail },
+            })
         } catch (error) {
             const err = error as AxiosError
+
             if (err.response?.status === 500) {
                 toast.error(
                     "На сервере произошла ошибка. Код ошибки: " +
@@ -94,6 +83,15 @@ export default function Cap() {
             setLoading(false)
         }
     }
+
+    if (isValidating || !data)
+        return (
+            <div className={classes.wrapper}>
+                <Loader isFull />
+            </div>
+        )
+
+    if (error) return <ServerError />
 
     return (
         <div className={classes.wrapper}>

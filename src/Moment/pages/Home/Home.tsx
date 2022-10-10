@@ -36,6 +36,9 @@ export default function Home() {
                 <Link to={MomentUrl + "/cap"} className={classes.link}>
                     Расчет соединения фланец-крышка
                 </Link>
+                <Link to={MomentUrl + "/floating-head"} className={classes.link}>
+                    Расчет плавающей головки
+                </Link>
             </main>
         </div>
     )

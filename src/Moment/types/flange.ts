@@ -32,7 +32,7 @@ export interface IFormFlangeCalc {
     bolts: {
         markId: string
         title: string
-        name: string
+        boltId: string
         diameter: string
         area: string
         count: string
