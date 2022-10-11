@@ -3,16 +3,13 @@ import React, { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import useSWR from "swr"
 import { MomentUrl } from "../../../components/routes"
 import { Loader } from "../../../components/UI/Loader/Loader"
-import ServerError from "../../../Error/ServerError"
 import CalcService from "../../service/calc"
-import ReadService from "../../service/read"
-import { IFloatData, IFormFloatingHead } from "../../types/floatingHead"
+import { IFormFloatingHead } from "../../types/floatingHead"
+import { IResFloat } from "../../types/res_float"
 import { Form } from "./Form/Form"
 import classes from "../styles/page.module.scss"
-import { IResFloat } from "../../types/res_float"
 
 const initFormValue = {
     isWork: true,
@@ -29,11 +26,6 @@ const initFormValue = {
 }
 
 export default function FloatingHead() {
-    const { data, error, isValidating } = useSWR<{ data: IFloatData }>(
-        "/sealur-moment/data/float",
-        ReadService.getData
-    )
-
     const {
         register,
         control,
@@ -84,22 +76,13 @@ export default function FloatingHead() {
         }
     }
 
-    if (isValidating || !data)
-        return (
-            <div className={classes.wrapper}>
-                <Loader isFull />
-            </div>
-        )
-
-    if (error) return <ServerError />
-
     return (
         <div className={classes.wrapper}>
             {isLoading && <Loader background='fill' />}
             {!location.pathname.includes("result") && (
                 <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
                     <Form
-                        data={data.data}
+                        // data={data.data}
                         register={register}
                         control={control}
                         setValue={setValue}

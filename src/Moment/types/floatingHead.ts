@@ -26,6 +26,8 @@ export interface IFlange {
     t: string
     markId: string
     material?: IMaterialData
+    width?: string
+    dIn?: string
 }
 
 export interface ICap {

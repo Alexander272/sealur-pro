@@ -1,38 +1,61 @@
 import React, { FC, memo } from "react"
 import { Control, UseFormRegister, UseFormSetValue } from "react-hook-form"
+import useSWR from "swr"
+import { IFloatData, IFormFloatingHead } from "../../../types/floatingHead"
 import { Button } from "../../../../components/UI/Button/Button"
 import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
 import { Detail } from "../../../components/Detail/Detail"
 import { Person } from "../../../components/Person/Person"
-import { IFloatData, IFormFloatingHead } from "../../../types/floatingHead"
 import { InitDataForBolt } from "./components/InitDataForBolt"
 import { InitDataForCalc } from "./components/InitDataForCalc"
 import { InitDataForCap } from "./components/InitDataForCap"
 import { InitDataForFlange } from "./components/InitDataForFlange"
 import { InitDataForGasket } from "./components/InitDataForGasket"
+import { Loader } from "../../../../components/UI/Loader/Loader"
+import ReadService from "../../../service/read"
+import ServerError from "../../../../Error/ServerError"
 import classes from "../../styles/page.module.scss"
+import { toast } from "react-toastify"
 
 type Props = {
-    data: IFloatData
+    // data: IFloatData
     register: UseFormRegister<IFormFloatingHead>
     control: Control<IFormFloatingHead, any>
     setValue: UseFormSetValue<IFormFloatingHead>
     errors: any
 }
 
-const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) => {
+const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
+    const { data: res, error } = useSWR<{ data: IFloatData }>(
+        "/sealur-moment/data/float",
+        ReadService.getData
+    )
+
+    if (!res)
+        return (
+            <div className={classes.wrapper}>
+                <Loader isFull />
+            </div>
+        )
+
+    if (error) {
+        console.log(error)
+        toast.error(error.response.message)
+        return <ServerError />
+    }
+
     return (
         <>
             <InitDataForCalc register={register} control={control} errors={errors} />
             <InitDataForFlange
-                materials={data.materials}
+                materials={res.data.materials}
                 register={register}
                 control={control}
                 setValue={setValue}
                 errors={errors}
             />
             <InitDataForCap
-                materials={data.materials}
+                materials={res.data.materials}
                 register={register}
                 control={control}
                 setValue={setValue}
@@ -40,15 +63,15 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
             />
 
             <InitDataForBolt
-                materials={data.materials}
+                materials={res.data.materials}
                 register={register}
                 control={control}
                 setValue={setValue}
                 errors={errors}
             />
             <InitDataForGasket
-                gasket={data.gaskets}
-                env={data.env}
+                gasket={res.data.gaskets}
+                env={res.data.env}
                 register={register}
                 control={control}
                 setValue={setValue}

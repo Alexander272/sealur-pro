@@ -50,8 +50,9 @@ type Props = {
 const Flange: FC<Props> = ({ materials, register, control, setValue, errors }) => {
     const markId = useWatch({
         control,
-        name: `flangeData.markId`,
+        name: "flangeData.markId",
     })
+    const hasThorn = useWatch({ control, name: "hasThorn" })
 
     useEffect(() => {
         if (!markId) setValue("flangeData.markId", materials[0].id)
@@ -105,7 +106,7 @@ const Flange: FC<Props> = ({ materials, register, control, setValue, errors }) =
                 <p>Диаметр окружности расположения болтов (шпилек)</p>
                 <p className={classes.designation}>
                     <i>
-                        D<sub>6</sub>
+                        D<sub>б</sub>
                     </i>
                 </p>
                 <div className={classes["line-field"]}>
@@ -121,6 +122,51 @@ const Flange: FC<Props> = ({ materials, register, control, setValue, errors }) =
                     />
                 </div>
             </div>
+
+            {hasThorn && (
+                <>
+                    <div className={classes.line}>
+                        <p>Ширина шипа</p>
+                        <p className={classes.designation}>
+                            <i>
+                                T<sub>ш</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangeData.width`}
+                                id={`flangeData.width`}
+                                type='number'
+                                step={0.001}
+                                register={register}
+                                suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangeData?.width`]}
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.line}>
+                        <p>Внутренний диаметр шипа</p>
+                        <p className={classes.designation}>
+                            <i>
+                                D<sub>вн.ш</sub>
+                            </i>
+                        </p>
+                        <div className={classes["line-field"]}>
+                            <Input
+                                name={`flangeData.dIn`}
+                                id={`flangeData.dIn`}
+                                type='number'
+                                step={0.001}
+                                register={register}
+                                suffix='мм'
+                                rule={{ required: true }}
+                                error={errors[`flangeData?.dIn`]}
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
 
             <div className={classes.line}>
                 <p>Температура фланца</p>
