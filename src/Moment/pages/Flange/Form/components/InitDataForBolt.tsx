@@ -10,8 +10,8 @@ import { Temp } from "./Temp"
 import ReadService from "../../../../service/read"
 import classes from "../../../styles/page.module.scss"
 
-const MaterialData = lazy(() => import("./MaterialData"))
-const BoltData = lazy(() => import("./BoltData"))
+const MaterialData = lazy(() => import("../../../../components/MaterialData/MaterialData"))
+const BoltData = lazy(() => import("../../../../components/BoltData/BoltData"))
 
 const { Option } = Select
 
@@ -79,7 +79,7 @@ const Bolt: FC<Props> = ({ isFull, materials, register, control, setValue, error
     }, [setValue, markId, materials])
 
     const { data } = useSWR<{ data: IBolt[] }>(
-        isFull ? "/sealur-moment/bolts" : null,
+        isFull ? "/sealur-moment/bolts/all" : null,
         ReadService.getData
     )
 

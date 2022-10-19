@@ -202,8 +202,9 @@ export const Auxiliary: FC<Props> = ({ result }) => {
                 imgUrl={
                     result.gasket.type === "Мягкая"
                         ? "/image/moment/formulas/float/alpha1.svg"
-                        : "/image/moment/formulas/float/alpha.svg"
+                        : undefined
                 }
+                imgText={result.gasket.type === "Мягкая" ? undefined : <>&alpha;</>}
                 formula={{
                     designation: <>&alpha;</>,
                     value: result.formulas?.alpha,

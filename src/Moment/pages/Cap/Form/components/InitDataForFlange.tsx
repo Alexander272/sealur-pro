@@ -13,7 +13,7 @@ import ReadService from "../../../../service/read"
 import classes from "../../../styles/page.module.scss"
 
 const FlangeSize = lazy(() => import("./FlangeSize"))
-const MaterialData = lazy(() => import("./MaterialData"))
+const MaterialData = lazy(() => import("../../../../components/MaterialData/MaterialData"))
 
 const { Option } = Select
 

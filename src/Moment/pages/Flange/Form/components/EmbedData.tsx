@@ -7,7 +7,7 @@ import { IFormFlangeCalc, IMaterial } from "../../../../types/flange"
 import { Loader } from "../../../../../components/UI/Loader/Loader"
 import classes from "../../../styles/page.module.scss"
 
-const MaterialData = lazy(() => import("./MaterialData"))
+const MaterialData = lazy(() => import("../../../../components/MaterialData/MaterialData"))
 
 const { Option } = Select
 

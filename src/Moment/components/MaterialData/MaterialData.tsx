@@ -1,11 +1,10 @@
 import { UseFormRegister } from "react-hook-form"
-import { Input } from "../../../../../components/UI/Input/Input"
-import { IFormFloatingHead } from "../../../../types/floatingHead"
-import classes from "../../../styles/page.module.scss"
+import { Input } from "../../../components/UI/Input/Input"
+import classes from "../../pages/styles/page.module.scss"
 
 type Props = {
     path: string
-    register: UseFormRegister<IFormFloatingHead>
+    register: UseFormRegister<any>
     errors: any
     titles: {
         name: string

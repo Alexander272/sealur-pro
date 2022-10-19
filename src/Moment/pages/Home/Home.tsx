@@ -39,6 +39,9 @@ export default function Home() {
                 <Link to={MomentUrl + "/floating-head"} className={classes.link}>
                     Расчет плавающей головки
                 </Link>
+                <Link to={MomentUrl + "/dev-cooling"} className={classes.link}>
+                    Расчет аппаратов воздушного охлаждения
+                </Link>
             </main>
         </div>
     )

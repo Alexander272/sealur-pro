@@ -1,25 +1,25 @@
 import React, { useEffect } from "react"
 import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import useSWR from "swr"
-import { Input } from "../../../../../components/UI/Input/Input"
-import { Select } from "../../../../../components/UI/Select/Select"
-import ReadService from "../../../../service/read"
-import { ITypeGasket } from "../../../../types/flange"
-import { IFormFloatingHead } from "../../../../types/floatingHead"
-import classes from "../../../styles/page.module.scss"
+import { Select } from "../../../components/UI/Select/Select"
+import { Input } from "../../../components/UI/Input/Input"
+import ReadService from "../../service/read"
+import { ITypeGasket, TypeGasket } from "../../types/flange"
+import classes from "../../pages/styles/page.module.scss"
 
 const { Option } = Select
 
 type Props = {
-    register: UseFormRegister<IFormFloatingHead>
-    control: Control<IFormFloatingHead, any>
-    setValue: UseFormSetValue<IFormFloatingHead>
+    register: UseFormRegister<any>
+    control: Control<any, any>
+    setValue: UseFormSetValue<any>
+    type?: TypeGasket[] | ["All"]
     errors: any
 }
 
-export default function GasketData({ register, control, setValue, errors }: Props) {
+export default function GasketData({ register, control, setValue, errors, type = ["All"] }: Props) {
     const { data } = useSWR<{ data: ITypeGasket[] }>(
-        "/sealur-moment/type-gasket",
+        ["/sealur-moment/type-gasket", type.map(t => ({ name: "types", value: t }))],
         ReadService.getData
     )
 
@@ -49,7 +49,11 @@ export default function GasketData({ register, control, setValue, errors }: Prop
                         name='gasket.data.type'
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onChange={field.onChange}>
+                            <Select
+                                value={field.value}
+                                onChange={field.onChange}
+                                disabled={(data?.data.length || 0) <= 1}
+                            >
                                 {data?.data.map(t => (
                                     <Option key={t.id} value={t.label}>
                                         {t.title}

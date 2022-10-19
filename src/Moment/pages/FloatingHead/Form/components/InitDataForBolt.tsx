@@ -10,8 +10,8 @@ import { IFormFloatingHead } from "../../../../types/floatingHead"
 import ReadService from "../../../../service/read"
 import classes from "../../../styles/page.module.scss"
 
-const MaterialData = lazy(() => import("./MaterialData"))
-const BoltData = lazy(() => import("./BoltData"))
+const MaterialData = lazy(() => import("../../../../components/MaterialData/MaterialData"))
+const BoltData = lazy(() => import("../../../../components/BoltData/BoltData"))
 
 const { Option } = Select
 
@@ -72,7 +72,7 @@ const Bolt: FC<Props> = ({ materials, register, control, setValue, errors }) => 
     }, [setValue, markId, materials])
 
     const { data, isValidating } = useSWR<{ data: IBolt[] }>(
-        "/sealur-moment/bolts",
+        "/sealur-moment/bolts/all",
         ReadService.getData
     )
 

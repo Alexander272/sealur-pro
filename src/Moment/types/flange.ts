@@ -1,5 +1,5 @@
 type TypeFlange = "welded" | "flat" | "free"
-type TypeGasket = "Soft" | "Oval" | "Metal"
+export type TypeGasket = "Soft" | "Oval" | "Metal"
 
 export interface IFormFlangeCalc {
     pressure: string

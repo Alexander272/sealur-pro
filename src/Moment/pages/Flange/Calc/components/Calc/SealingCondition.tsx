@@ -57,8 +57,8 @@ export const SealingCondition: FC<Props> = ({ data, flanges, formulas }) => {
                             imgUrl='/image/moment/formulas/flange/thetaCondK.svg'
                             result={
                                 <>
-                                    {formatNumber(d.teta)}&nbsp;
-                                    {d.teta <= d.dTetaK ? <> &le; </> : " > "}
+                                    {formatNumber(d.tetaK)}&nbsp;
+                                    {d.tetaK <= d.dTetaK ? <> &le; </> : " > "}
                                     &nbsp;
                                     {formatNumber(d.dTetaK)}
                                 </>

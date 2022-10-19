@@ -42,6 +42,8 @@ const MomentCap = lazy(() => import("../Moment/pages/Cap/Cap"))
 const MomentCapResult = lazy(() => import("../Moment/pages/Cap/Result"))
 const MomentFloatingHead = lazy(() => import("../Moment/pages/FloatingHead/FloatingHead"))
 const MomentFloatingHeadResult = lazy(() => import("../Moment/pages/FloatingHead/Result"))
+const MomentDevCooling = lazy(() => import("../Moment/pages/DevCooling/DevCooling"))
+const MomentDevCoolingResult = lazy(() => import("../Moment/pages/DevCooling/Result"))
 
 //* Moment service Admin
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
@@ -159,6 +161,9 @@ export const MyRoutes = () => {
                         </Route>
                         <Route path='floating-head' element={<MomentFloatingHead />}>
                             <Route path='result' element={<MomentFloatingHeadResult />} />
+                        </Route>
+                        <Route path='dev-cooling' element={<MomentDevCooling />}>
+                            <Route path='result' element={<MomentDevCoolingResult />} />
                         </Route>
                     </Route>
 

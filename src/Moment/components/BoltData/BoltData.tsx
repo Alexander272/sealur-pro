@@ -1,10 +1,9 @@
 import { UseFormRegister } from "react-hook-form"
-import { Input } from "../../../../../components/UI/Input/Input"
-import { IFormFlangeCalc } from "../../../../types/flange"
-import classes from "../../../styles/page.module.scss"
+import { Input } from "../../../components/UI/Input/Input"
+import classes from "../../pages/styles/page.module.scss"
 
 type Props = {
-    register: UseFormRegister<IFormFlangeCalc>
+    register: UseFormRegister<any>
 }
 
 export default function BoltData({ register }: Props) {

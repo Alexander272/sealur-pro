@@ -12,7 +12,7 @@ import classes from "../../../styles/page.module.scss"
 import { Loader } from "../../../../../components/UI/Loader/Loader"
 
 const FlangeSize = lazy(() => import("./FlangeSize"))
-const MaterialData = lazy(() => import("./MaterialData"))
+const MaterialData = lazy(() => import("../../../../components/MaterialData/MaterialData"))
 
 const { Option } = Select
 

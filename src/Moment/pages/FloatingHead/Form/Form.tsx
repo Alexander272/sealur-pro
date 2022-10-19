@@ -83,7 +83,7 @@ const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
                 id='isNeedFormulas'
                 name='isNeedFormulas'
                 register={register}
-                label={"Поставлять значения в формулы"}
+                label={"Подставлять значения в формулы"}
             />
             <Person register={register} errors={errors} control={control} />
             <Detail register={register} errors={errors} control={control} />

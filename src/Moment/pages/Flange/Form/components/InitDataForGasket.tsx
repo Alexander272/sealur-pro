@@ -7,7 +7,7 @@ import { Container } from "../../../../components/Container/Container"
 import { IEnv, IFormFlangeCalc, IGasket } from "../../../../types/flange"
 import classes from "../../../styles/page.module.scss"
 
-const GasketData = lazy(() => import("./GasketData"))
+const GasketData = lazy(() => import("../../../../components/GasketData/GasketData"))
 
 const { Option } = Select
 
