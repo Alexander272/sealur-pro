@@ -55,7 +55,7 @@ export const Cap: FC<Props> = ({ cameraDiagram, data }) => {
                     </i>
                 }
                 res={formatNumber(data.sideWallThick)}
-                units='мм;'
+                units='мм'
             />
             <Line
                 title='Внутренний размер камеры в поперечном направлении'
@@ -65,7 +65,7 @@ export const Cap: FC<Props> = ({ cameraDiagram, data }) => {
                     </i>
                 }
                 res={formatNumber(data.innerSize)}
-                units='мм;'
+                units='мм'
             />
             <Line
                 title='Наружный размер камеры в поперечном направлении'
@@ -75,20 +75,20 @@ export const Cap: FC<Props> = ({ cameraDiagram, data }) => {
                     </i>
                 }
                 res={formatNumber(data.outerSize)}
-                units='мм;'
+                units='мм'
             />
             <Line
                 title='Глубина камеры (крышки)'
                 designation={<i>H</i>}
                 res={formatNumber(data.depth)}
-                units='мм;'
+                units='мм'
             />
             {cameraDiagram === "schema2" || cameraDiagram === "schema3" ? (
                 <Line
                     title='Радиус гиба в углу крышки камеры'
                     designation={<i>R</i>}
                     res={formatNumber(data.radius)}
-                    units='мм;'
+                    units='мм'
                 />
             ) : null}
             <Line
@@ -99,7 +99,7 @@ export const Cap: FC<Props> = ({ cameraDiagram, data }) => {
                     </i>
                 }
                 res={formatNumber(data.L)}
-                units='мм;'
+                units='мм'
             />
             <Line
                 title='Коэффициент прочности сварного шва'
@@ -114,7 +114,7 @@ export const Cap: FC<Props> = ({ cameraDiagram, data }) => {
                     </i>
                 }
                 res={formatNumber(data.corrosion)}
-                units='мм;'
+                units='мм'
             />
 
             <Line title='Материал крышки' res={data.material} />
