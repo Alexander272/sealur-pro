@@ -8,7 +8,7 @@ export interface IResDevCooling {
     bolts: IBoltResult
     gasket: IGasketResult
     calc: ICalculated
-    formulas: IFormulas
+    formulas?: IFormulas
 }
 
 export interface IDataResult {

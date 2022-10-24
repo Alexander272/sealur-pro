@@ -26,7 +26,7 @@ export const CapData: FC<Props> = ({ data, formulas }) => {
                         value: formulas?.y,
                     }}
                     result={formatNumber(data.y)}
-                    units='1/(H.мм)'
+                    units='1/(H*мм)'
                 />
                 <ResLine
                     title='где'
@@ -71,7 +71,7 @@ export const CapData: FC<Props> = ({ data, formulas }) => {
                     value: formulas?.y,
                 }}
                 result={formatNumber(data.y)}
-                units='1/(H.мм)'
+                units='1/(H*мм)'
             />
             <ResLine
                 title='где'

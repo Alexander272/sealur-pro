@@ -6,7 +6,7 @@ import { formatNumber } from "../../../../../utils/format"
 
 type Props = {
     res: ICalculated
-    formulas: IFormulas
+    formulas: IFormulas | undefined
 }
 
 export const Pressure: FC<Props> = ({ res, formulas }) => {

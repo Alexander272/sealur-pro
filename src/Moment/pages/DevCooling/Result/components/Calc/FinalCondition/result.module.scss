@@ -1,0 +1,20 @@
+.line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .condition {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .warn {
+        font-weight: 600;
+    }
+}
+
+.title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1rem;
+}

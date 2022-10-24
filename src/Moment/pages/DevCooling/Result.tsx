@@ -18,7 +18,7 @@ export default function Result() {
     console.log(result)
 
     useEffect(() => {
-        if (!result) navigate(MomentUrl + "/dev-cooling")
+        if (!result) navigate(-1)
     }, [navigate, result])
 
     const goBackHandler = () => {

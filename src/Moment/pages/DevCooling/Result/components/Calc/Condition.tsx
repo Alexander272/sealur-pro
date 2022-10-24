@@ -7,14 +7,14 @@ import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     res: ICalculated
-    formulas: IFormulas
+    formulas: IFormulas | undefined
 }
 
 export const Condition: FC<Props> = ({ res, formulas }) => {
     return (
         <Container title='Условия применения формул'>
             <ConditionLine
-                formula={{ value: formulas.condition1 }}
+                formula={{ value: formulas?.condition1 }}
                 imgUrl='/image/moment/formulas/dev-cooling/cond1.svg'
                 result={
                     <>
@@ -26,7 +26,7 @@ export const Condition: FC<Props> = ({ res, formulas }) => {
                 }
             />
             <ConditionLine
-                formula={{ value: formulas.condition2 }}
+                formula={{ value: formulas?.condition2 }}
                 imgUrl='/image/moment/formulas/dev-cooling/cond2.svg'
                 result={
                     <>
@@ -39,7 +39,7 @@ export const Condition: FC<Props> = ({ res, formulas }) => {
             />
 
             <p className={classes.title}>
-                Условие применения формул {!res.isConditionsMet && "не "}выполнены
+                <b>Условие применения формул {!res.isConditionsMet && "не "}выполнены</b>
             </p>
         </Container>
     )
