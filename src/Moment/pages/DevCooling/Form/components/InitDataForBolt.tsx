@@ -69,8 +69,8 @@ const Bolt: FC<Props> = ({ materials, register, control, setValue, errors }) => 
     )
 
     useEffect(() => {
-        if (data) setValue("bolts.boltId", data.data[0].id)
-    }, [setValue, data])
+        if (!boltId && data) setValue("bolts.boltId", data.data[0].id)
+    }, [setValue, data, boltId])
 
     if (isValidating) return null
 

@@ -14,6 +14,7 @@ import { Tube } from "./components/Tube"
 import { TubeSheet } from "./components/TubeSheet"
 import { GasketCondition } from "./components/Calc/GasketCondition"
 import { FinalCondition } from "./components/Calc/FinalCondition/FinalCondition"
+import { Moment } from "./components/Calc/Moment"
 
 type Props = {
     result: IResDevCooling
@@ -57,6 +58,11 @@ const Result: FC<Props> = ({ result }) => {
                         formulas={result.formulas?.cap}
                     />
                     <FinalCondition res={result} />
+                    <Moment
+                        res={result.calc.moment}
+                        formulas={result.formulas?.moment}
+                        gasket={result.gasket}
+                    />
                 </>
             )}
         </>
