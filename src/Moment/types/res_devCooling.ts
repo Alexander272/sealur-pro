@@ -165,7 +165,7 @@ export interface IGasketResult {
     type: string
 }
 
-interface ICondition {
+export interface ICondition {
     x: number
     y: number
 }

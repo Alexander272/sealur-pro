@@ -44,6 +44,10 @@ const MomentFloatingHead = lazy(() => import("../Moment/pages/FloatingHead/Float
 const MomentFloatingHeadResult = lazy(() => import("../Moment/pages/FloatingHead/Result"))
 const MomentDevCooling = lazy(() => import("../Moment/pages/DevCooling/DevCooling"))
 const MomentDevCoolingResult = lazy(() => import("../Moment/pages/DevCooling/Result"))
+const MomentGasCooling = lazy(() => import("../Moment/pages/GasCooling/GasCooling"))
+const MomentGasCoolingResult = lazy(() => import("../Moment/pages/GasCooling/Result"))
+const MomentExCircle = lazy(() => import("../Moment/pages/ExCircle/ExCircle"))
+const MomentExCircleResult = lazy(() => import("../Moment/pages/ExCircle/Result"))
 
 //* Moment service Admin
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
@@ -164,6 +168,12 @@ export const MyRoutes = () => {
                         </Route>
                         <Route path='dev-cooling' element={<MomentDevCooling />}>
                             <Route path='result' element={<MomentDevCoolingResult />} />
+                        </Route>
+                        <Route path='gas-cooling' element={<MomentGasCooling />}>
+                            <Route path='result' element={<MomentGasCoolingResult />} />
+                        </Route>
+                        <Route path='express-circle' element={<MomentExCircle />}>
+                            <Route path='result' element={<MomentExCircleResult />} />
                         </Route>
                     </Route>
 

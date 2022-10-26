@@ -9,6 +9,18 @@ const titles = {
     [MomentUrl + "/flange/result"]: "Результат расчета соединения фланец-фланец",
     [MomentUrl + "/cap"]: "Расчет соединения фланец-крышка",
     [MomentUrl + "/cap/result"]: "Результат расчета соединения фланец-крышка",
+    [MomentUrl + "/floating-head"]: "Расчет плавающей головки теплообменного аппарата",
+    [MomentUrl + "/floating-head/result"]:
+        "Результат расчета плавающей головки теплообменного аппарата",
+    [MomentUrl + "/dev-cooling"]: "Расчет аппаратов воздушного охлаждения",
+    [MomentUrl + "/dev-cooling/result"]: "Результат расчета аппаратов воздушного охлаждения",
+    [MomentUrl + "/gas-cooling"]: "Расчет прокладки АВО (выбор по типоразмеру аппарата)",
+    [MomentUrl + "/gas-cooling/result"]:
+        "Результат расчета прокладки АВО (выбор по типоразмеру аппарата)",
+    [MomentUrl + "/express-circle"]: "Экспресс оценка момента затяжки",
+    [MomentUrl + "/express-circle/result"]: "Результат экспресс оценки момента затяжки",
+    [MomentUrl + "/express-rectangle"]: "Экспресс оценка момента затяжки",
+    [MomentUrl + "/express-rectangle/result"]: "Результат экспресс оценки момента затяжки",
 }
 
 export const Header = () => {

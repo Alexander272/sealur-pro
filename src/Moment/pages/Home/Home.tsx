@@ -42,6 +42,12 @@ export default function Home() {
                 <Link to={MomentUrl + "/dev-cooling"} className={classes.link}>
                     Расчет аппаратов воздушного охлаждения
                 </Link>
+                <Link to={MomentUrl + "/gas-cooling"} className={classes.link}>
+                    Расчет прокладки АВО (выбор по типоразмеру аппарата)
+                </Link>
+                <Link to={MomentUrl + "/express-circle"} className={classes.link}>
+                    Экспресс-оценка момента затяжки (круглая)
+                </Link>
             </main>
         </div>
     )

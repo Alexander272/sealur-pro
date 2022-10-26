@@ -1,34 +1,31 @@
 import React, { FC, memo } from "react"
 import { Control, UseFormRegister, UseFormSetValue } from "react-hook-form"
-import useSWR from "swr"
 import { toast } from "react-toastify"
-import { Button } from "../../../../components/UI/Button/Button"
-import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
+import useSWR from "swr"
 import { Loader } from "../../../../components/UI/Loader/Loader"
+import { Checkbox } from "../../../../components/UI/Checkbox/Checkbox"
+import { Button } from "../../../../components/UI/Button/Button"
 import { Person } from "../../../components/Person/Person"
 import { Detail } from "../../../components/Detail/Detail"
-import { InitDataForCalc } from "./components/InitDataForCalc"
-import { InitDataForCap } from "./components/InitDataForCap"
-import ReadService from "../../../service/read"
-import { IFormDevCooling } from "../../../types/devCooling"
-import { IFloatData } from "../../../types/floatingHead"
 import ServerError from "../../../../Error/ServerError"
-import { InitDataForTubeSheet } from "./components/InitDataForTubeSheet"
-import { InitDataForTube } from "./components/InitDataForTube"
+import ReadService from "../../../service/read"
+import { IFormExCircle } from "../../../types/exCircle"
+import { IFloatData } from "../../../types/floatingHead"
+import { InitData } from "./components/InitData"
 import { InitDataForBolt } from "./components/InitDataForBolt"
-import { InitDataForGasket } from "./components/InitDataForGasket"
 import classes from "../../styles/page.module.scss"
+import { InitDataForGasket } from "./components/InitDataForGasket"
 
 type Props = {
-    register: UseFormRegister<IFormDevCooling>
-    control: Control<IFormDevCooling, any>
-    setValue: UseFormSetValue<IFormDevCooling>
+    register: UseFormRegister<IFormExCircle>
+    control: Control<IFormExCircle, any>
+    setValue: UseFormSetValue<IFormExCircle>
     errors: any
 }
 
 const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
     const { data: res, error } = useSWR<{ data: IFloatData }>(
-        "/sealur-moment/data/dev-cooling",
+        "/sealur-moment/data/float",
         ReadService.getData
     )
 
@@ -47,28 +44,7 @@ const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
 
     return (
         <>
-            <InitDataForCalc register={register} control={control} errors={errors} />
-            <InitDataForCap
-                materials={res.data.materials}
-                register={register}
-                control={control}
-                setValue={setValue}
-                errors={errors}
-            />
-            <InitDataForTubeSheet
-                materials={res.data.materials}
-                register={register}
-                control={control}
-                setValue={setValue}
-                errors={errors}
-            />
-            <InitDataForTube
-                materials={res.data.materials}
-                register={register}
-                control={control}
-                setValue={setValue}
-                errors={errors}
-            />
+            <InitData register={register} control={control} errors={errors} />
             <InitDataForBolt
                 materials={res.data.materials}
                 register={register}
