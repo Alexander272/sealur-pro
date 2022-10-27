@@ -1,16 +1,16 @@
 import { FC, memo } from "react"
-import { IResExCircle } from "../../../types/res_exCircle"
+import { IResExRect } from "../../../types/res_exRect"
 import { Bolt } from "./components/Bolt"
 import { BoltStrength } from "./components/Calc/Bolts"
 import { Conclusions } from "./components/Calc/Conclusions"
-import { Deformation } from "./components/Calc/Deformation"
+import { Auxiliary } from "./components/Calc/Auxiliary"
 import { ForcesInBolts } from "./components/Calc/ForcesInBolts"
 import { Moment } from "./components/Calc/Moment"
 import { Data } from "./components/Data"
 import { Gasket } from "./components/Gasket"
 
 type Props = {
-    result: IResExCircle
+    result: IResExRect
 }
 
 const Result: FC<Props> = ({ result }) => {
@@ -20,11 +20,7 @@ const Result: FC<Props> = ({ result }) => {
             <Bolt data={result.bolts} />
             <Gasket data={result.gasket} />
 
-            <Deformation
-                res={result.calc.deformation}
-                formulas={result.formulas?.deformation}
-                gasket={result.gasket}
-            />
+            <Auxiliary res={result.calc.auxiliary} formulas={result.formulas?.auxiliary} />
             <ForcesInBolts
                 res={result.calc.forcesInBolts}
                 formulas={result.formulas?.forcesInBolts}

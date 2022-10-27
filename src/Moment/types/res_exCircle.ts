@@ -61,7 +61,7 @@ export interface IGasketResult {
 
 export interface ICalculated {
     deformation: ICalcDeformation
-    forsesInBolts: ICalcForcesInBolts
+    forcesInBolts: ICalcForcesInBolts
     bolt: ICalcBolts
     moment: ICalcMoment
 }
@@ -122,7 +122,7 @@ export interface ICalcMoment {
 
 export interface IFormulas {
     deformation: IDeformationFormulas
-    forsesInBolts: IForcesInBoltsFormulas
+    forcesInBolts: IForcesInBoltsFormulas
     bolt: IBoltsFormulas
     moment: IMomentFormulas
 }

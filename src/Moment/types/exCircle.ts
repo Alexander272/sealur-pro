@@ -35,10 +35,10 @@ export interface IGasketFullData {
     thickness: string
     dOut: string
     dIn: string
-    data?: GasketData
+    data?: IGasketData
 }
 
-export interface GasketData {
+export interface IGasketData {
     title: string
     type: TypeGasket
     qo: string

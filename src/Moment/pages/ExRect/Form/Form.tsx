@@ -9,7 +9,7 @@ import { Person } from "../../../components/Person/Person"
 import { Detail } from "../../../components/Detail/Detail"
 import ServerError from "../../../../Error/ServerError"
 import ReadService from "../../../service/read"
-import { IFormExCircle } from "../../../types/exCircle"
+import { IFormExRect } from "../../../types/exRect"
 import { IFloatData } from "../../../types/floatingHead"
 import { InitData } from "./components/InitData"
 import { InitDataForBolt } from "./components/InitDataForBolt"
@@ -17,15 +17,15 @@ import { InitDataForGasket } from "./components/InitDataForGasket"
 import classes from "../../styles/page.module.scss"
 
 type Props = {
-    register: UseFormRegister<IFormExCircle>
-    control: Control<IFormExCircle, any>
-    setValue: UseFormSetValue<IFormExCircle>
+    register: UseFormRegister<IFormExRect>
+    control: Control<IFormExRect, any>
+    setValue: UseFormSetValue<IFormExRect>
     errors: any
 }
 
 const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
     const { data: res, error } = useSWR<{ data: IFloatData }>(
-        "/sealur-moment/data/float",
+        "/sealur-moment/data/dev-cooling",
         ReadService.getData
     )
 

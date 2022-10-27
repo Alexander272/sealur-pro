@@ -48,6 +48,9 @@ export default function Home() {
                 <Link to={MomentUrl + "/express-circle"} className={classes.link}>
                     Экспресс-оценка момента затяжки (круглая)
                 </Link>
+                <Link to={MomentUrl + "/express-rectangle"} className={classes.link}>
+                    Экспресс-оценка момента затяжки (прямоугольная)
+                </Link>
             </main>
         </div>
     )

@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { Container } from "../../../../components/Container/Container"
-import { IGasketResult } from "../../../../types/res_exCircle"
+import { IGasketResult } from "../../../../types/res_exRect"
 import { formatNumber } from "../../../../utils/format"
 import { Line } from "../../../Flange/Calc/components/Line"
 
@@ -15,13 +15,23 @@ export const Gasket: FC<Props> = ({ data }) => {
             {data.env && <Line title='Уплотняемая среда' res={data.env} />}
 
             <Line
-                title='Наружный диаметр прокладки'
+                title='Размер прокладки в продольном направлении'
                 designation={
                     <i>
-                        D<sub>н.п</sub>
+                        L<sub>2</sub>
                     </i>
                 }
-                res={formatNumber(data.dOut)}
+                res={formatNumber(data.sizeLong)}
+                units='мм'
+            />
+            <Line
+                title='Размер прокладки в поперечном направлении'
+                designation={
+                    <i>
+                        B<sub>2</sub>
+                    </i>
+                }
+                res={formatNumber(data.sizeTrans)}
                 units='мм'
             />
             <Line

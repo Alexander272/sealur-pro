@@ -48,6 +48,8 @@ const MomentGasCooling = lazy(() => import("../Moment/pages/GasCooling/GasCoolin
 const MomentGasCoolingResult = lazy(() => import("../Moment/pages/GasCooling/Result"))
 const MomentExCircle = lazy(() => import("../Moment/pages/ExCircle/ExCircle"))
 const MomentExCircleResult = lazy(() => import("../Moment/pages/ExCircle/Result"))
+const MomentExRect = lazy(() => import("../Moment/pages/ExRect/ExRect"))
+const MomentExRectResult = lazy(() => import("../Moment/pages/ExRect/Result"))
 
 //* Moment service Admin
 const MomentAdmin = lazy(() => import("../Moment/pages/Admin/Admin"))
@@ -174,6 +176,9 @@ export const MyRoutes = () => {
                         </Route>
                         <Route path='express-circle' element={<MomentExCircle />}>
                             <Route path='result' element={<MomentExCircleResult />} />
+                        </Route>
+                        <Route path='express-rectangle' element={<MomentExRect />}>
+                            <Route path='result' element={<MomentExRectResult />} />
                         </Route>
                     </Route>
 
