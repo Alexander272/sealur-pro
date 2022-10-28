@@ -1,6 +1,7 @@
 import { FC, useCallback, useLayoutEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { useSWRConfig } from "swr"
 import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
 import { useModal } from "../../../../../components/Modal/hooks/useModal"
 import { Modal } from "../../../../../components/Modal/Modal"
@@ -10,13 +11,13 @@ import UserService from "../../../../../service/user"
 import { ConfirmUser, IRole, IUser } from "../../../../../types/user"
 import { NewUser } from "./NewUser"
 import { Roles } from "./Roles"
-import classes from "./users.module.scss"
+import classes from "../../users.module.scss"
 
 type Props = {
-    fetchAllUsers: () => void
+    swrKey: any
 }
 
-export const NewUsers: FC<Props> = ({ fetchAllUsers }) => {
+export const NewUsers: FC<Props> = ({ swrKey }) => {
     const [users, setUsers] = useState<IUser[]>([])
     const [roles, setRoles] = useState<IRole[]>([
         { id: Date.now().toString(), service: "pro", role: "user" },
@@ -29,6 +30,8 @@ export const NewUsers: FC<Props> = ({ fetchAllUsers }) => {
         setValue,
         formState: { errors },
     } = useForm<ConfirmUser>()
+
+    const { mutate } = useSWRConfig()
 
     const fetchUsers = useCallback(async () => {
         try {
@@ -89,18 +92,9 @@ export const NewUsers: FC<Props> = ({ fetchAllUsers }) => {
             setUsers(newUsers)
 
             toast.success("Пользователь подтвержден")
-            // await UserService.updateUser(user.current.id, data)
-
-            // let newUsers: IUser[] = JSON.parse(JSON.stringify(users))
-            // newUsers = newUsers.map(u => {
-            //     if (u.id === user.current?.id) return { ...u, login: data.login }
-            //     else return u
-            // })
-            // setUsers(newUsers)
-            // toast.success("Пользовательские данные обновлены")
             toggle()
 
-            fetchAllUsers()
+            mutate(swrKey)
         } catch (error: any) {
             toast.error("Произошла ошибка " + error.message)
         }

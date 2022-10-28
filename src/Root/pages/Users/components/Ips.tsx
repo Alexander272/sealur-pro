@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
-import { IIp } from "../../../../../types/ip"
-import classes from "./users.module.scss"
+import { IIp } from "../../../../types/ip"
+import classes from "../users.module.scss"
 
 type Props = {
     ips: IIp[]

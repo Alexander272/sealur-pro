@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { IResDevCooling } from "../../types/res_devCooling"
 import { IDetail, IPersonData } from "../../types/flange"
 import { Button } from "../../../components/UI/Button/Button"
-import { MomentUrl } from "../../../components/routes"
 import { ResultData } from "./Result/Result"
 import classes from "../styles/page.module.scss"
 

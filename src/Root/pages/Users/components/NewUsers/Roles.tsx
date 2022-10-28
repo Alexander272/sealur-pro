@@ -4,7 +4,7 @@ import { Modal } from "../../../../../components/Modal/Modal"
 import { Button } from "../../../../../components/UI/Button/Button"
 import { Select } from "../../../../../components/UI/Select/Select"
 import { IRole } from "../../../../../types/user"
-import classes from "./users.module.scss"
+import classes from "../../users.module.scss"
 
 const { Option } = Select
 

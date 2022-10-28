@@ -1,14 +1,14 @@
 import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
-import { ConfirmModal } from "../../../../../components/ConfirmModal/ConfirmModal"
-import { useModal } from "../../../../../components/Modal/hooks/useModal"
-import { Modal } from "../../../../../components/Modal/Modal"
-import { Button } from "../../../../../components/UI/Button/Button"
-import { Select } from "../../../../../components/UI/Select/Select"
-import RoleService from "../../../../../service/role"
-import { IRole, IUser } from "../../../../../types/user"
+import { ConfirmModal } from "../../../../components/ConfirmModal/ConfirmModal"
+import { useModal } from "../../../../components/Modal/hooks/useModal"
+import { Modal } from "../../../../components/Modal/Modal"
+import { Button } from "../../../../components/UI/Button/Button"
+import { Select } from "../../../../components/UI/Select/Select"
+import RoleService from "../../../../service/role"
+import { IRole, IUser } from "../../../../types/user"
 import { Ips } from "./Ips"
-import classes from "./users.module.scss"
+import classes from "../users.module.scss"
 
 const { Option } = Select
 

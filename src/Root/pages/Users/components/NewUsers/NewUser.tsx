@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { Button } from "../../../../../components/UI/Button/Button"
 import { IUser } from "../../../../../types/user"
-import classes from "./users.module.scss"
+import classes from "../../users.module.scss"
 
 type Props = {
     user: IUser

@@ -8,4 +8,17 @@
 .users {
     flex-basis: 100%;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+
+    .link {
+        font-size: 1.3rem;
+        color: var(--button-color);
+        font-weight: bold;
+        // background-color: var(--button-bg-color);
+        background-color: #fff;
+        padding: 10px 24px;
+        border-radius: 12px;
+        border: 1px solid #8099d6;
+    }
 }

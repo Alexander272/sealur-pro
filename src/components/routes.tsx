@@ -11,6 +11,7 @@ const Main = lazy(() => import("../Root/components/Layout/Main"))
 const Home = lazy(() => import("../Root/pages/Home/Home"))
 const Profile = lazy(() => import("../Root/pages/Profile/Profile"))
 const Services = lazy(() => import("../Root/pages/Services/Services"))
+const Users = lazy(() => import("../Root/pages/Users/Users"))
 
 //* Pro service
 const ProApp = lazy(() => import("../SealurPro/App"))
@@ -87,6 +88,7 @@ export const MyRoutes = () => {
                     <Route index element={<Home />} />
                     <Route path='services' element={<Services />} />
                     <Route path='profile' element={<Profile />} />
+                    <Route path='users/:page' element={<Users />} />
                 </Route>
 
                 {/* section pro  */}
@@ -148,7 +150,7 @@ export const MyRoutes = () => {
                     />
                 </Route>
 
-                {/* moment pro  */}
+                {/* moment */}
                 <Route
                     path='/moment'
                     element={

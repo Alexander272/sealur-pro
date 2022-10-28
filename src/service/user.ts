@@ -64,4 +64,26 @@ export default class UserService {
             throw error.response.data
         }
     }
+
+    static async getUsers(
+        url: string,
+        page: number,
+        search: {
+            value: string
+            fields: string[]
+        }
+    ): Promise<{ data: IUser[]; count: number }> {
+        let params = undefined
+        if (search.value) {
+            params = new URLSearchParams(search.fields.map(f => ["search_field", f]))
+            params.append("search", search.value)
+        }
+
+        try {
+            const res = await api.get(`${url}/${page}`, { params: params })
+            return res.data
+        } catch (error: any) {
+            throw error.response.data
+        }
+    }
 }

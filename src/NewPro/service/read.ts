@@ -1,4 +1,4 @@
-import api from "../../service/api"
+// import api from "../../service/api"
 import { IStep } from "../types/steps"
 
 const testSteps: IStep[] = [
