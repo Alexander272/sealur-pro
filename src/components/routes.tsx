@@ -38,18 +38,25 @@ const MomentApp = lazy(() => import("../Moment/App"))
 const MomentHome = lazy(() => import("../Moment/pages/Home/Home"))
 const MomentMain = lazy(() => import("../Moment/components/layout/Main"))
 const MomentFlange = lazy(() => import("../Moment/pages/Flange/Flange"))
+const MomentFlangeForm = lazy(() => import("../Moment/pages/Flange/Form"))
 const MomentFlangeResult = lazy(() => import("../Moment/pages/Flange/Result"))
 const MomentCap = lazy(() => import("../Moment/pages/Cap/Cap"))
+const MomentCapForm = lazy(() => import("../Moment/pages/Cap/Form"))
 const MomentCapResult = lazy(() => import("../Moment/pages/Cap/Result"))
 const MomentFloatingHead = lazy(() => import("../Moment/pages/FloatingHead/FloatingHead"))
+const MomentFloatingHeadFrom = lazy(() => import("../Moment/pages/FloatingHead/Form"))
 const MomentFloatingHeadResult = lazy(() => import("../Moment/pages/FloatingHead/Result"))
 const MomentDevCooling = lazy(() => import("../Moment/pages/DevCooling/DevCooling"))
+const MomentDevCoolingForm = lazy(() => import("../Moment/pages/DevCooling/Form"))
 const MomentDevCoolingResult = lazy(() => import("../Moment/pages/DevCooling/Result"))
 const MomentGasCooling = lazy(() => import("../Moment/pages/GasCooling/GasCooling"))
+const MomentGasCoolingForm = lazy(() => import("../Moment/pages/GasCooling/Form"))
 const MomentGasCoolingResult = lazy(() => import("../Moment/pages/GasCooling/Result"))
 const MomentExCircle = lazy(() => import("../Moment/pages/ExCircle/ExCircle"))
+const MomentExCircleForm = lazy(() => import("../Moment/pages/ExCircle/Form"))
 const MomentExCircleResult = lazy(() => import("../Moment/pages/ExCircle/Result"))
 const MomentExRect = lazy(() => import("../Moment/pages/ExRect/ExRect"))
+const MomentExRectForm = lazy(() => import("../Moment/pages/ExRect/Form"))
 const MomentExRectResult = lazy(() => import("../Moment/pages/ExRect/Result"))
 
 //* Moment service Admin
@@ -162,24 +169,31 @@ export const MyRoutes = () => {
                     <Route index element={<MomentHome />} />
                     <Route path='' element={<MomentMain />}>
                         <Route path='flange' element={<MomentFlange />}>
+                            <Route index element={<MomentFlangeForm />} />
                             <Route path='result' element={<MomentFlangeResult />} />
                         </Route>
                         <Route path='cap' element={<MomentCap />}>
+                            <Route index element={<MomentCapForm />} />
                             <Route path='result' element={<MomentCapResult />} />
                         </Route>
                         <Route path='floating-head' element={<MomentFloatingHead />}>
+                            <Route index element={<MomentFloatingHeadFrom />} />
                             <Route path='result' element={<MomentFloatingHeadResult />} />
                         </Route>
                         <Route path='dev-cooling' element={<MomentDevCooling />}>
+                            <Route index element={<MomentDevCoolingForm />} />
                             <Route path='result' element={<MomentDevCoolingResult />} />
                         </Route>
                         <Route path='gas-cooling' element={<MomentGasCooling />}>
+                            <Route index element={<MomentGasCoolingForm />} />
                             <Route path='result' element={<MomentGasCoolingResult />} />
                         </Route>
                         <Route path='express-circle' element={<MomentExCircle />}>
+                            <Route index element={<MomentExCircleForm />} />
                             <Route path='result' element={<MomentExCircleResult />} />
                         </Route>
                         <Route path='express-rectangle' element={<MomentExRect />}>
+                            <Route index element={<MomentExRectForm />} />
                             <Route path='result' element={<MomentExRectResult />} />
                         </Route>
                     </Route>

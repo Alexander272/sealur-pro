@@ -1,10 +1,11 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import { Outlet } from "react-router-dom"
+import classes from "../styles/page.module.scss"
 
 export default function GasCooling() {
-    const navigate = useNavigate()
-
-    navigate(-1)
-
-    return <div>Не реализовано</div>
+    return (
+        <div className={classes.wrapper}>
+            <Outlet />
+        </div>
+    )
 }
