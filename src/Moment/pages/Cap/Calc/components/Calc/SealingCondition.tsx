@@ -4,7 +4,7 @@ import {
     IStrength,
     IStrengthFormulas_St,
     IStrengthResult,
-} from "../../../../../types/res_flange"
+} from "../../../../../types/res_flange_old"
 import { IStrengthFormulas } from "../../../../../types/res_cap"
 import { Container } from "../../../../../components/Container/Container"
 import { formatNumber } from "../../../../../utils/format"

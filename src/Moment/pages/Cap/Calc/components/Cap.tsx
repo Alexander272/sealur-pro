@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Container } from "../../../../components/Container/Container"
 import { ICapResult } from "../../../../types/res_cap"
 import { formatNumber } from "../../../../utils/format"
-import { Line } from "../../../Flange/Calc/components/Line"
+import { Line } from "../../../Flange_old/Calc/components/Line"
 
 type Props = {
     data: ICapResult

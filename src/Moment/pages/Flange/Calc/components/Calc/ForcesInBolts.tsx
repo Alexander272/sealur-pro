@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas } from "../../../../../types/res_flange"
+import { IForcesInBolts, IForcesInBoltsFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
@@ -45,28 +45,13 @@ export const QtLink = {
 }
 
 type Props = {
-    data: ICalculate
-    formulas: IFormulas | undefined
+    data: IForcesInBolts
+    formulas?: IForcesInBoltsFormulas
     typeAlpha: string
     typeQt: string
-    path: "basis" | "strength"
-    pb: "Pb" | "sPb"
-    pb1: "Pb1" | "sPb1"
-    pb2: "Pb2" | "sPb2"
-    pbr: "Pbr" | "sPbr"
 }
 
-export const ForcesInBolts: FC<Props> = ({
-    data,
-    formulas,
-    typeAlpha,
-    typeQt,
-    path,
-    pb,
-    pb1,
-    pb2,
-    pbr,
-}) => {
+export const ForcesInBolts: FC<Props> = ({ data, formulas, typeAlpha, typeQt }) => {
     return (
         <Container title='Усилия в болтах (шпильках) фланцевого соединения при затяжке и в рабочих условиях'>
             <ResLine
@@ -136,9 +121,9 @@ export const ForcesInBolts: FC<Props> = ({
                             <sup>м</sup>
                         </>
                     ),
-                    value: formulas && formulas[`${path as "basis"}`][`${pb as "Pb"}`],
+                    value: formulas?.Pb,
                 }}
-                result={formatNumber(data[`${path as "basis"}`][`${pb as "Pb"}`])}
+                result={formatNumber(data.Pb)}
                 units='H'
             />
             <ResLine
@@ -173,16 +158,16 @@ export const ForcesInBolts: FC<Props> = ({
                             P<sub>б1</sub>
                         </>
                     ),
-                    value: formulas && formulas[`${path as "basis"}`][`${pb1 as "Pb"}`],
+                    value: formulas?.Pb1,
                 }}
-                result={formatNumber(data[`${path as "basis"}`][`${pb1 as "Pb"}`])}
+                result={formatNumber(data.Pb1)}
                 units='H'
             />
 
             <ResLine
                 title='Минимальное начальное натяжение болтов (шпилек)'
                 imgUrl='/image/moment/formulas/flange/minB.svg'
-                result={formatNumber(data[`${path as "basis"}`]?.minB)}
+                result={formatNumber(data.minB)}
                 units='H'
             />
             <ResLine
@@ -195,9 +180,9 @@ export const ForcesInBolts: FC<Props> = ({
                             P<sub>б2</sub>
                         </>
                     ),
-                    value: formulas && formulas[`${path as "basis"}`][`${pb2 as "Pb"}`],
+                    value: formulas?.Pb2,
                 }}
-                result={formatNumber(data[`${path as "basis"}`][`${pb2 as "Pb"}`])}
+                result={formatNumber(data.Pb2)}
                 units='H'
             />
             <ResLine
@@ -210,9 +195,9 @@ export const ForcesInBolts: FC<Props> = ({
                             <sup>р</sup>
                         </>
                     ),
-                    value: formulas && formulas[`${path as "basis"}`][`${pbr as "Pb"}`],
+                    value: formulas?.Pbr,
                 }}
-                result={formatNumber(data[`${path as "basis"}`][`${pbr as "Pb"}`])}
+                result={formatNumber(data.Pbr)}
                 units='H'
             />
         </Container>

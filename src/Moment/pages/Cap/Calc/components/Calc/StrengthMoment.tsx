@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { IFormulasCap } from "../../../../../types/res_cap"
-import { IStrength } from "../../../../../types/res_flange"
+import { IStrength } from "../../../../../types/res_flange_old"
 import { formatNumber } from "../../../../../utils/format"
 
 type Props = {

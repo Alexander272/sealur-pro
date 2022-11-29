@@ -1,14 +1,14 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas } from "../../../../../types/res_flange"
+import { ITightnessLoad, ITightnessLoadFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { QtLink } from "./ForcesInBolts"
 
 type Props = {
-    data: ICalculate
+    data: ITightnessLoad
     typeQt: string
-    formulas: IFormulas | undefined
+    formulas: ITightnessLoadFormulas | undefined
 }
 
 export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
@@ -29,7 +29,8 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
                 units='H'
             />
             <ResLine
-                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления на прокладку достаточного для герметизации фланцевого соединения'
+                title='Расчетная нагрузка на болты/шпильки при затяжке необходимая для обеспечения в рабочих условиях давления на прокладку 
+                достаточного для герметизации фланцевого соединения'
                 imgUrl='/image/moment/formulas/flange/Pb1.svg'
                 formula={{
                     designation: (
@@ -37,9 +38,9 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
                             P<sub>б1</sub>
                         </>
                     ),
-                    value: formulas?.strength.sPb1,
+                    value: formulas?.Pb1,
                 }}
-                result={formatNumber(data.strength?.sPb1)}
+                result={formatNumber(data.Pb1)}
                 units='H'
             />
             <ResLine
@@ -52,9 +53,9 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
                             <sup>м</sup>
                         </>
                     ),
-                    value: formulas?.strength.sPb,
+                    value: formulas?.Pb,
                 }}
-                result={formatNumber(data.strength?.sPb)}
+                result={formatNumber(data.Pb)}
                 units='H'
             />
             <ResLine
@@ -67,9 +68,9 @@ export const TightnessLoad: FC<Props> = ({ data, typeQt, formulas }) => {
                             <sup>р</sup>
                         </>
                     ),
-                    value: formulas?.strength.sPbr,
+                    value: formulas?.Pbr,
                 }}
-                result={formatNumber(data.strength?.sPbr)}
+                result={formatNumber(data.Pbr)}
                 units='H'
             />
         </Container>

@@ -1,12 +1,12 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas } from "../../../../../types/res_flange"
+import { ITightness, ITightnessFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 type Props = {
-    data: ICalculate
-    formulas: IFormulas | undefined
+    data: ITightness
+    formulas: ITightnessFormulas | undefined
 }
 
 export const Tightness: FC<Props> = ({ data, formulas }) => {
@@ -79,9 +79,9 @@ export const Tightness: FC<Props> = ({ data, formulas }) => {
                             P<sub>б2</sub>
                         </>
                     ),
-                    value: formulas?.strength?.fPb2,
+                    value: formulas?.Pb2,
                 }}
-                result={formatNumber(data.strength?.fPb2)}
+                result={formatNumber(data.Pb2)}
                 units='H'
             />
             <ResLine
@@ -93,9 +93,9 @@ export const Tightness: FC<Props> = ({ data, formulas }) => {
                             P<sub>б1</sub>
                         </>
                     ),
-                    value: formulas?.strength?.fPb1,
+                    value: formulas?.Pb1,
                 }}
-                result={formatNumber(data.strength?.fPb1)}
+                result={formatNumber(data.Pb1)}
                 units='H'
             />
 
@@ -109,9 +109,9 @@ export const Tightness: FC<Props> = ({ data, formulas }) => {
                             <sup>м</sup>
                         </>
                     ),
-                    value: formulas?.strength?.fPb,
+                    value: formulas?.Pb,
                 }}
-                result={formatNumber(data.strength?.fPb)}
+                result={formatNumber(data.Pb)}
                 units='H'
             />
             <ResLine
@@ -124,9 +124,9 @@ export const Tightness: FC<Props> = ({ data, formulas }) => {
                             <sup>р</sup>
                         </>
                     ),
-                    value: formulas?.strength?.fPbr,
+                    value: formulas?.Pbr,
                 }}
-                result={formatNumber(data.strength?.fPbr)}
+                result={formatNumber(data.Pbr)}
                 units='H'
             />
         </Container>

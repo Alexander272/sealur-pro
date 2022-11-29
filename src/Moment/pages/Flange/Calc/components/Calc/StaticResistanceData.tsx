@@ -1,18 +1,18 @@
 import React, { FC } from "react"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import {
-    IStrengthResult,
-    IStrengthFormulas_St,
     IFlangeResult,
+    IStaticResistance,
+    IStaticResistanceFormulas,
 } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
-    data: IStrengthResult
+    data: IStaticResistance
     flange: IFlangeResult
     title: string
-    formulas: IStrengthFormulas_St | undefined
+    formulas: IStaticResistanceFormulas | undefined
 }
 
 export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas }) => {
@@ -122,7 +122,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 Меридиональное изгибное напряжение во втулке приварного встык фланца обечайке трубе
                 плоского фланца или обечайке бурта свободного фланца
             </p>
-            {!data.isSameSigma ? (
+            {!data.isEqualSigma ? (
                 <>
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
@@ -225,7 +225,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 Меридиональные изгибные напряжения во втулке приварного встык фланца обечайке трубе
                 плоского фланца или обечайке трубе бурта свободного фланца в рабочих условиях
             </p>
-            {!data.isSameSigma ? (
+            {!data.isEqualSigma ? (
                 <>
                     <ResLine
                         title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
@@ -280,7 +280,7 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 Меридиональные мембранные напряжения во втулке приварного встык фланца обечайке
                 трубе плоского фланца или обечайке трубе бурта свободного фланца в рабочих условиях
             </p>
-            {!data.isSameSigma && (
+            {!data.isEqualSigma && (
                 <ResLine
                     title='- для приварных встык фланцев с конической втулкой в сечении S&#8321;'
                     imgUrl='/image/moment/formulas/flange/sigma1mmp.svg'
@@ -298,7 +298,8 @@ export const StaticResistanceData: FC<Props> = ({ data, flange, title, formulas 
                 />
             )}
             <ResLine
-                title='- для приварных встык фланцев с конической втулкой в сечении S&#8320; приварных фланцев с прямой втулкой плоских фланцев и свободных фланцев'
+                title='- для приварных встык фланцев с конической втулкой в сечении S&#8320; приварных фланцев с прямой втулкой 
+                плоских фланцев и свободных фланцев'
                 imgUrl='/image/moment/formulas/flange/sigma0mmp.svg'
                 result={formatNumber(data.sigmaMp0)}
                 formula={{

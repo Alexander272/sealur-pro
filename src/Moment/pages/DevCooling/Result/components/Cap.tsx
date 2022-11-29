@@ -3,7 +3,7 @@ import { Container } from "../../../../components/Container/Container"
 import { CameraDiagram } from "../../../../types/devCooling"
 import { ICapResult } from "../../../../types/res_devCooling"
 import { formatNumber } from "../../../../utils/format"
-import { Line } from "../../../Flange/Calc/components/Line"
+import { Line } from "../../../Flange_old/Calc/components/Line"
 
 type Props = {
     cameraDiagram: CameraDiagram

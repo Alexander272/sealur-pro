@@ -13,7 +13,6 @@ import { Conclusions } from "./components/Calc/Conclusions"
 import { Moment } from "./components/Calc/Moment"
 import { Auxiliary } from "./components/Calc/Auxiliary"
 import { Tightness } from "./components/Calc/Tightness"
-import { StrengthMoment } from "./components/Calc/StrengthMoment"
 import { StaticResistance } from "./components/Calc/StaticResistance"
 import { TightnessLoad } from "./components/Calc/TightnessLoad"
 import { SealingCondition } from "./components/Calc/SealingCondition"
@@ -33,7 +32,7 @@ const ResCalc: FC<Props> = ({ result }) => {
             res = result.flanges[0].type + "-" + result.flanges[1].type
         }
 
-        return (result.isSameFlange || false) + "-" + res
+        return (result.data.sameFlange === "Да") + "-" + res
     }
 
     const getTypeQt = () => {
@@ -73,7 +72,7 @@ const ResCalc: FC<Props> = ({ result }) => {
             <Data data={result.data} />
 
             <Flange index={0} data={result.flanges[0]} />
-            {!result.isSameFlange && <Flange index={1} data={result.flanges[1]} />}
+            {result.flanges.length > 1 && <Flange index={1} data={result.flanges[1]} />}
 
             <Bolt data={result.bolt} />
             {result.washers && <Washer data={result.washers} />}
@@ -83,165 +82,125 @@ const ResCalc: FC<Props> = ({ result }) => {
             {result.calc.basis && (
                 <>
                     <Deformation
-                        data={result.calc}
+                        data={result.calc.basis.deformation}
                         gasket={result.gasket}
-                        formulas={result.formulas}
+                        formulas={result.formulas?.basis.deformation}
                     />
                     <ForcesInBolts
-                        data={result.calc}
-                        formulas={result.formulas}
+                        data={result.calc.basis.forcesInBolts}
+                        formulas={result.formulas?.basis.forcesInBolts}
                         typeAlpha={getTypeAlpha()}
                         typeQt={getTypeQt()}
-                        path='basis'
-                        pb='Pb'
-                        pb1='Pb1'
-                        pb2='Pb2'
-                        pbr='Pbr'
                     />
                     <BoltStrength
-                        data={result.calc}
-                        res={result.gasket}
-                        formulas={result.formulas}
-                        path='basis'
-                        sigmaB1='sigmaB1'
-                        sigmaB2='sigmaB2'
-                        dSigmaM='dSigmaM'
-                        dSigmaR='dSigmaR'
-                        q='q'
+                        data={result.calc.basis.boltStrength}
+                        gasket={result.gasket}
+                        formulas={result.formulas?.basis.boltStrength}
                     />
                     <Conclusions
-                        data={result.calc}
+                        data={result.calc.basis.boltStrength}
                         gasket={result.gasket}
                         temp={result.data.temp}
-                        pathBasis='basis'
-                        pathQ='q'
                     />
                     <Moment
-                        data={result.calc}
-                        formulas={result.formulas}
+                        data={result.calc.basis.moment}
+                        formulas={result.formulas?.basis.moment}
                         gasket={result.gasket}
-                        path='basis'
-                        mkp='Mkp'
-                        mkp1='Mkp1'
                     />
                 </>
             )}
+
             {result.calc.strength && (
                 <>
                     <Auxiliary
-                        data={result.calc}
+                        data={result.calc.strength.auxiliary}
                         basis={result.data}
                         gasket={result.gasket}
                         flanges={result.flanges}
-                        bolt={result.bolt}
-                        formulas={result.formulas}
+                        formulas={result.formulas?.strength.auxiliary}
                         typeAlpha={getTypeAlpha()}
                         typeGamma={getTypeGamma()}
                     />
-                    <Tightness data={result.calc} formulas={result.formulas} />
-                    <BoltStrength
-                        data={result.calc}
-                        res={result.gasket}
-                        formulas={result.formulas}
-                        path='strength'
-                        sigmaB1='fSigmaB1'
-                        sigmaB2='fSigmaB2'
-                        dSigmaM='fDSigmaM'
-                        dSigmaR='fDSigmaR'
-                        q='fQ'
+                    <Tightness
+                        data={result.calc.strength.tightness}
+                        formulas={result.formulas?.strength.tightness}
                     />
-                    <StrengthMoment
-                        data={result.calc.strength}
-                        formulas={result.formulas}
-                        mkp='fMkp'
-                        mkp1='fMkp1'
+                    <BoltStrength
+                        data={result.calc.strength.boltStrength1}
+                        gasket={result.gasket}
+                        formulas={result.formulas?.strength.boltStrength1}
+                    />
+                    <Moment
+                        data={result.calc.strength.moment1}
+                        formulas={result.formulas?.strength.moment1}
+                        gasket={result.gasket}
                     />
                     <StaticResistance
-                        data={result.calc.strength.strength}
+                        data={result.calc.strength.staticResistance1}
+                        cond={result.calc.strength.conditionsForStrength1}
                         flanges={result.flanges}
-                        isSameFlange={result.isSameFlange}
-                        index={0}
                         title='Расчет фланца на статическую прочность'
-                        formulas={result.formulas}
+                        formulas={result.formulas?.strength.staticResistance1}
+                        condFormulas={result.formulas?.strength.conditionsForStrength1}
                     />
                     <TightnessLoad
-                        data={result.calc}
+                        data={result.calc.strength.tightnessLoad}
                         typeQt={getTypeQt()}
-                        formulas={result.formulas}
+                        formulas={result.formulas?.strength.tightnessLoad}
                     />
                     <BoltStrength
-                        data={result.calc}
-                        res={result.gasket}
-                        formulas={result.formulas}
-                        path='strength'
-                        sigmaB1='sSigmaB1'
-                        sigmaB2='sSigmaB2'
-                        dSigmaM='sDSigmaM'
-                        dSigmaR='sDSigmaR'
-                        q='sQ'
+                        data={result.calc.strength.boltStrength2}
+                        gasket={result.gasket}
+                        formulas={result.formulas?.strength.boltStrength2}
                     />
-                    <StrengthMoment
-                        data={result.calc.strength}
-                        formulas={result.formulas}
-                        mkp='sMkp'
-                        mkp1='sMkp1'
+                    <Moment
+                        data={result.calc.strength.moment2}
+                        formulas={result.formulas?.strength.moment2}
+                        gasket={result.gasket}
                     />
                     <StaticResistance
-                        data={result.calc.strength.strength}
+                        data={result.calc.strength.staticResistance2}
+                        cond={result.calc.strength.conditionsForStrength2}
                         flanges={result.flanges}
-                        isSameFlange={result.isSameFlange}
-                        index={1}
                         title='Расчет фланца на статическую прочность c учетом температурных деформаций'
-                        formulas={result.formulas}
+                        formulas={result.formulas?.strength.staticResistance2}
+                        condFormulas={result.formulas?.strength.conditionsForStrength2}
                     />
                     <h5 className={classes.title}>Анализ результатов расчета</h5>
                     <Deformation
-                        data={result.calc}
+                        data={result.calc.strength.deformation}
                         gasket={result.gasket}
-                        formulas={result.formulas}
+                        formulas={result.formulas?.strength.deformation}
                     />
                     <ForcesInBolts
-                        data={result.calc}
-                        formulas={result.formulas}
+                        data={result.calc.strength.forcesInBolts}
+                        formulas={result.formulas?.strength.forcesInBolts}
                         typeAlpha={getTypeAlpha()}
                         typeQt={getTypeQt()}
-                        path='strength'
-                        pb='sPb'
-                        pb1='sPb1'
-                        pb2='sPb2'
-                        pbr='sPbr'
                     />
                     <BoltStrength
-                        data={result.calc}
-                        res={result.gasket}
-                        formulas={result.formulas}
-                        path='strength'
-                        sigmaB1='sSigmaB1'
-                        sigmaB2='sSigmaB2'
-                        dSigmaM='sDSigmaM'
-                        dSigmaR='sDSigmaR'
-                        q='sQ'
+                        data={result.calc.strength.boltStrength2}
+                        gasket={result.gasket}
+                        formulas={result.formulas?.strength.boltStrength2}
                     />
                     <Conclusions
-                        data={result.calc}
+                        data={result.calc.strength.boltStrength2}
                         gasket={result.gasket}
                         temp={result.data.temp}
-                        pathBasis='strength'
-                        pathQ='sQ'
                     />
                     <SealingCondition
-                        data={result.calc.strength}
+                        data={result.calc.strength.conditionsForStrength2}
                         flanges={result.flanges}
-                        formulas={result.formulas?.strength}
+                        formulas={result.formulas?.strength.conditionsForStrength2}
                     />
-                    <SealingConclusions data={result.calc.strength} flanges={result.flanges} />
+                    <SealingConclusions
+                        data={result.calc.strength.conditionsForStrength2}
+                        flanges={result.flanges}
+                    />
                     <Moment
-                        data={result.calc}
-                        formulas={result.formulas}
+                        data={result.calc.strength.finalMoment}
+                        formulas={result.formulas?.strength.finalMoment}
                         gasket={result.gasket}
-                        path='strength'
-                        mkp='sMkp'
-                        mkp1='sMkp1'
                     />
                 </>
             )}

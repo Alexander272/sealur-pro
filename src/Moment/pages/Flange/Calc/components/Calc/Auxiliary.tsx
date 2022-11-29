@@ -1,11 +1,10 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import {
-    IBoltResult,
-    ICalculate,
+    IAuxiliary,
     IDataResult,
     IFlangeResult,
-    IFormulas,
+    IAuxiliaryFormulas,
     IGasketResult,
 } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
@@ -14,12 +13,11 @@ import { alphaMLink } from "./ForcesInBolts"
 import { FlangeData } from "./FlangeData"
 
 type Props = {
-    data: ICalculate
+    data: IAuxiliary
     basis: IDataResult
     gasket: IGasketResult
     flanges: IFlangeResult[]
-    bolt: IBoltResult
-    formulas: IFormulas | undefined
+    formulas?: IAuxiliaryFormulas
     typeAlpha: string
     typeGamma: string
 }
@@ -37,7 +35,6 @@ export const Auxiliary: FC<Props> = ({
     basis,
     gasket,
     flanges,
-    bolt,
     formulas,
     typeAlpha,
     typeGamma,
@@ -47,7 +44,7 @@ export const Auxiliary: FC<Props> = ({
             <ResLine
                 title='Эффективная ширина прокладки'
                 imgUrl={
-                    gasket.type === "Восьмигранная"
+                    gasket.type === "Oval"
                         ? "/image/moment/formulas/flange/b0-oval.svg"
                         : "/image/moment/formulas/flange/b0.svg"
                 }
@@ -65,7 +62,7 @@ export const Auxiliary: FC<Props> = ({
             <ResLine
                 title='Расчетный диаметр прокладки'
                 imgUrl={
-                    gasket.type === "Восьмигранная"
+                    gasket.type === "Oval"
                         ? "/image/moment/formulas/flange/Dcp-oval.svg"
                         : "/image/moment/formulas/flange/Dcp.svg"
                 }
@@ -77,7 +74,7 @@ export const Auxiliary: FC<Props> = ({
                     ),
                     value: formulas?.Dcp,
                 }}
-                result={formatNumber(data.Dsp)}
+                result={formatNumber(data.Dcp)}
                 units='мм'
             />
             <ResLine
@@ -89,9 +86,9 @@ export const Auxiliary: FC<Props> = ({
                             y<sub>п</sub>
                         </>
                     ),
-                    value: formulas?.strength?.yp,
+                    value: formulas?.yp,
                 }}
-                result={formatNumber(data.strength.yp)}
+                result={formatNumber(data.yp)}
                 units='мм/Н'
             />
             <ResLine
@@ -101,7 +98,7 @@ export const Auxiliary: FC<Props> = ({
                         f<sub>б</sub>
                     </>
                 }
-                result={formatNumber(bolt.area)}
+                result={formatNumber(data.A)}
                 units='мм&#178;'
             />
             <ResLine
@@ -113,9 +110,9 @@ export const Auxiliary: FC<Props> = ({
                             y<sub>б</sub>
                         </>
                     ),
-                    value: formulas?.strength?.yb,
+                    value: formulas?.yb,
                 }}
-                result={formatNumber(data.strength.yb)}
+                result={formatNumber(data.yb)}
                 units='мм/Н'
             />
             <ResLine
@@ -131,9 +128,9 @@ export const Auxiliary: FC<Props> = ({
                             L<sub>б</sub>
                         </>
                     ),
-                    value: formulas && formulas?.strength.Lb,
+                    value: formulas && formulas?.Lb,
                 }}
-                result={formatNumber(data.strength.Lb)}
+                result={formatNumber(data.Lb)}
                 units='мм'
             />
             <ResLine
@@ -153,14 +150,16 @@ export const Auxiliary: FC<Props> = ({
 
             <FlangeData
                 title='- для первого фланца'
-                data={flanges[0]}
-                formulas={formulas?.strength?.flange[0]}
+                data={data.flange1}
+                type={flanges[0].type}
+                formulas={formulas?.flange1}
             />
-            {flanges.length > 1 && (
+            {data.flange2 && (
                 <FlangeData
                     title='- для второго фланца'
-                    data={flanges[1]}
-                    formulas={formulas?.strength?.flange[1]}
+                    data={data.flange2}
+                    type={flanges[1].type}
+                    formulas={formulas?.flange2}
                 />
             )}
 
@@ -169,9 +168,9 @@ export const Auxiliary: FC<Props> = ({
                 imgUrl={GammaLinks[typeGamma as "Gamma-any"]}
                 formula={{
                     designation: <>&gamma;</>,
-                    value: formulas?.strength.gamma,
+                    value: formulas?.gamma,
                 }}
-                result={formatNumber(data.strength.gamma)}
+                result={formatNumber(data.gamma)}
                 units='H/мм'
             />
 

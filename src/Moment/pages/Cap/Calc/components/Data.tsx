@@ -1,8 +1,8 @@
 import React, { FC } from "react"
 import { Container } from "../../../../components/Container/Container"
-import { IDataResult } from "../../../../types/res_flange"
+import { IDataResult } from "../../../../types/res_flange_old"
 import { formatNumber } from "../../../../utils/format"
-import { Line } from "../../../Flange/Calc/components/Line"
+import { Line } from "../../../Flange_old/Calc/components/Line"
 
 type Props = {
     data: IDataResult

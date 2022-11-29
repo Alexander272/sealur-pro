@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { IFlangeResult, IStrength, IStrengthResult } from "../../../../../types/res_flange"
+import { IFlangeResult, IStrength, IStrengthResult } from "../../../../../types/res_flange_old"
 import { Container } from "../../../../../components/Container/Container"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"

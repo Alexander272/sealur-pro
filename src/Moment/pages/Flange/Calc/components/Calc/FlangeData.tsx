@@ -1,16 +1,17 @@
 import React, { FC } from "react"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
-import { IFlangeResult, IStrengthFormulas_Flange } from "../../../../../types/res_flange"
+import { IAux_Flange, IAux_FlangeFormulas } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
     title: string
-    data: IFlangeResult
-    formulas: IStrengthFormulas_Flange | undefined
+    data: IAux_Flange
+    type: string
+    formulas?: IAux_FlangeFormulas
 }
 
-export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
+export const FlangeData: FC<Props> = ({ title, data, type, formulas }) => {
     return (
         <>
             <p className={classes.text}>{title}</p>
@@ -48,7 +49,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 result={formatNumber(data.Se)}
                 units='мм'
             />
-            {data.type === "welded" && (
+            {type === "welded" && (
                 <>
                     <ResLine
                         title='Коэффициент зависящий от соотношения размеров конической втулки фланца'
@@ -161,7 +162,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 units='1/(H*мм)'
             />
 
-            {data.type === "free" && (
+            {type === "free" && (
                 <>
                     <ResLine
                         title='Угловая податливость кольца свободного фланца при затяжке'
@@ -198,7 +199,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
             </p>
             <ResLine
                 title={`${
-                    data.type !== "free"
+                    type !== "free"
                         ? "для фланцев приварных встык и плоских"
                         : "для бурта свободного фланца"
                 }`}
@@ -214,7 +215,7 @@ export const FlangeData: FC<Props> = ({ title, data, formulas }) => {
                 result={formatNumber(data.yfn)}
                 units='1/(H*мм)'
             />
-            {data.type === "free" && (
+            {type === "free" && (
                 <ResLine
                     title='для свободного фланца'
                     imgUrl='/image/moment/formulas/flange/yfc.svg'

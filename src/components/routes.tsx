@@ -172,6 +172,7 @@ export const MyRoutes = () => {
                             <Route index element={<MomentFlangeForm />} />
                             <Route path='result' element={<MomentFlangeResult />} />
                         </Route>
+                        <Route path='flange/result' element={<MomentFlangeResult />} />
                         <Route path='cap' element={<MomentCap />}>
                             <Route index element={<MomentCapForm />} />
                             <Route path='result' element={<MomentCapResult />} />

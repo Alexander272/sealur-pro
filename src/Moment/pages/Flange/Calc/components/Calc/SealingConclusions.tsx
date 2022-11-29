@@ -1,66 +1,54 @@
 import React, { FC } from "react"
-import { IFlangeResult, IStrength, IStrengthResult } from "../../../../../types/res_flange"
+import { IConditionsForStrength, IFlangeResult } from "../../../../../types/res_flange"
 import { Container } from "../../../../../components/Container/Container"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
-    data: IStrength
+    data: IConditionsForStrength[]
     flanges: IFlangeResult[]
 }
 
 export const SealingConclusions: FC<Props> = ({ data, flanges }) => {
-    const renderConclusions = (
-        d: IStrengthResult,
-        index: 0 | 1,
-        vTeta: boolean,
-        vTetaK: boolean
-    ) => {
-        let cons = `полностью герметично так как, ϴ=${formatNumber(d.teta)} ≤ ${formatNumber(
-            d.dTeta
+    const renderConclusions = (d: IConditionsForStrength, index: number) => {
+        let cons = `полностью герметично так как, ϴ=${formatNumber(d.condTeta.x)} ≤ ${formatNumber(
+            d.condTeta.y
         )}, т.е. выполняется условие герметичности фланцевого соединения`
         if (flanges[index].type === "free") {
-            if (!(vTeta && vTetaK)) {
-                let thetaK = ` и ϴₖ=${formatNumber(d.tetaK)} ${vTetaK ? "≤" : ">"} ${formatNumber(
-                    d.dTetaK
-                )}`
+            if (!(d.condTeta.x <= d.condTeta.y && d.condTetaK.x <= d.condTetaK.y)) {
+                let thetaK = ` и ϴₖ=${formatNumber(d.condTetaK.x)} ${
+                    d.condTetaK.x <= d.condTetaK.y ? "≤" : ">"
+                } ${formatNumber(d.condTetaK.y)}`
 
-                cons = `не герметично так как, ϴ=${formatNumber(d.teta)} ${
-                    vTeta ? "≤" : ">"
+                cons = `не герметично так как, ϴ=${formatNumber(d.condTeta.x)} ${
+                    d.condTeta.x <= d.condTeta.y ? "≤" : ">"
                 } ${formatNumber(
-                    d.dTeta
+                    d.condTeta.y
                 )}${thetaK}, т.е. не выполняется условие герметичности фланцевого соединения`
             }
         } else {
-            if (!vTeta) {
-                cons = `не герметично так как, ϴ=${formatNumber(d.teta)} ${
-                    vTeta ? "≤" : ">"
+            if (!(d.condTeta.x <= d.condTeta.y)) {
+                cons = `не герметично так как, ϴ=${formatNumber(d.condTeta.x)} ${
+                    d.condTeta.x <= d.condTeta.y ? "≤" : ">"
                 } ${formatNumber(
-                    d.dTeta
+                    d.condTeta.y
                 )}, т.е. не выполняется условие герметичности фланцевого соединения`
             }
         }
 
         return (
-            <>
+            <React.Fragment key={index}>
                 <p className={classes.text}>- для {!index ? "первого" : "второго"} фланца</p>
                 <p className={classes.text}>
                     Фланцевое соединение <b>{cons}</b>
                 </p>
-            </>
+            </React.Fragment>
         )
     }
 
     return (
         <Container title='Выводы о герметичности фланцевого соединения'>
-            {data.strength.length > 2 ? (
-                <>
-                    {renderConclusions(data.strength[2], 0, data.vTeta1, data.vTetaK1)}
-                    {renderConclusions(data.strength[3], 1, data.vTeta2, data.vTetaK2)}
-                </>
-            ) : (
-                renderConclusions(data.strength[1], 0, data.vTeta1, data.vTetaK1)
-            )}
+            {data.map((d, i) => renderConclusions(d, i))}
         </Container>
     )
 }

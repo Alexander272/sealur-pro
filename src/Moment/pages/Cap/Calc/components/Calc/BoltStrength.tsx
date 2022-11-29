@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { IGasketResult } from "../../../../../types/res_flange"
+import { IGasketResult } from "../../../../../types/res_flange_old"
 import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"

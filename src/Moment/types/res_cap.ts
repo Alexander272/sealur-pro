@@ -11,7 +11,7 @@ import {
     IStrengthFormulas_Flange,
     IStrengthFormulas_St,
     IWasherResult,
-} from "./res_flange"
+} from "./res_flange_old"
 
 export interface IResCap {
     data: IDataResult

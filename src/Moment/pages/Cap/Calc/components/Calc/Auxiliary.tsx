@@ -5,7 +5,7 @@ import {
     IDataResult,
     IFlangeResult,
     IGasketResult,
-} from "../../../../../types/res_flange"
+} from "../../../../../types/res_flange_old"
 import { ICalculateCap, ICapResult, IFormulasCap } from "../../../../../types/res_cap"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"

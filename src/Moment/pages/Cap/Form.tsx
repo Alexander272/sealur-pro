@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import useSWR from "swr"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
@@ -41,6 +41,7 @@ export default function FormContainer() {
         ReadService.getData
     )
 
+    const location = useLocation()
     const navigate = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
@@ -52,7 +53,7 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<IFormCapCalc>({
-        defaultValues: initFormValue,
+        defaultValues: (location.state as { form: IFormCapCalc })?.form || initFormValue,
     })
 
     if (!data)
@@ -75,6 +76,7 @@ export default function FormContainer() {
                 "/sealur-moment/calc/cap",
                 data
             )
+            navigate(".", { state: { form: data } })
             navigate(MomentUrl + "/cap/result", { state: { result: res.data, person, detail } })
         } catch (error) {
             const err = error as AxiosError

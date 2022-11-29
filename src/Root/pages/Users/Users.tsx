@@ -78,7 +78,7 @@ export default function Users() {
     if (!isAdmin) return <PageNotFound />
 
     return (
-        <>
+        <div className={classes.wrapper}>
             <NewUsers swrKey={swrKey} />
 
             <div className={classes.container}>
@@ -125,6 +125,6 @@ export default function Users() {
                     />
                 </div>
             </div>
-        </>
+        </div>
     )
 }

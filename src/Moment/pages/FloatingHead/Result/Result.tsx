@@ -1,6 +1,6 @@
 import { FC, memo } from "react"
 import { IResFloat } from "../../../types/res_float"
-import { Gasket } from "../../Flange/Calc/components/Gasket"
+import { Gasket } from "../../Flange_old/Calc/components/Gasket"
 import { Data } from "./components/Data"
 import { Flange } from "./components/Flange"
 import { Cap } from "./components/Cap"

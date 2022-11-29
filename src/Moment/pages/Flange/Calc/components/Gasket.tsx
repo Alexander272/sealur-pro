@@ -60,7 +60,7 @@ export const Gasket: FC<Props> = ({ data }) => {
                 res={formatNumber(data.m)}
             />
 
-            {data.type === "Мягкая" && (
+            {data.type === "Soft" && (
                 <>
                     <Line
                         title='Коэффициент обжатия'

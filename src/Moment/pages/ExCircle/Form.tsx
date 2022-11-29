@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import React, { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { MomentUrl } from "../../../components/routes"
 import { Loader } from "../../../components/UI/Loader/Loader"
@@ -24,6 +24,9 @@ const initFormValue = {
 }
 
 export default function FormContainer() {
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const {
         register,
         control,
@@ -31,10 +34,8 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<IFormExCircle>({
-        defaultValues: initFormValue,
+        defaultValues: (location.state as { form?: IFormExCircle }).form || initFormValue,
     })
-
-    const navigate = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
 
@@ -51,6 +52,7 @@ export default function FormContainer() {
                 "/sealur-moment/calc/express-circle",
                 data
             )
+            navigate(".", { state: { form: data } })
             navigate(MomentUrl + "/express-circle/result", {
                 state: { result: res.data, person, detail },
             })

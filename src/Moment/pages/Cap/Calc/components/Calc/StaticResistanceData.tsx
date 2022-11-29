@@ -4,7 +4,7 @@ import {
     IStrengthResult,
     IStrengthFormulas_St,
     IFlangeResult,
-} from "../../../../../types/res_flange"
+} from "../../../../../types/res_flange_old"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 

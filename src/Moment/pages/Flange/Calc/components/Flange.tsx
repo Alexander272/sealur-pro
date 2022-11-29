@@ -58,7 +58,7 @@ export const Flange: FC<Props> = ({ index, data }) => {
                     title='Наружный диаметр контакта бурта и кольца свободного фланца'
                     designation={
                         <i>
-                            D<sub>к</sub>
+                            D<sub>s</sub>
                         </i>
                     }
                     res={formatNumber(data.ds)}
@@ -154,17 +154,19 @@ export const Flange: FC<Props> = ({ index, data }) => {
                 res={formatNumber(data.tf)}
                 units='&#8451;'
             />
-            {data.tk && (
-                <Line
-                    title='Расчетная температура свободного кольца'
-                    designation={
-                        <i>
-                            t<sub>к</sub>
-                        </i>
-                    }
-                    res={formatNumber(data.tk)}
-                    units='&#8451;'
-                />
+            {data.ring && (
+                <>
+                    <Line
+                        title='Расчетная температура свободного кольца'
+                        designation={
+                            <i>
+                                t<sub>к</sub>
+                            </i>
+                        }
+                        res={formatNumber(data.ring.tk)}
+                        units='&#8451;'
+                    />
+                </>
             )}
 
             <Line title='Материал фланца' res={data.material} />
@@ -217,7 +219,8 @@ export const Flange: FC<Props> = ({ index, data }) => {
             />
 
             <Line
-                title='Допускаемое значение общих мембранных и изгибных напряжений во фланце при затяжке в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
+                title='Допускаемое значение общих мембранных и изгибных напряжений во фланце при затяжке в соответствии 
+                с ГОСТ 34233.1-2017 (пункт 8.10)'
                 designation={
                     <>
                         [<i>&sigma;</i>]<sub>M</sub>
@@ -227,7 +230,8 @@ export const Flange: FC<Props> = ({ index, data }) => {
                 units='МПа'
             />
             <Line
-                title='Допускаемое значение общих мембранных и изгибных напряжений во фланце в рабочих условиях в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
+                title='Допускаемое значение общих мембранных и изгибных напряжений во фланце в рабочих условиях в соответствии 
+                с ГОСТ 34233.1-2017 (пункт 8.10)'
                 designation={
                     <>
                         [<i>&sigma;</i>]<sub>M</sub>
@@ -238,7 +242,8 @@ export const Flange: FC<Props> = ({ index, data }) => {
             />
 
             <Line
-                title='Допускаемое значение суммарных общих и местных условных упругих мембранных и изгибных напряжений во фланце при затяжке в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
+                title='Допускаемое значение суммарных общих и местных условных упругих мембранных и изгибных напряжений во фланце 
+                при затяжке в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
                 designation={
                     <>
                         [<i>&sigma;</i>]<sub>R</sub>
@@ -248,7 +253,8 @@ export const Flange: FC<Props> = ({ index, data }) => {
                 units='МПа'
             />
             <Line
-                title='Допускаемое значение суммарных общих и местных условных упругих мембранных и изгибных напряжений во фланце в рабочих условиях в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
+                title='Допускаемое значение суммарных общих и местных условных упругих мембранных и изгибных напряжений во фланце 
+                в рабочих условиях в соответствии с ГОСТ 34233.1-2017 (пункт 8.10)'
                 designation={
                     <>
                         [<i>&sigma;</i>]<sub>R</sub>
@@ -258,71 +264,62 @@ export const Flange: FC<Props> = ({ index, data }) => {
                 units='МПа'
             />
 
-            {data.ringMaterial && (
-                <Line title='Материал кольца свободного фланца' res={data.ringMaterial} />
-            )}
-            {data.alphaK && (
-                <Line
-                    title='Температурный коэффициент линейного расширения материала кольца свободного фланца'
-                    designation={
-                        <i>
-                            &alpha;<sub>к</sub>
-                        </i>
-                    }
-                    res={formatNumber(data.alphaK)}
-                    units='1/&#8451;'
-                />
-            )}
-            {data.epsilonKAt20 && (
-                <Line
-                    title='Модуль продольной упругости материала свободного кольца при температуре 20 &#8451;'
-                    designation={
-                        <i>
-                            &#917;<sub>к</sub>
-                            <sup>20</sup>
-                        </i>
-                    }
-                    res={formatNumber(data.epsilonKAt20)}
-                    units='МПа'
-                />
-            )}
-            {data.epsilonK && (
-                <Line
-                    title='Модуль продольной упругости материала свободного кольца при расчетной температуре'
-                    designation={
-                        <i>
-                            &#917;<sub>к</sub>
-                        </i>
-                    }
-                    res={formatNumber(data.epsilonK)}
-                    units='МПа'
-                />
-            )}
-
-            {data.sigmaKAt20 && (
-                <Line
-                    title='Допускаемое напряжение для материала кольца свободного фланца при температуре 20 &#8451;'
-                    designation={
-                        <>
-                            [<i>&sigma;</i>]<sub>к</sub>
-                            <sup>20</sup>
-                        </>
-                    }
-                    res={formatNumber(data.sigmaKAt20)}
-                    units='МПа'
-                />
-            )}
-            {data.sigmaK && (
-                <Line
-                    title='Допускаемое напряжение для материала кольца свободного фланца при расчетной температуре'
-                    designation={
-                        <>
-                            [<i>&sigma;</i>]<sub>к</sub>
-                        </>
-                    }
-                    res={formatNumber(data.sigmaK)}
-                    units='МПа'
-                />
+            {data.ring && (
+                <>
+                    <Line title='Материал кольца свободного фланца' res={data.ring.Material} />
+                    <Line
+                        title='Температурный коэффициент линейного расширения материала кольца свободного фланца'
+                        designation={
+                            <i>
+                                &alpha;<sub>к</sub>
+                            </i>
+                        }
+                        res={formatNumber(data.ring.alphaK)}
+                        units='1/&#8451;'
+                    />
+                    <Line
+                        title='Модуль продольной упругости материала свободного кольца при температуре 20 &#8451;'
+                        designation={
+                            <i>
+                                &#917;<sub>к</sub>
+                                <sup>20</sup>
+                            </i>
+                        }
+                        res={formatNumber(data.ring.epsilonKAt20)}
+                        units='МПа'
+                    />
+                    <Line
+                        title='Модуль продольной упругости материала свободного кольца при расчетной температуре'
+                        designation={
+                            <i>
+                                &#917;<sub>к</sub>
+                            </i>
+                        }
+                        res={formatNumber(data.ring.epsilonK)}
+                        units='МПа'
+                    />
+                    <Line
+                        title='Допускаемое напряжение для материала кольца свободного фланца при температуре 20 &#8451;'
+                        designation={
+                            <>
+                                [<i>&sigma;</i>]<sub>к</sub>
+                                <sup>20</sup>
+                            </>
+                        }
+                        res={formatNumber(data.ring.sigmaKAt20)}
+                        units='МПа'
+                    />
+                    <Line
+                        title='Допускаемое напряжение для материала кольца свободного фланца при расчетной температуре'
+                        designation={
+                            <>
+                                [<i>&sigma;</i>]<sub>к</sub>
+                            </>
+                        }
+                        res={formatNumber(data.ring.sigmaK)}
+                        units='МПа'
+                    />
+                </>
             )}
         </Container>
     )

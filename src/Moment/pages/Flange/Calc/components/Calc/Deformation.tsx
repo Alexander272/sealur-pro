@@ -1,13 +1,13 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
-import { ICalculate, IFormulas, IGasketResult } from "../../../../../types/res_flange"
+import { IDeformation, IDeformationFormulas, IGasketResult } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 
 type Props = {
-    data: ICalculate
+    data: IDeformation
     gasket: IGasketResult
-    formulas: IFormulas | undefined
+    formulas?: IDeformationFormulas
 }
 
 export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
@@ -16,7 +16,7 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
             <ResLine
                 title='Эффективная ширина прокладки'
                 imgUrl={
-                    gasket.type === "Восьмигранная"
+                    gasket.type === "Oval"
                         ? "/image/moment/formulas/flange/b0-oval.svg"
                         : "/image/moment/formulas/flange/b0.svg"
                 }
@@ -34,7 +34,7 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
             <ResLine
                 title='Расчетный диаметр прокладки'
                 imgUrl={
-                    gasket.type === "Восьмигранная"
+                    gasket.type === "Oval"
                         ? "/image/moment/formulas/flange/Dcp-oval.svg"
                         : "/image/moment/formulas/flange/Dcp.svg"
                 }
@@ -46,7 +46,7 @@ export const Deformation: FC<Props> = ({ data, gasket, formulas }) => {
                     ),
                     value: formulas?.Dcp,
                 }}
-                result={formatNumber(data.Dsp)}
+                result={formatNumber(data.Dcp)}
                 units='мм'
             />
             <ResLine

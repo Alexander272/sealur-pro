@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import { ICalculateCap, IFormulasCap } from "../../../../../types/res_cap"
-import { IGasketResult } from "../../../../../types/res_flange"
+import { IGasketResult } from "../../../../../types/res_flange_old"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 

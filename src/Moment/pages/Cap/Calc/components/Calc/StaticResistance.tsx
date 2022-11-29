@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { Container } from "../../../../../components/Container/Container"
 import { IFormulasCap } from "../../../../../types/res_cap"
-import { IStrengthResult, IFlangeResult } from "../../../../../types/res_flange"
+import { IStrengthResult, IFlangeResult } from "../../../../../types/res_flange_old"
 import { StaticResistanceCond } from "./StaticResistanceCond"
 import { StaticResistanceData } from "./StaticResistanceData"
 

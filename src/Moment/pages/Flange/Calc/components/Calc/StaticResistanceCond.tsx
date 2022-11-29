@@ -2,23 +2,24 @@ import React, { FC } from "react"
 import { ConditionLine } from "../../../../../components/ConditionLine/ConditionLine"
 import { ResLine } from "../../../../../components/ResLine/ResLine"
 import {
-    IStrengthResult,
+    IConditionsForStrength,
+    IConditionsForStrengthFormulas,
     IFlangeResult,
-    IStrengthFormulas_St,
 } from "../../../../../types/res_flange"
 import { formatNumber } from "../../../../../utils/format"
 import classes from "../../../../styles/page.module.scss"
 
 type Props = {
-    data: IStrengthResult
+    isEqualSigma: boolean
+    data: IConditionsForStrength
     flange: IFlangeResult
-    formulas: IStrengthFormulas_St | undefined
+    formulas: IConditionsForStrengthFormulas | undefined
 }
 
-export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
+export const StaticResistanceCond: FC<Props> = ({ data, flange, isEqualSigma, formulas }) => {
     return (
         <>
-            {!data.isSameSigma ? (
+            {!isEqualSigma ? (
                 <>
                     <p className={classes.text}>
                         Для приварных встык фланцев с конической втулкой в сечении S&#8321; условия
@@ -27,25 +28,25 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     <ConditionLine
                         title='- при затяжке'
                         imgUrl='/image/moment/formulas/flange/max1.svg'
-                        formula={{ value: formulas?.Max1 }}
+                        formula={{ value: formulas?.Max1.x }}
                         result={
                             <>
-                                {formatNumber(data.Max1)}&nbsp;
-                                {data.Max1 <= data.condMax1 ? <> &le; </> : " > "}
+                                {formatNumber(data.Max1.x)}&nbsp;
+                                {data.Max1.x <= data.Max1.y ? <> &le; </> : " > "}
                                 &nbsp;
-                                {formatNumber(data.condMax1)}
+                                {formatNumber(data.Max1.y)}
                             </>
                         }
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
                         imgUrl='/image/moment/formulas/flange/max2.svg'
-                        formula={{ value: formulas?.Max2 }}
+                        formula={{ value: formulas?.Max2.x }}
                         result={
                             <>
-                                {formatNumber(data.Max2)}&nbsp;
-                                {data.Max2 <= data.condMax2 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax2)}
+                                {formatNumber(data.Max2.x)}&nbsp;
+                                {data.Max2.x <= data.Max2.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max2.y)}
                             </>
                         }
                     />
@@ -57,24 +58,24 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     <ConditionLine
                         title='- при затяжке'
                         imgUrl='/image/moment/formulas/flange/max3.svg'
-                        formula={{ value: formulas?.Max3 }}
+                        formula={{ value: formulas?.Max3.x }}
                         result={
                             <>
-                                {formatNumber(data.Max3)}&nbsp;
-                                {data.Max3 <= data.condMax3 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax3)}
+                                {formatNumber(data.Max3.x)}&nbsp;
+                                {data.Max3.x <= data.Max3.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max3.y)}
                             </>
                         }
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
                         imgUrl='/image/moment/formulas/flange/max4.svg'
-                        formula={{ value: formulas?.Max4 }}
+                        formula={{ value: formulas?.Max4.x }}
                         result={
                             <>
-                                {formatNumber(data.Max4)}&nbsp;
-                                {data.Max4 <= data.condMax4 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax4)}
+                                {formatNumber(data.Max4.x)}&nbsp;
+                                {data.Max4.x <= data.Max4.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max4.y)}
                             </>
                         }
                     />
@@ -88,24 +89,24 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     <ConditionLine
                         title='- при затяжке'
                         imgUrl='/image/moment/formulas/flange/max1_0.svg'
-                        formula={{ value: formulas?.Max5 }}
+                        formula={{ value: formulas?.Max5.x }}
                         result={
                             <>
-                                {formatNumber(data.Max5)}&nbsp;
-                                {data.Max5 <= data.condMax5 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax5)}
+                                {formatNumber(data.Max5.x)}&nbsp;
+                                {data.Max5.x <= data.Max5.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max5.y)}
                             </>
                         }
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
                         imgUrl='/image/moment/formulas/flange/max2_0.svg'
-                        formula={{ value: formulas?.Max6 }}
+                        formula={{ value: formulas?.Max6.x }}
                         result={
                             <>
-                                {formatNumber(data.Max6)}&nbsp;
-                                {data.Max6 <= data.condMax6 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax6)}
+                                {formatNumber(data.Max6.x)}&nbsp;
+                                {data.Max6.x <= data.Max6.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max6.y)}
                             </>
                         }
                     />
@@ -115,12 +116,12 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
             <ConditionLine
                 title='Для фланцев всех типов в сечении S&#8320; должно выполняться условие'
                 imgUrl='/image/moment/formulas/flange/max5.svg'
-                formula={{ value: formulas?.Max7 }}
+                formula={{ value: formulas?.Max7.x }}
                 result={
                     <>
-                        {formatNumber(data.Max7)}&nbsp;
-                        {data.Max7 <= data.condMax7 ? <> &le; </> : " > "}&nbsp;
-                        {formatNumber(data.condMax7)}
+                        {formatNumber(data.Max7.x)}&nbsp;
+                        {data.Max7.x <= data.Max7.y ? <> &le; </> : " > "}&nbsp;
+                        {formatNumber(data.Max7.y)}
                     </>
                 }
             />
@@ -132,24 +133,24 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
             <ConditionLine
                 title='- при затяжке'
                 imgUrl='/image/moment/formulas/flange/max6.svg'
-                formula={{ value: formulas?.Max8 }}
+                formula={{ value: formulas?.Max8.x }}
                 result={
                     <>
-                        {formatNumber(data.Max8)}&nbsp;
-                        {data.Max8 <= data.condMax8 ? <> &le; </> : " > "}&nbsp;
-                        {formatNumber(data.condMax8)}
+                        {formatNumber(data.Max8.x)}&nbsp;
+                        {data.Max8.x <= data.Max8.y ? <> &le; </> : " > "}&nbsp;
+                        {formatNumber(data.Max8.y)}
                     </>
                 }
             />
             <ConditionLine
                 title='- в рабочих условиях'
                 imgUrl='/image/moment/formulas/flange/max7.svg'
-                formula={{ value: formulas?.Max9 }}
+                formula={{ value: formulas?.Max9.x }}
                 result={
                     <>
-                        {formatNumber(data.Max9)}&nbsp;
-                        {data.Max9 <= data.condMax9 ? <> &le; </> : " > "}&nbsp;
-                        {formatNumber(data.condMax9)}
+                        {formatNumber(data.Max9.x)}&nbsp;
+                        {data.Max9.x <= data.Max9.y ? <> &le; </> : " > "}&nbsp;
+                        {formatNumber(data.Max9.y)}
                     </>
                 }
             />
@@ -163,24 +164,24 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                     <ConditionLine
                         title='- при затяжке'
                         imgUrl='/image/moment/formulas/flange/max8.svg'
-                        formula={{ value: formulas?.Max10 }}
+                        formula={{ value: formulas?.Max10.x }}
                         result={
                             <>
-                                {formatNumber(data.Max10)}&nbsp;
-                                {data.Max10 <= data.condMax10 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax10)}
+                                {formatNumber(data.Max10.x)}&nbsp;
+                                {data.Max10.x <= data.Max10.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max10.y)}
                             </>
                         }
                     />
                     <ConditionLine
                         title='- в рабочих условиях'
                         imgUrl='/image/moment/formulas/flange/max9.svg'
-                        formula={{ value: formulas?.Max11 }}
+                        formula={{ value: formulas?.Max11.x }}
                         result={
                             <>
-                                {formatNumber(data.Max11)}&nbsp;
-                                {data.Max11 <= data.condMax11 ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.condMax11)}
+                                {formatNumber(data.Max11.x)}&nbsp;
+                                {data.Max11.x <= data.Max11.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.Max11.y)}
                             </>
                         }
                     />
@@ -201,9 +202,9 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                 imgUrl='/image/moment/formulas/flange/thetaCond.svg'
                 result={
                     <>
-                        {formatNumber(data.teta)}&nbsp;
-                        {data.teta <= data.dTeta ? <> &le; </> : " > "}&nbsp;
-                        {formatNumber(data.dTeta)}
+                        {formatNumber(data.condTeta.x)}&nbsp;
+                        {data.condTeta.x <= data.condTeta.y ? <> &le; </> : " > "}&nbsp;
+                        {formatNumber(data.condTeta.y)}
                     </>
                 }
             />
@@ -228,9 +229,9 @@ export const StaticResistanceCond: FC<Props> = ({ data, flange, formulas }) => {
                         imgUrl='/image/moment/formulas/flange/thetaCondK.svg'
                         result={
                             <>
-                                {formatNumber(data.tetaK)}&nbsp;
-                                {data.teta <= data.dTetaK ? <> &le; </> : " > "}&nbsp;
-                                {formatNumber(data.dTetaK)}
+                                {formatNumber(data.condTetaK.x)}&nbsp;
+                                {data.condTetaK.x <= data.condTetaK.y ? <> &le; </> : " > "}&nbsp;
+                                {formatNumber(data.condTetaK.y)}
                             </>
                         }
                     />

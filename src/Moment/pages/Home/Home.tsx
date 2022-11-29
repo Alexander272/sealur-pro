@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { MomentUrl } from "../../../components/routes"
+import { Header } from "../../../Root/components/Header/Header"
 import { store } from "../../../store/store"
 import classes from "./home.module.scss"
 
@@ -9,7 +10,7 @@ export default function Home() {
 
     return (
         <div className={classes.page}>
-            <header className={classes.header}>
+            {/* <header className={classes.header}>
                 <img
                     className={classes.logo}
                     width='340'
@@ -18,7 +19,8 @@ export default function Home() {
                     src='/image/logo.webp'
                     alt='logo'
                 />
-            </header>
+            </header> */}
+            <Header />
 
             <main className={classes.main}>
                 {state.user.roles.find(r => r.service === "moment")?.role === "admin" && (

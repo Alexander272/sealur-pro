@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import useSWR from "swr"
 import { MomentUrl } from "../../../components/routes"
@@ -18,6 +18,7 @@ export default function FormContainer() {
     // TODO добавить везде типы
     const { data, error } = useSWR<{ data: any }>("/sealur-moment/data/flange", ReadService.getData)
 
+    const { state } = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<any>({
-        defaultValues: initFormValue,
+        defaultValues: (state as { form?: any }).form || initFormValue,
     })
 
     if (!data)
@@ -57,6 +58,7 @@ export default function FormContainer() {
                 "/sealur-moment/calc/gas-cooling",
                 data
             )
+            navigate(".", { state: { form: data } })
             navigate(MomentUrl + "/gas-cooling/result", {
                 state: { result: res.data, person, detail },
             })
@@ -83,6 +85,10 @@ export default function FormContainer() {
     
     Коэффициент оребрения зависит от Модификация аппарата
     Материальное исполнение секции зависит от Модификация аппарата (почему-то вызывается при изменении Условное давление)
+    Длина оребренных труб в секции зависит от Модификация аппарата
+    Число ходов по трубному пространству зависит от Модификация аппарата и Число рядов труб в секции
+
+    Тип прокладки зависит от Коэффициент оребрения и Условное давление и Число рядов труб в секции и Число ходов по трубному пространству
     
     */
 

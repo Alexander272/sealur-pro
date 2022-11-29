@@ -24,35 +24,35 @@ export default function Result() {
     }
 
     return (
-        // <div className={classes.wrapper}>
-        <div className={classes.form}>
-            {detail && (
-                <div className={classes.detail}>
-                    <p>{detail.organization}</p>
-                    <p>{detail.facility}</p>
-                    <p>{detail.equipment}</p>
-                    <p>{detail.node}</p>
+        <div className={classes.wrapper}>
+            <div className={classes.form}>
+                {detail && (
+                    <div className={classes.detail}>
+                        <p>{detail.organization}</p>
+                        <p>{detail.facility}</p>
+                        <p>{detail.equipment}</p>
+                        <p>{detail.node}</p>
+                    </div>
+                )}
+
+                {result && <Calc result={result} />}
+
+                {person && (
+                    <div>
+                        <p>Расчет выполнил</p>
+                        <p className={classes.performer}>
+                            <span>{person.performer.position}</span>{" "}
+                            <span>{person.performer.name}</span>
+                        </p>
+                    </div>
+                )}
+
+                <div className={classes["form-button"]}>
+                    <Button fullWidth onClick={goBackHandler}>
+                        Новый расчет
+                    </Button>
                 </div>
-            )}
-
-            {result && <Calc result={result} />}
-
-            {person && (
-                <div>
-                    <p>Расчет выполнил</p>
-                    <p className={classes.performer}>
-                        <span>{person.performer.position}</span>{" "}
-                        <span>{person.performer.name}</span>
-                    </p>
-                </div>
-            )}
-
-            <div className={classes["form-button"]}>
-                <Button fullWidth onClick={goBackHandler}>
-                    Новый расчет
-                </Button>
             </div>
         </div>
-        // </div>
     )
 }
