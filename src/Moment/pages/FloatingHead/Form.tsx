@@ -36,7 +36,7 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<IFormFloatingHead>({
-        defaultValues: (location.state as { form?: IFormFloatingHead }).form || initFormValue,
+        defaultValues: (location.state as { form?: IFormFloatingHead })?.form || initFormValue,
     })
 
     const [isLoading, setLoading] = useState(false)

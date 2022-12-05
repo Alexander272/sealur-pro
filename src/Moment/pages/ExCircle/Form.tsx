@@ -34,7 +34,7 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<IFormExCircle>({
-        defaultValues: (location.state as { form?: IFormExCircle }).form || initFormValue,
+        defaultValues: (location.state as { form?: IFormExCircle })?.form || initFormValue,
     })
 
     const [isLoading, setLoading] = useState(false)

@@ -1,0 +1,137 @@
+.container {
+    padding: 20px 30px;
+    border-radius: 12px;
+    background-color: var(--theme-bg-color);
+    box-shadow: 0px 0px 4px 0px #2626262b;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    .list {
+        flex-basis: 24%;
+        // flex-grow: 1;
+        border-right: 1px solid var(--button-color);
+
+        .link {
+            display: block;
+            color: black;
+            padding: 3px 14px;
+            border-bottom: 1px solid var(--button-bg-color);
+            border-left: 2px solid transparent;
+            cursor: pointer;
+            transition: border-left-color .3s ease-in-out;
+
+            &.active {
+                border-left-color: var(--button-color);
+            }
+        }
+    }
+
+    .content {
+        // flex-grow: 1;
+        flex-basis: 76%;
+
+        &-title {
+            font-weight: 500;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        &-filter {
+            margin-bottom: 15px;
+
+            .row {
+                display: flex;
+                gap: 10px;
+
+                &>*:nth-child(n) {
+                    flex-basis: 50%;
+                    flex-grow: 1;
+                }
+            }
+        }
+
+        &-data {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .select,
+        .input {
+            width: 100%;
+            text-align: center;
+            border: none;
+            padding: 4px 6px;
+
+            &:focus {
+                outline-color: var(--button-color);
+            }
+        }
+
+        .table {
+            // margin-top: 20px;
+            flex-grow: 1;
+            margin-right: 36px;
+
+            .thead {
+                padding: 4px 6px;
+            }
+
+            &-new {
+                margin-top: 15px;
+                margin-right: 36px;
+
+                & .btn {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+            }
+        }
+
+        .form {
+            position: relative;
+
+            .select {
+                background-color: #fff;
+            }
+
+            .icon,
+            .icon-delete {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 28px;
+                cursor: pointer;
+                background-color: var(--button-bg-color);
+                border-radius: 6px;
+                padding: 6px;
+                margin: 3px;
+                outline: none;
+                border: none;
+                position: absolute;
+                right: -36px;
+                top: 0;
+            }
+
+            .icon-delete {
+                color: var(--danger-color);
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+.modal {
+    &-btns {
+        flex-grow: 1;
+        display: flex;
+        gap: 10px;
+    }
+}

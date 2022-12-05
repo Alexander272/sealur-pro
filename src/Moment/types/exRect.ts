@@ -1,4 +1,4 @@
-import { IGasketData, IBoltData, IMaterialData } from "./exCircle"
+import { IGasketData, IBoltData } from "./exCircle"
 import { IDetail, IPersonData } from "./flange"
 
 export interface IFormExRect {

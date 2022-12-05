@@ -1,10 +1,14 @@
+import { Suspense } from "react"
 import { Outlet } from "react-router-dom"
+import { Loader } from "../../../components/UI/Loader/Loader"
 import classes from "../styles/page.module.scss"
 
 export default function FloatingHead() {
     return (
         <div className={classes.wrapper}>
-            <Outlet />
+            <Suspense fallback={<Loader />}>
+                <Outlet />
+            </Suspense>
         </div>
     )
 }

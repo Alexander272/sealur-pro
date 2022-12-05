@@ -65,6 +65,21 @@ const MomentAdminMaterials = lazy(() => import("../Moment/pages/Admin/Materials/
 const MomentAdminGaskets = lazy(() => import("../Moment/pages/Admin/Gaskets/Gaskets"))
 const MomentAdminStandarts = lazy(() => import("../Moment/pages/Admin/Standarts/Standarts"))
 const MomentAdminBolts = lazy(() => import("../Moment/pages/Admin/Bolts/Bolts"))
+const MomentAdminAvo = lazy(() => import("../Moment/pages/Admin/Avo/Avo"))
+const MomentAdminDevice = lazy(() => import("../Moment/pages/Admin/Avo/Device/Device"))
+const MomentAdminPressure = lazy(() => import("../Moment/pages/Admin/Avo/Pressure/Pressure"))
+const MomentAdminTubeCount = lazy(() => import("../Moment/pages/Admin/Avo/TubeCount/TubeCount"))
+const MomentAdminFinning = lazy(
+    () => import("../Moment/pages/Admin/Avo/FinningFactor/FinningFactor")
+)
+const MomentAdminSection = lazy(
+    () => import("../Moment/pages/Admin/Avo/SectionExecution/SectionExecution")
+)
+const MomentAdminNumberOfMoves = lazy(
+    () => import("../Moment/pages/Admin/Avo/NumberOfMoves/NumberOfMoves")
+)
+const MomentAdminTubeLength = lazy(() => import("../Moment/pages/Admin/Avo/TubeLength/TubeLength"))
+const MomentAdminNameGasket = lazy(() => import("../Moment/pages/Admin/Avo/NameGasket/NameGasket"))
 
 //* New Pro service
 const NewProApp = lazy(() => import("../NewPro/App"))
@@ -204,6 +219,16 @@ export const MyRoutes = () => {
                         <Route path='edit/gaskets' element={<MomentAdminGaskets />} />
                         <Route path='edit/standarts' element={<MomentAdminStandarts />} />
                         <Route path='edit/bolts' element={<MomentAdminBolts />} />
+                        <Route path='edit/avo' element={<MomentAdminAvo />}>
+                            <Route path='device-mod' element={<MomentAdminDevice />} />
+                            <Route path='pressure' element={<MomentAdminPressure />} />
+                            <Route path='tube-count' element={<MomentAdminTubeCount />} />
+                            <Route path='finning-factor' element={<MomentAdminFinning />} />
+                            <Route path='section-execution' element={<MomentAdminSection />} />
+                            <Route path='number-of-moves' element={<MomentAdminNumberOfMoves />} />
+                            <Route path='tube-length' element={<MomentAdminTubeLength />} />
+                            <Route path='name-gasket' element={<MomentAdminNameGasket />} />
+                        </Route>
                     </Route>
                 </Route>
 

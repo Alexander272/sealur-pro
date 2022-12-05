@@ -1,8 +1,9 @@
-import React, { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { MomentUrl } from "../../../components/routes"
 import { Tabs } from "../../../components/Tabs/Tabs"
 import { Button } from "../../../components/UI/Button/Button"
+import { Loader } from "../../../components/UI/Loader/Loader"
 import { store } from "../../../store/store"
 import classes from "./admin.module.scss"
 
@@ -22,6 +23,10 @@ const initTabs: any = {
     bolts: {
         width: 112,
         position: 446,
+    },
+    avo: {
+        width: 101,
+        position: 558,
     },
 }
 
@@ -44,14 +49,24 @@ export default function Admin() {
         <div className={classes.container}>
             <div className={classes.tabs}>
                 <Tabs
-                    initWidth={initTabs[partsUrl[partsUrl.length - 1]]?.width}
-                    initPos={initTabs[partsUrl[partsUrl.length - 1]]?.position}
+                    // initWidth={initTabs[partsUrl[partsUrl.length - 1]]?.width}
+                    // initPos={initTabs[partsUrl[partsUrl.length - 1]]?.position}
+                    initWidth={
+                        initTabs[
+                            Object.keys(initTabs).find(k => location.pathname.includes(k)) || ""
+                        ]?.width
+                    }
+                    initPos={
+                        initTabs[
+                            Object.keys(initTabs).find(k => location.pathname.includes(k)) || ""
+                        ]?.position
+                    }
                     type='nav'
                 >
                     <Link
                         className={[
                             classes.link,
-                            location.pathname.includes("materials") ? classes.active : null,
+                            partsUrl.includes("materials") ? classes.active : null,
                         ].join(" ")}
                         to='edit/materials'
                     >
@@ -60,7 +75,7 @@ export default function Admin() {
                     <Link
                         className={[
                             classes.link,
-                            location.pathname.includes("standarts") ? classes.active : null,
+                            partsUrl.includes("standarts") ? classes.active : null,
                         ].join(" ")}
                         to='edit/standarts'
                     >
@@ -69,7 +84,7 @@ export default function Admin() {
                     <Link
                         className={[
                             classes.link,
-                            location.pathname.includes("gaskets") ? classes.active : null,
+                            partsUrl.includes("gaskets") ? classes.active : null,
                         ].join(" ")}
                         to='edit/gaskets'
                     >
@@ -78,11 +93,20 @@ export default function Admin() {
                     <Link
                         className={[
                             classes.link,
-                            location.pathname.includes("bolts") ? classes.active : null,
+                            partsUrl.includes("bolts") ? classes.active : null,
                         ].join(" ")}
                         to='edit/bolts'
                     >
                         Болты
+                    </Link>
+                    <Link
+                        className={[
+                            classes.link,
+                            partsUrl.includes("avo") ? classes.active : null,
+                        ].join(" ")}
+                        to='edit/avo/device-mod'
+                    >
+                        АВО
                     </Link>
                 </Tabs>
 
@@ -90,7 +114,9 @@ export default function Admin() {
                     Вернуться
                 </Button>
             </div>
-            <Outlet />
+            <Suspense fallback={<Loader />}>
+                <Outlet />
+            </Suspense>
         </div>
     )
 }

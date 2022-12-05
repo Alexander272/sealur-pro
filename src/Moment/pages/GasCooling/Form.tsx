@@ -9,14 +9,18 @@ import { Loader } from "../../../components/UI/Loader/Loader"
 import ServerError from "../../../Error/ServerError"
 import CalcService from "../../service/calc"
 import ReadService from "../../service/read"
+import { IAVOData } from "../../types/device"
 import { IDetail, IPersonData } from "../../types/flange"
+import { IGasCoolingForm } from "../../types/gasCooling"
 import classes from "../styles/page.module.scss"
 
 const initFormValue = {}
 
 export default function FormContainer() {
-    // TODO добавить везде типы
-    const { data, error } = useSWR<{ data: any }>("/sealur-moment/data/flange", ReadService.getData)
+    const { data, error } = useSWR<{ data: IAVOData }>(
+        "/sealur-moment/data/avo",
+        ReadService.getData
+    )
 
     const { state } = useLocation()
     const navigate = useNavigate()
@@ -34,7 +38,8 @@ export default function FormContainer() {
         setValue,
         formState: { errors },
     } = useForm<any>({
-        defaultValues: (state as { form?: any }).form || initFormValue,
+        // TODO добавить везде типы
+        defaultValues: (state as { form?: IGasCoolingForm }).form || initFormValue,
     })
 
     if (!data)
@@ -46,15 +51,15 @@ export default function FormContainer() {
 
     if (error) return <ServerError />
 
-    const calculateHandler: SubmitHandler<any> = async data => {
+    const calculateHandler: SubmitHandler<IGasCoolingForm> = async data => {
         setLoading(true)
-        const person = data.personData.hasPerson ? data.personData : null
+        const person = data.personData?.hasPerson ? data.personData : null
         data.personData = {} as IPersonData
-        const detail = data.detailData.hasDetail ? data.detailData : null
+        const detail = data.detailData?.hasDetail ? data.detailData : null
         data.detailData = {} as IDetail
 
         try {
-            const res = await CalcService.Calculate<any, any>(
+            const res = await CalcService.Calculate<IGasCoolingForm, any>(
                 "/sealur-moment/calc/gas-cooling",
                 data
             )
