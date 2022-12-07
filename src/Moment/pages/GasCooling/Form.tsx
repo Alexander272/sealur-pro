@@ -1,34 +1,33 @@
 import { AxiosError } from "axios"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import useSWR from "swr"
 import { MomentUrl } from "../../../components/routes"
 import { Loader } from "../../../components/UI/Loader/Loader"
-import ServerError from "../../../Error/ServerError"
 import CalcService from "../../service/calc"
-import ReadService from "../../service/read"
-import { IAVOData } from "../../types/device"
 import { IDetail, IPersonData } from "../../types/flange"
 import { IGasCoolingForm } from "../../types/gasCooling"
+import { IGasCooling } from "../../types/res_gasCooling"
+import { Form } from "./Form/Form"
 import classes from "../styles/page.module.scss"
 
-const initFormValue = {}
+const initFormValue = {
+    type: "pin" as "pin",
+    condition: "controllable" as "controllable",
+    hasTestPressure: false,
+    isNeedFormulas: true,
+    personData: {
+        hasPerson: false,
+    },
+    detailData: {
+        hasDetail: false,
+    },
+}
 
 export default function FormContainer() {
-    const { data, error } = useSWR<{ data: IAVOData }>(
-        "/sealur-moment/data/avo",
-        ReadService.getData
-    )
-
     const { state } = useLocation()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        toast.warn("Не реализовано")
-        navigate(-1)
-    }, [navigate])
 
     const [isLoading, setLoading] = useState(false)
     const {
@@ -37,19 +36,9 @@ export default function FormContainer() {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<any>({
-        // TODO добавить везде типы
-        defaultValues: (state as { form?: IGasCoolingForm }).form || initFormValue,
+    } = useForm<IGasCoolingForm>({
+        defaultValues: (state as { form?: IGasCoolingForm })?.form || initFormValue,
     })
-
-    if (!data)
-        return (
-            <div className={classes.wrapper}>
-                <Loader isFull />
-            </div>
-        )
-
-    if (error) return <ServerError />
 
     const calculateHandler: SubmitHandler<IGasCoolingForm> = async data => {
         setLoading(true)
@@ -59,7 +48,7 @@ export default function FormContainer() {
         data.detailData = {} as IDetail
 
         try {
-            const res = await CalcService.Calculate<IGasCoolingForm, any>(
+            const res = await CalcService.Calculate<IGasCoolingForm, IGasCooling>(
                 "/sealur-moment/calc/gas-cooling",
                 data
             )
@@ -101,13 +90,7 @@ export default function FormContainer() {
         <>
             {isLoading && <Loader background='fill' />}
             <form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
-                {/* <Form
-                    data={data.data}
-                    register={register}
-                    control={control}
-                    setValue={setValue}
-                    errors={errors}
-                /> */}
+                <Form register={register} control={control} setValue={setValue} errors={errors} />
             </form>
         </>
     )
