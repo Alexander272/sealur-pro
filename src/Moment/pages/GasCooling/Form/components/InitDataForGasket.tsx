@@ -25,6 +25,7 @@ const Gasket: FC<Props> = ({ gasket = [], env, control, register, setValue, erro
     const factorId = useWatch({ control, name: "factorId" })
     const pressureId = useWatch({ control, name: "pressureId" })
     const numberOfMovesId = useWatch({ control, name: "numberOfMovesId" })
+    const nameId = useWatch({ control, name: "gasket.nameId" })
 
     const { data: res } = useSWR<{ data: INameGasket[] }>(
         factorId && pressureId && numberOfMovesId
@@ -60,6 +61,11 @@ const Gasket: FC<Props> = ({ gasket = [], env, control, register, setValue, erro
             setValue("gasket.nameId", res.data[0].id)
         }
     }, [res, setValue])
+
+    useEffect(() => {
+        const name = res?.data.find(n => n.id === nameId) || ({} as INameGasket)
+        setValue("gasket.name", name)
+    }, [nameId, res, setValue])
 
     return (
         <Container title='Исходные данные для прокладки'>
