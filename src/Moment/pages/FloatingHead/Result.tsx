@@ -1,60 +1,46 @@
-import { useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { IResFloat } from "../../types/res_float"
-import { IDetail, IPersonData } from "../../types/flange"
-import { Button } from "../../../components/UI/Button/Button"
-import { MomentUrl } from "../../../components/routes"
-import { ResultData } from "./Result/Result"
-import classes from "../styles/page.module.scss"
+import { useEffect, useState } from 'react'
+import { IResFloat } from '../../types/res_float'
+import { IDetail, IPersonData } from '../../types/flange'
+import { Header } from '../../components/Header/HeaderNew'
+import { ResultData } from './Result/Result'
+import classes from '../styles/page.module.scss'
 
 export default function Result() {
-    const location = useLocation()
-    const navigate = useNavigate()
+	const [result, setResult] = useState<IResFloat | null>(null)
+	const [person, setPerson] = useState<IPersonData | undefined>(undefined)
+	const [detail, setDetail] = useState<IDetail | undefined>(undefined)
 
-    const result = (location.state as { result: IResFloat })?.result
-    const person = (location.state as { person: IPersonData })?.person
-    const detail = (location.state as { detail: IDetail })?.detail
+	useEffect(() => {
+		const res = JSON.parse(localStorage.getItem('floating-head/result') || '')
+		setResult(res.result)
+		setPerson(res.person)
+		setDetail(res.detail)
+	}, [])
 
-    console.log(result)
+	return (
+		<>
+			<Header title='Результат расчета плавающей головки теплообменного аппарата' person={person} />
+			<div className={classes.form}>
+				{detail && (
+					<div className={classes.detail}>
+						<p>{detail.organization}</p>
+						<p>{detail.facility}</p>
+						<p>{detail.equipment}</p>
+						<p>{detail.node}</p>
+					</div>
+				)}
 
-    useEffect(() => {
-        if (!result) navigate(MomentUrl + "/floating-head")
-    }, [navigate, result])
+				{result && <ResultData result={result} />}
 
-    const goBackHandler = () => {
-        navigate(-1)
-    }
-
-    console.log(result)
-
-    return (
-        <div className={classes.form}>
-            {detail && (
-                <div className={classes.detail}>
-                    <p>{detail.organization}</p>
-                    <p>{detail.facility}</p>
-                    <p>{detail.equipment}</p>
-                    <p>{detail.node}</p>
-                </div>
-            )}
-
-            {result && <ResultData result={result} />}
-
-            {person && (
-                <div>
-                    <p>Расчет выполнил</p>
-                    <p className={classes.performer}>
-                        <span>{person.performer.position}</span>{" "}
-                        <span>{person.performer.name}</span>
-                    </p>
-                </div>
-            )}
-
-            <div className={classes["form-button"]}>
-                <Button fullWidth onClick={goBackHandler}>
-                    Новый расчет
-                </Button>
-            </div>
-        </div>
-    )
+				{person && (
+					<div>
+						<p>Расчет выполнил</p>
+						<p className={classes.performer}>
+							<span>{person.performer.position}</span> <span>{person.performer.name}</span>
+						</p>
+					</div>
+				)}
+			</div>
+		</>
+	)
 }

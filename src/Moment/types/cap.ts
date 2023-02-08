@@ -38,8 +38,8 @@ export interface IFormCapCalc {
 
 	isNeedFormulas: boolean
 
-	personData: IPersonData
-	detailData: IDetail
+	personData?: IPersonData
+	detailData?: IDetail
 }
 
 export interface IMainData {
@@ -97,8 +97,8 @@ export interface IFormCapCalcOld {
 
 	isNeedFormulas: boolean
 
-	personData: IPersonData
-	detailData: IDetail
+	personData?: IPersonData
+	detailData?: IDetail
 }
 
 export interface IGasket {

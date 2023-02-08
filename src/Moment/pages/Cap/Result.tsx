@@ -1,57 +1,46 @@
-import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { IResCap } from '../../types/res_cap'
 import { IDetail, IPersonData } from '../../types/flange'
-import { Button } from '../../../components/UI/Button/Button'
-import { MomentUrl } from '../../../components/routes'
+import { Header } from '../../components/Header/HeaderNew'
 import { Calc } from './Calc/Calc'
 import classes from '../styles/page.module.scss'
 
 export default function Result() {
-	const location = useLocation()
-	const navigate = useNavigate()
-
-	const result = (location.state as { result: IResCap })?.result
-	const person = (location.state as { person: IPersonData })?.person
-	const detail = (location.state as { detail: IDetail })?.detail
-
-	console.log(result)
+	const [result, setResult] = useState<IResCap | null>(null)
+	const [person, setPerson] = useState<IPersonData | undefined>(undefined)
+	const [detail, setDetail] = useState<IDetail | undefined>(undefined)
 
 	useEffect(() => {
-		if (!result) navigate(MomentUrl + '/cap')
-	}, [navigate, result])
-
-	const goBackHandler = () => {
-		navigate(-1)
-	}
+		const res = JSON.parse(localStorage.getItem('cap/result') || '')
+		setResult(res.result)
+		setPerson(res.person)
+		setDetail(res.detail)
+	}, [])
 
 	return (
-		<div className={classes.form}>
-			{detail && (
-				<div className={classes.detail}>
-					<p>{detail.organization}</p>
-					<p>{detail.facility}</p>
-					<p>{detail.equipment}</p>
-					<p>{detail.node}</p>
-				</div>
-			)}
+		<>
+			<Header title='Результат расчета соединения фланец-крышка' person={person} />
+			<div className={classes.form}>
+				{detail && (
+					<div className={classes.detail}>
+						<p>{detail.organization}</p>
+						<p>{detail.facility}</p>
+						<p>{detail.equipment}</p>
+						<p>{detail.node}</p>
+					</div>
+				)}
 
-			{result && <Calc result={result} />}
+				{result && <Calc result={result} />}
 
-			{person && (
-				<div>
-					<p>Расчет выполнил</p>
-					<p className={classes.performer}>
-						<span>{person.performer.position}</span> <span>{person.performer.name}</span>
-					</p>
-				</div>
-			)}
-
-			<div className={classes['form-button']}>
-				<Button fullWidth onClick={goBackHandler}>
-					Новый расчет
-				</Button>
+				{person && (
+					<div>
+						<p>Расчет выполнил</p>
+						<p className={classes.performer}>
+							<span>{person.performer.position}</span> <span>{person.performer.name}</span>
+						</p>
+					</div>
+				)}
 			</div>
-		</div>
+		</>
 	)
 }

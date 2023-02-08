@@ -64,9 +64,9 @@ export default function FormContainer() {
 
 	const calculateHandler: SubmitHandler<IFormCapCalcOld> = async data => {
 		setLoading(true)
-		const person = data.personData.hasPerson ? data.personData : null
+		const person = data.personData?.hasPerson ? data.personData : null
 		data.personData = {} as IPersonData
-		const detail = data.detailData.hasDetail ? data.detailData : null
+		const detail = data.detailData?.hasDetail ? data.detailData : null
 		data.detailData = {} as IDetail
 		try {
 			const res = await CalcService.Calculate<IFormCapCalcOld, IResCap>('/sealur-moment/calc/cap', data)

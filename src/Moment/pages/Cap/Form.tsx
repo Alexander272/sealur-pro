@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import { useRef, useState } from 'react'
 import useSWR from 'swr'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import { Loader } from '../../../components/UI/Loader/Loader'
 import { MomentUrl } from '../../../components/routes'
+import { Header } from '../../components/Header/HeaderNew'
 import ServerError from '../../../Error/ServerError'
 import ReadService from '../../service/read'
 import CalcService from '../../service/calc'
 import { IFormCapCalc } from '../../types/cap'
 import { IResCap } from '../../types/res_cap'
-import { IDetail, IFlangeData, IPersonData } from '../../types/flange'
+import { IFlangeData } from '../../types/flange'
 import { Form } from './Form/Form'
 import classes from '../styles/page.module.scss'
 
@@ -40,8 +41,7 @@ const initFormValue = {
 export default function FormContainer() {
 	const { data, error } = useSWR<{ data: IFlangeData }>('/sealur-moment/data/flange', ReadService.getData)
 
-	const location = useLocation()
-	const navigate = useNavigate()
+	const linkRef = useRef<HTMLAnchorElement | null>(null)
 
 	const [isLoading, setLoading] = useState(false)
 
@@ -52,7 +52,7 @@ export default function FormContainer() {
 		setValue,
 		formState: { errors },
 	} = useForm<IFormCapCalc>({
-		defaultValues: (location.state as { form: IFormCapCalc })?.form || initFormValue,
+		defaultValues: initFormValue,
 	})
 
 	if (!data)
@@ -66,14 +66,16 @@ export default function FormContainer() {
 
 	const calculateHandler: SubmitHandler<IFormCapCalc> = async data => {
 		setLoading(true)
-		const person = data.personData.hasPerson ? data.personData : null
-		data.personData = {} as IPersonData
-		const detail = data.detailData.hasDetail ? data.detailData : null
-		data.detailData = {} as IDetail
+		const person = data.personData?.hasPerson ? data.personData : null
+		const detail = data.detailData?.hasDetail ? data.detailData : null
+		data.personData = undefined
+		data.detailData = undefined
 		try {
 			const res = await CalcService.Calculate<IFormCapCalc, IResCap>('/sealur-moment/calc/cap', data)
-			navigate('.', { state: { form: data } })
-			navigate(MomentUrl + '/cap/result', { state: { result: res.data, person, detail } })
+			if (!res.data) return
+
+			localStorage.setItem('cap/result', JSON.stringify({ result: res.data, person, detail }))
+			linkRef.current?.click()
 		} catch (error) {
 			const err = error as AxiosError
 			if (err.response?.status === 500) {
@@ -92,7 +94,10 @@ export default function FormContainer() {
 
 	return (
 		<>
+			<Header title='Расчет соединения фланец-крышка' />
 			{isLoading && <Loader background='fill' />}
+			<Link to={MomentUrl + '/cap/result'} ref={linkRef} target='_blank' />
+
 			<form className={classes.form} onSubmit={handleSubmit(calculateHandler)}>
 				<Form data={data.data} register={register} control={control} setValue={setValue} errors={errors} />
 			</form>

@@ -1,140 +1,141 @@
 .wrapper {
-    align-self: center;
-    display: flex;
-    max-width: 980px;
-    padding: 0 10px;
-    width: 100%;
-    align-items: center;
-    // margin-top: 20px;
-    margin-bottom: 30px;
-    position: relative;
+	align-self: center;
+	display: flex;
+	flex-direction: column;
+	max-width: 980px;
+	padding: 0 10px;
+	width: 100%;
+	align-items: center;
+	// margin-top: 20px;
+	margin-bottom: 30px;
+	position: relative;
 }
 
 .form {
-    flex-grow: 1;
+	flex-grow: 1;
 
-    &-button {
-        max-width: 40%;
-        margin: 0 auto;
-    }
+	&-button {
+		max-width: 40%;
+		margin: 0 auto;
+	}
 }
 
 .divider {
-    margin: 20px;
-    height: 1px;
-    background-color: var(--button-color);
+	margin: 20px;
+	height: 1px;
+	background-color: var(--button-color);
 }
 
 .text {
-    padding: 0px 10px;
+	padding: 0px 10px;
 }
 
 .title {
-    text-align: center;
-    font-size: 1.1rem;
-    margin: 10px;
+	text-align: center;
+	font-size: 1.1rem;
+	margin: 10px;
 }
 
 .incorrect {
-    font-weight: 500;
-    text-align: center;
-    color: var(--danger-color);
-    font-size: 1.2rem;
-    letter-spacing: 1.2px;
+	font-weight: 500;
+	text-align: center;
+	color: var(--danger-color);
+	font-size: 1.2rem;
+	letter-spacing: 1.2px;
 }
 
 .line-image {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
 }
 
 .line-checkbox {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .line {
-    display: grid;
-    // grid-template-columns: 8fr 1fr 1fr 1fr 1fr;
-    grid-template-columns: 8fr 0.5fr 3fr 0.5fr;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+	display: grid;
+	// grid-template-columns: 8fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 8fr 0.5fr 3fr 0.5fr;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 10px;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+	&:last-child {
+		margin-bottom: 0;
+	}
 
-    & .designation {
-        justify-self: center;
-    }
+	& .designation {
+		justify-self: center;
+	}
 
-    & .line-field {
-        grid-column-start: 3;
-        grid-column-end: 5;
-    }
+	& .line-field {
+		grid-column-start: 3;
+		grid-column-end: 5;
+	}
 
-    & .line-full {
-        grid-column-start: 2;
-        grid-column-end: 5;
-    }
+	& .line-full {
+		grid-column-start: 2;
+		grid-column-end: 5;
+	}
 }
 
 .dif-line {
-    margin-bottom: 0px;
-    padding: 7px 10px;
-    border-radius: 8px;
+	margin-bottom: 0px;
+	padding: 7px 10px;
+	border-radius: 8px;
 
-    &:nth-child(2n-1) {
-        background-color: #f7f7f7;
-    }
+	&:nth-child(2n-1) {
+		background-color: #f7f7f7;
+	}
 }
 
 .performer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .detail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 @media (max-width: 710px) {
-    .line {
-        grid-template-columns: 0.5fr 11.5fr;
+	.line {
+		grid-template-columns: 0.5fr 11.5fr;
 
-        p {
-            grid-column-start: 1;
-            grid-column-end: 3;
-        }
+		p {
+			grid-column-start: 1;
+			grid-column-end: 3;
+		}
 
-        & .designation {
-            grid-column-start: 1;
-            grid-column-end: 2;
-            grid-row: 2;
-        }
+		& .designation {
+			grid-column-start: 1;
+			grid-column-end: 2;
+			grid-row: 2;
+		}
 
-        & &-field {
-            grid-column-start: 2;
-            grid-column-end: 3;
-            grid-row: 2;
-        }
+		& &-field {
+			grid-column-start: 2;
+			grid-column-end: 3;
+			grid-row: 2;
+		}
 
-        & &-full {
-            grid-column-start: 1;
-            grid-column-end: 3;
-            grid-row: 2;
-        }
-    }
+		& &-full {
+			grid-column-start: 1;
+			grid-column-end: 3;
+			grid-row: 2;
+		}
+	}
 }
 
 @media (max-width: 480px) {
-    .form {
-        &-button {
-            max-width: 100%;
-        }
-    }
+	.form {
+		&-button {
+			max-width: 100%;
+		}
+	}
 }
