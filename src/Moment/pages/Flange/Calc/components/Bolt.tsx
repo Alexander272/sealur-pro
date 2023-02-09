@@ -81,22 +81,22 @@ export const Bolt: FC<Props> = ({ data }) => {
 				units='МПа'
 			/>
 			<Line
-				title='Допускаемое напряжение для болтов (шпилек) при затяжке'
+				title='Номинальное допускаемое напряжение для болтов (шпилек) при затяжке'
 				designation={
 					<>
-						[<i>&sigma;</i>]<sub>б</sub>
-						<sup>м</sup>
+						[<i>&sigma;</i>]<sup>б</sup>
+						<sub>н</sub>
 					</>
 				}
 				res={formatNumber(data.sigmaAt20)}
 				units='МПа'
 			/>
 			<Line
-				title='Допускаемое напряжение для болтов (шпилек) в рабочих условиях и при расчете на условия испытания'
+				title='Номинальное допускаемое напряжение для болтов (шпилек) в рабочих условиях и при расчете на условия испытания'
 				designation={
 					<>
-						[<i>&sigma;</i>]<sub>б</sub>
-						<sup>р</sup>
+						[<i>&sigma;</i>]<sup>б</sup>
+						<sub>н</sub>
 					</>
 				}
 				res={formatNumber(data.sigma)}
