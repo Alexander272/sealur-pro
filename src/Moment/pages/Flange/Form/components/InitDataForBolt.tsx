@@ -46,12 +46,14 @@ const boltDesignation = {
 	limitAt20: (
 		<>
 			<i>&sigma;</i>
+			<sup>20</sup>
 			<sub>Т</sub>
 		</>
 	),
 	limit: (
 		<>
 			<i>&sigma;</i>
+			<sup>р</sup>
 			<sub>Т</sub>
 		</>
 	),

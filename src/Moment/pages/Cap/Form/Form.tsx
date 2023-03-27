@@ -34,14 +34,14 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
 			<InitDataForFlange
 				typeFlange={data.typeFlange}
 				standarts={data.standarts}
-				materials={data.materials}
+				materials={data.flangeMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
 				errors={errors}
 			/>
 			<InitDataForCap
-				materials={data.materials}
+				materials={data.flangeMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
@@ -50,14 +50,14 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
 
 			<InitDataForBolt
 				isFull={FStandId === 'another'}
-				materials={data.materials}
+				materials={data.boltMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
 				errors={errors}
 			/>
 			<InitDataForWasher
-				materials={data.materials}
+				materials={data.boltMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
@@ -75,7 +75,7 @@ const FormFields: FC<Props> = ({ data, register, control, setValue, errors }) =>
 			{isEmbedded && (
 				<Suspense fallback={<Loader />}>
 					<EmbedData
-						materials={data.materials}
+						materials={data.boltMaterials}
 						register={register}
 						control={control}
 						setValue={setValue}

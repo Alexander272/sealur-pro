@@ -46,28 +46,28 @@ const FormFields: FC<Props> = ({ register, control, setValue, errors }) => {
 		<>
 			<InitDataForCalc register={register} control={control} errors={errors} />
 			<InitDataForCap
-				materials={res.data.materials}
+				materials={res.data.flangeMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
 				errors={errors}
 			/>
 			<InitDataForTubeSheet
-				materials={res.data.materials}
+				materials={res.data.flangeMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
 				errors={errors}
 			/>
 			<InitDataForTube
-				materials={res.data.materials}
+				materials={res.data.flangeMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}
 				errors={errors}
 			/>
 			<InitDataForBolt
-				materials={res.data.materials}
+				materials={res.data.boltMaterials}
 				register={register}
 				control={control}
 				setValue={setValue}

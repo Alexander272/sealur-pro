@@ -23,7 +23,7 @@ export const Flange: FC<Props> = ({ data }) => {
 			/>
 			<Line title='Внутренний диаметр фланца' designation={<i>D</i>} res={formatNumber(data.d)} units='мм' />
 
-			{data.ring && (
+			{data.type === 'free' && data.ring ? (
 				<>
 					<Line
 						title='Наружный диаметр кольца свободного фланца'
@@ -56,7 +56,7 @@ export const Flange: FC<Props> = ({ data }) => {
 						units='мм'
 					/>
 				</>
-			)}
+			) : null}
 
 			<Line title='Толщина тарелки фланца' designation={<i>h</i>} res={formatNumber(data.h)} units='мм' />
 			{data.h0 && (
@@ -241,7 +241,7 @@ export const Flange: FC<Props> = ({ data }) => {
 			/>
 
 			{data.ring?.material && <Line title='Материал кольца свободного фланца' res={data.ring.material} />}
-			{data.ring && (
+			{data.type === 'free' && data.ring ? (
 				<>
 					<Line
 						title='Температурный коэффициент линейного расширения материала кольца свободного фланца'
@@ -296,7 +296,7 @@ export const Flange: FC<Props> = ({ data }) => {
 						units='МПа'
 					/>
 				</>
-			)}
+			) : null}
 		</Container>
 	)
 }

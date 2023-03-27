@@ -132,7 +132,8 @@ export interface IFlangeData {
 	standarts: IStandart[]
 	gaskets: IGasket[]
 	env: IEnv[]
-	materials: IMaterial[]
+	boltMaterials: IMaterial[]
+	flangeMaterials: IMaterial[]
 }
 
 export interface ITypeFlange {
