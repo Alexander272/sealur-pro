@@ -1,7 +1,8 @@
-import React, { FC, memo } from 'react'
-import { Control, Controller, UseFormRegister } from 'react-hook-form'
+import { FC, memo } from 'react'
+import { Control, Controller, UseFormRegister, useWatch } from 'react-hook-form'
 import { Input } from '../../../../../components/UI/Input/Input'
 import { Select } from '../../../../../components/UI/Select/Select'
+import { Checkbox } from '../../../../../components/UI/Checkbox/Checkbox'
 import { Container } from '../../../../components/Container/Container'
 import { IFormCapCalc } from '../../../../types/cap'
 import classes from '../../../styles/page.module.scss'
@@ -15,6 +16,11 @@ type Props = {
 }
 
 const Calc: FC<Props> = ({ register, control, errors }) => {
+	const hasFriction = useWatch({
+		control,
+		name: 'data.hasFriction',
+	})
+
 	return (
 		<Container title='Исходные данные для расчета'>
 			<div className={classes.line}>
@@ -160,6 +166,15 @@ const Calc: FC<Props> = ({ register, control, errors }) => {
 							</Select>
 						)}
 					/>
+				</div>
+			</div>
+
+			<div className={classes.line}>
+				<Checkbox id='hasFriction' name='data.hasFriction' register={register} label='Коэффициент трения' />
+				<div className={classes['line-field']}>
+					{hasFriction && (
+						<Input name='data.friction' id='friction' type='number' step={0.001} register={register} />
+					)}
 				</div>
 			</div>
 		</Container>

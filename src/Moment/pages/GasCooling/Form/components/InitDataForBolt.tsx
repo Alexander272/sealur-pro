@@ -64,13 +64,13 @@ const Bolt: FC<Props> = ({ materials, register, control, setValue, errors }) => 
 	})
 
 	useEffect(() => {
-		if (!markId) setValue('bolts.markId', materials[0].id)
+		if (!markId && materials) setValue('bolts.markId', materials[0].id)
 	}, [setValue, markId, materials])
 
 	const { data, isValidating } = useSWR<{ data: IBolt[] }>('/sealur-moment/bolts/all', ReadService.getData)
 
 	useEffect(() => {
-		if (!boltId && data) setValue('bolts.boltId', data.data[0].id)
+		if (!boltId && data?.data) setValue('bolts.boltId', data.data[0].id)
 	}, [setValue, data, boltId])
 
 	if (isValidating) return null
@@ -127,7 +127,7 @@ const Bolt: FC<Props> = ({ materials, register, control, setValue, errors }) => 
 						control={control}
 						render={({ field }) => (
 							<Select value={field.value} onChange={field.onChange}>
-								{materials.map(m => (
+								{materials?.map(m => (
 									<Option key={m.id} value={m.id}>
 										{m.title}
 									</Option>

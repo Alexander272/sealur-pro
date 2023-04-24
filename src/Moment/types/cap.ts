@@ -52,6 +52,8 @@ export interface IMainData {
 	type: 'bolt' | 'pin'
 	condition: 'uncontrollable' | 'controllable' | 'controllablePin'
 	calculation: 'basis' | 'strength'
+	hasFriction: boolean
+	friction: string
 }
 
 export interface IFormCapCalcOld {

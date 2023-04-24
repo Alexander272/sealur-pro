@@ -11,7 +11,7 @@ export default function Result() {
 	const [detail, setDetail] = useState<IDetail | undefined>(undefined)
 
 	useEffect(() => {
-		const res = JSON.parse(localStorage.getItem('express-circle/result') || '')
+		const res = JSON.parse(localStorage.getItem('express-rectangle/result') || '')
 		setResult(res.result)
 		setPerson(res.person)
 		setDetail(res.detail)

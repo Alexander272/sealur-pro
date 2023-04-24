@@ -1,49 +1,51 @@
-import { IDetail, IPersonData, TypeGasket } from "./flange"
+import { IDetail, IPersonData, TypeGasket } from './flange'
 
 export interface IFormExCircle {
-    pressure: string
-    type: "bolt" | "pin"
-    condition: "uncontrollable" | "controllable" | "controllablePin"
-    bolts: IBoltData
-    gasket: IGasketFullData
+	pressure: string
+	type: 'bolt' | 'pin'
+	condition: 'uncontrollable' | 'controllable' | 'controllablePin'
+	hasFriction: boolean
+	friction: string
+	bolts: IBoltData
+	gasket: IGasketFullData
 
-    isNeedFormulas: boolean
+	isNeedFormulas: boolean
 
-    personData?: IPersonData
-    detailData?: IDetail
+	personData?: IPersonData
+	detailData?: IDetail
 }
 
 export interface IMaterialData {
-    title: string
-    epsilonAt20: string
-    sigmaAt20: string
+	title: string
+	epsilonAt20: string
+	sigmaAt20: string
 }
 
 export interface IBoltData {
-    count: string
-    boltId: string
-    markId: string
-    title?: string
-    diameter?: string
-    area?: string
-    material?: IMaterialData
+	count: string
+	boltId: string
+	markId: string
+	title?: string
+	diameter?: string
+	area?: string
+	material?: IMaterialData
 }
 
 export interface IGasketFullData {
-    gasketId: string
-    envId: string
-    thickness: string
-    dOut: string
-    dIn: string
-    data?: IGasketData
+	gasketId: string
+	envId: string
+	thickness: string
+	dOut: string
+	dIn: string
+	data?: IGasketData
 }
 
 export interface IGasketData {
-    title: string
-    type: TypeGasket
-    qo: string
-    m: string
-    compression: string
-    epsilon: string
-    permissiblePres: string
+	title: string
+	type: TypeGasket
+	qo: string
+	m: string
+	compression: string
+	epsilon: string
+	permissiblePres: string
 }

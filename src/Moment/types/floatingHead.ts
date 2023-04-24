@@ -8,6 +8,8 @@ export interface IFormFloatingHead {
 	hasThorn: boolean
 	type: 'bolt' | 'pin'
 	condition: 'uncontrollable' | 'controllable' | 'controllablePin'
+	hasFriction: boolean
+	friction: string
 	flangeData: IFlange
 	capData: ICap
 	gasket: IGasketData

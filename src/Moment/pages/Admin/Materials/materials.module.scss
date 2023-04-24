@@ -1,166 +1,202 @@
 .container {
-    padding: 20px 30px;
-    border-radius: 12px;
-    background-color: var(--theme-bg-color);
-    box-shadow: 0px 0px 4px 0px #2626262b;
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+	padding: 20px 30px;
+	border-radius: 12px;
+	background-color: var(--theme-bg-color);
+	box-shadow: 0px 0px 4px 0px #2626262b;
+	flex-grow: 1;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.tabs-container {
+	flex-basis: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tabs-item {
+	position: relative;
+	z-index: 5;
+	padding: 5px 14px;
+	color: var(--button-color);
+	border-radius: 40px;
+	transition: all 0.3s ease-in-out;
+	font-weight: 500;
+	cursor: pointer;
+	white-space: nowrap;
+
+	&:hover:not(.active) {
+		background-color: #ffffff;
+	}
+
+	&.active {
+		pointer-events: none;
+		color: #fff;
+	}
+}
+
+.base-container {
+	flex-basis: 100%;
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
 }
 
 .list {
-    flex-basis: 24%;
-    flex-grow: 1;
-    // max-height: 750px;
-    // overflow: auto;
-    border-right: 1px solid var(--button-color);
+	flex-basis: 24%;
+	flex-grow: 1;
+	// max-height: 750px;
+	// overflow: auto;
+	border-right: 1px solid var(--button-color);
 
-    &-title {
-        color: var(--button-color);
-        font-size: 1.1rem;
-        margin: 0;
-        margin-bottom: 10px;
-        text-align: center;
-    }
+	&-title {
+		color: var(--button-color);
+		font-size: 1.1rem;
+		margin: 0;
+		margin-bottom: 10px;
+		text-align: center;
+	}
 
-    &-button {
-        margin-bottom: 10px;
-        margin-right: 10px;
-    }
+	&-button {
+		margin-bottom: 10px;
+		margin-right: 10px;
+	}
 
-    &-content {
-        overflow: auto;
-        max-height: 700px;
-    }
+	&-content {
+		overflow: auto;
+		max-height: 700px;
+	}
 
-    &-item {
-        padding: 3px 14px;
-        border-bottom: 1px solid var(--button-bg-color);
-        border-left: 2px solid transparent;
-        cursor: pointer;
-        display: flex;
-        transition: border-left-color .3s ease-in-out;
+	&-item {
+		padding: 3px 14px;
+		border-bottom: 1px solid var(--button-bg-color);
+		border-left: 2px solid transparent;
+		cursor: pointer;
+		display: flex;
+		transition: border-left-color 0.3s ease-in-out;
 
-        &--active {
-            border-left-color: var(--button-color);
-        }
-    }
+		&--active {
+			border-left-color: var(--button-color);
+		}
+	}
 
-    & .edit-icon {
-        color: var(--button-color);
-        font-size: 20px;
-        line-height: 14px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 24px;
-        height: 24px;
-        margin-left: auto;
-    }
+	& .edit-icon {
+		color: var(--button-color);
+		font-size: 20px;
+		line-height: 14px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+		margin-left: auto;
+	}
 
-    & .warn-icon+.edit-icon {
-        margin-left: 10px;
-    }
+	& .warn-icon + .edit-icon {
+		margin-left: 10px;
+	}
 
-    & .warn-icon {
-        color: #fff;
-        background-color: var(--toastify-color-warning);
-        border-radius: 50%;
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 24px;
-        height: 24px;
-        margin-left: auto;
-    }
+	& .warn-icon {
+		color: #fff;
+		background-color: var(--toastify-color-warning);
+		border-radius: 50%;
+		font-weight: bold;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+		margin-left: auto;
+	}
 }
 
 .tables {
-    flex-grow: 1;
-    flex-basis: 76%;
-    max-height: 750px;
-    overflow: auto;
+	flex-grow: 1;
+	flex-basis: 76%;
+	max-height: 750px;
+	overflow: auto;
 
-    &-title {
-        font-weight: 500;
-        text-align: center;
-        font-size: 1.1rem;
-    }
+	&-title {
+		font-weight: 500;
+		text-align: center;
+		font-size: 1.1rem;
+	}
 
-    &-content {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-top: 20px;
-        padding-right: 10px;
-    }
+	&-content {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15px;
+		margin-top: 20px;
+		padding-right: 10px;
+	}
 }
 
 .table {
-    flex-grow: 1;
-    flex-basis: 45%;
+	flex-grow: 1;
+	flex-basis: 45%;
 
-    &-new {
-        margin-top: 15px;
+	&-new {
+		margin-top: 15px;
 
-        & .btn {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-    }
+		& .btn {
+			display: flex;
+			justify-content: center;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+	}
 }
 
 .material-table {
-    margin-right: 36px;
+	margin-right: 36px;
 }
 
 .form {
-    position: relative;
+	position: relative;
 
-    .input {
-        width: 100%;
-        text-align: center;
-        border: none;
-        padding: 4px 6px;
+	.input {
+		width: 100%;
+		text-align: center;
+		border: none;
+		padding: 4px 6px;
 
-        &:focus {
-            outline-color: var(--button-color);
-        }
-    }
+		&:focus {
+			outline-color: var(--button-color);
+		}
+	}
 
-    .icon,
-    .icon-delete {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 30px;
-        height: 28px;
-        cursor: pointer;
-        background-color: var(--button-bg-color);
-        border-radius: 6px;
-        padding: 6px;
-        margin: 3px;
-        outline: none;
-        border: none;
-        position: absolute;
-        right: -36px;
-        top: 0;
-    }
+	.icon,
+	.icon-delete {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 30px;
+		height: 28px;
+		cursor: pointer;
+		background-color: var(--button-bg-color);
+		border-radius: 6px;
+		padding: 6px;
+		margin: 3px;
+		outline: none;
+		border: none;
+		position: absolute;
+		right: -36px;
+		top: 0;
+	}
 
-    .icon-delete {
-        color: var(--danger-color);
-        font-size: 20px;
-    }
+	.icon-delete {
+		color: var(--danger-color);
+		font-size: 20px;
+	}
 }
 
 .modal {
-    &-btns {
-        flex-grow: 1;
-        display: flex;
-        gap: 10px;
-    }
+	&-btns {
+		flex-grow: 1;
+		display: flex;
+		gap: 10px;
+	}
 }

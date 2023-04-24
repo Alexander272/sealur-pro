@@ -13,6 +13,8 @@ export interface IFormFlangeCalc {
 	type: 'bolt' | 'pin'
 	condition: 'uncontrollable' | 'controllable' | 'controllablePin'
 	calculation: 'basis' | 'strength'
+	hasFriction: boolean
+	friction: string
 	gasket: {
 		gasketId: string
 		envId: string

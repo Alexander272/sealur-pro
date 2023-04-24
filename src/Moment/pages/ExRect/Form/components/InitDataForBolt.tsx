@@ -23,7 +23,7 @@ const boltTitles = {
 }
 
 const boltDesignation = {
-	epsilon: (
+	epsilonAt20: (
 		<i>
 			E<sub>б</sub>
 			<sup>20</sup>

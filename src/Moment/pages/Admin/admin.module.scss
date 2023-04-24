@@ -1,33 +1,33 @@
 .container {
-    max-width: 1680px;
-    margin: 0px auto;
-    padding: 30px 0;
+	max-width: 1680px;
+	margin: 0px auto;
+	padding: 30px 0;
 }
 
 .tabs {
-    margin-bottom: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
+	margin-bottom: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 30px;
 }
 
 .link {
-    display: block;
-    position: relative;
-    z-index: 5;
-    padding: 8px 34px;
-    color: var(--button-color);
-    border-radius: 40px;
-    transition: all 0.3s ease-in-out;
-    font-weight: 500;
+	display: block;
+	position: relative;
+	z-index: 5;
+	padding: 8px 34px;
+	color: var(--button-color);
+	border-radius: 40px;
+	transition: all 0.3s ease-in-out;
+	font-weight: 500;
 
-    &:hover:not(.active) {
-        background-color: #ffffff;
-    }
+	&:hover:not(.active) {
+		background-color: #ffffff;
+	}
 
-    &.active {
-        pointer-events: none;
-        color: #fff;
-    }
+	&.active {
+		pointer-events: none;
+		color: #fff;
+	}
 }
